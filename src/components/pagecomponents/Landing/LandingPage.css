@@ -1,0 +1,23 @@
+#LandingPage {
+    background-color: var(--white-color);
+    z-index: 1;
+}
+
+#LandingPage .navbar {
+    height: 64px;
+    font-weight: 500;
+    background-color: var(--white-color) !important;
+}
+
+#LandingPage .navlink {
+    color: var(--black-color) !important;
+}
+
+
+#LandingPage .navlink:hover {
+    color: var(--primary-color) !important;
+}
+
+#LandingPage .log *{
+    margin-left: 20px !important;
+}

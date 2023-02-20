@@ -1,0 +1,10 @@
+#Login {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    display: none;
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    z-index: 12;
+}

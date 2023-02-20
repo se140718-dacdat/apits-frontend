@@ -1,38 +1,111 @@
-.App {
-  text-align: center;
+:root {
+  --white-color: #fff;
+  --black-color: #000;
+  --primary-color: #F27229;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html {
+  font-size: 100%;
+  line-height: 1.6rem;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  background-color: #f7f7f7;
+  line-height: 2.5rem;
+}
+
+.logo {
+  width: 145px;
+  height: 32px;
+}
+
+.btn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.btn {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+  color: var(--white-color) !important;
+  border-radius: 5px !important;
+  font-weight: 500 !important;
+  padding: 5px 24px !important;
+}
+
+.session {
+  float: right;
+}
+
+.title {
+  padding: 24px 16px;
+  width: 70%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+}
+
+.title-img {
+  width: 30%;
+}
+
+.title-content {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: #0066B2;
+  align-self: center;
+}
+
+#content {
+  min-height: 600px;
+  max-width: 68.3%;
+  margin: auto;
+  margin-top: 40px;
+}
+
+.paging {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-bottom: 24px;
 }
 
-.App-link {
-  color: #61dafb;
+.paging * {
+  font-size: 2.2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.paging-btn {
+  border: 1px solid var(--primary-color);
+  background-color: var(--white-color);
+  padding: 8px 6px;
+  color: var(--primary-color);
+}
+
+.paging-btn:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.pre-btn {
+  border-radius: 10px 0 0 10px;
+}
+
+.next-btn {
+  border-radius: 0 10px 10px 0;
+}
+
+.page-number {
+  background-color: var(--primary-color);
+  padding: 9.5px 12px;
+  color: var(--white-color);
+}
+
+.display {
+  display: block !important;
 }
