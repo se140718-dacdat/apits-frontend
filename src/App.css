@@ -16,7 +16,13 @@ html {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
-
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
 body {
   background-color: #f7f7f7;
   line-height: 2.5rem;

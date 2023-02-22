@@ -4,6 +4,7 @@ import Login from "../Login/Login"
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import Body from './LandingBody';
 
 
 const LandingPage: FC = () => {
@@ -40,6 +41,7 @@ const LandingPage: FC = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
+            <Body />
         </div>
 
     )
