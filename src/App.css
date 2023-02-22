@@ -23,8 +23,9 @@ body {
 }
 
 .logo {
-  width: 145px;
-  height: 32px;
+  width: 109px;
+  height: 35px;
+  user-select: none;
 }
 
 .btn:hover {
