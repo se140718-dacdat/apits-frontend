@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 
 import { Roles, User } from './model';
 import CandidateHeader from './components/modules/pagecomponents/Header/CandidateHeader';
+import { Route, Routes } from 'react-router';
+import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
 
 
 const App: FC = () => {
@@ -22,6 +24,10 @@ const App: FC = () => {
             return <Header setUser={user} />
         }
       })()}
+      <Routes>
+        <Route path='/profile' element={<CandidateProfile/>}></Route>;
+        <Route path='/' element={<LandingPage/>}></Route>;
+      </Routes>
     </div>
   )
 }

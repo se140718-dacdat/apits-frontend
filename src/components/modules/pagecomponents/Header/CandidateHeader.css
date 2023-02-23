@@ -1,0 +1,18 @@
+#CandidateHeader .navbar {
+    height: 64px;
+    font-weight: 500;
+    background-color: var(--white-color) !important;
+}
+
+#CandidateHeader .navlink {
+    color: var(--black-color) !important;
+}
+
+
+#CandidateHeader .navlink:hover {
+    color: var(--primary-color) !important;
+}
+
+#CandidateHeader .nav-right *{
+    margin-left: 20px !important;
+}

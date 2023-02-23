@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../../../redux/apiRequest';
+import "./CandidateHeader.css";
 
 
 interface Props {
@@ -33,6 +34,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink' href="/">About Us</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
+                                <Nav.Link className='navlink' href="/profile">Profile</Nav.Link>
                                 <button className='btn' onClick={logoutHandler}>Logout</button>
                             </Nav>
                         </Navbar.Collapse>

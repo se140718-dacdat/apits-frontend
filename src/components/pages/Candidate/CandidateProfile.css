@@ -1,0 +1,87 @@
+#CandidateProfile {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: #D9D9D9;
+}
+
+#CandidateProfile .banner {
+    width: 100%;
+}
+
+#CandidateProfile .profile-container {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 25%;
+    width: 80%;
+    margin-left: 10%;
+    z-index: 5;
+}
+
+#CandidateProfile .left {
+    display: flex;
+    width: 65%;
+    flex-wrap: wrap;
+}
+
+#CandidateProfile .right {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+    border-radius: 5px 5px 0 0;
+
+}
+
+#CandidateProfile .profile {
+    flex-wrap: nowrap;
+    display: flex;
+    border-radius: 10px;
+    width: 100%;
+    padding: 24px;
+    border: 1px solid var(--black-color);
+    background-color: var(--white-color);
+    margin-bottom: 32px;
+}
+
+
+#CandidateProfile .col-left {
+    width: 40%;
+}
+
+#CandidateProfile .col-right {
+    width: 55%;
+}
+
+
+
+#CandidateProfile .fullname {
+    float: left;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#CandidateProfile .btn-edit {
+    float: right;
+    line-height: 36px;
+    padding: 0 !important;
+}
+#CandidateProfile .avatar {
+    width: 265px;
+    height: 265px;
+}
+
+#CandidateProfile .join {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+#CandidateProfile .icon {
+    margin-right: 12px;
+    color: #BEC0C2;
+    width: 32px;
+    height: 32px;
+}
