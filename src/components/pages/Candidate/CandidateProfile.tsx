@@ -2,15 +2,24 @@ import React, { FC, useState } from 'react'
 import "./CandidateProfile.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars } from '@fortawesome/free-solid-svg-icons'
-import { Modal } from 'react-bootstrap';
+import { Dropdown, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/esm/Button';
+import { Category, dataEngineer, developer, Level, level1, level2, level3, level4, level5, level6 } from '../../../model';
 
 export const CandidateProfile: FC = () => {
 
     const [show, setShow] = useState(false);
+    const [category, setCategory] = useState<Category>(developer);
+    const categoryList: Category[] = [developer, dataEngineer]
+    const levelList: Level[] = [level1, level2, level3, level4, level5, level6]
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const handleSelect = (e: Category) => {
+        setCategory(e);
+    }
+
     return (
         <div id='CandidateProfile' className='clearfix'>
             <img src="images/banner.jpg" className='banner' alt="" />
@@ -99,6 +108,32 @@ export const CandidateProfile: FC = () => {
                     <div className="profile-input">
                         <div className="profile-header">
                             <div className="profile-header-name">Certifications</div>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                    {`${category.categoryName}`}
+                                    <span className="level">{` Level ${levelList.find(lv => lv.levelId == category.levelId)?.levelName}`}</span>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {
+                                        categoryList.map((category) => {
+                                            return (
+                                                <div>
+                                                    <Dropdown.Item onClick={() => { handleSelect(category) }}>{category.categoryName}</Dropdown.Item>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
+                        <div className="profile-body">
+
+                        </div>
+                    </div>
+                    <div className="profile-input">
+                        <div className="profile-header">
+                            <div className="profile-header-name">Category</div>
                         </div>
                         <div className="profile-body">
 
