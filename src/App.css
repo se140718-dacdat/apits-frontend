@@ -113,20 +113,19 @@ body {
 }
 
 .display {
-  display: block !important;
+    display: block !important;
 }
 
 .banner {
-  width: 100%;
+    width: 100%;
 }
 
-
 .inline-block {
-  display: inline-block;
+    display: inline-block;
 }
 
 .pr-4 {
-  padding-right: 4px;
+    padding-right: 4px;
 }
 
 .mb-50 {
@@ -147,4 +146,10 @@ body {
 .button-close {
     background-color: var(--black-color) !important;
     color: var(--white-color) !important;
+}
+
+.clearfix {
+    content: "";
+    clear: both;
+    display: table;
 }

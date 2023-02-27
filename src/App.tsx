@@ -26,8 +26,8 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        <Route path='/profile' element={<EnterpriseProfile/>}></Route>;
-        <Route path='/' element={<LandingPage/>}></Route>;
+        <Route path='/profile' element={<CandidateProfile />}></Route>;
+        <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>
   )

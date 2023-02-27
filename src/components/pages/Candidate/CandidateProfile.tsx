@@ -12,7 +12,7 @@ export const CandidateProfile: FC = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     return (
-        <div id='CandidateProfile'>
+        <div id='CandidateProfile' className='clearfix'>
             <img src="images/banner.jpg" className='banner' alt="" />
             <div className="profile-container">
                 <div className="left">
@@ -96,8 +96,15 @@ export const CandidateProfile: FC = () => {
 
                         </div>
                     </div>
-                </div>
+                    <div className="profile-input">
+                        <div className="profile-header">
+                            <div className="profile-header-name">Certifications</div>
+                        </div>
+                        <div className="profile-body">
 
+                        </div>
+                    </div>
+                </div>
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
