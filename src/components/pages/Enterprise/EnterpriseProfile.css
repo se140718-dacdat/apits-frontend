@@ -1,0 +1,114 @@
+#EnterpriseProfile {
+    width: 100%;
+    position: relative;
+    background-color: #D9D9D9;
+    padding-bottom: 24px;
+}
+
+#EnterpriseProfile .profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%;
+    z-index: 5;
+  }
+
+#EnterpriseProfile .profile-header {
+    background-color: var(--white-color);
+    width: 100%;
+    margin-top: 1%;
+}
+
+#EnterpriseProfile .avt-cover {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 5px solid var(--white-color);
+    border-radius: 10px;
+    top: -50px;
+
+}
+
+#EnterpriseProfile .overview {
+    padding: 4px 24px;
+    position: relative;
+}
+
+#EnterpriseProfile .avt-enterprise {
+    width: 100%;
+    border-radius: 10px;
+}
+
+#EnterpriseProfile .information {
+    display: flex;
+    margin-left: 15%;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+#EnterpriseProfile .information-left {
+   width: 50%;
+}
+#EnterpriseProfile .enterprise-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#EnterpriseProfile .flex-haft {
+    margin: 12px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#EnterpriseProfile .profile-detail {
+    background-color: var(--white-color);
+    margin-top: 12px;
+    padding: 24px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+#EnterpriseProfile .enterprise-introduction {
+    margin-bottom: 12px;
+}
+
+#EnterpriseProfile .post {
+    display: flex;
+    border-radius: 5px;
+    background-color: rgba(242, 114, 41, 0.3);
+    padding:18px 24px;
+    margin: 10px 0;
+    width: 49%;
+}
+
+#EnterpriseProfile .post-detail {
+    margin: 0 24px;
+
+}
+
+#EnterpriseProfile .avt-post-cover {
+    width: 100px;
+    height: 100px;
+    padding: 6px;
+    border-radius: 5px;
+    background-color: var(--white-color);
+}
+
+#EnterpriseProfile .post-avt {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+
+}
+
+#EnterpriseProfile .post-name {
+    font-weight: bold;
+}
+
+#EnterpriseProfile .post-line {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+
+}
