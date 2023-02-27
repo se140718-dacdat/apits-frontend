@@ -115,3 +115,16 @@ body {
 .display {
   display: block !important;
 }
+
+.banner {
+  width: 100%;
+}
+
+
+.inline-block {
+  display: inline-block;
+}
+
+.pr-4 {
+  padding-right: 4px;
+}

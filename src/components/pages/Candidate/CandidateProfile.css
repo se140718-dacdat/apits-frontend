@@ -5,10 +5,6 @@
     background-color: #D9D9D9;
 }
 
-#CandidateProfile .banner {
-    width: 100%;
-}
-
 #CandidateProfile .profile-container {
     display: flex;
     justify-content: space-between;
@@ -17,6 +13,10 @@
     width: 80%;
     margin-left: 10%;
     z-index: 5;
+  }
+
+#CandidateProfile .banner {
+    width: 100%;
 }
 
 #CandidateProfile .left {
@@ -65,7 +65,7 @@
 #CandidateProfile .btn-edit {
     float: right;
     line-height: 36px;
-    padding: 0 !important;
+    padding: 0 !important;  
 }
 #CandidateProfile .avatar {
     width: 265px;
