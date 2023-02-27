@@ -1,0 +1,87 @@
+
+.body-slide{
+    width: 100%;
+    height: 898px;
+    color: #fff;
+}
+
+.body-slide .slide-img{
+    background-image: url('/public/images/intro-img.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(70%);
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide-intro {
+    margin-left: 304px;
+    margin-top: 240px;
+    position: absolute;
+    top: 0;
+}
+.slide-intro .slide-title{
+    width: 500px;
+    height: 200px;
+    padding-bottom: 24px;
+    font-size: 50px;
+}
+
+.slide-intro .slide-content{
+    padding: 0 0 24px 24px;
+}
+
+.slide-intro .slide-button .btn-hire,
+.slide-intro .slide-button .btn-become{
+    padding: 16px 64px !important;
+    margin-right: 12px;
+}
+
+.slide-intro .slide-button .btn-become{
+    background-color: unset !important;
+    border: 2px solid var(--white-color) !important;
+}
+
+.body-contents{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.body-contents .body-content .title,
+.body-content .tags{
+    margin-bottom: 96px;
+}
+
+.body-content .title{
+    width: 100%;
+    border-top: solid 1px #ccc;
+}
+
+.body-content .tags{
+    padding: 0 12px;
+    display: flex;
+}
+
+.body-content .tags .tag{
+    width: 276px;
+    padding: 0 12px;
+}
+
+.tag .tag-title{
+    display: flex;
+    align-items: center;
+}
+
+.tag-title{
+    margin: 0 0 32px;
+}
+
+.tag-title img{
+    height: 64px;
+    width: 64px;
+    padding: 4px;
+}
