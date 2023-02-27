@@ -123,3 +123,15 @@ body {
 .m-0 {
     margin: 0 !important;
 }
+
+.input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+.button-close {
+    background-color: var(--black-color) !important;
+    color: var(--white-color) !important;
+}

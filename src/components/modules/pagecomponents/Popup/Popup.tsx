@@ -36,7 +36,7 @@ const Popup: FC<Props> = (props) => {
         if (props.popup == 1) {
             return (
                 <form className="popup-container" onSubmit={loginHandler}>
-                    <i className="pi pi-times btn-close" onClick={() => {
+                    <i className="pi pi-times icon-close" onClick={() => {
                         props.isDisplay('');
                         props.isPopup(0);
                     }}></i>
@@ -62,7 +62,7 @@ const Popup: FC<Props> = (props) => {
         else {
             return (
                 <form className="popup-container" onSubmit={loginHandler} style={{ height: "95%" }}>
-                      <i className="pi pi-times btn-close" onClick={() => {
+                    <i className="pi pi-times icon-close" onClick={() => {
                         props.isDisplay('');
                         props.isPopup(0);
                     }}></i>

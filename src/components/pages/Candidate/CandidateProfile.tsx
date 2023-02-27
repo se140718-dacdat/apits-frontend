@@ -1,9 +1,16 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import "./CandidateProfile.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars } from '@fortawesome/free-solid-svg-icons'
+import { Modal } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
 
 export const CandidateProfile: FC = () => {
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     return (
         <div id='CandidateProfile'>
             <img src="images/banner.jpg" className='banner' alt="" />
@@ -68,35 +75,53 @@ export const CandidateProfile: FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="profile">
-                        <div className="col-left">
-                            <img src="images/avt.jpg" className='avatar' alt="" />
-                            <div className="join">
-                                <FontAwesomeIcon icon={faRightToBracket} className="icon" />
-                                Joined February 15, 2023
-                            </div>
+                    <div className="profile-input">
+                        <div className="profile-header">
+                            <div className="profile-header-name">Experiences</div>
+                            <Button variant="primary" onClick={handleShow}>
+                                Edit Experience
+                            </Button>
                         </div>
-                        <div className="col-right">
+                        <div className="profile-body">
 
                         </div>
                     </div>
                 </div>
                 <div className="right">
-                    <div className="profile">
-                        <div className="col-left">
-                            <img src="images/avt.jpg" className='avatar' alt="" />
-                            <div className="join">
-                                <FontAwesomeIcon icon={faRightToBracket} className="icon" />
-                                Joined February 15, 2023
-                            </div>
+                    <div className="profile-input">
+                        <div className="profile-header">
+                            <div className="profile-header-name">Verifications</div>
                         </div>
-                        <div className="col-right">
+                        <div className="profile-body">
 
                         </div>
                     </div>
                 </div>
 
             </div>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Experiences</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="input">
+                        <span>Experience Name</span>
+                        <input className='input-profile' type="text" placeholder="Certificate Link" />
+                    </div>
+                    <div className="input">
+                        <span>Experience Detail</span>
+                        <textarea className='input-profile' placeholder="Certificate Name" />
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button className='button-close' variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                        Add Certificate
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

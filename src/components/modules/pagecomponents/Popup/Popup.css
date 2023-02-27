@@ -10,12 +10,13 @@
     padding-top: 5%;
 }
 
-#Popup .btn-close {
+#Popup .icon-close {
     position: absolute;
     right: 37%;
     top: 12%;
 }
-#Popup .btn-close:hover {
+
+#Popup .icon-close:hover {
     cursor: pointer;
 }
 
@@ -31,7 +32,7 @@
     align-items: center;
 }
 
-#Popup .popup-container > * {
+#Popup .popup-container>* {
     margin: 12px 0;
 }
 

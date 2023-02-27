@@ -36,13 +36,17 @@
 #CandidateProfile .profile {
     flex-wrap: nowrap;
     display: flex;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+#CandidateProfile .profile-input,
+#CandidateProfile .profile {
     border-radius: 10px;
     width: 100%;
-    padding: 24px;
     border: 1px solid var(--black-color);
     background-color: var(--white-color);
     margin-bottom: 32px;
-    justify-content: space-between;
 }
 
 #CandidateProfile .col-left {
@@ -107,4 +111,32 @@
     color: #BEC0C2;
     width: 32px;
     height: 32px;
+}
+
+#CandidateProfile .profile-header {
+    border-bottom: 1px solid #D9D9D9;
+    padding: 12px 24px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#CandidateProfile .profile-header-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#CandidateProfile .profile-body {
+    width: 100%;
+    height: 300px;
+}
+
+.input-profile {
+    width: 70%;
+    padding: 4px;
+    border-radius: 5px;
+}
+
+.input span {
+    align-content: center;
 }
