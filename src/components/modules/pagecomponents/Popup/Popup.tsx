@@ -1,7 +1,9 @@
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import React, { FC, FormEvent, useState, Dispatch, SetStateAction } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../../../redux/apiRequest';
+import { authentication } from '../../../../firebase-config';
+import { loginUser, loginUserByGoogle } from '../../../../redux/apiRequest';
 import "./Popup.css"
 
 interface Props {
@@ -32,6 +34,17 @@ const Popup: FC<Props> = (props) => {
         }
     }
 
+    const signInWithGoogle = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(authentication, provider).then((result) => {
+            loginUserByGoogle(result, dispatch, navigate)
+            props.isDisplay('');
+            props.isPopup(0);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
     const popupHandler = () => {
         if (props.popup == 1) {
             return (
@@ -52,7 +65,7 @@ const Popup: FC<Props> = (props) => {
                         <span>OR</span>
                         <div className="distance"></div>
                     </div>
-                    <div className="btn-login-google btn">
+                    <div className="btn-login-google btn" onClick={signInWithGoogle}>
                         <img src="images/google-icon.svg" alt="google icon" />
                         <div className="google">Log in with Google</div>
                     </div>

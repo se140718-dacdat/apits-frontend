@@ -106,11 +106,10 @@ export const CandidateProfile: FC = () => {
                         </div>
                     </div>
                     <div className="profile-input">
-                        <div className="profile-header">
-                            <div className="profile-header-name">Certifications</div>
+                        <div className="profile-header flex-right">
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    {`${category.categoryName}`}
+                                    <span className="category-name">{`${category.categoryName}`}</span>
                                     <span className="level">{` Level ${levelList.find(lv => lv.levelId == category.levelId)?.levelName}`}</span>
                                 </Dropdown.Toggle>
 
@@ -128,15 +127,16 @@ export const CandidateProfile: FC = () => {
                             </Dropdown>
                         </div>
                         <div className="profile-body">
-
-                        </div>
-                    </div>
-                    <div className="profile-input">
-                        <div className="profile-header">
-                            <div className="profile-header-name">Category</div>
-                        </div>
-                        <div className="profile-body">
-
+                            {
+                                category.skillList.map((skill) => {
+                                    return (
+                                        <div className="skill">
+                                            <img src={skill.skillIcon} alt="" className="skill-icon" />
+                                            <span className="skill-name">{skill.skillName}</span>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>

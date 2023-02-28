@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/modules/pagecomponents/Header/Header';
 import LandingPage from './components/pages/Landing/LandingPage';
@@ -13,13 +13,15 @@ import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
-
+  useEffect(() => {
+    console.log(user)
+  }, [user])
 
   return (
     <div id="App">
       {(() => {
-        switch (user?.roleId) {
-          case Roles.Candidate:
+        switch (user?.roleName) {
+          case "Candidate":
             return <CandidateHeader setUser={user} />;
           default:
             return <Header setUser={user} />

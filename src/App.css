@@ -153,3 +153,7 @@ body {
     clear: both;
     display: table;
 }
+
+.flex-right {
+    justify-content: right !important;
+}

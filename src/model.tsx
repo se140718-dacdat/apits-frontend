@@ -5,14 +5,35 @@ export enum Roles {
     Enterprise = 4,
 }
 
-export interface User {
+export interface UserLogin {
     token: string;
     roleID: number;
+}
+
+export interface User {
+    accountId: number,
+    token: string,
+    roleName: string,
+    email: string,
+    status: string,
+    candidate: {
+        id: number,
+        name: string,
+        phone: string,
+        image: string,
+        gender: string,
+        dob: string,
+        email: string,
+        address: string,
+        status: string
+    },
+    provider: string
 }
 
 export interface Skill {
     skillId: string;
     skillName: string;
+    skillIcon: string;
 }
 
 export interface Category {
@@ -54,13 +75,15 @@ export const level6: Level = {
 
 export const java: Skill = {
     skillId: "java",
-    skillName: "java"
+    skillName: "java",
+    skillIcon: "/images/JavaIcon.png"
 
 }
 
 export const aps: Skill = {
     skillId: "APS.NET",
-    skillName: "APS.NET"
+    skillName: "APS.NET",
+    skillIcon: "/images/aps.png"
 }
 
 export const developer: Category = {
@@ -72,13 +95,14 @@ export const developer: Category = {
 
 export const python: Skill = {
     skillId: "python",
-    skillName: "Python"
-
+    skillName: "Python",
+    skillIcon: "/images/PythonIcon.png"
 }
 
 export const dataScience: Skill = {
     skillId: "dataScience",
-    skillName: "Data Science"
+    skillName: "Data Science",
+    skillIcon: "/images/dataIcon.png"
 }
 
 
