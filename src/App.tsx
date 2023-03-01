@@ -9,6 +9,7 @@ import CandidateHeader from './components/modules/pagecomponents/Header/Candidat
 import { Route, Routes } from 'react-router';
 import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
+import CandidateRegister from './components/pages/Candidate/CandidateRegister';
 
 
 const App: FC = () => {
@@ -29,7 +30,7 @@ const App: FC = () => {
       })()}
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
-        <Route path='/' element={<LandingPage />}></Route>;
+        <Route path='/' element={<CandidateRegister />}></Route>;
       </Routes>
     </div>
   )

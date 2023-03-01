@@ -1,0 +1,60 @@
+#CandidateRegister {
+    display: flex;
+    z-index: 15;
+    width: 100%;
+    position: absolute;
+    background-color: var(--white-color);
+    top: 0;
+}
+
+#CandidateRegister .col-left {
+    width: 60%;
+    background-color: var(--white-color);
+    padding: 3% 6%;
+}
+
+#CandidateRegister .col-right {
+    width: 40%;
+    background-color: rgba(255, 93, 0, 0.5);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#CandidateRegister .intro-img {
+    width: 360px;
+    height: 250px;
+    align-self: center;
+}
+
+#CandidateRegister .register-header {
+    margin: 5% 1% 1%;
+}
+
+#CandidateRegister .form-input {
+    display: flex;
+    position: relative;
+    width: 70%;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    margin: 18px 0;
+    justify-content: space-around;
+}
+
+#CandidateRegister .form-input input {
+    border: none;
+    margin-left: -1px;
+    width: 100%;
+}
+
+#CandidateRegister .form-input input:focus {
+    outline: none;
+}
+
+#CandidateRegister .input-icon {
+    height: 40px;
+    padding: 3px;
+    color: var(--primary-color);
+    padding: 0.375rem 0.75rem;
+}
