@@ -5,6 +5,7 @@
     position: absolute;
     background-color: var(--white-color);
     top: 0;
+    color: var(--black-color);
 }
 
 #CandidateRegister .col-left {
@@ -36,7 +37,7 @@
     display: flex;
     position: relative;
     width: 70%;
-    border: 1px solid #eee;
+    border: 1px solid #c4c4c4;
     border-radius: 3px;
     margin: 18px 0;
     justify-content: space-around;
@@ -48,6 +49,17 @@
     width: 100%;
 }
 
+#CandidateRegister .haft-input-cover {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 70%;
+    justify-content: space-between;
+}
+
+#CandidateRegister .form-input:focus-within {
+    outline: 1px solid var(--black-color);
+}
+
 #CandidateRegister .form-input input:focus {
     outline: none;
 }
@@ -57,4 +69,68 @@
     padding: 3px;
     color: var(--primary-color);
     padding: 0.375rem 0.75rem;
+}
+
+#CandidateRegister .gender-dropdown button {
+    float: right;
+    background-color: var(--white-color) !important;
+    border: 1px solid #c4c4c4 !important;
+    border-radius: 4px !important;
+    color: rgba(0, 0, 0, 0.6) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    height: 100%;
+}
+
+#CandidateRegister .dropdown-toggle:hover {
+    border: 1px solid var(--black-color) !important;
+    color: var(--black-color) !important;
+}
+
+#CandidateRegister .dropdown-toggle::after {
+    margin: 0 12px;
+}
+
+#CandidateRegister .MuiInputAdornment-root * {
+    color: var(--primary-color)
+}
+
+#CandidateRegister .haft-input-cover * >:hover {
+    cursor: pointer;
+}
+
+#CandidateRegister .form-import-header {
+    margin: 18px 0 8px;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+#CandidateRegister .footer-register {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 8%;
+}
+
+#CandidateRegister .btn-continue {
+    width: 20%;
+}
+
+#CandidateRegister .register-status {
+    width: 80%;
+}
+
+#CandidateRegister .btn-continue button {
+    padding: 12px 28px !important;
+}
+
+#CandidateRegister .status-description {
+    font-size: 0.9rem;
+}
+
+#CandidateRegister .register-progress {
+    font-weight: bold;
+    color: var(--primary-color);
 }

@@ -113,3 +113,5 @@ export const dataEngineer: Category = {
     categoryName: "Data Engineer"
 }
 
+export const genderList = ["Male", "Female", "Other"]
+
