@@ -1,7 +1,7 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./RolesHeader.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FC, useState } from "react";
 
 
@@ -25,8 +25,9 @@ const ProfessorHeader: FC<any> = (props) => {
                             <Nav.Link className='navlink' href="/profile">Profile</Nav.Link>
                             <Nav.Link className='navlink drop' >
                                 <div className="avatar" onClick={() => setIsDisable(!isDisable)}>
-                                    <img src="/images/avt.jpg" alt="Avatar" />    
+                                    <img src="/images/avt.jpg" alt="Avatar" />
                                 </div>
+                                <FontAwesomeIcon icon={faCaretDown} className="drop-icon"/>    
                                 {isDisable 
                                     ? (
                                         <div className="drop-down navlink">

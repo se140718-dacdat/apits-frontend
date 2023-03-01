@@ -1,7 +1,7 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import "./RolesHeader.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FC, useState } from "react";
 
 
@@ -29,6 +29,7 @@ const EmployeeHeader: FC<any> = (props) => {
                                 <div className="avatar" onClick={() => setIsDisable(!isDisable)}>
                                     <img src="/images/avt.jpg" alt="Avatar" />
                                 </div>
+                                <FontAwesomeIcon icon={faCaretDown} className="drop-icon"/>   
                                 {isDisable 
                                     ? (
                                         <div className="drop-down navlink">

@@ -29,7 +29,7 @@ const App: FC = () => {
           case Roles.Candidate:
             return <CandidateHeader setUser={user} />;
           default:
-            return <EmployeeHeader user={User1}/>
+            return <ProfessorHeader user={User1}/>
         }
       })()}
       <Routes>
