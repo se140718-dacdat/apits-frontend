@@ -35,6 +35,26 @@
 }
 #RolesHeader .navlink .icon,
 #RolesHeader .navbar .avatar,
+#RolesHeader .navbar,
 #RolesHeader .navbar span {
     margin: 0 !important;
+}
+
+.drop{
+    position: relative;
+}
+
+.header-container .drop-down{
+    position: absolute;
+    top: 64px;
+    left: auto;
+    right: 0;
+    background-color:  var(--white-color);
+    box-shadow: 0 8px 24px #010409;
+    z-index: 1;
+    font-weight: 400;
+}
+
+.avartar-logout {
+    padding: 0 10px;
 }

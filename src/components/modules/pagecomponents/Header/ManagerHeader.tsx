@@ -2,11 +2,12 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import "./RolesHeader.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 
 const ManagerHeader: FC<any> = (props) => {
     const {user} = props;
+    const [isDisable, setIsDisable] = useState(false);
     return ( 
         <div id='RolesHeader'>
         <div className="header-container">
@@ -24,10 +25,19 @@ const ManagerHeader: FC<any> = (props) => {
                             <Nav.Link className='navlink' href="/interview">Interview</Nav.Link>
                             <Nav.Link className='navlink' href="/candidates">Candidates</Nav.Link>
                             <Nav.Link className='navlink' href="/profile">Profile</Nav.Link>
-                            <Nav.Link className='navbar' >
-                                <div className="avatar">
+                            <Nav.Link className='navlink drop' >
+                                <div className="avatar" onClick={() => setIsDisable(!isDisable)}>
                                     <img src="/images/avt.jpg" alt="Avatar" />
                                 </div>
+                                {isDisable 
+                                    ? (
+                                        <div className="drop-down navlink">
+                                            <span className="avartar-logout">Logout</span>
+                                        </div>
+                                    ) 
+                                    : (<></>)
+                                    
+                                }
                             </Nav.Link>
                             <Nav.Link className='navbar' >                                
                                 <span>{user.name}</span>
