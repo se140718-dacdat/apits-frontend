@@ -23,24 +23,20 @@ import RegisterForm6 from './components/pages/Enterprise/register/EnterpriseRegi
 import RegisterForm7 from './components/pages/Enterprise/register/EnterpriseRegister7';
 import EnterpriseRegisterForm from './components/pages/Enterprise/register/EnterpriseRegisterForm';
 
- const User1 = {
-  name: 'DacDat',
-  gender: 'male'
-}
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
 
 
   return (
     <div id="App">
-      {/* {(() => {
+      {(() => {
         switch (user?.roleId) {
           case Roles.Candidate:
             return <CandidateHeader setUser={user} />;
           default:
-            return <ProfessorHeader user={User1}/>
+            return <Header setUser={user}/>
         }
-      })()} */}
+      })()} 
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;

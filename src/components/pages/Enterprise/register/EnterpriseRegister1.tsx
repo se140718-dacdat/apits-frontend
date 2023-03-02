@@ -70,7 +70,7 @@ const RegisterForm1 = () => {
                 </div>            
             </div>
             <div className="content-right">
-                <img src="https://thumbs.dreamstime.com/z/register-now-button-vector-illustration-orange-round-web-icon-white-background-121332081.jpg" alt="" className="intro-image"/>
+                <img src="https://www.york.k12.sc.us/cms/lib/SC02205956/Centricity//Domain/48/011923%20JoinourTeam%20ICON.png" alt="" className="intro-image"/>
             </div>
         </div>     
      );
