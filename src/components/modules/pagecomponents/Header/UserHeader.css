@@ -73,7 +73,8 @@
 
 #UserHeader .user-info {
     display: flex;
-    padding: 0 24px 24px;
+    padding: 0 24px 12px;
+    border-bottom: 1px solid var(--black-color);
 }
 
 #UserHeader .user-info .block >* {
@@ -98,7 +99,8 @@
 
 #UserHeader .dropdown-option:hover {
     background-color: var(--primary-color);
-    color: var(--white-color);
+    color: var(--white-color) !important;
+    cursor: pointer;
 }
 
 #UserHeader .dropdown-option .icon {

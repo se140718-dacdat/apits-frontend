@@ -45,10 +45,9 @@ const CandidateHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
-
                             </Nav>
                             <Nav className='nav-right'>
-                                <Nav.Link className='navlink user-wrap' onClick={(e) => {
+                                <div className='navlink user-wrap' onClick={(e) => {
                                     e.stopPropagation();
                                     (show == "") ?
                                         setShow("display-none")
@@ -66,16 +65,16 @@ const CandidateHeader: FC<Props> = (props) => {
                                                 <span className='user-info-email'>lhdd159357@gmail.com</span>
                                             </div>
                                         </div>
-                                        <div className="dropdown-option">
+                                        <Nav.Link href='/profile' className="dropdown-option" style={{color: "var(--black-color)"}}>
                                             <FontAwesomeIcon icon={faAddressCard} className="icon" />
                                             Profile
-                                        </div>
-                                        <div className="dropdown-option">
+                                        </Nav.Link>
+                                        <div className="dropdown-option" onClick={logoutHandler}>
                                             <FontAwesomeIcon icon={faRightFromBracket} className="icon" />
                                             Sign out
                                         </div>
                                     </div>
-                                </Nav.Link>
+                                </div>
                                 <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
                             </Nav>
                         </Navbar.Collapse>
