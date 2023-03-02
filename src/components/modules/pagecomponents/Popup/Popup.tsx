@@ -45,6 +45,10 @@ const Popup: FC<Props> = (props) => {
         });
     }
 
+    const registerHandler = () => {
+        navigate("/register-candidate")
+    }
+
     const popupHandler = () => {
         if (props.popup == 1) {
             return (
@@ -74,7 +78,7 @@ const Popup: FC<Props> = (props) => {
         }
         else {
             return (
-                <form className="popup-container" onSubmit={loginHandler} style={{ height: "95%" }}>
+                <form className="popup-container" onSubmit={registerHandler} style={{ height: "95%" }}>
                     <i className="pi pi-times icon-close" onClick={() => {
                         props.isDisplay('');
                         props.isPopup(0);

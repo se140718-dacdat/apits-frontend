@@ -28,11 +28,12 @@ const App: FC = () => {
           case "Candidate":
             return <CandidateHeader setUser={user} />;
           default:
-            return <CandidateHeader setUser={user}/>
+            return <Header setUser={user}/>
         }
       })()}
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
+        <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>
