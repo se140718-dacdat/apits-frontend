@@ -15,7 +15,7 @@ interface Props {
     setUser: Dispatch<SetStateAction<User | null>>;
 }
 const CandidateHeader: FC<Props> = (props) => {
-    const [show, setShow] = useState<string>("");
+    const [show, setShow] = useState<string>("display-none");
     const user = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,6 +23,12 @@ const CandidateHeader: FC<Props> = (props) => {
     const logoutHandler = () => {
         logoutUser(dispatch, navigate)
     }
+
+    useEffect(() => {
+        window.onclick = () => {
+           setShow("display-none");
+        }
+    }, [])
 
 
     return (
@@ -42,7 +48,8 @@ const CandidateHeader: FC<Props> = (props) => {
 
                             </Nav>
                             <Nav className='nav-right'>
-                                <Nav.Link className='navlink user-wrap' onClick={() => {
+                                <Nav.Link className='navlink user-wrap' onClick={(e) => {
+                                    e.stopPropagation();
                                     (show == "") ?
                                         setShow("display-none")
                                         : setShow("")
