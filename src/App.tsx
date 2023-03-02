@@ -11,7 +11,10 @@ import { CandidateProfile } from './components/pages/Candidate/CandidateProfile'
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import CandidateRegister from './components/pages/Candidate/CandidateRegister';
 
-
+ const User1 = {
+  name: 'DacDat',
+  gender: 'male'
+}
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
   useEffect(() => {
@@ -25,12 +28,12 @@ const App: FC = () => {
           case "Candidate":
             return <CandidateHeader setUser={user} />;
           default:
-            return <Header setUser={user} />
+            return <CandidateHeader setUser={user}/>
         }
       })()}
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
-        <Route path='/' element={<CandidateRegister />}></Route>;
+        <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>
   )

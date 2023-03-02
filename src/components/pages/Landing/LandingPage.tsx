@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import "./LandingPage.css"
 import { useSelector } from 'react-redux';
 import { Roles } from '../../../model';
+import LandingContent from './LandingContent';
 
 
 const LandingPage: FC = () => {
@@ -16,7 +17,7 @@ const LandingPage: FC = () => {
                 )
             default:
                 return (
-                    <div>Landing Page</div>
+                    <LandingContent/>
                 )
 
         }

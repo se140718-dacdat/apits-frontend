@@ -157,3 +157,15 @@ body {
 .flex-right {
     justify-content: right !important;
 }
+
+.align-self {
+    align-self: center !important;
+}
+
+.display-none {
+    display: none !important;
+}
+
+.relative {
+    position: relative !important;
+}
