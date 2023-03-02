@@ -16,6 +16,8 @@ const EnterpriseRegisterForm = () => {
                 <img src="/images/ApitsLogo.png" alt="Logo" className="logo"/>
                 <h3>Success! Let's connect you with talent.</h3>
                 
+                <input type="text" />
+                
                 <div className="bot-button btn-res1">
                     <button className="btn con-btn" onClick={handleClick}>Next</button>        
                 </div>            

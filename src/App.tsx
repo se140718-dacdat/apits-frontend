@@ -14,11 +14,11 @@ import ManagerHeader from './components/modules/pagecomponents/Header/ManagerHea
 import HRHeader from './components/modules/pagecomponents/Header/HRHeader';
 import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeHeader';
 import EnterpriseRegister from './components/pages/Enterprise/register/EnterpriseRegister';
-import RegisterForm1 from './components/pages/Enterprise/register/RegisterForm1';
+import RegisterForm1 from './components/pages/Enterprise/register/EnterpriseRegister1';
 import RegisterForm2 from './components/pages/Enterprise/register/EnterpriseRegister2';
 import RegisterForm3 from './components/pages/Enterprise/register/EnterpriseRegister3';
 import RegisterForm4 from './components/pages/Enterprise/register/EnterpriseRegister4';
-import RegisterForm5 from './components/pages/Enterprise/register/EnterpriseRegioster5';
+import RegisterForm5 from './components/pages/Enterprise/register/EnterpriseRegister5';
 import RegisterForm6 from './components/pages/Enterprise/register/EnterpriseRegister6';
 import RegisterForm7 from './components/pages/Enterprise/register/EnterpriseRegister7';
 import EnterpriseRegisterForm from './components/pages/Enterprise/register/EnterpriseRegisterForm';
