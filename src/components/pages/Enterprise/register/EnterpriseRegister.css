@@ -64,8 +64,9 @@
 
 .intro-image {
     width: 360px;
-    height: 250px;
+    height: 300px;
     align-self: center;
+    object-fit: cover;
 }
 
 @keyframes rightToLeft {

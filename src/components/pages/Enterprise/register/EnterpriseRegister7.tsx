@@ -80,7 +80,7 @@ const RegisterForm7 = () => {
                 </div>            
             </div>
             <div className="content-right">
-                <img src="https://www.york.k12.sc.us/cms/lib/SC02205956/Centricity//Domain/48/011923%20JoinourTeam%20ICON.png" alt="" className="intro-image"/>
+                <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image"/>
             </div>
         </div>     
      );
