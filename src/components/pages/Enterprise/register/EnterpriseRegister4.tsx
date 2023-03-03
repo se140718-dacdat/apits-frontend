@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import "./EnterpriseRegister.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -8,14 +8,15 @@ import { DepItems, DepOps, Tester } from "./SkillItem";
 const RegisterForm4 = () => {
     const navigate = useNavigate();
     const [skill,setSkill] = useState('');
+    const [desired, setDesired] = useState('');
     const handleClick = () => {
         navigate('/enterprise/register5')
     }
     const handleBackClick = () => {
         navigate('/enterprise/register3')
     }
-    const skillChange = (e: any) => {
-        setSkill(e.target.value)
+    const handleChangeDesired = (e: ChangeEvent<HTMLInputElement>) => {
+        setDesired(e.target.value)
         
     }
     return (   
@@ -24,12 +25,16 @@ const RegisterForm4 = () => {
             <div className="content-left">
                 <h3>What skills would you like to see in your new hire?</h3>
                 <div className="input-block">
-                    <input type="text" placeholder="Desired areas of expertise (e.g., JavaScript, Ruby, etc.)" className="input-text"/>
+                    <input type="text" placeholder="Desired areas of expertise (e.g., JavaScript, Ruby, etc.)" 
+                        className="input-text"
+                        value={desired}
+                        onChange={handleChangeDesired}    
+                    />
                     <div className="skill-selected"></div>
                 </div>
                 <div className="skills">
                     <span>Popular skills for</span>
-                    <select className="select-skills" onChange={skillChange}>
+                    <select className="select-skills" onChange={(e) => setSkill(e.target.value)}>
                         <option>Software Developers</option>
                         <option>Tester</option>
                         <option>DevOps</option>
