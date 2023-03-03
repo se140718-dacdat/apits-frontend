@@ -100,7 +100,7 @@
     text-decoration: underline;
 }
 
-/* register4 */
+/* register4 and form */
 
 .content-left .input-block {
     width: 100%;
@@ -112,11 +112,18 @@
 .content-left .input-text {
     padding: 4px 16px;
     width: 70%;
+    border: 1px solid var(--black-color);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.input-style {
+    margin-bottom: 1rem;
 }
 
 .content-left .input-text:focus {
-    outline: none !important;
-    border-color: var(--primary-color);
+    outline: none ;
+    border-color:  var(--primary-color);
 }
 
 .content-left .skills {
