@@ -18,8 +18,8 @@ const RegisterForm5 = () => {
     }
     return (   
         <div id="enterprise-register">       
+            <img src="/images/ApitsLogo.png" alt="Logo" className="logo"/>
             <div className="content-left">
-                <img src="/images/ApitsLogo.png" alt="Logo" className="logo"/>
                 <h3>When do you need the developer to start?</h3>
                 <div className="radio">
                     <input type="radio" 

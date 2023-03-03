@@ -20,8 +20,8 @@ const RegisterForm4 = () => {
     }
     return (   
         <div id="enterprise-register">       
+            <img src="/images/ApitsLogo.png" alt="Logo" className="logo"/>
             <div className="content-left">
-                <img src="/images/ApitsLogo.png" alt="Logo" className="logo"/>
                 <h3>What skills would you like to see in your new hire?</h3>
                 <div className="input-block">
                     <input type="text" placeholder="Desired areas of expertise (e.g., JavaScript, Ruby, etc.)" className="input-text"/>

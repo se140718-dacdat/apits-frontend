@@ -17,6 +17,12 @@
     animation-timing-function: linear;
 }
 
+.logo {
+    margin-left: 6%;
+    position: absolute;
+    top: 2rem;
+}
+
 .content-right {
     width: 40%;
     height: 100vh;

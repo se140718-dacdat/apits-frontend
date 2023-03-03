@@ -29,14 +29,14 @@ const App: FC = () => {
 
   return (
     <div id="App">
-      {(() => {
+      {/* {(() => {
         switch (user?.roleId) {
           case Roles.Candidate:
             return <CandidateHeader setUser={user} />;
           default:
             return <Header setUser={user}/>
         }
-      })()} 
+      })()}  */}
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
