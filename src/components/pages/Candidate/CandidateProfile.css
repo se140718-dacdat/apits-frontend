@@ -1,7 +1,6 @@
 #CandidateProfile {
     width: 100%;
     position: relative;
-    background-color: #D9D9D9;
 }
 
 #CandidateProfile .profile-container {
@@ -41,8 +40,8 @@
 #CandidateProfile .profile {
     border-radius: 10px;
     width: 100%;
-    border: 1px solid var(--black-color);
     background-color: var(--white-color);
+    box-shadow: 0 3px 13px 0 rgba(32, 40, 49, 0.5);
     margin-bottom: 32px;
 }
 
@@ -52,7 +51,7 @@
 
 #CandidateProfile .col-right {
     position: relative;
-    width: 65%;
+    width: 60%;
 }
 
 #CandidateProfile .col-half {
@@ -105,9 +104,9 @@
 
 #CandidateProfile .icon {
     margin-right: 12px;
-    color: #BEC0C2;
-    width: 32px;
-    height: 32px;
+    color: var(--primary-color);
+    width: 25px;
+    height: 25px;
 }
 
 #CandidateProfile .profile-header {
@@ -125,18 +124,36 @@
 
 #CandidateProfile .profile-body {
     width: 100%;
-    height: 300px;
 }
 
-.input-profile {
-    width: 70%;
-    padding: 4px;
+#CandidateProfileModal .input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    flex-wrap: wrap;
+}
+
+#CandidateProfileModal .input * {
+    width: 100%;
+}
+
+#CandidateProfileModal .input-profile {
+    padding: 12px;
     border-radius: 5px;
 }
 
-.input span {
+#CandidateProfileModal .input span {
     align-content: center;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
 }
+
+
+#CandidateProfileModal .input textarea {
+    min-height: 300px;
+}
+
 
 #CandidateProfile .level {
     background-color: var(--white-color);
@@ -149,15 +166,47 @@
     margin: 0 8px;
 }
 
-#CandidateProfile .skill {
+#CandidateProfile .item {
+    display: flex;
     margin: 24px;
+    align-items: flex-end;
 }
 
-#CandidateProfile .skill-name {
+#CandidateProfile .item-name {
     margin-left: 12px;
+    text-transform: capitalize;
 }
 
-#CandidateProfile .skill-icon {
+#CandidateProfile .item-icon {
     width: 32px;
     height: 32px;
+    color: #5DC26A;
+}
+
+#CandidateProfile .item-verify,
+#CandidateProfile .icon-check {
+    margin-left: auto;
+    order: 2;
+}
+
+#CandidateProfile .item-verify {
+    color: #007fed;
+
+}
+
+
+#CandidateProfile .item-verify:hover {
+    cursor: pointer;    
+    text-decoration: underline;
+}
+
+#CandidateProfile .icon-check {
+    color: #5DC26A;
+}
+
+#CandidateProfile .btn-update-specialty {
+    margin-top: 24px;
+    width: 100%;
+    padding: 12px 0 !important;
+    border-radius: 0 0 10px 10px !important;
 }

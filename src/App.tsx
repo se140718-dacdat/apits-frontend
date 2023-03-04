@@ -10,11 +10,8 @@ import { Route, Routes } from 'react-router';
 import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import CandidateRegister from './components/pages/Candidate/CandidateRegister';
+import EnterpriseRecruitment from './components/pages/Enterprise/EnterpriseRecruitment';
 
- const User1 = {
-  name: 'DacDat',
-  gender: 'male'
-}
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
   useEffect(() => {
@@ -32,7 +29,8 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        <Route path='/profile' element={<CandidateProfile />}></Route>;
+        <Route path='/profile' element={<EnterpriseProfile />}></Route>;
+        <Route path='/enterprise-recruitment' element={<EnterpriseRecruitment />}></Route>;
         <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>

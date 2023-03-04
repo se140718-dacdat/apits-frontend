@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import "./CandidateProfile.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars } from '@fortawesome/free-solid-svg-icons'
+import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars, faUser, faEnvelope, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Dropdown, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/esm/Button';
 import { Category, dataEngineer, developer, Level, level1, level2, level3, level4, level5, level6 } from '../../../model';
@@ -101,8 +101,22 @@ export const CandidateProfile: FC = () => {
                         <div className="profile-header">
                             <div className="profile-header-name">Verifications</div>
                         </div>
-                        <div className="profile-body">
-
+                        <div className="profile-body verification">
+                            <div className="item">
+                                <FontAwesomeIcon icon={faUser} className="item-icon" />
+                                <span className="item-name">identity verified</span>
+                                <span className='item-verify'>Verify</span>
+                            </div>
+                            <div className="item">
+                                <FontAwesomeIcon icon={faEnvelope} className="item-icon" />
+                                <span className="item-name">email verified</span>
+                                <FontAwesomeIcon icon={faCheck} className="item-icon icon-check" />
+                            </div>
+                            <div className="item">
+                                <img src="/images/momo.png" alt="" className='item-icon' />
+                                <span className="item-name">Payment verified</span>
+                                <span className='item-verify'>Verify</span>
+                            </div>
                         </div>
                     </div>
                     <div className="profile-input">
@@ -130,29 +144,31 @@ export const CandidateProfile: FC = () => {
                             {
                                 category.skillList.map((skill) => {
                                     return (
-                                        <div className="skill">
-                                            <img src={skill.skillIcon} alt="" className="skill-icon" />
-                                            <span className="skill-name">{skill.skillName}</span>
+                                        <div className="item">
+                                            <img src={skill.skillIcon} alt="" className="item-icon" />
+                                            <span className="item-name">{skill.skillName}</span>
+                                            <span className='item-verify'>Get Certification</span>
                                         </div>
                                     )
                                 })
                             }
+                            <button className="btn btn-update-specialty">Update Your Specialty</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <Modal show={show} onHide={handleClose}>
+            <Modal id="CandidateProfileModal" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Experiences</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="input">
                         <span>Experience Name</span>
-                        <input className='input-profile' type="text" placeholder="Certificate Link" />
+                        <input className='input-profile' type="text" placeholder="Experience Name" />
                     </div>
                     <div className="input">
                         <span>Experience Detail</span>
-                        <textarea className='input-profile' placeholder="Certificate Name" />
+                        <textarea className='input-profile' placeholder="Experience Description" />
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -160,7 +176,7 @@ export const CandidateProfile: FC = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
-                        Add Certificate
+                        Add Experience
                     </Button>
                 </Modal.Footer>
             </Modal>
