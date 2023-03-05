@@ -29,7 +29,7 @@ const EnterpriseRecruitment = () => {
             <div className="post-container">
                 <div className="container-header">
                     <div className='quantity'><strong>871</strong> Post</div>
-                    <Dropdown className="specialty-dropdown" style={{width: "18%"}}>
+                    <Dropdown className="specialty-dropdown" style={{ width: "18%" }}>
                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty duration'>
                             <span>All Durations</span>
                         </Dropdown.Toggle>
@@ -40,8 +40,31 @@ const EnterpriseRecruitment = () => {
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
+                <div className="post-list">
+                    <div className="post">
+                        <div className="avt-post-cover inline-block">
+                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                        </div>
+                        <div className="post-detail inline-block">
+                            <div className="post-name">Video Producer</div>
+                            <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
+                            <div className="post-company-name">Công Ty Cổ Phần TGA</div>
+                        </div>
+                    </div>
+                    <div className="post">
+                        <div className="avt-post-cover inline-block">
+                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                        </div>
+                        <div className="post-detail inline-block">
+                            <div className="post-name">Video Producer</div>
+                            <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
+                            <div className="post-company-name">Công Ty Cổ Phần TGA</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     )
 }
 

@@ -107,3 +107,22 @@
     margin-right: 8px;
 
 }
+
+#UserHeader .btn-add-post {
+    background-color: var(--black-color);
+    color: var(--white-color) !important;
+    padding: 0 30px;
+    border-radius: 30px;
+    border: none;
+}
+
+#UserHeader .btn-add-post:hover {
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+#UserHeader .btn-add-post .icon {
+    margin-right: 8px !important;
+}
+
+

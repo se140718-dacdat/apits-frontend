@@ -11,6 +11,7 @@ import { CandidateProfile } from './components/pages/Candidate/CandidateProfile'
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import CandidateRegister from './components/pages/Candidate/CandidateRegister';
 import EnterpriseRecruitment from './components/pages/Enterprise/EnterpriseRecruitment';
+import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -25,7 +26,7 @@ const App: FC = () => {
           case "Candidate":
             return <CandidateHeader setUser={user} />;
           default:
-            return <Header setUser={user}/>
+            return <EnterpriseHeader setUser={user}/>
         }
       })()}
       <Routes>
