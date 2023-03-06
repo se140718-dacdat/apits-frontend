@@ -12,26 +12,31 @@ import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import CandidateRegister from './components/pages/Candidate/CandidateRegister';
 import EnterpriseRecruitment from './components/pages/Enterprise/EnterpriseRecruitment';
 import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
+import ManagerHeader from './components/modules/pagecomponents/Header/ManagerHeader';
+import HRHeader from './components/modules/pagecomponents/Header/HRHeader';
+import ProfessorHeader from './components/modules/pagecomponents/Header/ProfessorHeader';
+import EmployeeRecruitment from './components/pages/Employee/EmployeeRecruitment';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
-  useEffect(() => {
-    console.log(user)
-  }, [user])
-
   return (
     <div id="App">
       {(() => {
-        switch (user?.roleName) {
-          case "Candidate":
+        switch (user?.role.name) {
+          case "CANDIDATE":
             return <CandidateHeader setUser={user} />;
+          case "ENTERPRISE":
+            return <EnterpriseHeader setUser={user} />;
+          case "EMPLOYEE":
+            return <ProfessorHeader setUser={user} />;
           default:
-            return <EnterpriseHeader setUser={user}/>
+            return <Header setUser={user} />
         }
       })()}
       <Routes>
-        <Route path='/profile' element={<EnterpriseProfile />}></Route>;
+        <Route path='/profile' element={(user?.role.name  ) == "ENTERPRISE" ? <EnterpriseProfile /> : <CandidateProfile />}></Route>;
         <Route path='/enterprise-recruitment' element={<EnterpriseRecruitment />}></Route>;
+        <Route path='/employee-recruitment' element={<EmployeeRecruitment />}></Route>;
         <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>

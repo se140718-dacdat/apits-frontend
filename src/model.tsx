@@ -5,9 +5,23 @@ export enum Roles {
     Enterprise = 4,
 }
 
+export interface Login {
+    email: string;
+    password: string;
+}
+
 export interface UserLogin {
     token: string;
     roleID: number;
+}
+
+export interface CandidateUpdate {
+    name: string;
+    phone: string;
+    image: string;
+    gender: string;
+    dob: string;
+    address: string;
 }
 
 export interface User {

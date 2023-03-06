@@ -26,7 +26,7 @@ const CandidateHeader: FC<Props> = (props) => {
 
     useEffect(() => {
         window.onclick = () => {
-           setShow("display-none");
+            setShow("display-none");
         }
     }, [])
 
@@ -55,7 +55,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                 }}>
                                     <div className="flex-css relative hover-primary">
                                         <img className='avt' src="/images/avt.jpg" alt="" />
-                                        <div className='user-name'>Dac Dat</div>
+                                        <div className='user-name'>{user.candidate.name}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
@@ -65,7 +65,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                                 <span className='user-info-email'>lhdd159357@gmail.com</span>
                                             </div>
                                         </div>
-                                        <Nav.Link href='/profile' className="dropdown-option" style={{color: "var(--black-color)"}}>
+                                        <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>
                                             <FontAwesomeIcon icon={faAddressCard} className="icon" />
                                             Profile
                                         </Nav.Link>

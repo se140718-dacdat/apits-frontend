@@ -1,36 +1,60 @@
 import { faUser, faHouse, faPhone, faVenusMars, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
-import { genderList } from '../../../model';
+import { CandidateUpdate, genderList } from '../../../model';
 import "./CandidateRegister.css";
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { loginUser, registerCandidate, updateCandidate } from '../../../redux/apiRequest';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CandidateRegister = () => {
+    const user = useSelector((state: any) => state.auth.login.currentUser);
     const now = new Date();
     const [value, setValue] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [gender, setGender] = useState<string>("Male");
-    const [avatar, setAvatar] = useState<string>("/images/avt-blank.png")
+    const [avatar, setAvatar] = useState<string>("/images/avt-blank.png");
+    const [fullName, setFullName] = useState<string>("");
+    const [phone, setPhone] = useState<string>("");
+    const [address, setAddress] = useState<string>("");
+    const [birth, setBirth] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+
     const handleSelect = (e: string) => {
         setGender(e);
     }
 
     const [progress, setProgress] = useState<string>("50%");
 
-    const convertFile = (files: FileList|null) => {
-        if(files) {
+    const convertFile = (files: FileList | null) => {
+        if (files) {
             const fileRef = files[0] || ""
-            const fileType: string= fileRef.type || ""
-            console.log("type:", fileType)
+            const fileType: string = fileRef.type || ""
             const reader = new FileReader()
             reader.readAsBinaryString(fileRef)
-            reader.onload=(ev: any) => {
+            reader.onload = (ev: any) => {
                 setAvatar(`data:${fileType};base64,${btoa(ev.target.result)}`)
             }
         }
+    }
+
+    const registerHandle = () => {
+        const newUser: CandidateUpdate = {
+            name: fullName,
+            phone: phone,
+            image: avatar,
+            gender: gender,
+            dob: "2023-03-06T06:12:41.626Z",
+            address: address
+        }
+        updateCandidate(user.candidate.id, navigate, newUser)
     }
 
     const handleProgress = () => {
@@ -46,19 +70,19 @@ const CandidateRegister = () => {
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faUser} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Full name' />
+                                <input type="text" placeholder='Full name' onChange={(e) => { setFullName(e.target.value) }} />
                             </div>
                             <div className="form-input">
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faPhone} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Phone' />
+                                <input type="text" placeholder='Phone' onChange={(e) => { setPhone(e.target.value) }} />
                             </div>
                             <div className="form-input">
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faHouse} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Address' />
+                                <input type="text" placeholder='Address' onChange={(e) => { setAddress(e.target.value) }} />
                             </div>
                             <div className="haft-input-cover">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -119,10 +143,10 @@ const CandidateRegister = () => {
                             Please upload a high-quality profile photo. Candidate with professional profile photos are prioritized and see more jobs with Apits clients</div>
                         <div className='form-container'>
                             <div className="form-input" style={{ border: "none", justifyContent: "space-between" }}>
-                                <div className="img-input" style={{cursor: "pointer"}} onClick={(e) => {
+                                <div className="img-input" style={{ cursor: "pointer" }} onClick={(e) => {
                                     document.getElementById("img-file")?.click();
                                 }}>
-                                    <input type="file" id="img-file" accept='.jpg, .png' style={{ display: "none" }} onChange={(e)=>{convertFile(e.target.files)}}/>
+                                    <input type="file" id="img-file" accept='.jpg, .png' style={{ display: "none" }} onChange={(e) => { convertFile(e.target.files) }} />
                                     <img src={avatar} alt="" />
                                     <div className="icon-camera">
                                         <FontAwesomeIcon icon={faCamera} className="icon" />
@@ -144,7 +168,7 @@ const CandidateRegister = () => {
 
                             <div className="footer-register">
                                 <div className="btn-continue">
-                                    <button className='btn' onClick={() => { setProgress("50%") }}>Finish</button>
+                                    <button className='btn' onClick={() => { registerHandle() }}>Finish</button>
                                 </div>
                                 <div className="register-status">
                                     <div className="register-progress">100% complete</div>

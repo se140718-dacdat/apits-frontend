@@ -14,7 +14,7 @@ import { faAddressCard, faRightFromBracket, faBell, faChevronDown, faAdd } from 
 interface Props {
     setUser: Dispatch<SetStateAction<User | null>>;
 }
-const EnterpriseHeader: FC<Props> = (props) => {
+const ManagerHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
     const user = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
@@ -41,14 +41,12 @@ const EnterpriseHeader: FC<Props> = (props) => {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Post</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/employee-recruitment">Post</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/">Candidate</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
-                            <button className="navlink btn-add-post">
-                                    <FontAwesomeIcon icon={faAdd} className="icon" />
-                                    New Post
-                                </button>
                                 <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
                                 <div className='navlink user-wrap' onClick={(e) => {
                                     e.stopPropagation();
@@ -78,7 +76,7 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                               
+
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -88,4 +86,4 @@ const EnterpriseHeader: FC<Props> = (props) => {
     )
 }
 
-export default EnterpriseHeader
+export default ManagerHeader    
