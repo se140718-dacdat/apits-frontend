@@ -14,6 +14,7 @@ import ManagerHeader from './components/modules/pagecomponents/Header/ManagerHea
 import HRHeader from './components/modules/pagecomponents/Header/HRHeader';
 import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeHeader';
 import EnterpriseRegister from './components/pages/Enterprise/register/EnterpriseRegister';
+import EmployeeProfile from './components/pages/employee/EmployeeProfile';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -31,8 +32,9 @@ const App: FC = () => {
       })()}
       <Routes>
         <Route path='/profile' element={<CandidateProfile />}></Route>;
-        {/* <Route path='/' element={<LandingPage />}></Route>; */}
+        <Route path='/' element={<LandingPage />}></Route>;
         <Route path='/enterprise/register' element={<EnterpriseRegister />}></Route>;
+        <Route path='/enterprise/profile' element={<EmployeeProfile />}></Route>;
       </Routes>
     </div>
   )

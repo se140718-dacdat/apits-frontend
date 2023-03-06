@@ -4,7 +4,7 @@
     align-items: center;
 }
 
-.content-left {
+#enterprise-register .content-left {
     width: 60%;
     padding: 3% 6%;
     display: flex;
@@ -17,13 +17,13 @@
     animation-timing-function: linear;
 }
 
-.logo {
+#enterprise-register .logo {
     margin-left: 6%;
     position: absolute;
     top: 2rem;
 }
 
-.content-right {
+#enterprise-register .content-right {
     width: 40%;
     height: 100vh;
     background-color: rgba(255, 93, 0, 0.5);
@@ -32,43 +32,44 @@
     justify-content: center;
 }
 
-.content-left h3 {
+#enterprise-register .content-left h3 {
     margin: 5% 1% 4% 1%;
 }
 
-.content-left .radio{
+#enterprise-register .content-left .radio{
     display: flex;
     align-items: flex-start;
     align-content: center;
 }
 
-.content-left .radio input {
+#enterprise-register .content-left .radio input {
     margin-top: 16px;
     accent-color: #ff5e00;
     cursor: pointer;
 }
 
-.content-left .radio-content {
+#enterprise-register .content-left .radio-content {
     padding: 8px 8px 8px 24px;
     display: flex;
     flex-direction: column;
 }
 
-.content-left .radio-content .radio-header {
+#enterprise-register .content-left .radio-content .radio-header {
     font-size: 1rem;
 }
-.content-left .radio-content .radio-description {
+
+#enterprise-register .content-left .radio-content .radio-description {
     font-size: 0.7rem;
 }
 
-.bot-button {
+#enterprise-register .bot-button {
     padding-top: 2%;
     width: 100%;
     border-top: 1px solid #ccc;
     margin-top: 4%;
 }
 
-.intro-image {
+#enterprise-register .intro-image {
     width: 360px;
     height: 300px;
     align-self: center;
@@ -85,24 +86,24 @@
 }
 
 /* register1-2-3 */
-.btn-res1 {
+#enterprise-register .btn-res1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.btn-res1 .btn-back a {
+#enterprise-register .btn-res1 .btn-back a {
     color: var(--black-color);text-decoration: none;
     margin-left: 10px;
 }
 
-.btn-res1 .btn-back a:hover {
+#enterprise-register .btn-res1 .btn-back a:hover {
     color: var(--primary-color);
     text-decoration: underline;
 }
 
 /* register4 and form */
 
-.content-left .input-block {
+#enterprise-register .content-left .input-block {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -110,39 +111,39 @@
     align-items: center;
 }
 
-.skill-selected {
+#enterprise-register .skill-selected {
     margin: 3% 0;
     width: 100%;
     justify-content: start;
 }
 
-.content-left .input-text {
+#enterprise-register .content-left .input-text {
     padding: 4px 40px;
     width: 70%;
     border: 1px solid var(--black-color);
     border-radius: 4px;
 }
 
-.input-style {
+#enterprise-register .input-style {
     margin-bottom: 1rem;
 }
 
-.content-left .input-text:focus {
+#enterprise-register .content-left .input-text:focus {
     outline: none ;
     border-color:  var(--primary-color);
 }
 
-.content-left .skills .select-skills {
+#enterprise-register .content-left .skills .select-skills {
     border: none;
     font-weight: bold;;
 }
 
-.input-tab {
+#enterprise-register .input-tab {
     position: relative;
     width: 60%;
 }
 
-.input-tab .input-icon {
+#enterprise-register .input-tab .input-icon {
     color: var(--primary-color);
     position: absolute;
     left: 10px;
@@ -152,11 +153,11 @@
     height: 34px;
 }
 
-.prolicy {
+#enterprise-register .prolicy {
     width: 42%;
     font-size: 12px;
     color: #455065;
 }
-.prolicy p .text-underline {
+#enterprise-register .prolicy p .text-underline {
     text-decoration: underline;
 }
