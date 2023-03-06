@@ -1,23 +1,48 @@
 import { Fragment, useState } from "react";
 import "./EnterpriseRegister.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook, faBuilding, faChevronLeft, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
-import RegisterForm4 from "./EnterpriseRegister4";
-import React from "react";
+import { faAddressBook, faBuilding, faChevronLeft, faClose, faEnvelope, faPhone, faPlus } from "@fortawesome/free-solid-svg-icons";
+import "./SkillItems.css"
 
 const EnterpriseRegister = () => {
-    const [selectedOption, setSelectedOption] = useState('');
-    const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedOption(changeEvent.currentTarget.value)
+    const [etpProcess, setEtpProcess] = useState("Enterprise-Register");
+    const [typeOfProject, setTypeOfProject] = useState('Developers');
+    const [roleToHire, setRoleToHire] = useState('New idea or project');
+    const [howLong, setHowLong] = useState('Less than 1 week');
+    const [levelOfTime, setLevelOfTime] = useState('Full time (40 or more hrs/week)');
+    const [whenStart, setWhenStart] = useState('Immediately');
+    const [workRemote, setWorkRemote] = useState('Yes');
+    const [budget, setBudget] = useState('Less than $70/hr');
+    const [skill, setSkill] = useState('Software Developers');
+
+    const developerList: Array<string> = ['JavaScript', 'CSS', 'PhP', 'React', 'HTML', 'Node.js', 'IOS', 'MySQL', 'Python', 'C++'];
+    const testList: Array<string> = ['Test Plan', 'Test Auto', 'SDLC', 'Agile', 'Test web', 'Mobile Test', 'Database or SQL', 'Logic Test'];
+    const depOpsList: Array<string> = ['AWS', 'Kubernetes', 'Python', 'DevOps', 'Docker', 'CI', 'CD', 'Jenkins', 'AWS EC2', 'Ansible'];
+    const [itemSelected, setItemSelected] = useState(Array<string>);
+    const [desired, setDesired] = useState('');
+    const handleItemClick = (name: string) => {
+        if (skill === 'Software Developers')
+            setItemSelected(itemSelected.concat(name));
+        else if (skill === 'Tester')
+            setItemSelected(itemSelected.concat(name));
+        else
+            setItemSelected(itemSelected.concat(name));
+    }
+    const handleItemClose = (name: string) => {
+        if (skill === 'Software Developers')
+            setItemSelected(itemSelected.filter(i => i !== name));
+        else if (skill === 'Tester')
+            setItemSelected(itemSelected.filter(i => i !== name));
+        else
+            setItemSelected(itemSelected.filter(i => i !== name));
+
     }
     const handleClick = () => {
         console.log('Registration form');
     }
-    const [etpProcess, setEtpProcess] = useState("Enterprise-Register");
     const handleRegisProcess = () => {
         switch (etpProcess) {
             case 'Enterprise-Register':
-                setSelectedOption('Developers');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -26,8 +51,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Developers'
-                                    checked={selectedOption === 'Developers'}
-                                    onChange={handleChange}
+                                    checked={typeOfProject === 'Developers'}
+                                    onChange={(e) => setTypeOfProject(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Developers</span>
@@ -37,8 +62,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Designers'
-                                    checked={selectedOption === 'Designers'}
-                                    onChange={handleChange}
+                                    checked={typeOfProject === 'Designers'}
+                                    onChange={(e) => setTypeOfProject(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">Designers</span>
@@ -48,8 +73,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Project Managers'
-                                    checked={selectedOption === 'Project Managers'}
-                                    onChange={handleChange}
+                                    checked={typeOfProject === 'Project Managers'}
+                                    onChange={(e) => setTypeOfProject(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Project Managers</span>
@@ -59,8 +84,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Product Managers'
-                                    checked={selectedOption === 'Product Managers'}
-                                    onChange={handleChange}
+                                    checked={typeOfProject === 'Product Managers'}
+                                    onChange={(e) => setTypeOfProject(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Product Managers</span>
@@ -70,8 +95,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Finance Experts'
-                                    checked={selectedOption === 'Finance Experts'}
-                                    onChange={handleChange}
+                                    checked={typeOfProject === 'Finance Experts'}
+                                    onChange={(e) => setTypeOfProject(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Tester</span>
@@ -88,7 +113,6 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register1':
-                setSelectedOption('New idea or project');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -97,8 +121,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='New idea or project'
-                                    checked={selectedOption === 'New idea or project'}
-                                    onChange={handleChange}
+                                    checked={roleToHire === 'New idea or project'}
+                                    onChange={(e) => setRoleToHire(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">New idea or project</span>
@@ -107,8 +131,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Existing project that needs more resources'
-                                    checked={selectedOption === 'Existing project that needs more resources'}
-                                    onChange={handleChange}
+                                    checked={roleToHire === 'Existing project that needs more resources'}
+                                    onChange={(e) => setRoleToHire(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">Existing project that needs more resources</span>
@@ -117,8 +141,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Ongoing assistance or consultation'
-                                    checked={selectedOption === 'Ongoing assistance or consultation'}
-                                    onChange={handleChange}
+                                    checked={roleToHire === 'Ongoing assistance or consultation'}
+                                    onChange={(e) => setRoleToHire(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Ongoing assistance or consultation</span>
@@ -127,8 +151,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="None of the above, I'm just looking to learn more about Apits"
-                                    checked={selectedOption === "None of the above, I'm just looking to learn more about Apits"}
-                                    onChange={handleChange}
+                                    checked={roleToHire === "None of the above, I'm just looking to learn more about Apits"}
+                                    onChange={(e) => setRoleToHire(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">None of the above, I'm just looking to learn more about Apits</span>
@@ -148,7 +172,6 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register2':
-                setSelectedOption('Less than 1 week');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -157,8 +180,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Less than 1 week'
-                                    checked={selectedOption === 'Less than 1 week'}
-                                    onChange={handleChange}
+                                    checked={howLong === 'Less than 1 week'}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Less than 1 week</span>
@@ -167,8 +190,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='1 to 4 weeks'
-                                    checked={selectedOption === '1 to 4 weeks'}
-                                    onChange={handleChange}
+                                    checked={howLong === '1 to 4 weeks'}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">1 to 4 weeks</span>
@@ -177,8 +200,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='1 to 3 months'
-                                    checked={selectedOption === '1 to 3 months'}
-                                    onChange={handleChange}
+                                    checked={howLong === '1 to 3 months'}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">1 to 3 months</span>
@@ -187,8 +210,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="3 to 6 months"
-                                    checked={selectedOption === "3 to 6 months"}
-                                    onChange={handleChange}
+                                    checked={howLong === "3 to 6 months"}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">3 to 6 months</span>
@@ -197,8 +220,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="Longer than 6 months"
-                                    checked={selectedOption === "Longer than 6 months"}
-                                    onChange={handleChange}
+                                    checked={howLong === "Longer than 6 months"}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Longer than 6 months</span>
@@ -207,8 +230,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="I'll decide later"
-                                    checked={selectedOption === "I'll decide later"}
-                                    onChange={handleChange}
+                                    checked={howLong === "I'll decide later"}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">I'll decide later</span>
@@ -228,7 +251,6 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register3':
-                setSelectedOption('Full time (40 or more hrs/week)');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -237,8 +259,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Full time (40 or more hrs/week)'
-                                    checked={selectedOption === 'Full time (40 or more hrs/week)'}
-                                    onChange={handleChange}
+                                    checked={levelOfTime === 'Full time (40 or more hrs/week)'}
+                                    onChange={(e) => setLevelOfTime(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Full time (40 or more hrs/week)</span>
@@ -247,8 +269,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Part time (Less than 40 hrs/week)'
-                                    checked={selectedOption === 'Part time (Less than 40 hrs/week)'}
-                                    onChange={handleChange}
+                                    checked={levelOfTime === 'Part time (Less than 40 hrs/week)'}
+                                    onChange={(e) => setLevelOfTime(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">Part time (Less than 40 hrs/week)</span>
@@ -257,8 +279,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Hourly'
-                                    checked={selectedOption === 'Hourly'}
-                                    onChange={handleChange}
+                                    checked={levelOfTime === 'Hourly'}
+                                    onChange={(e) => setLevelOfTime(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Hourly</span>
@@ -267,8 +289,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="I'll decide later"
-                                    checked={selectedOption === "I'll decide later"}
-                                    onChange={handleChange}
+                                    checked={levelOfTime === "I'll decide later"}
+                                    onChange={(e) => setLevelOfTime(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">I'll decide later</span>
@@ -288,10 +310,96 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register4':
-                <RegisterForm4 />
-                break;
+                return (
+                    <div id="enterprise-register">
+                        <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
+                        <div className="content-left">
+                            <h3>What skills would you like to see in your new hire?</h3>
+                            <div className="input-block">
+                                <input type="text" placeholder="Desired areas of expertise (e.g., JavaScript, Ruby, etc.)"
+                                    className="input-text"
+                                    value={desired}
+                                    onChange={(e) => setDesired(e.target.value)}
+                                />
+                                <div className="skill-selected">
+                                    {
+                                        itemSelected.map((name: string, key: number) =>
+                                            <button key={key} className="btn-item item-minus" onClick={() => handleItemClose(name)}>
+                                                <span>{name}</span>
+                                                <FontAwesomeIcon icon={faClose} />
+                                            </button>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            <div className="skills">
+                                <span>Popular skills for</span>
+                                <select className="select-skills" onChange={(e) => setSkill(e.target.value)}>
+                                    <option>Software Developers</option>
+                                    <option>Tester</option>
+                                    <option>DevOps</option>
+                                </select>
+                            </div>
+                            <div className="skill-items">
+                                {
+                                    skill === 'Software Developers'
+                                        ? (
+                                            <div className="btn-items">
+                                                {
+                                                    developerList.map((name: string, key: number) =>
+                                                        <button key={key} className="btn-item item-plus" onClick={() => handleItemClick(name)}>
+                                                            <FontAwesomeIcon icon={faPlus} />
+                                                            <span>{name}</span>
+                                                        </button>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                        : skill === 'Tester'
+                                            ? (
+                                                <div className="btn-items">
+                                                    {
+                                                        testList.map((name: string, key: number) =>
+                                                            <button key={key} className="btn-item item-plus" onClick={() => handleItemClick(name)}>
+                                                                <FontAwesomeIcon icon={faPlus} />
+                                                                <span>{name}</span>
+                                                            </button>
+                                                        )
+                                                    }
+                                                </div>
+                                            )
+                                            : (
+                                                <div className="btn-items">
+                                                    {
+                                                        depOpsList.map((name: string, key: number) =>
+                                                            <button key={key} className="btn-item item-plus" onClick={() => handleItemClick(name)}>
+                                                                <FontAwesomeIcon icon={faPlus} />
+                                                                <span>{name}</span>
+                                                            </button>
+                                                        )
+                                                    }
+                                                </div>
+                                            )
+                                }
+                            </div>
+
+
+
+
+                            <div className="bot-button btn-res1">
+                                <div className="btn-back">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                    <a href="#" onClick={() => setEtpProcess('Enterprise-Register3')}>Back</a>
+                                </div>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('Enterprise-Register5')}>Next</button>
+                            </div>
+                        </div>
+                        <div className="content-right">
+                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
+                        </div>
+                    </div>
+                );
             case 'Enterprise-Register5':
-                setSelectedOption('Immediately');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -300,8 +408,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Immediately'
-                                    checked={selectedOption === 'Immediately'}
-                                    onChange={handleChange}
+                                    checked={whenStart === 'Immediately'}
+                                    onChange={(e) => setWhenStart(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Immediately</span>
@@ -310,8 +418,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='In 1 to 2 weeks'
-                                    checked={selectedOption === 'In 1 to 2 weeks'}
-                                    onChange={handleChange}
+                                    checked={whenStart === 'In 1 to 2 weeks'}
+                                    onChange={(e) => setWhenStart(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">In 1 to 2 weeks</span>
@@ -320,8 +428,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='More than 2 weeks from now'
-                                    checked={selectedOption === 'More than 2 weeks from now'}
-                                    onChange={handleChange}
+                                    checked={whenStart === 'More than 2 weeks from now'}
+                                    onChange={(e) => setWhenStart(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">More than 2 weeks from now</span>
@@ -330,8 +438,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="I'll decide later"
-                                    checked={selectedOption === "I'll decide later"}
-                                    onChange={handleChange}
+                                    checked={whenStart === "I'll decide later"}
+                                    onChange={(e) => setWhenStart(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">I'll decide later</span>
@@ -351,7 +459,6 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register6':
-                setSelectedOption('Yes');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -360,8 +467,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Yes'
-                                    checked={selectedOption === 'Yes'}
-                                    onChange={handleChange}
+                                    checked={workRemote === 'Yes'}
+                                    onChange={(e) => setWorkRemote(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Yes</span>
@@ -370,8 +477,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='No'
-                                    checked={selectedOption === 'No'}
-                                    onChange={handleChange}
+                                    checked={workRemote === 'No'}
+                                    onChange={(e) => setWorkRemote(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">No</span>
@@ -380,8 +487,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="I'm not sure"
-                                    checked={selectedOption === "I'm not sure"}
-                                    onChange={handleChange}
+                                    checked={workRemote === "I'm not sure"}
+                                    onChange={(e) => setWorkRemote(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">I'm not sure</span>
@@ -401,7 +508,6 @@ const EnterpriseRegister = () => {
                     </div>
                 );
             case 'Enterprise-Register7':
-                setSelectedOption('Less than $70/hr');
                 return (
                     <div id="enterprise-register">
                         <img src="/images/ApitsLogo.png" alt="Logo" className="logo" />
@@ -410,8 +516,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='Less than $70/hr'
-                                    checked={selectedOption === 'Less than $70/hr'}
-                                    onChange={handleChange}
+                                    checked={budget === 'Less than $70/hr'}
+                                    onChange={(e) => setBudget(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Less than $70/hr</span>
@@ -420,8 +526,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='$70 - $90/hr'
-                                    checked={selectedOption === '$70 - $90/hr'}
-                                    onChange={handleChange}
+                                    checked={budget === '$70 - $90/hr'}
+                                    onChange={(e) => setBudget(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">$70 - $90/hr</span>
@@ -430,8 +536,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='$91 - $110/hr'
-                                    checked={selectedOption === '$91 - $110/hr'}
-                                    onChange={handleChange}
+                                    checked={budget === '$91 - $110/hr'}
+                                    onChange={(e) => setBudget(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">$91 - $110/hr</span>
@@ -440,8 +546,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value='More than $110/hr'
-                                    checked={selectedOption === 'More than $110/hr'}
-                                    onChange={handleChange}
+                                    checked={budget === 'More than $110/hr'}
+                                    onChange={(e) => setBudget(e.target.value)}
                                 />
                                 <label className="radio-content" >
                                     <span className="radio-header">More than $110/hr</span>
@@ -450,8 +556,8 @@ const EnterpriseRegister = () => {
                             <div className="radio">
                                 <input type="radio"
                                     value="Not sure on budget yet"
-                                    checked={selectedOption === "Not sure on budget yet"}
-                                    onChange={handleChange}
+                                    checked={budget === "Not sure on budget yet"}
+                                    onChange={(e) => setBudget(e.target.value)}
                                 />
                                 <label className="radio-content">
                                     <span className="radio-header">Not sure on budget yet</span>
@@ -518,14 +624,7 @@ const EnterpriseRegister = () => {
         }
     }
     return (
-        <Fragment>
-            <div className="enterprise-register">
-                {handleRegisProcess()}
-                <div className="content-right">
-                    <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                </div>
-            </div>
-        </Fragment>
+        <Fragment>{handleRegisProcess()}</Fragment>
     )
 
 }
