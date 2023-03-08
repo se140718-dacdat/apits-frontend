@@ -1,4 +1,4 @@
-import { faMagnifyingGlass, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faBusinessTime, faClock, faCoins, faLocation, faLocationDot, faMagnifyingGlass, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { Dropdown } from 'react-bootstrap';
@@ -46,9 +46,40 @@ const EnterpriseRecruitment = () => {
                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                         </div>
                         <div className="post-detail inline-block">
-                            <div className="post-name">Video Producer</div>
-                            <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                            <div className="post-company-name">Công Ty Cổ Phần TGA</div>
+                            <div className="post-name">Developer</div>
+                            <div className="post-company-name">FPT Software HCM </div>
+                        </div>
+                        <div className="skills">
+                            <div className="skill">
+                                JavaScript
+                            </div>
+                            <div className="skill">
+                                ReactJS
+                            </div>
+                            <div className="skill">
+                                Java
+                            </div>
+                            <div className="skill">
+                                Python
+                            </div>
+                        </div>
+                        <div className="post-description">
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
+                                $70 - $90/hr
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
+                                Fulltime
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                17 days left to apply
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
+                                Đường D1, Đ. D1, Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh 715650
+                            </div>
                         </div>
                     </div>
                     <div className="post">
@@ -56,9 +87,26 @@ const EnterpriseRecruitment = () => {
                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                         </div>
                         <div className="post-detail inline-block">
-                            <div className="post-name">Video Producer</div>
-                            <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                            <div className="post-company-name">Công Ty Cổ Phần TGA</div>
+                            <div className="post-name">Developer</div>
+                            <div className="post-company-name">FPT Software HCM </div>
+                        </div>
+                        <div className="post-description">
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
+                                $70 - $90/hr
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
+                                Fulltime
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                17 days left to apply
+                            </div>
+                            <div className="description-item">
+                                <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
+                                HCM
+                            </div>
                         </div>
                     </div>
                 </div>

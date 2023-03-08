@@ -10,9 +10,8 @@
 }
 
 
-#UserHeader .hover-primary:hover {
+#UserHeader .navlink::after {
     color: var(--primary-color) !important;
-    cursor: pointer;
 }
 
 #UserHeader .nav-right * >{
@@ -123,6 +122,10 @@
 
 #UserHeader .btn-add-post .icon {
     margin-right: 8px !important;
+}
+
+#UserHeader .navlink:active {
+    color: var(--primary-color);
 }
 
 

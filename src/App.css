@@ -136,7 +136,13 @@ body {
     margin: 0 !important;
 }
 
+.mr-8 {
+    margin-right: 8px;
+}
 
+.primary-color {
+    color: var(--primary-color);
+}
 
 .button-close {
     background-color: var(--black-color) !important;
@@ -163,4 +169,9 @@ body {
 
 .relative {
     position: relative !important;
+}
+
+.primary-color {
+    color: var(--primary-color);
+    margin-right: 8px;
 }

@@ -45,7 +45,7 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
-                            <button className="navlink btn-add-post">
+                            <button className="navlink btn-add-post" onClick={()=>{navigate("/create-post")}}>
                                     <FontAwesomeIcon icon={faAdd} className="icon" />
                                     New Post
                                 </button>

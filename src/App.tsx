@@ -16,6 +16,7 @@ import ManagerHeader from './components/modules/pagecomponents/Header/ManagerHea
 import HRHeader from './components/modules/pagecomponents/Header/HRHeader';
 import ProfessorHeader from './components/modules/pagecomponents/Header/ProfessorHeader';
 import EmployeeRecruitment from './components/pages/Employee/EmployeeRecruitment';
+import EnterpriseCreatePost from './components/pages/Enterprise/EnterpriseCreatePost';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -30,7 +31,7 @@ const App: FC = () => {
           case "EMPLOYEE":
             return <ProfessorHeader setUser={user} />;
           default:
-            return <Header setUser={user} />
+            return <EnterpriseHeader setUser={user} />
         }
       })()}
       <Routes>
@@ -38,6 +39,7 @@ const App: FC = () => {
         <Route path='/enterprise-recruitment' element={<EnterpriseRecruitment />}></Route>;
         <Route path='/employee-recruitment' element={<EmployeeRecruitment />}></Route>;
         <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
+        <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>

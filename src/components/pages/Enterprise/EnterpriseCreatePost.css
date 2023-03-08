@@ -1,0 +1,163 @@
+#EnterpriseCreatePost {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+#EnterpriseCreatePost .content-left {
+    width: 60%;
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    overflow: hidden;
+    animation-name: rightToLeft;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+}
+
+#EnterpriseCreatePost .logo {
+    margin-left: 6%;
+    position: absolute;
+    top: 2rem;
+}
+
+#EnterpriseCreatePost .content-right {
+    width: 40%;
+    height: 100vh;
+    background-color: rgba(255, 93, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#EnterpriseCreatePost .content-left h3 {
+    margin: 5% 1% 4% 1%;
+}
+
+#EnterpriseCreatePost .content-left .radio{
+    display: flex;
+    align-items: flex-start;
+    align-content: center;
+}
+
+#EnterpriseCreatePost .content-left .radio input {
+    margin-top: 16px;
+    accent-color: #ff5e00;
+    cursor: pointer;
+}
+
+#EnterpriseCreatePost .content-left .radio-content {
+    padding: 8px 8px 8px 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+#EnterpriseCreatePost .content-left .radio-content .radio-header {
+    font-size: 1rem;
+}
+
+#EnterpriseCreatePost .content-left .radio-content .radio-description {
+    font-size: 0.7rem;
+}
+
+#EnterpriseCreatePost .bot-button {
+    padding-top: 2%;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    margin-top: 4%;
+}
+
+#EnterpriseCreatePost .intro-image {
+    width: 360px;
+    height: 300px;
+    align-self: center;
+    object-fit: cover;
+}
+
+@keyframes rightToLeft {
+    0% {
+        transform: translateX(150px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
+
+/* register1-2-3 */
+#EnterpriseCreatePost .btn-res1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#EnterpriseCreatePost .btn-res1 .btn-back a {
+    color: var(--black-color);text-decoration: none;
+    margin-left: 10px;
+}
+
+#EnterpriseCreatePost .btn-res1 .btn-back a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* register4 and form */
+
+#EnterpriseCreatePost .content-left .input-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#EnterpriseCreatePost .skill-selected {
+    margin: 3% 0;
+    width: 100%;
+    justify-content: start;
+}
+
+#EnterpriseCreatePost .content-left .input-text {
+    padding: 4px 40px;
+    width: 70%;
+    border: 1px solid var(--black-color);
+    border-radius: 4px;
+}
+
+#EnterpriseCreatePost .input-style {
+    margin-bottom: 1rem;
+}
+
+#EnterpriseCreatePost .content-left .input-text:focus {
+    outline: none ;
+    border-color:  var(--primary-color);
+}
+
+#EnterpriseCreatePost .content-left .skills .select-skills {
+    border: none;
+    font-weight: bold;;
+}
+
+#EnterpriseCreatePost .input-tab {
+    position: relative;
+    width: 60%;
+}
+
+#EnterpriseCreatePost .input-tab .input-icon {
+    color: var(--primary-color);
+    position: absolute;
+    left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 34px;
+}
+
+#EnterpriseCreatePost .prolicy {
+    width: 42%;
+    font-size: 12px;
+    color: #455065;
+}
+#EnterpriseCreatePost .prolicy p .text-underline {
+    text-decoration: underline;
+}
