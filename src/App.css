@@ -140,9 +140,6 @@ body {
     margin-right: 8px;
 }
 
-.primary-color {
-    color: var(--primary-color);
-}
 
 .button-close {
     background-color: var(--black-color) !important;
@@ -173,5 +170,12 @@ body {
 
 .primary-color {
     color: var(--primary-color);
-    margin-right: 8px;
+}
+
+p {
+    margin-bottom: 0 !important;
+}
+
+.ml-8 {
+    margin-left: 8px;
 }

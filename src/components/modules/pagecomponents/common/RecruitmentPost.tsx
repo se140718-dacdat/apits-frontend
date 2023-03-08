@@ -2,11 +2,15 @@ import { faBusinessTime, faClock, faCoins, faLocation, faLocationDot, faMagnifyi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { Dropdown } from 'react-bootstrap';
-import "./EnterpriseRecruitment.css";
+import { useNavigate } from 'react-router-dom';
+import "./RecruitmentPost.css";
 
-const EnterpriseRecruitment = () => {
+const RecruitmentPost = () => {
+    const navigate = useNavigate();
+
     return (
-        <div id='EnterpriseRecruitment'>
+        <div id='RecruitmentPost'>
+            <h2 className='primary-color'>Jobs</h2>
             <div className="filter">
                 <div className="form-input">
                     <div className="input-icon">
@@ -14,7 +18,7 @@ const EnterpriseRecruitment = () => {
                     </div>
                     <input type="text" placeholder='Enter search keywords' />
                 </div>
-                <Dropdown className="specialty-dropdown">
+                <Dropdown className="specialty-dropdown ml-8">
                     <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty'>
                         <span>All Specialty</span>
                     </Dropdown.Toggle>
@@ -24,24 +28,25 @@ const EnterpriseRecruitment = () => {
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>
-                <button className='btn-search'>Tìm</button>
+                <Dropdown className="specialty-dropdown ml-8" style={{ width: "18%" }}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty duration'>
+                        <span>All Durations</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className='specialty-menu'>
+                        <div>
+                            <Dropdown.Item className='specialty-item'>All durations</Dropdown.Item>
+                        </div>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <button className='btn-search ml-8'>Tìm</button>
             </div>
             <div className="post-container">
                 <div className="container-header">
                     <div className='quantity'><strong>871</strong> Post</div>
-                    <Dropdown className="specialty-dropdown" style={{ width: "18%" }}>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty duration'>
-                            <span>All Durations</span>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className='specialty-menu'>
-                            <div>
-                                <Dropdown.Item className='specialty-item'>All durations</Dropdown.Item>
-                            </div>
-                        </Dropdown.Menu>
-                    </Dropdown>
+
                 </div>
                 <div className="post-list">
-                    <div className="post">
+                    <div className="post" onClick={()=>{navigate("/post-detail")}}>
                         <div className="avt-post-cover inline-block">
                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                         </div>
@@ -116,4 +121,4 @@ const EnterpriseRecruitment = () => {
     )
 }
 
-export default EnterpriseRecruitment
+export default RecruitmentPost

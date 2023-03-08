@@ -1,8 +1,8 @@
-#EmployeeRecruitment {
+#RecruitmentPost {
     padding: 2% 10% 5%;
 }
 
-#EmployeeRecruitment .filter {
+#RecruitmentPost .filter {
     width: 100%;
     border: 2px solid var(--primary-color);
     display: flex;
@@ -10,7 +10,7 @@
     justify-content: space-between;
 }
 
-#EmployeeRecruitment .form-input {
+#RecruitmentPost .form-input {
     display: flex;
     position: relative;
     border: 1px solid #c4c4c4;
@@ -20,21 +20,22 @@
     width: 63.5%;
 }
 
-#EmployeeRecruitment .form-input input {
+#RecruitmentPost .form-input input {
     border: none;
     margin-left: -1px;
     width: 100%;
+    border-radius: 0 3px 3px 0;
 }
 
-#EmployeeRecruitment .form-input:focus-within {
+#RecruitmentPost .form-input:focus-within {
     outline: 1px solid var(--black-color);
 }
 
-#EmployeeRecruitment .form-input input:focus {
+#RecruitmentPost .form-input input:focus {
     outline: none;
 }
 
-#EmployeeRecruitment .input-icon {
+#RecruitmentPost .input-icon {
     color: #858585;
     height: 45px;
     padding: 3px;
@@ -44,18 +45,18 @@
     padding: 0.375rem 0.75rem;
 }
 
-#EmployeeRecruitment .input-icon .icon {
+#RecruitmentPost .input-icon .icon {
     width: 20px;
     height: 20px;
 }
 
-#EmployeeRecruitment .specialty-dropdown {
+#RecruitmentPost .specialty-dropdown {
     width: 22%;
     align-self: center;
 
 }
 
-#EmployeeRecruitment .btn-search {
+#RecruitmentPost .btn-search {
     border: none;
     background-color: var(--primary-color);
     width: 12%;
@@ -65,7 +66,7 @@
 }
 
 
-#EmployeeRecruitment .specialty {
+#RecruitmentPost .specialty {
     width: 100%;
     border: 1px solid #d2d2d2 !important;
     padding: 11px 22px !important;
@@ -77,37 +78,39 @@
 }
 
 
-#EmployeeRecruitment .specialty-menu {
+#RecruitmentPost .specialty-menu {
     width: 100%;
 }
 
-#EmployeeRecruitment .post-container {
+#RecruitmentPost .post-container {
     width: 100%;
     border: 1px solid #c4c4c4;
-    margin-top: 3%;
+    border-top: none;
 }
 
-#EmployeeRecruitment .container-header {
+#RecruitmentPost .container-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#EmployeeRecruitment .post-container .duration {
+#RecruitmentPost .post-container .duration {
     border-radius: 0px !important;
 }
 
-#EmployeeRecruitment .quantity {
+#RecruitmentPost .quantity {
     margin-left: 13px;
     font-size: 1.2rem;
+    margin-top: 12px;
 }
 
-#EmployeeRecruitment .quantity strong {
+#RecruitmentPost .quantity strong {
     color: var(--primary-color);
 }
 
 
-#EmployeeRecruitment .post {
+#RecruitmentPost .post {
+    flex-wrap: wrap;
     display: flex;
     border-radius: 5px;
     padding:18px 24px;
@@ -116,17 +119,17 @@
     border: 1px solid #c4c4c4;
 }
 
-#EmployeeRecruitment .post:hover {
+#RecruitmentPost .post:hover {
     background-color: rgba(242, 114, 41, 0.3);
     cursor: pointer;
 }
 
-#EmployeeRecruitment .post-detail {
+#RecruitmentPost .post-detail {
     margin: 0 24px;
-
+    width: 60%;
 }
 
-#EmployeeRecruitment .avt-post-cover {
+#RecruitmentPost .avt-post-cover {
     width: 100px;
     height: 100px;
     padding: 6px;
@@ -134,26 +137,64 @@
     background-color: var(--white-color);
 }
 
-#EmployeeRecruitment .post-avt {
+#RecruitmentPost .post-avt {
     width: 100%;
     height: 100%;
     border-radius: 5px;
 
 }
 
-#EmployeeRecruitment .post-name {
+#RecruitmentPost .post-name {
     font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    margin-top: 8px;
 }
 
-#EmployeeRecruitment .post-list {
+#RecruitmentPost .post-company-name {
+    text-transform: capitalize;
+}
+
+#RecruitmentPost .post-list {
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
     padding: 13px;
 }
 
-#EmployeeRecruitment .btn-add-post {
+#RecruitmentPost .btn-add-post {
     background-color: var(--black-color);
     color: var(--white-color);
     
+}
+
+#RecruitmentPost .post-description {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-left: 6px;
+    border-top: 1px solid #e9eaec;
+    margin-top: 12px;
+}
+
+#RecruitmentPost .description-item  {
+    margin-right: 24px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+#RecruitmentPost .skills {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+#RecruitmentPost .skill {
+    color: var(--primary-color);
+    border-radius: 15px;
+    border: 1px solid #ebeced;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    padding: 4px 16px;
 }

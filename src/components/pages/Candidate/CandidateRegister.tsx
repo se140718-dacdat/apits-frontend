@@ -1,6 +1,6 @@
 import { faUser, faHouse, faPhone, faVenusMars, faCamera } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { CandidateUpdate, genderList } from '../../../model';
 import "./CandidateRegister.css";
@@ -8,23 +8,20 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { loginUser, registerCandidate, updateCandidate } from '../../../redux/apiRequest';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useNavigate } from 'react-router-dom';
+import { updateCandidate } from '../../../redux/apiRequest';
+import { useSelector } from 'react-redux';
 
 const CandidateRegister = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser);
     const now = new Date();
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
+    const [birth, setBirth] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [gender, setGender] = useState<string>("Male");
     const [avatar, setAvatar] = useState<string>("/images/avt-blank.png");
     const [fullName, setFullName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
     const [address, setAddress] = useState<string>("");
-    const [birth, setBirth] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
 
     const handleSelect = (e: string) => {
@@ -88,9 +85,9 @@ const CandidateRegister = () => {
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         label="Date of Birth"
-                                        value={value}
+                                        value={birth}
                                         onChange={(newValue) => {
-                                            setValue(newValue);
+                                            setBirth(newValue);
                                         }}
                                         renderInput={(params) => <TextField {...params} />}
                                     />

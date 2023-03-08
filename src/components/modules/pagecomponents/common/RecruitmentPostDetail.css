@@ -1,0 +1,143 @@
+#RecruitmentPostDetail {
+    padding: 15px 0 40px;
+    background: #fbfbfb;
+    width: 100%;
+    letter-spacing: 0;
+    line-height: 1.5;
+}
+
+#RecruitmentPostDetail .post-wrap {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    position: relative;
+    margin: 0 auto;
+    max-width: 1260px
+}
+
+#RecruitmentPostDetail .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y)*-1);
+    margin-right: calc(var(--bs-gutter-x)/-2);
+    margin-left: calc(var(--bs-gutter-x)/-2);
+}
+
+#RecruitmentPostDetail .row *> {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x)/2);
+    padding-left: calc(var(--bs-gutter-x)/2);
+    margin-top: var(--bs-gutter-y);
+}
+
+#RecruitmentPostDetail .col-xl-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
+
+#RecruitmentPostDetail .col-xl-3 {
+    flex: 0 0 auto;
+    width: 20%;
+}
+
+#RecruitmentPostDetail .post-header {
+    padding: 20px 25px;
+    display: flex;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+#RecruitmentPostDetail .avt-post-cover {
+    width: 110px;
+    height: 110px;
+    padding: 6px;
+    margin-right: 24px;
+}
+
+#RecruitmentPostDetail .post-avt {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border-radius: 75px;
+    border: 1px solid var(--primary-color);
+}
+
+#RecruitmentPostDetail .post-header-content {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+#RecruitmentPostDetail .post-name {
+    font-size: 22px;
+    line-height: 29px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+#RecruitmentPostDetail .company-name {
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+#RecruitmentPostDetail .post-time {
+    font-size: 14px;
+}
+
+#RecruitmentPostDetail .btn-assign button {
+    font-size: 14px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    font-weight: 700;
+    border: none;
+    padding: 9px 30px;
+    border-radius: 4px;
+}
+
+#RecruitmentPostDetail .post-content {
+    padding: 16px;
+}
+
+
+#RecruitmentPostDetail .detail-title {
+    border-left: 7px solid var(--primary-color);
+    font-size: 22px;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 16px;
+    padding-left: 12px;
+}
+
+#RecruitmentPostDetail .general-information {
+    background-color: rgb(242 114 41 / 10%);
+    padding: 12px 24px;
+    margin-bottom: 12px;
+}
+
+#RecruitmentPostDetail .general-information p {
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#RecruitmentPostDetail .general-body {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: calc(100%/3) calc(100%/3) calc(100%/3);
+}
+
+#RecruitmentPostDetail .general-item  {
+    margin-right: 24px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    margin-bottom: 16px;
+}
+
+#RecruitmentPostDetail .general-item .icon  {
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+}

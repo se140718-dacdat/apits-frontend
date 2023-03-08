@@ -1,0 +1,91 @@
+#Candidates {
+    padding: 2% 2% 5%;
+}
+
+#Candidates h2 {
+    color: var(--primary-color);
+}
+
+#Candidates .filter {
+    width: 100%;
+    border: 2px solid var(--primary-color);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+#Candidates .form-input {
+    display: flex;
+    position: relative;
+    border: 1px solid #c4c4c4;
+    border-radius: 3px;
+    margin: 8px 0 8px 8px;
+    color: #757575;
+    width: 63.5%;
+}
+
+#Candidates .form-input input {
+    border: none;
+    margin-left: -1px;
+    width: 100%;
+}
+
+#Candidates .form-input:focus-within {
+    outline: 1px solid var(--black-color);
+}
+
+#Candidates .form-input input:focus {
+    outline: none;
+}
+
+#Candidates .input-icon {
+    color: #858585;
+    height: 45px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+}
+
+#Candidates .input-icon .icon {
+    width: 20px;
+    height: 20px;
+}
+
+#Candidates .specialty-dropdown {
+    width: 22%;
+    align-self: center;
+
+}
+
+#Candidates .btn-search {
+    border: none;
+    background-color: var(--primary-color);
+    width: 12%;
+    color: var(--white-color);
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+
+#Candidates .specialty {
+    width: 100%;
+    border: 1px solid #d2d2d2 !important;
+    padding: 11px 22px !important;
+    background-color: var(--white-color) !important;
+    color: #757575 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#Candidates .specialty-menu {
+    width: 100%;
+}
+
+#Candidates .MuiDataGrid-root {
+    border-radius: 0 0 4px 4px;
+    border-top: none;
+}

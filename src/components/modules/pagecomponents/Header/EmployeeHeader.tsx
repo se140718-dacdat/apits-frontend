@@ -1,28 +1,24 @@
+import { faAddressCard, faBell, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { User } from '../../../../model';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAddressCard, faRightFromBracket, faBell, faChevronDown, faAdd } from '@fortawesome/free-solid-svg-icons'
-
 
 interface Props {
     setUser: Dispatch<SetStateAction<User | null>>;
+    position: string;
 }
-const ProfessorHeader : FC<Props> = (props) => {
+
+
+const EmployeeHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
     const user = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const token = user?.token;
-    const logoutHandler = () => {
-        logoutUser(dispatch, navigate)
-    }
 
     useEffect(() => {
         window.onclick = () => {
@@ -30,7 +26,45 @@ const ProfessorHeader : FC<Props> = (props) => {
         }
     }, [])
 
+    const logoutHandler = () => {
+        logoutUser(dispatch, navigate)
+    }
 
+
+    const renderHandle = () => {
+        console.log(props.position)
+        switch (props.position) {
+            case "MANAGER":
+                return (
+                    <Nav className="me-auto">
+                        <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/employee-recruitment">Post</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
+                    </Nav>
+                )
+            case "HR":
+                return (
+                    <Nav className="me-auto">
+                        <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/enterprises">Enterprise</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
+                    </Nav>
+                )
+            case "PROFESSOR":
+                return (
+                    <Nav className="me-auto">
+                        <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
+                    </Nav>
+                )
+            default:
+                break;
+        }
+    }
     return (
         <div id='UserHeader'>
             <div className="header-container">
@@ -39,11 +73,7 @@ const ProfessorHeader : FC<Props> = (props) => {
                         <Navbar.Brand href="/"><img className='logo' src="/images/ApitsLogo.png" alt="logo" /></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
-                            <Nav className="me-auto">
-                                <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
-                            </Nav>
+                            {renderHandle()}
                             <Nav className='nav-right'>
                                 <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
                                 <div className='navlink user-wrap' onClick={(e) => {
@@ -74,7 +104,6 @@ const ProfessorHeader : FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                               
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -84,4 +113,4 @@ const ProfessorHeader : FC<Props> = (props) => {
     )
 }
 
-export default ProfessorHeader    
+export default EmployeeHeader
