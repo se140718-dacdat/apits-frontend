@@ -1,0 +1,131 @@
+#EnterpriseRegis {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background-color: #f1f2f6;
+}
+
+#EnterpriseRegis input {
+    outline: none;
+}
+
+#EnterpriseRegis .bg {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0.8;
+    background-image: url('https://phunugioi.com/wp-content/uploads/2021/09/hinh-anh-bat-tay-hop-tac-1.jpg' );
+    background-size: cover;
+    background-position: center;
+}
+
+#EnterpriseRegis .bg .header {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    opacity: 0.9;
+    text-align: center;
+    padding-top: 4rem;
+    font-size: 16px;
+    color: var(--white-color);
+}
+
+#EnterpriseRegis .container {
+    padding: 1rem 3rem;
+    position: absolute;
+    width: 50%;
+    top: 200px;
+    background-color: var(--white-color);
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    border-radius: 4px;
+}
+
+#EnterpriseRegis .form-group .underline {
+    width: 50px;
+    height: 0.2rem;
+    background-color: var(--primary-color);
+}
+
+#EnterpriseRegis .form-group .tilte {
+    margin-top: 1rem;
+    font-weight: 500;
+    font-size: 20px;
+}
+#EnterpriseRegis .form-group .content .group-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+#EnterpriseRegis .form-input {
+    width: 600px;
+}
+
+#EnterpriseRegis p {
+    margin: 0;
+}
+
+#EnterpriseRegis .regis-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    height: 34px;
+    margin-top: 0.7rem;
+    font-size: 16px;
+}
+
+#EnterpriseRegis .regis-input:focus {
+    border: 2px solid var(--primary-color);
+}
+
+#EnterpriseRegis .form-group .group-input label {
+    font-size: 16px;
+    padding-top: 0.8rem;
+}
+
+#EnterpriseRegis .text-err {
+    font-size: 14px;
+    color: #dc3545;
+    flex-wrap: wrap;
+}
+#EnterpriseRegis .form-group .note {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+#EnterpriseRegis .input-phone {
+    width: 200px;
+}
+
+#EnterpriseRegis .rules {
+    padding: 1rem 0;
+    font-size: 15px;
+}
+
+#EnterpriseRegis .rules input{
+    accent-color: rgb(236, 95, 0);
+}
+
+#EnterpriseRegis .rules label{
+    padding-left: 0.35rem;
+}
+
+#EnterpriseRegis .rules .rule-text {
+    color: #de4637!important;
+}
+
+#EnterpriseRegis .group-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#EnterpriseRegis .btn-cancel {
+    background-color: #f3f4f5 !important;
+    color: #212529 !important;
+    margin-right: 1.5rem;
+}
+
