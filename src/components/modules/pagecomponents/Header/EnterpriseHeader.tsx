@@ -16,10 +16,10 @@ interface Props {
 }
 const EnterpriseHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
-    const user = useSelector((state: any) => state.auth.login.currentUser);
+    const account = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const token = user?.token;
+    const token = account?.token;
     const logoutHandler = () => {
         logoutUser(dispatch, navigate)
     }
@@ -57,6 +57,7 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
+                                        <div className='user-name' style={{marginRight: "8px"}}>{account?.information.name}</div>
                                         <img className='avt' src="/images/avt.jpg" alt="" />
                                         <FontAwesomeIcon icon={faChevronDown} />
                                     </div>
@@ -64,8 +65,8 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                         <div className="user-info">
                                             <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
-                                                <span className='user-info-name'>Dac Dat</span>
-                                                <span className='user-info-email'>lhdd159357@gmail.com</span>
+                                                <span className='user-info-name'>{account?.information.name}</span>
+                                                <span className='user-info-email'>{account?.information.email}</span>
                                             </div>
                                         </div>
                                         <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>

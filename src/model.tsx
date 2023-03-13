@@ -10,6 +10,13 @@ export interface Login {
     password: string;
 }
 
+export interface RegisterEnterprise {
+    name: string;
+    address: string;
+    phone: string;
+    email: string;
+    password: string;
+}
 export interface UserLogin {
     token: string;
     roleID: number;
@@ -127,5 +134,29 @@ export interface Candidate {
     gender: string;
     address: string;
     specialties: Specialty[];
+    status: string;
+}
+
+interface UserCandidate {
+    id: number;
+    name: string;
+    specialties: SpecialtyDemo[]
+}
+
+interface SkillDemo {
+    id: string;
+    name: string;
+}
+
+interface LevelDemo {
+    id: string;
+    name: string;
+    skills: Skill[]
+}
+
+interface SpecialtyDemo {
+    id: string;
+    name: string;
+    level: Level[]
 }
 

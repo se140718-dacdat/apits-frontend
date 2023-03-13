@@ -2,6 +2,7 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
 import Popup from '../Popup/Popup';
 import "./Header.css";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const Header: FC<Props> = (props) => {
+    const navigate = useNavigate();
     const [display, isDisplay] = useState<string>("");
     const [popup, isPopup] = useState<Number>(0);
     useEffect(() => {
@@ -51,7 +53,10 @@ const Header: FC<Props> = (props) => {
                                     display == '' ?
                                         handleDisplay("display", 2) : handleDisplay("", 0);
                                 }}>Apply as a Candidate</Nav.Link>
-                                <button className='btn'>Hire Top IT</button>
+                                <button className='btn'  onClick={() => {
+                                    display == '' ?
+                                        handleDisplay("display", 3) : handleDisplay("", 0);
+                                }}>Hire Top IT</button>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

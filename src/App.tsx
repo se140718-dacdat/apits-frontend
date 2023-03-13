@@ -20,6 +20,9 @@ import RecruitmentPostDetail from './components/modules/pagecomponents/common/Re
 import { logoutUser } from './redux/apiRequest';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
+import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
+import InterviewCreate from './components/pages/Employee/HR/InterviewCreateForm';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -42,11 +45,19 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        <Route path='/profile' element={(user?.role.name) == "ENTERPRISE" ? <EnterpriseProfile /> : <CandidateProfile />}></Route>;
+        <Route path='/profile' element={
+          (user?.role.name) == "ENTERPRISE" ? <EnterpriseProfile />
+            :
+            (user?.role.name) === "EMPLOYEE" ? (
+              <EmployeeProfile />)
+              : (<CandidateProfile />)
+        }></Route>;
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
+        <Route path='/register-enterprise' element={<EnterpriseRegister />}></Route>;
         <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
+        <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/candidates' element={<Candidates />}></Route>;
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail' element={<RecruitmentPostDetail />}></Route>;

@@ -1,0 +1,137 @@
+#InterviewCreate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    background-color: #f1f2f6;
+}
+
+#InterviewCreate input {
+    outline: none;
+}
+
+#InterviewCreate .bg {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0.8;
+    background-image: url('https://www.resumecoach.com/wp-content/uploads/sites/2/2018/02/top-10-tips-job-interview.jpg' );
+    background-size: cover;
+    background-position: center;
+}
+
+#InterviewCreate .bg .header {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    opacity: 0.9;
+    text-align: center;
+    padding-top: 4rem;
+    font-size: 16px;
+    color: var(--white-color);
+}
+
+#InterviewCreate .container {
+    padding: 1rem 3rem;
+    position: absolute;
+    width: 50%;
+    top: 200px;
+    background-color: var(--white-color);
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    border-radius: 4px;
+}
+
+#InterviewCreate .form-group .underline {
+    width: 50px;
+    height: 0.2rem;
+    background-color: var(--primary-color);
+}
+
+#InterviewCreate .form-group .tilte {
+    margin-top: 1rem;
+    font-weight: 500;
+    font-size: 20px;
+}
+#InterviewCreate .form-group .content .group-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+#InterviewCreate .form-input {
+    width: 600px;
+}
+
+#InterviewCreate .form-select,
+#InterviewCreate .input-date {
+    width: 230px;
+}
+
+#InterviewCreate .form-select {
+    font-size: 16px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+
+#InterviewCreate .form-select:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+    box-shadow: none;
+}
+
+#InterviewCreate .form-input-select {
+    display: flex;
+    align-items: flex-end;
+}
+
+#InterviewCreate p {
+    margin: 0;
+}
+
+#InterviewCreate .regis-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    height: 34px;
+    margin-top: 0.7rem;
+    font-size: 16px;
+}
+
+#InterviewCreate .regis-input:focus {
+    border: 2px solid var(--primary-color);
+}
+
+#InterviewCreate .form-group .group-input label {
+    font-size: 16px;
+    padding-top: 0.8rem;
+}
+
+#InterviewCreate .text-err {
+    font-size: 14px;
+    color: #dc3545;
+    flex-wrap: wrap;
+}
+
+#InterviewCreate textarea {
+    padding: 2px 12px;
+}
+
+#InterviewCreate textarea:focus {
+    outline: none;
+}
+
+#InterviewCreate .group-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+#InterviewCreate .btn-cancel {
+    background-color: #f3f4f5 !important;
+    color: #212529 !important;
+    margin-right: 1.5rem;
+}

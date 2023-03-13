@@ -10,6 +10,8 @@ import { Dropdown } from 'react-bootstrap';
 import "./Filter.css"
 import { Candidate } from '../../../../model';
 import CandidateAssign from './CandidateAssign';
+import { useSelector } from 'react-redux';
+import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 
 
 const candidates: Candidate[] = [
@@ -30,6 +32,7 @@ const candidates: Candidate[] = [
                 skills: ["Node.js", "SQL", "PHP"],
             },
         ],
+        status: "approved"
     },
     {
         id: 2,
@@ -48,10 +51,12 @@ const candidates: Candidate[] = [
                 skills: ["SQL Server", "Oracle", "MySQL"],
             },
         ],
+        status: ""
     },
 ];
 
 const RecruitmentPostDetail = () => {
+    const account = useSelector((state: any) => state.auth.login.currentUser);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -89,9 +94,16 @@ const RecruitmentPostDetail = () => {
                                         Hạn nộp hồ sơ: 08/04/2023
                                     </div>
                                 </div>
-                                <div className="btn-assign">
-                                    <button onClick={handleOpen}>Assign Candidate</button>
-                                </div>
+                                {
+                                    (account?.role.name === "EMPLOYEE") ?
+                                        <div className="btn-assign">
+                                            <button onClick={handleOpen}>Assign Candidate</button>
+                                        </div>
+                                        :
+                                        <div className="btn-assign">
+                                            <button onClick={handleOpen}>Assigned List</button>
+                                        </div>
+                                }
                             </div>
                             <div className="post-content">
                                 <h2 className="detail-title">Recruitment details</h2>
@@ -277,7 +289,12 @@ const RecruitmentPostDetail = () => {
                                     <button className='btn-search'>Tìm</button>
                                 </div>
                                 <div style={{ height: 500, width: '100%' }}>
-                                    <CandidateAssign candidates={candidates} />;
+                                    {
+                                        (account?.role.name === "EMPLOYEE") ?
+                                            <CandidateAssign candidates={candidates} />
+                                            :
+                                            <ViewAssign candidates={candidates} />
+                                    }
                                 </div>
                             </div>
                         </div>

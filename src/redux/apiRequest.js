@@ -29,6 +29,16 @@ export const registerCandidate = async (newUser, navigate, dispatch) => {
     }
 }
 
+export const registerEnterprise = async (newUser, userForLogin, navigate, dispatch) => {
+    try {
+        console.log(newUser)
+        await axios.post("/account/auth/registerForEnterprise", newUser)
+        loginUser(userForLogin, dispatch, navigate, false);
+    } catch (error) {
+        return error
+    }
+}
+
 export const loginUserByGoogle = async (result, dispatch, navigate) => {
     dispatch(loginStart());
     try {

@@ -133,9 +133,9 @@ export const CandidateProfile: FC = () => {
 
                                 <Dropdown.Menu>
                                     {
-                                        categoryList.map((category) => {
+                                        categoryList.map((category, index) => {
                                             return (
-                                                <div>
+                                                <div key={index}>
                                                     <Dropdown.Item onClick={() => { handleSelect(category) }}>{category.categoryName}</Dropdown.Item>
                                                 </div>
                                             )

@@ -16,7 +16,7 @@ interface Props {
 
 const EmployeeHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
-    const user = useSelector((state: any) => state.auth.login.currentUser);
+    const account = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/employee-recruitment">Post</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/create-interview">Interview</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
                     </Nav>
@@ -83,6 +83,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
+                                        <div className='user-name' style={{marginRight: "8px"}}>{account?.information.employeeName}</div>
                                         <img className='avt' src="/images/avt.jpg" alt="" />
                                         <FontAwesomeIcon icon={faChevronDown} />
                                     </div>
@@ -90,8 +91,8 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         <div className="user-info">
                                             <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
-                                                <span className='user-info-name'>Dac Dat</span>
-                                                <span className='user-info-email'>lhdd159357@gmail.com</span>
+                                                <span className='user-info-name'>{account?.information.employeeName}</span>
+                                                <span className='user-info-email'>{account?.email}</span>
                                             </div>
                                         </div>
                                         <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>
