@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import {  useNavigate } from 'react-router-dom';
 import { updateCandidate } from '../../../redux/apiRequest';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CandidateRegister = () => {
     const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -22,6 +22,8 @@ const CandidateRegister = () => {
     const [phone, setPhone] = useState<string>("");
     const [address, setAddress] = useState<string>("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
 
     const handleSelect = (e: string) => {
@@ -51,7 +53,8 @@ const CandidateRegister = () => {
             dob: "2023-03-06T06:12:41.626Z",
             address: address
         }
-        updateCandidate(user.candidate.id, navigate, newUser)
+        console.log(user)
+        updateCandidate(user.information.id, navigate, newUser, dispatch)
     }
 
     const handleProgress = () => {

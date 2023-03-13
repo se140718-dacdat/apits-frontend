@@ -16,7 +16,7 @@ interface Props {
 }
 const CandidateHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
-    const user = useSelector((state: any) => state.auth.login.currentUser);
+    const user = useSelector((state: any) => state.user.user.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = user?.token;
@@ -55,14 +55,14 @@ const CandidateHeader: FC<Props> = (props) => {
                                 }}>
                                     <div className="flex-css relative hover-primary">
                                         <img className='avt' src="/images/avt.jpg" alt="" />
-                                        <div className='user-name'>{user?.information.name}</div>
+                                        <div className='user-name'>{user?.name}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
                                             <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
-                                                <span className='user-info-name'>{user?.information.name}</span>
-                                                <span className='user-info-email'>{user?.information.email}</span>
+                                                <span className='user-info-name'>{user?.name}</span>
+                                                <span className='user-info-email'>{user?.email}</span>
                                             </div>
                                         </div>
                                         <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>

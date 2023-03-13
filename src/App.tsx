@@ -17,13 +17,20 @@ import Candidates from './components/pages/Employee/Manager/Candidates';
 import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
 import Enterprises from './components/pages/Employee/HR/Enterprises';
 import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
+import { logoutUser } from './redux/apiRequest';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
     <div id="App">
       {(() => {
-        switch (user?.role.name) {
+        // logoutUser(dispatch, navigate);
+        switch (user?.role?.name) {
           case "CANDIDATE":
             return <CandidateHeader setUser={user} />;
           case "ENTERPRISE":

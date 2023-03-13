@@ -8,7 +8,9 @@ import { Category, dataEngineer, developer, Level, level1, level2, level3} from 
 import { useSelector } from 'react-redux';
 
 export const CandidateProfile: FC = () => {
-    const user = useSelector((state: any) => state.auth.login.currentUser);
+    const account = useSelector((state: any) => state.auth.login.currentUser);
+    const user = useSelector((state: any) => state.user.user.user);
+    const date = account.createAt.slice(0, 10)
 
     const [show, setShow] = useState(false);
     const [category, setCategory] = useState<Category>(developer);
@@ -32,7 +34,7 @@ export const CandidateProfile: FC = () => {
                             <img src="images/avt.jpg" className='avatar' alt="" />
                             <div className="join">
                                 <FontAwesomeIcon icon={faRightToBracket} className="icon" />
-                                Joined February 15, 2023
+                                {date}
                             </div>
                         </div>
                         <div className="col-right">
@@ -66,21 +68,21 @@ export const CandidateProfile: FC = () => {
                                 <div className="col-half">
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faPhone} className="icon m-0" />
-                                        <span>0774816851</span>
+                                        <span>{user.phone}</span>
                                     </div>
                                     <div className="work-status">
                                         <FontAwesomeIcon m-0 icon={faCakeCandles} className="icon m-0" />
-                                        <span>14/12/2000</span>
+                                        <span>{user.dob.slice(0, 10)}</span>
                                     </div>
                                 </div>
                                 <div className="col-half m-0">
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faHouse} className="icon m-0" />
-                                        <span>HCM, Viet Nam</span>
+                                        <span>{user.address}</span>
                                     </div>
                                     <div className="work-status">
                                         <FontAwesomeIcon m-0 icon={faVenusMars} className="icon m-0" />
-                                        <span>Male</span>
+                                        <span>{user.gender}</span>
                                     </div>
                                 </div>
                             </div>
@@ -149,12 +151,12 @@ export const CandidateProfile: FC = () => {
                                         <div className="item">
                                             <img src={skill.skillIcon} alt="" className="item-icon" />
                                             <span className="item-name">{skill.skillName}</span>
-                                            <span className='item-verify'>Get Certification</span>
+                                            <span className='item-verify'>Certification</span>
                                         </div>
                                     )
                                 })
                             }
-                            <button className="btn btn-update-specialty">Update Your Specialty</button>
+                            <button className="btn btn-update-specialty">Upgrade This Specialty</button>
                         </div>
                     </div>
                 </div>

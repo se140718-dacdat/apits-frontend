@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import "./LandingPage.css"
 import { useSelector } from 'react-redux';
 import { Roles } from '../../../model';

@@ -1,6 +1,8 @@
+import { async } from "@firebase/util";
 import { useDispatch } from "react-redux";
 import axios from "../api/axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess } from "./authSlice";
+import { userFailed, userStart, userSuccess } from "./userSlice";
 
 export const loginUser = async (user, dispatch, navigate, isRegister) => {
     dispatch(loginStart());
@@ -19,7 +21,8 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
 
 export const registerCandidate = async (newUser, navigate, dispatch) => {
     try {
-        await axios.post("/account/auth/register", newUser)
+        console.log(newUser)
+        await axios.post("/account/auth/registerForCandidate", newUser)
         loginUser(newUser, dispatch, navigate, true);
     } catch (error) {
         return error
@@ -50,14 +53,15 @@ export const logoutUser = async (dispatch, navigate) => {
     }
 }
 
-export const updateCandidate = async (id, navigate, data) => {
-    console.log(data)
+export const updateCandidate = async (id, navigate, data, dispatch) => {
+    dispatch(userStart());
     try {
         const res = await axios.put(`/candidate/update?id=${id}`, data)
-        console.log(res)
+        console.log(res.data.data);
+        dispatch(userSuccess(res.data.data));
         navigate("/");
     } catch (err) {
-        return err
+        dispatch(userFailed())
     }
 }
 
@@ -66,6 +70,15 @@ export const adminRegisterCandidate = async (newUser, navigate) => {
         const res = await axios.post("/candidate/create", newUser)
         navigate("/")
         console.log(res)
+    } catch (error) {
+        return error
+    }
+}
+
+export const getCandidateById = async (id) => {
+    try {
+        const res = await axios.get(`/candidate/getCandidateByID?id=${id}`)
+        return res.data
     } catch (error) {
         return error
     }

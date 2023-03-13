@@ -14,12 +14,14 @@ interface Props {
     popup: Number,
     isDisplay: Dispatch<SetStateAction<string>>,
     isPopup: Dispatch<SetStateAction<Number>>
-
 }
 const Popup: FC<Props> = (props) => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [confirm, setConfirm] = useState<string>("")
+    const [confirm, setConfirm] = useState<string>("");
+    const [messageRegister, setMessageRegister] = useState<string>("");
+    const [messageLogin, setMessageLogin] = useState<string>("");
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -56,9 +58,10 @@ const Popup: FC<Props> = (props) => {
                 password: password
             }
             registerCandidate(newUser, navigate, dispatch);
+            setMessageRegister("");
         }
         else {
-            console.log("password confirm and password not match!")
+            setMessageRegister("password confirm and password not match!");
         }
     }
 
@@ -74,6 +77,7 @@ const Popup: FC<Props> = (props) => {
                     <h4>Login</h4>
                     <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
                     <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} />
+                    <p>{messageLogin}</p>
                     <button type='submit' className="btn-submit">
                         Login
                     </button>
@@ -101,6 +105,7 @@ const Popup: FC<Props> = (props) => {
                     <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
                     <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} autoComplete="on" />
                     <input type="password" className='input' placeholder='Confirm Password' onChange={(e) => { setConfirm(e.target.value) }} autoComplete="on" />
+                    <p>{messageRegister}</p>
                     <button className="btn-submit" onClick={registerHandler}>
                         Join APITS
                     </button>

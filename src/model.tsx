@@ -128,3 +128,4 @@ export interface Candidate {
     address: string;
     specialties: Specialty[];
 }
+
