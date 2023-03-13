@@ -41,7 +41,7 @@ const CandidateHeader: FC<Props> = (props) => {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Find Jobs</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Find Jobs</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
@@ -55,14 +55,14 @@ const CandidateHeader: FC<Props> = (props) => {
                                 }}>
                                     <div className="flex-css relative hover-primary">
                                         <img className='avt' src="/images/avt.jpg" alt="" />
-                                        <div className='user-name'>{user.candidate.name}</div>
+                                        <div className='user-name'>{user?.information.name}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
                                             <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
-                                                <span className='user-info-name'>Dac Dat</span>
-                                                <span className='user-info-email'>lhdd159357@gmail.com</span>
+                                                <span className='user-info-name'>{user?.information.name}</span>
+                                                <span className='user-info-email'>{user?.information.email}</span>
                                             </div>
                                         </div>
                                         <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>

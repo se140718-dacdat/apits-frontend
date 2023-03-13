@@ -59,39 +59,25 @@ export interface Category {
 
 export interface Level {
     levelId: number;
-    levelName: number;
+    levelName: string;
 }
 
 export const level1: Level = {
     levelId: 1,
-    levelName: 1
+    levelName: "Beginner"
 }
 export const level2: Level = {
     levelId: 2,
-    levelName: 2
+    levelName: "Advanced"
 }
 export const level3: Level = {
     levelId: 3,
-    levelName: 3
+    levelName: "Intensive"
 }
-export const level4: Level = {
-    levelId: 4,
-    levelName: 4
-}
-export const level5: Level = {
-    levelId: 5,
-    levelName: 5
-}
-export const level6: Level = {
-    levelId: 6,
-    levelName: 6
-}
-
 export const java: Skill = {
     skillId: "java",
     skillName: "java",
     skillIcon: "/images/JavaIcon.png"
-
 }
 
 export const aps: Skill = {
@@ -129,3 +115,16 @@ export const dataEngineer: Category = {
 
 export const genderList = ["Male", "Female", "Other"]
 
+export interface Specialty {
+    id: number;
+    name: string;
+    skills: string[];
+}
+
+export interface Candidate {
+    id: number;
+    name: string;
+    gender: string;
+    address: string;
+    specialties: Specialty[];
+}

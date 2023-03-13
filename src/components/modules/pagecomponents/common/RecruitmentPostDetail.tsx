@@ -1,14 +1,79 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
-import { faBusinessTime, faCoins, faLocationDot, faMarsAndVenus, faMedal, faPerson } from '@fortawesome/free-solid-svg-icons';
+import { faBusinessTime, faCoins, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import { useState } from 'react'
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import "./RecruitmentPostDetail.css";
+import { Dropdown } from 'react-bootstrap';
+import "./Filter.css"
+import { Candidate } from '../../../../model';
+import CandidateAssign from './CandidateAssign';
+
+
+const candidates: Candidate[] = [
+    {
+        id: 1,
+        name: "Lương Hồ Đắc Đạt",
+        address: "Bình Chánh, HCM",
+        gender: "Male",
+        specialties: [
+            {
+                id: 1,
+                name: "Front-end",
+                skills: ["React", "JavaScript", "CSS"],
+            },
+            {
+                id: 2,
+                name: "Back-end",
+                skills: ["Node.js", "SQL", "PHP"],
+            },
+        ],
+    },
+    {
+        id: 2,
+        name: "Phạm Thành Long",
+        address: "Biên Hòa, Đồng Nai",
+        gender: "Male",
+        specialties: [
+            {
+                id: 1,
+                name: "Front-end",
+                skills: ["Angular", "TypeScript", "HTML"],
+            },
+            {
+                id: 3,
+                name: "Database",
+                skills: ["SQL Server", "Oracle", "MySQL"],
+            },
+        ],
+    },
+];
 
 const RecruitmentPostDetail = () => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+
+
     return (
         <div id='RecruitmentPostDetail'>
             <div className="post-wrap">
-
                 <div className="row">
                     <div className="col-12 col-xl-9 leftside">
                         <div className="card">
@@ -25,7 +90,7 @@ const RecruitmentPostDetail = () => {
                                     </div>
                                 </div>
                                 <div className="btn-assign">
-                                    <button>Assign Candidate</button>
+                                    <button onClick={handleOpen}>Assign Candidate</button>
                                 </div>
                             </div>
                             <div className="post-content">
@@ -86,22 +151,139 @@ const RecruitmentPostDetail = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="general-information">
+                                <div className="general-information" style={{ marginBottom: "32px" }}>
                                     <p>Work location</p>
                                     <div className="general-item">
                                         <span>- Hà Nội: Ngõ 8 Nguyễn Văn Lộc, Mộ Lao, Hà Đông</span>
+                                    </div>
+                                </div>
+                                <div className="general-description">
+                                    <h3>Job description</h3>
+                                    <div className="general-item">
+                                        <ul>
+                                            <li>Thiết kế và phát triển các website WordPress</li>
+                                            <li>Thiết kế Landing page</li>
+                                            <li>Phát triển các tính năng cho themes</li>
+                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="general-description">
+                                    <h3>Candidate requirements</h3>
+                                    <div className="general-item">
+                                        <ul>
+                                            <li>Thiết kế và phát triển các website WordPress</li>
+                                            <li>Thiết kế Landing page</li>
+                                            <li>Phát triển các tính năng cho themes</li>
+                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="general-description">
+                                    <h3>Benefits</h3>
+                                    <div className="general-item">
+                                        <ul>
+                                            <li>Thiết kế và phát triển các website WordPress</li>
+                                            <li>Thiết kế Landing page</li>
+                                            <li>Phát triển các tính năng cho themes</li>
+                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-12 col-xl-3 right">
-                        <div className="avt-post-cover inline-block">
-                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                        <div className="card">
+
+                            <div className="right-item">
+                                <p className='item-name'>Website</p>
+                                <div className="item-description">
+                                    <a href='https://www.topcv.vn/viec-lam/lap-trinh-vien-front-end-develop-wordpress/944198.html'>https://www.topcv.vn/viec-lam/lap-trinh-vien-front-end-develop-wordpress/944198.html</a>
+                                </div>
+                            </div>
+                            <div className="right-item">
+                                <p className='item-name'>Company Scale</p>
+                                <div className="description p0-14">
+                                    Over 1000
+                                </div>
+                            </div>
+                            <div className="right-item">
+                                <p className='item-name'>Specialty</p>
+                                <div className="item-list">
+                                    <div className="item">
+                                        Developer
+                                    </div>
+                                    <div className="item">
+                                        Data Engineer
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="right-item">
+                                <p className='item-name'>Skills</p>
+                                <div className="item-list">
+                                    <div className="item">
+                                        Java
+                                    </div>
+                                    <div className="item">
+                                        Python
+                                    </div>
+                                    <div className="item">
+                                        SQL
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="right-item">
+                                <p className='item-name'>Introduce</p>
+                                <div className="description p0-14">
+                                    <span>Công ty TNHH SAPAN VIỆT NAM, là start-up công nghệ cung cấp hệ thống và dịch vụ logistic và fulfillment cho các các website thương mại điện tử tại thị trường Mỹ. Chúng tôi đã và đang phục vụ hơn 20 website thương mại điện tử lớn tại Mỹ. Sứ mệnh của chúng tôi là dành mọi nguồn lực để xây dựng, vận hành và phát triển hoạt động kinh doanh thương mại điện tử tạo ra các thương hiệu có giá trị toàn cầu.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='assign-modal'>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Brief Information
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="assign-container">
+                            <h2>Suitable candidates</h2>
+                            <div className="candidates-container">
+                                <div className="filter">
+                                    <div className="form-input">
+                                        <div className="input-icon">
+                                            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+                                        </div>
+                                        <input type="text" placeholder='Enter search keywords' />
+                                    </div>
+                                    <Dropdown className="specialty-dropdown">
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty'>
+                                            <span>All Specialty</span>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu className='specialty-menu'>
+                                            <div>
+                                                <Dropdown.Item className='specialty-item'>Developer</Dropdown.Item>
+                                            </div>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    <button className='btn-search'>Tìm</button>
+                                </div>
+                                <div style={{ height: 500, width: '100%' }}>
+                                    <CandidateAssign candidates={candidates} />;
+                                </div>
+                            </div>
+                        </div>
+                    </Typography>
+                </Box>
+            </Modal>
         </div>
     )
 }

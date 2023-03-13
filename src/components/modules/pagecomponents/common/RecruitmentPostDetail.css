@@ -39,7 +39,7 @@
 }
 
 #RecruitmentPostDetail .col-xl-3 {
-    flex: 0 0 auto;
+    flex: auto;
     width: 20%;
 }
 
@@ -116,7 +116,8 @@
     margin-bottom: 12px;
 }
 
-#RecruitmentPostDetail .general-information p {
+#RecruitmentPostDetail .general-information p,
+#RecruitmentPostDetail .item-name {
     text-decoration: underline;
     font-size: 14px;
     font-weight: 700;
@@ -140,4 +141,67 @@
     width: 32px;
     height: 32px;
     margin-right: 16px;
+}
+
+#RecruitmentPostDetail .right .card {
+    padding: 16px;
+}
+
+#RecruitmentPostDetail .right-item {
+    margin-bottom: 8px;
+}
+
+#RecruitmentPostDetail .item-name {
+    margin-bottom: 8px !important;
+}
+
+#RecruitmentPostDetail .right-item {
+    margin-bottom: 24px;
+}
+#RecruitmentPostDetail .item-description {
+    font-size: 0.9rem;
+    background: rgb(242 114 41 / 10%);
+    border-radius: 5px;
+    overflow: hidden !important;
+    padding: 10px 14px;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    color: var(--black-color);
+    text-decoration: none;
+}
+
+#RecruitmentPostDetail .item-description a {
+    color: var(--black-color);
+    text-decoration: none;
+}
+
+#RecruitmentPostDetail .item-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#RecruitmentPostDetail .item {
+    padding: 4px 16px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 15px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+#RecruitmentPostDetail .description {
+    font-size: 0.9rem;
+    text-align: justify;
+}
+
+#RecruitmentPostDetail .general-description h3 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+.assign-modal {
+    width: 80% !important;
+    overflow-y: scroll !important;
+    max-height: 80% !important;
 }

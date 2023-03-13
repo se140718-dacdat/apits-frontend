@@ -4,14 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars, faUser, faEnvelope, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Dropdown, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/esm/Button';
-import { Category, dataEngineer, developer, Level, level1, level2, level3, level4, level5, level6 } from '../../../model';
+import { Category, dataEngineer, developer, Level, level1, level2, level3} from '../../../model';
+import { useSelector } from 'react-redux';
 
 export const CandidateProfile: FC = () => {
+    const user = useSelector((state: any) => state.auth.login.currentUser);
 
     const [show, setShow] = useState(false);
     const [category, setCategory] = useState<Category>(developer);
     const categoryList: Category[] = [developer, dataEngineer]
-    const levelList: Level[] = [level1, level2, level3, level4, level5, level6]
+    const levelList: Level[] = [level1, level2, level3]
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
