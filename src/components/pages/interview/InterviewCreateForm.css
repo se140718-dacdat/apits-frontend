@@ -31,7 +31,6 @@
     opacity: 0.9;
     text-align: center;
     padding-top: 4rem;
-    font-size: 16px;
     color: var(--white-color);
 }
 
@@ -46,32 +45,38 @@
 }
 
 #InterviewCreate .form-group .underline {
-    width: 50px;
+    width: 100px;
     height: 0.2rem;
     background-color: var(--primary-color);
 }
 
 #InterviewCreate .form-group .tilte {
     margin-top: 1rem;
-    font-weight: 500;
-    font-size: 20px;
+    font-weight: 500
 }
+
+#InterviewCreate .participant,
 #InterviewCreate .form-group .content .group-input {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
 }
 
-#InterviewCreate .form-input {
-    width: 600px;
+#InterviewCreate .gr-left {
+    width: 25%;
+}
+
+#InterviewCreate .gr-right {
+    width: 75%;
 }
 
 #InterviewCreate .form-select,
 #InterviewCreate .input-date {
-    width: 230px;
+    max-width: 270px;
 }
 
 #InterviewCreate .form-select {
-    font-size: 16px;
     height: 34px;
     padding: 0 12px;
     border-radius: 4px;
@@ -96,31 +101,23 @@
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     height: 34px;
-    margin-top: 0.7rem;
-    font-size: 16px;
 }
 
 #InterviewCreate .regis-input:focus {
     border: 2px solid var(--primary-color);
 }
 
-#InterviewCreate .form-group .group-input label {
-    font-size: 16px;
-    padding-top: 0.8rem;
-}
-
 #InterviewCreate .text-err {
-    font-size: 14px;
+    font-size: 16px;
     color: #dc3545;
     flex-wrap: wrap;
+    width: 75%;
+    margin-top: 0.2rem;
 }
 
-#InterviewCreate textarea {
-    padding: 2px 12px;
-}
-
-#InterviewCreate textarea:focus {
-    outline: none;
+#InterviewCreate .error {
+    display: flex;
+    justify-content: flex-end;
 }
 
 #InterviewCreate .group-button {
@@ -134,4 +131,147 @@
     background-color: #f3f4f5 !important;
     color: #212529 !important;
     margin-right: 1.5rem;
+}
+
+#InterviewCreate .select-duration {
+    width: 4.6rem;
+}
+
+#InterviewCreate .header {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+#InterviewCreate .group-participants {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#InterviewCreate .participant-header {
+    font-size: 24px;
+}
+
+#InterviewCreate .participant {
+    width: 100%;
+}
+
+#InterviewCreate .participant-filter {
+    display: flex;
+}
+
+#InterviewCreate .filter {
+    margin-right: 1rem;
+}
+
+#InterviewCreate .btn-filter {
+    border: none;
+    background-color: unset;
+    color: var(--primary-color);
+}
+
+#PopupFilter .layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ccc;
+    opacity: 0.6;
+}
+
+#PopupFilter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#PopupFilter .filter-container {
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    left: 40%;
+    right: 40%;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+#PopupFilter .header {
+    text-align: center;
+}
+
+#PopupFilter .filter-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.65rem;
+    cursor: pointer;
+}
+
+
+#InterviewCreate .items-filter {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+#InterviewCreate .cadidate-filter {
+    width: 75%;
+    flex-wrap: wrap;
+
+}
+
+#InterviewCreate .btn-item {
+    padding: 4px 16px;
+    border-radius: 15px;
+    margin: 5px 10px;
+    background-color: var(--white-color);
+    border: none;
+    color: var(--primary-color);
+    border: 1px solid #ebeced;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+#InterviewCreate .btn-item span {
+    margin-right: 8px;
+}
+
+#InterviewCreate .btn-item:hover {
+    background-color: #f2732941;
+}
+
+#PopupFilter .filter-title {
+    font-size: 26px;
+    padding-top: 1rem;
+ }
+
+#PopupFilter .filter-body {
+    padding: 1.5rem;
+    height: 75%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+ }
+
+#PopupFilter .candidate {
+    padding: 0 0.4rem;
+    margin: 0.5rem 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+#PopupFilter .candidate:hover {
+    background-color: #f2732941;
+}
+
+#PopupFilter .candidate-checkbox {
+    accent-color: #ff5e00
+}
+
+@media screen and (max-width: 1033px) {
+    
 }
