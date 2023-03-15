@@ -12,29 +12,29 @@ const RecruitmentPost = () => {
         <div id='RecruitmentPost'>
             <h2 className='primary-color'>Jobs</h2>
             <div className="filter">
-                <div className="form-input">
-                    <div className="input-icon">
+                <div className="filter-form-input">
+                    <div className="filter-input-icon">
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
                     </div>
                     <input type="text" placeholder='Enter search keywords' />
                 </div>
-                <Dropdown className="specialty-dropdown ml-8">
-                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty'>
+                <Dropdown className="filter-dropdown ml-8">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
                         <span>All Specialty</span>
                     </Dropdown.Toggle>
-                    <Dropdown.Menu className='specialty-menu'>
+                    <Dropdown.Menu className='filter-menu'>
                         <div>
-                            <Dropdown.Item className='specialty-item'>Developer</Dropdown.Item>
+                            <Dropdown.Item className='filter-item'>Developer</Dropdown.Item>
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Dropdown className="specialty-dropdown ml-8" style={{ width: "18%" }}>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty duration'>
+                <Dropdown className="filter-dropdown ml-8" style={{ width: "18%" }}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
                         <span>All Durations</span>
                     </Dropdown.Toggle>
-                    <Dropdown.Menu className='specialty-menu'>
+                    <Dropdown.Menu className='filter-menu'>
                         <div>
-                            <Dropdown.Item className='specialty-item'>All durations</Dropdown.Item>
+                            <Dropdown.Item className='filter-item'>All durations</Dropdown.Item>
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>

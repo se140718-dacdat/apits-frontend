@@ -1,0 +1,22 @@
+#Specialty {
+    padding: 2% 10% 5%;
+}
+
+#Specialty h2 {
+    color: var(--primary-color);
+}
+
+#Specialty .item-icon {
+    width: 32px;
+    height: 32px;
+    color: #5DC26A;
+}
+
+#Specialty .skill-row {
+    display: flex;
+    align-items: center;
+}
+
+#Speicalty .skill-row input {
+    padding: 8px;
+}

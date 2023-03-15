@@ -75,25 +75,25 @@ const Candidates: FC<Props> = (props) => {
         <div id='Candidates'>
             <h2>Candidates</h2>
             <div className="candidates-container">
-                <div className="filter">
-                    <div className="form-input">
-                        <div className="input-icon">
-                            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
-                        </div>
-                        <input type="text" placeholder='Enter search keywords' />
+            <div className="filter">
+                <div className="filter-form-input">
+                    <div className="filter-input-icon">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
                     </div>
-                    <Dropdown className="specialty-dropdown">
-                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty'>
-                            <span>All Specialty</span>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className='specialty-menu'>
-                            <div>
-                                <Dropdown.Item className='specialty-item'>Developer</Dropdown.Item>
-                            </div>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <button className='btn-search'>Tìm</button>
+                    <input type="text" placeholder='Enter search keywords' />
                 </div>
+                <Dropdown className="filter-dropdown ml-8">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                        <span>All Specialty</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className='filter-menu'>
+                        <div>
+                            <Dropdown.Item className='filter-item'>Developer</Dropdown.Item>
+                        </div>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <button className='btn-search ml-8'>Tìm</button>
+            </div>
                 <div style={{ height: 500, width: '100%' }}>
                     <DataGrid
                         rows={rows}
