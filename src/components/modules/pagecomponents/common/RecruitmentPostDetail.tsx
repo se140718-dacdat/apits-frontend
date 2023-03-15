@@ -8,7 +8,7 @@ import Modal from '@mui/material/Modal';
 import "./RecruitmentPostDetail.css";
 import { Dropdown } from 'react-bootstrap';
 import "./Filter.css"
-import { Candidate } from '../../../../model';
+import { Candidate, Category, dataEngineer, developer } from '../../../../model';
 import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
@@ -56,11 +56,12 @@ const candidates: Candidate[] = [
 ];
 
 const RecruitmentPostDetail = () => {
+    const [category, setCategory] = useState<Category>(developer);
+    const categoryList: Category[] = [developer, dataEngineer]
     const account = useSelector((state: any) => state.auth.login.currentUser);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -96,13 +97,17 @@ const RecruitmentPostDetail = () => {
                                 </div>
                                 {
                                     (account?.role.name === "EMPLOYEE") ?
-                                        <div className="btn-assign">
+                                        (<div className="btn-assign">
                                             <button onClick={handleOpen}>Assign Candidate</button>
-                                        </div>
-                                        :
-                                        <div className="btn-assign">
-                                            <button onClick={handleOpen}>Assigned List</button>
-                                        </div>
+                                        </div>)
+                                        : (account?.role.name === "ENTERPRISE") ?
+                                            (<div className="btn-assign">
+                                                <button onClick={handleOpen}>Assigned List</button>
+                                            </div>)
+                                            :
+                                            <div className="btn-assign">
+                                                <button onClick={handleOpen}>Appy Now!</button>
+                                            </div>
                                 }
                             </div>
                             <div className="post-content">
@@ -255,52 +260,115 @@ const RecruitmentPostDetail = () => {
                     </div>
                 </div>
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style} className='assign-modal'>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Brief Information
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="assign-container">
-                            <h2>Suitable candidates</h2>
-                            <div className="candidates-container">
-                                <div className="filter">
-                                    <div className="form-input">
-                                        <div className="input-icon">
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
-                                        </div>
-                                        <input type="text" placeholder='Enter search keywords' />
-                                    </div>
-                                    <Dropdown className="specialty-dropdown">
-                                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='specialty'>
-                                            <span>All Specialty</span>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu className='specialty-menu'>
-                                            <div>
-                                                <Dropdown.Item className='specialty-item'>Developer</Dropdown.Item>
+            {
+                (account?.role.name === "EMPLOYEE") ?
+                    (<Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style} className='assign-modal'>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                Brief Information
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <div className="assign-container">
+                                    <h2>Suitable candidates</h2>
+                                    <div className="candidates-container">
+                                        <div className="filter">
+                                            <div className="filter-form-input">
+                                                <div className="filter-input-icon">
+                                                    <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+                                                </div>
+                                                <input type="text" placeholder='Enter search keywords' />
                                             </div>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                    <button className='btn-search'>Tìm</button>
+                                            <Dropdown className="filter-dropdown ml-8">
+                                                <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                                                    <span>{category.categoryName}</span>
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu className='filter-menu'>
+                                                    {
+                                                        categoryList.map((category) => {
+                                                            return (
+                                                                <div key={category.categoryId}>
+                                                                    <Dropdown.Item className='filter-item' onClick={() => { setCategory(category) }}>{category.categoryName}</Dropdown.Item>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                            <button className='btn-search ml-8'>Tìm</button>
+                                        </div>
+                                        <div style={{ height: 500, width: '100%' }}>
+                                            {
+                                                (account?.role.name === "EMPLOYEE") ?
+                                                    <CandidateAssign candidates={candidates} />
+                                                    :
+                                                    <ViewAssign candidates={candidates} />
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style={{ height: 500, width: '100%' }}>
-                                    {
-                                        (account?.role.name === "EMPLOYEE") ?
-                                            <CandidateAssign candidates={candidates} />
-                                            :
-                                            <ViewAssign candidates={candidates} />
-                                    }
-                                </div>
-                            </div>
+                            </Typography>
+                        </Box>
+                    </Modal>)
+                    : (account?.role.name === "ENTERPRISE") ?
+                        (<Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box sx={style} className='assign-modal'>
+                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                    <div className="assign-container">
+                                        <h2>Candidates assigned</h2>
+                                        <div className="candidates-container">
+                                            <div className="filter">
+                                                <div className="filter-form-input">
+                                                    <div className="filter-input-icon">
+                                                        <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+                                                    </div>
+                                                    <input type="text" placeholder='Enter search keywords' />
+                                                </div>
+                                                <Dropdown className="filter-dropdown ml-8">
+                                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                                                        <span>{category.categoryName}</span>
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu className='filter-menu'>
+                                                        {
+                                                            categoryList.map((category) => {
+                                                                return (
+                                                                    <div key={category.categoryId}>
+                                                                        <Dropdown.Item className='filter-item' onClick={() => { setCategory(category) }}>{category.categoryName}</Dropdown.Item>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                                <button className='btn-search ml-8'>Tìm</button>
+                                            </div>
+                                            <div style={{ height: 500, width: '100%' }}>
+                                                {
+                                                    (account?.role.name === "EMPLOYEE") ?
+                                                        <CandidateAssign candidates={candidates} />
+                                                        :
+                                                        <ViewAssign candidates={candidates} />
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Typography>
+                            </Box>
+                        </Modal>)
+                        :
+                        <div className="btn-assign">
+                            <button>Appy</button>
                         </div>
-                    </Typography>
-                </Box>
-            </Modal>
+            }
         </div>
     )
 }

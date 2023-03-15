@@ -79,27 +79,22 @@ const Specialty = () => {
                 return (
                   <tr key={skill.skillId}>
                     <td>
-                      <div className="skill-row">{skill.skillId}</div>
+                      {skill.skillId}
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <img src={skill.skillIcon} alt="" className="item-icon" />
-                      </div>
+                      <img src={skill.skillIcon} alt="" className="item-icon" />
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <input style={{padding: "8px", width: "100%"}} type="text" value={skill.skillName} />
-                      </div>
+                      <input style={{ padding: "8px", width: "100%" }} type="text" value={skill.skillName} />
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <input style={{padding: "8px", width: "100%"}} type="text" value={"https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true"} />
-                      </div>
+                      <input style={{ padding: "8px", width: "100%" }} type="text" value={"https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true"} />
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <Button variant="success" onClick={() => { setEdditing("") }}>Save</Button>
-                      </div>
+                      <button className='btn-save' onClick={() => { setEdditing("") }}>Save</button>
+                    </td>
+                    <td>
+                      <button className='btn-cancel' onClick={() => { setEdditing("") }}>Cancel</button>
                     </td>
                   </tr>
                 );
@@ -107,25 +102,19 @@ const Specialty = () => {
                 return (
                   <tr key={skill.skillId}>
                     <td>
-                      <div className="skill-row">{skill.skillId}</div>
+                      {skill.skillId}
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <img src={skill.skillIcon} alt="" className="item-icon" />
-                      </div>
+                      <img src={skill.skillIcon} alt="" className="item-icon" />
                     </td>
                     <td>
-                      <div className="skill-row">{skill.skillName}</div>
+                      {skill.skillName}
                     </td>
                     <td>
-                      <div className="skill-row">
-                        https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true
-                      </div>
+                      https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true
                     </td>
                     <td>
-                      <div className="skill-row">
-                        <Button variant="primary" onClick={() => { setEdditing(skill.skillId) }}>Edit</Button>
-                      </div>
+                      <button className='btn-edit' onClick={() => { setEdditing(skill.skillId) }}>Edit</button>
                     </td>
                   </tr>
                 )

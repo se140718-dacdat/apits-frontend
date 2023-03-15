@@ -24,6 +24,7 @@ import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister
 import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
 import InterviewCreate from './components/pages/Employee/HR/InterviewCreateForm';
 import Specialty from './components/pages/Employee/Manager/Specialty';
+import Request from './components/modules/pagecomponents/common/Request';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -63,6 +64,7 @@ const App: FC = () => {
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
+        <Route path='/request' element={<Request />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>

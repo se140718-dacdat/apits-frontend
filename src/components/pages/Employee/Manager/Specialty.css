@@ -12,11 +12,26 @@
     color: #5DC26A;
 }
 
-#Specialty .skill-row {
-    display: flex;
-    align-items: center;
+#Specialty .btn-edit,
+#Specialty .btn-save,
+#Specialty .btn-cancel {
+    padding: 6px 4px;
+    border-radius: 5px;
+    width: 7rem;
+    border: none;
+    color: var(--white-color);
+    font-weight: 500;
 }
 
-#Speicalty .skill-row input {
-    padding: 8px;
+
+#Specialty .btn-edit {
+    background-color: var(--primary-color);
+}
+
+#Specialty .btn-save {
+    background-color: #5DC26A;
+}
+
+#Specialty .btn-cancel {
+    background-color: #DC3545;
 }

@@ -1,27 +1,22 @@
-#CandidateProfile {
-    width: 100%;
-    position: relative;
-}
-
-#CandidateProfile .profile-container {
+#ViewAssign .profile-container {
     display: flex;
     justify-content: space-between;
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
+    margin: 0;
     z-index: 5;
     position: inherit;
     top: -200px;
 }
 
-#CandidateProfile .banner {
+#ViewAssign .banner {
     width: 100%;
 }
 
-#CandidateProfile .left {
+#ViewAssign .left {
     width: 65%;
 }
 
-#CandidateProfile .right {
+#ViewAssign .right {
     flex-wrap: wrap;
     display: flex;
     flex-direction: row;
@@ -29,15 +24,15 @@
     border-radius: 5px 5px 0 0;
 }
 
-#CandidateProfile .profile {
+#ViewAssign .profile {
     flex-wrap: nowrap;
     display: flex;
     justify-content: space-between;
     padding: 24px;
 }
 
-#CandidateProfile .profile-input,
-#CandidateProfile .profile {
+#ViewAssign .profile-input,
+#ViewAssign .profile {
     border-radius: 10px;
     width: 100%;
     background-color: var(--white-color);
@@ -45,72 +40,72 @@
     margin-bottom: 32px;
 }
 
-#CandidateProfile .col-left {
+#ViewAssign .col-left {
     width: 35%;
 }
 
-#CandidateProfile .col-right {
+#ViewAssign .col-right {
     position: relative;
     width: 60%;
 }
 
-#CandidateProfile .col-half {
+#ViewAssign .col-half {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 25px;
 }
 
-#CandidateProfile .work-status {
+#ViewAssign .work-status {
     width: 100%;
 }
 
-#CandidateProfile .col-half span {
+#ViewAssign .col-half span {
     margin-left: 24px;
     text-transform: capitalize;
 }
 
-#CandidateProfile .fullname {
+#ViewAssign .fullname {
     font-size: 2rem;
     font-weight: 700;
 }
 
-#CandidateProfile .btn-cover {
+#ViewAssign .btn-cover {
     width: 30%;
     padding: 0 !important;
 }
 
-#CandidateProfile .btn-edit {
+#ViewAssign .btn-edit {
     float: right;
 }
 
-#CandidateProfile .avatar {
+#ViewAssign .avatar {
     width: 265px;
     height: 265px;
     border-radius: 10px;
 }
 
-#CandidateProfile .b-0 {
+#ViewAssign .b-0 {
     width: 100%;
     position: absolute;
     bottom: 0;
 }
 
-#CandidateProfile .join {
+#ViewAssign .join {
     margin-top: 12px;
     display: flex;
     align-items: center;
     font-size: 1.2rem;
 }
 
-#CandidateProfile .icon {
+#ViewAssign .icon {
     margin-right: 12px;
     color: var(--primary-color);
     width: 25px;
     height: 25px;
 }
 
-#CandidateProfile .profile-header {
+#ViewAssign .profile-header {
     border-bottom: 1px solid #D9D9D9;
     padding: 12px 24px;
     width: 100%;
@@ -118,16 +113,16 @@
     justify-content: space-between;
 }
 
-#CandidateProfile .profile-header-name {
+#ViewAssign .profile-header-name {
     font-weight: bold;
     font-size: 1.5rem;
 }
 
-#CandidateProfile .profile-body {
+#ViewAssign .profile-body {
     width: 100%;
 }
 
-#CandidateProfileModal .input {
+#ViewAssignModal .input {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -135,28 +130,28 @@
     flex-wrap: wrap;
 }
 
-#CandidateProfileModal .input * {
+#ViewAssignModal .input * {
     width: 100%;
 }
 
-#CandidateProfileModal .input-profile {
+#ViewAssignModal .input-profile {
     padding: 12px;
     border-radius: 5px;
 }
 
-#CandidateProfileModal .input span {
+#ViewAssignModal .input span {
     align-content: center;
     margin-bottom: 12px;
     font-size: 1.2rem;
 }
 
 
-#CandidateProfileModal .input textarea {
+#ViewAssignModal .input textarea {
     min-height: 300px;
 }
 
 
-#CandidateProfile .level {
+#ViewAssign .level {
     background-color: var(--white-color);
     font-size: 0.8rem;
     border-radius: 10px;
@@ -167,47 +162,68 @@
     margin: 0 8px;
 }
 
-#CandidateProfile .item {
+#ViewAssign .item {
     display: flex;
     margin: 24px;
     align-items: flex-end;
 }
 
-#CandidateProfile .item-name {
+#ViewAssign .item-name {
     margin-left: 12px;
     text-transform: capitalize;
 }
 
-#CandidateProfile .item-icon {
+#ViewAssign .item-icon {
     width: 32px;
     height: 32px;
     color: #5DC26A;
 }
 
-#CandidateProfile .item-verify,
-#CandidateProfile .icon-check {
+#ViewAssign .item-verify,
+#ViewAssign .icon-check {
     margin-left: auto;
     order: 2;
 }
 
-#CandidateProfile .item-verify {
+#ViewAssign .item-verify {
     color: #007fed;
 
 }
 
 
-#CandidateProfile .item-verify:hover {
+#ViewAssign .item-verify:hover {
     cursor: pointer;    
     text-decoration: underline;
 }
 
-#CandidateProfile .icon-check {
+#ViewAssign .icon-check {
     color: #5DC26A;
 }
 
-#CandidateProfile .btn-update-specialty {
+#ViewAssign .btn-update-specialty {
     margin-top: 24px;
     width: 100%;
     padding: 12px 0 !important;
     border-radius: 0 0 10px 10px !important;
 }
+
+#ViewAssign select {
+    padding: 6px 16px !important;
+    background-color: var(--primary-color) !important;
+    color: var(--white-color) !important;
+}
+
+
+.view-assign-specialty-select {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .view-assign-specialty-select:hover,
+  .view-assign-specialty-select:focus {
+    border-color: #4a90e2;
+    cursor: pointer;
+  }
