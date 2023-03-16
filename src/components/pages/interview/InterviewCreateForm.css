@@ -355,7 +355,7 @@
     cursor: pointer;
 }
 
-#InterviewCreate .participant__input:hover .participant__icon--plus {
+#InterviewCreate .participant__icon--plus:hover {
     opacity: 0.8;
 }
 
@@ -420,6 +420,37 @@
 #PopupInterviewer .icon-search:hover {
     background-color: #f2732941;
     border-radius: 50%;
+}
+
+
+#PopupInterviewer .search-name {
+    width: 100%;
+}
+
+#PopupInterviewer .search-name-interviewer {
+    transition: 0.3s;
+    padding: 0.5rem;
+}
+
+#PopupInterviewer .search-icon {
+    display: none;
+}
+
+#PopupInterviewer .search-name-interviewer:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#PopupInterviewer .search-name-interviewer:active {
+    background-color: #bd4500;
+}
+
+#PopupInterviewer .search-name-interviewer:hover .search-icon {
+    display: inline;
 }
 
 @media screen and (max-width: 1033px) {

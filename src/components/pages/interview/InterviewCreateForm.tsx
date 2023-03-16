@@ -2,7 +2,7 @@ import { Dropdown } from "react-bootstrap";
 import "./InterviewCreateForm.css"
 import { Fragment, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fa1, fa2, fa3, faCirclePlus, faClipboardCheck, faClose, faCode, faDatabase, faDisplay, faDove, faFilter, faHeartCirclePlus, faLightbulb, faMagnifyingGlass, faPlus, faPlusCircle, faPlusMinus, faShare, faTerminal, faUsersLine, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { fa1, fa2, fa3, faArrowRight, faCirclePlus, faClipboardCheck, faClose, faCode, faDatabase, faDisplay, faDove, faFilter, faHeartCirclePlus, faLightbulb, faMagnifyingGlass, faPlus, faPlusCircle, faPlusMinus, faShare, faTerminal, faUsersLine, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const InterviewCreate = () => {
     const listCandidate = ['Tran Van A', 'Tran Van B', 'Tran Van C', 'Tran Van D', 'Tran Van E', 'Tran Van F', 'Tran Van G', 'Tran Van H'];
@@ -289,7 +289,9 @@ const InterviewCreate = () => {
                                             )
                                     }
 
-                                    <button className="btn-filter" onClick={() => setIsPopupFilter(true)}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon></button>
+                                    <button className="btn-filter" onClick={() => setIsPopupFilter(true)}>
+                                        <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
+                                    </button>
                                 </div>
                             </div>
                             <div className="items-filter">
@@ -334,7 +336,23 @@ const InterviewCreate = () => {
                                 </div>
                                 <div className="interviewer-search input-pos">
                                     <input type="text" className="input-search input input-border" placeholder="Enter Enterprise name" />
-
+                                    <div className="search-name">
+                                        {
+                                            listCandidate.map((name, key) =>
+                                                <div className="search-name-interviewer"
+                                                    onClick={() => {
+                                                        if (interviewType === 'Interview with Enterprise')
+                                                            setEnterprise(name);
+                                                        else
+                                                            setProfessor(name);
+                                                        setIsPopupInterviewer(false);
+                                                    }}>
+                                                    <span>{name}</span>
+                                                    <FontAwesomeIcon icon={faArrowRight} className="search-icon" />
+                                                </div>
+                                            )
+                                        }
+                                    </div>
                                     <FontAwesomeIcon icon={faMagnifyingGlass} className="icon-search" />
                                 </div>
                             </div>
