@@ -5,8 +5,9 @@ import { Dropdown } from 'react-bootstrap';
 import "./Request.css";
 import "./Filter.css";
 import InterviewTable from './Interview';
+import { Interview } from '../../../../model';
 
-const interviews = [
+const interviews: Interview[] = [
   {
      id: "1",
      title: "Interview for Recruitment ABC",
@@ -14,11 +15,25 @@ const interviews = [
      time: "15:00-16:00",
      duration: "60 minutes",
      participant: "Lương Hồ Đắc Đạt",
-     link: "https://meet.google.com/nth-fvqt-xfd?pli=1&fbclid=IwAR3BnBYI_DWasftRsE52uNvwA4CzlG7CMGMoyvYBh2zIjWppJVhT6b2UXnk"
+     host: "Company ABC",
+     link: "https://meet.google.com/nth-fvqt-xfd?pli=1&fbclid=IwAR3BnBYI_DWasftRsE52uNvwA4CzlG7CMGMoyvYBh2zIjWppJVhT6b2UXnk",
+     type: 1,
   },
+  {
+    id: "2",
+    title: "Interview for recruitment Fsoft",
+    date: "11/04/2023",
+    time: "15:00-16:00",
+    duration: "60 minutes",
+    host: "FPT Software",
+    link: "link.com",
+    participant: "Dac Dat",
+    type: 1
+  }
 ];
 
 const Request = () => {
+
   return (
     <div id='Request'>
       <h2>Request list</h2>

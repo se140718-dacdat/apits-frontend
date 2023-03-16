@@ -1,0 +1,463 @@
+#InterviewCreate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    background-color: #f1f2f6;
+}
+
+#InterviewCreate input {
+    outline: none;
+}
+
+#InterviewCreate .bg {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0.8;
+    background-image: url('https://www.resumecoach.com/wp-content/uploads/sites/2/2018/02/top-10-tips-job-interview.jpg' );
+    background-size: cover;
+    background-position: center;
+}
+
+#InterviewCreate .bg .header {
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    opacity: 0.9;
+    text-align: center;
+    padding-top: 4rem;
+    color: var(--white-color);
+}
+
+#InterviewCreate .container {
+    padding: 1rem 3rem;
+    position: absolute;
+    width: 50%;
+    top: 200px;
+    background-color: var(--white-color);
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    border-radius: 4px;
+}
+
+#InterviewCreate .form-group .underline {
+    width: 100px;
+    height: 0.2rem;
+    background-color: var(--primary-color);
+}
+
+#InterviewCreate .form-group .tilte {
+    margin-top: 1rem;
+    font-weight: 500
+}
+
+#InterviewCreate .participant,
+#InterviewCreate .form-group .content .group-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
+}
+
+#InterviewCreate .gr-left {
+    width: 25%;
+}
+
+#InterviewCreate .gr-right {
+    width: 75%;
+}
+
+#InterviewCreate .form-select,
+#InterviewCreate .input-date {
+    max-width: 270px;
+}
+
+#InterviewCreate .form-select {
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 4px;
+}
+
+#InterviewCreate .form-select:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+    box-shadow: none;
+}
+
+#InterviewCreate .form-input-select {
+    display: flex;
+    align-items: flex-end;
+}
+
+#InterviewCreate p {
+    margin: 0;
+}
+
+#InterviewCreate .input-border {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    height: 34px;
+}
+
+#InterviewCreate .input-border:focus {
+    border: 2px solid var(--primary-color);
+}
+
+#InterviewCreate .text-err {
+    font-size: 16px;
+    color: #dc3545;
+    flex-wrap: wrap;
+    width: 75%;
+    margin-top: 0.2rem;
+}
+
+#InterviewCreate .error {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#InterviewCreate .group-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+#InterviewCreate .btn-cancel {
+    background-color: #f3f4f5 !important;
+    margin-right: 1.5rem;
+}
+
+#InterviewCreate .btn-cancel a {
+    color: #212529 !important;
+    text-decoration: none;
+}
+
+#InterviewCreate .select-duration {
+    width: 4.6rem;
+}
+
+#InterviewCreate .header {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+#InterviewCreate .group-participants {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#InterviewCreate .participant-header {
+    font-size: 24px;
+}
+
+#InterviewCreate .participant {
+    width: 100%;
+}
+
+#InterviewCreate .participant-filter {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+#InterviewCreate .filter-interview {
+    margin-right: 1rem;
+}
+
+#InterviewCreate .btn-filter-interview {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: unset;
+    color: var(--primary-color);
+}
+
+#InterviewCreate .btn-filter-interview:hover {
+    background-color: #f2732941;
+    border-radius: 50%;
+}
+
+#InterviewCreate .btn-plus {
+    border: 1px solid var(--primary-color);
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    background-color: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--primary-color) !important;
+    border-radius: 10px;
+}
+
+#PopupFilter .layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ccc;
+    opacity: 0.6;
+}
+
+#PopupFilter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#PopupFilter .filter-interview-container {
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    left: 40%;
+    right: 40%;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+#PopupInterviewer .header,
+#PopupFilter .header {
+    text-align: center;
+}
+
+#PopupInterviewer .filter-interview-close,
+#PopupFilter .filter-interview-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.65rem;
+    cursor: pointer;
+}
+
+
+#InterviewCreate .items-filter-interview {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+#InterviewCreate .cadidate-filter-interview {
+    width: 75%;
+    flex-wrap: wrap;
+    border: 1px solid #ebeced;
+    position: relative;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+
+#InterviewCreate .btn-item {
+    padding: 4px 16px;
+    border-radius: 15px;
+    margin: 5px 10px;
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: 1px solid ;
+    font-weight: 400;
+}
+
+#InterviewCreate .btn-item span {
+    margin-right: 8px;
+}
+
+#InterviewCreate .btn-item:hover {
+    background-color: #f2732941;
+}
+
+#PopupInterviewer .filter-interview-title,
+#PopupFilter .filter-interview-title {
+    font-size: 26px;
+    padding-top: 1rem;
+ }
+
+#PopupInterviewer .interviewer-search,
+#PopupFilter .filter-body {
+    padding: 1rem;
+    height: 75%;
+}
+
+
+#PopupFilter table {
+    width: 100%;
+    border: 1px solid var(--black-color);
+    border-collapse: collapse;
+    padding: 1rem;
+}
+#PopupFilter .tb-id {
+    padding: 0 4px;
+}
+#PopupFilter .tb-check,
+#PopupFilter .tb-id {
+    text-align: center;
+}
+
+#PopupFilter .candidate-row:hover {
+    background-color: #f2732941;
+}
+
+#PopupFilter .candidate-checkbox {
+    accent-color: #ff5e00
+}
+
+#InterviewCreate .specialty-item {
+    display: flex;
+    flex-direction: row;
+}
+
+#InterviewCreate .specialty-item:hover {
+    background-color: #f2732941;
+}
+
+#InterviewCreate .dropdown-item {
+    padding: 0;
+}
+#InterviewCreate .left-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem;
+    color: var(--primary-color);
+}
+
+#InterviewCreate .right-content {
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.8rem;
+}
+
+#InterviewCreate .specialty-description {
+    font-size: 16px;
+    color: #a9a9a9;
+}
+
+#InterviewCreate .participant__father {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0 ;
+    overflow: hidden;
+}
+#InterviewCreate .participant__icon--plus {
+    font-size: 30px;
+    color: var(--primary-color);
+}
+
+#InterviewCreate .participant__input {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#InterviewCreate .participant__icon--plus:hover {
+    opacity: 0.8;
+}
+
+#InterviewCreate .participant__name {
+    border: 1px solid #ebeced;
+    margin: 0 1rem 0 0;
+    color: var(--primary-color);;
+}
+
+#InterviewCreate .cadidate-list-title {
+    position: absolute;
+    top: -18px;
+    right: 20px;
+    background-color: var(--white-color);
+    padding: 0 8px;
+    color: var(--black-color);
+}
+
+#PopupInterviewer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#PopupInterviewer .layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ccc;
+    opacity: 0.6;
+}
+
+#PopupInterviewer .interviewer-container {
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    left: 40%;
+    right: 40%;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+#PopupInterviewer .input-pos {
+    position: relative;
+}
+
+#PopupInterviewer .icon-search {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 22px;
+    right: 24px;
+    padding: 4px;
+    color: var(--primary-color);
+}
+#PopupInterviewer .icon-search:hover {
+    background-color: #f2732941;
+    border-radius: 50%;
+}
+
+
+#PopupInterviewer .search-name {
+    width: 100%;
+}
+
+#PopupInterviewer .search-name-interviewer {
+    transition: 0.3s;
+    padding: 0.5rem;
+}
+
+#PopupInterviewer .search-icon {
+    display: none;
+}
+
+#PopupInterviewer .search-name-interviewer:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#PopupInterviewer .search-name-interviewer:active {
+    background-color: #bd4500;
+}
+
+#PopupInterviewer .search-name-interviewer:hover .search-icon {
+    display: inline;
+}
+
+@media screen and (max-width: 1033px) {
+    
+}

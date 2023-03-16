@@ -22,9 +22,10 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
 import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
-import InterviewCreate from './components/pages/Employee/HR/InterviewCreateForm';
 import Specialty from './components/pages/Employee/Manager/Specialty';
 import Request from './components/modules/pagecomponents/common/Request';
+import InterviewList from './components/pages/Employee/Manager/InterviewList';
+import InterviewCreate from './components/pages/Employee/Manager/InterviewCreate';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -59,12 +60,13 @@ const App: FC = () => {
         <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/register-enterprise' element={<EnterpriseRegister />}></Route>;
         <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
-        <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/candidates' element={<Candidates />}></Route>;
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
+        <Route path='/interview' element={<InterviewList />}></Route>;
+        <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>

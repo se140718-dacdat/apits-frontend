@@ -160,12 +160,15 @@ interface SpecialtyDemo {
     level: Level[]
 }
 
+
 export interface Interview {
     id: string;
     title: string;
+    duration: string;
     date: string;
     time: string;
-    duration: string;
-    participant: string;
     link: string;
+    participant: string;
+    host: string;
+    type: number;
 }
