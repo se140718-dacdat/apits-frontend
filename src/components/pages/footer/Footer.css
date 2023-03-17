@@ -155,7 +155,6 @@
 	width: 35px;
 	height: 35px;
 	cursor: pointer;
-	background-color:  #33383b;
 	border-radius: 2px;
 
 	font-size: 20px;
@@ -167,6 +166,13 @@
 	margin-bottom: 5px;
 }
 
+#Footer.footer-distributed .footer-icons a .icon-fb,
+#Footer.footer-distributed .footer-icons a .icon-tw,
+#Footer.footer-distributed .footer-icons a .icon-git,
+#Footer.footer-distributed .footer-icons a .icon-in {
+	height: 35px;
+	background-color: #fff;
+}
 /* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 880px) {

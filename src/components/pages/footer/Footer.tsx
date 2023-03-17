@@ -58,10 +58,12 @@ const Footer = () => {
 
                 <div className="footer-icons">
 
-                    <a href="#"><FontAwesomeIcon icon={'facebook-f'} /></a>
-                    <a href="#"><FontAwesomeIcon icon={'twitter'} /></a>
-                    <a href="#"><FontAwesomeIcon icon={'linkedin-in'} /></a>
-                    <a href="#"><FontAwesomeIcon icon={'github'} /></a>
+                    <a href="#">
+                        <img src='images/icon-facebook.png' className='icon-fb' />
+                    </a>
+                    <a href="#"><img src='images/icon-twitter.png' className='icon-tw' /></a>
+                    <a href="#"><img src='images/icon-github.png' className='icon-git' /></a>
+                    <a href="#"><img src='images/icon-linkedin.png' className='icon-in' /></a>
 
                 </div>
 
