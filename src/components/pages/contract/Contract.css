@@ -1,0 +1,100 @@
+
+#Contract {
+    position: absolute;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+#Contract .layer {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    opacity: 0.5;
+}
+
+#Contract .centered {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+#Contract .centered h3 {
+    width: 500px;
+    text-align: center;
+}
+
+#Contract .pages {
+    position: absolute;
+    top: 4rem;
+    height: 817px;
+    overflow-y: scroll;
+}
+
+#Contract .pages h5 {
+text-decoration: underline;
+}
+
+#Contract .page-size {
+    width: 794px;
+    height: 1123px;
+    border: 1px solid var(--black-color);
+    margin-bottom: 1rem;
+    padding: 4rem;
+    background-color: var(--white-color);
+}
+
+#Contract .page-size.page__5 {
+    position: relative;
+}
+
+#Contract .page-size.page__5 .btn-contract {
+    position: absolute;
+    bottom: 2rem;
+    text-align: center;
+    width: calc(100% - 8rem);
+    display: flex;
+    justify-content: space-between;
+}
+
+#Contract .page-size.page__5 .btn-contract span {
+    margin: 0.4rem;
+}
+
+#Contract .signature {
+    display: flex;
+    justify-content: space-between;
+}
+
+#Contract .signature-left,
+#Contract .signature-right {
+    width: 50%;
+}
+
+#Contract .input-w130 {
+    width: 130px;
+}
+#Contract .input-w200 {
+    width: 200px;
+}
+#Contract .input-w250 {
+    width: 250px;
+}
+#Contract .input-w300 {
+    width: 300px;
+}
+#Contract .input-w400 {
+    width: 400px;
+}
+
+#Contract .input-text {
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid var(--black-color);
+    color: var(--primary-color);
+    outline: none;
+}
