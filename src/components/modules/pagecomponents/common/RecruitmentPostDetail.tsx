@@ -365,9 +365,9 @@ const RecruitmentPostDetail = () => {
                             </Box>
                         </Modal>)
                         :
-                        <div className="btn-assign">
-                            <button>Appy</button>
-                        </div>
+                        (
+                            <div></div>
+                            )
             }
         </div>
     )

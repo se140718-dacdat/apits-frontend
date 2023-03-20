@@ -604,7 +604,9 @@ const EnterpriseCreatePost = () => {
 
 
                             <div className="bot-button btn-res1">
-                                <button className="btn con-btn" onClick={handleClick}>Next</button>
+                                <button className="btn con-btn" onClick={handleClick}>
+                                    <a href="/" style={{color: "var(--white-color)"}}>next</a>
+                                </button>
                             </div>
                         </div>
                         <div className="content-right">
