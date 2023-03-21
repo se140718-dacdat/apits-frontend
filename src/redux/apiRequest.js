@@ -9,10 +9,15 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
     try {
         const res = await axios.post("/account/auth/login", user);
         dispatch(loginSuccess(res.data.data));
-        if (!isRegister) {
-            navigate("/");
+        console.log(res.data.message);
+        if(res.data.data) {
+            if (!isRegister) {
+                navigate("/");
+            } else {
+                navigate("/register-candidate");
+            }
         } else {
-            navigate("/register-candidate");
+            return res.data.data;
         }
     } catch (err) {
         dispatch(loginFailed());
@@ -29,11 +34,10 @@ export const registerCandidate = async (newUser, navigate, dispatch) => {
     }
 }
 
-export const registerEnterprise = async (newUser, userForLogin, navigate, dispatch) => {
+export const registerEnterprise = async (newUser, navigate) => {
     try {
-        console.log(newUser)
-        await axios.post("/account/auth/registerForEnterprise", newUser)
-        loginUser(userForLogin, dispatch, navigate, false);
+        const res = await axios.post("/account/auth/registerForEnterprise", newUser);
+        console.log(res.data);
     } catch (error) {
         return error
     }
@@ -47,7 +51,8 @@ export const loginUserByGoogle = async (result, dispatch, navigate) => {
             "token": result.user.accessToken
         });
         dispatch(loginSuccess(res.data.data));
-        navigate("");
+        console.log(res.data.data)
+        navigate("/register-candidate");
     } catch (err) {
         dispatch(loginFailed());
     }

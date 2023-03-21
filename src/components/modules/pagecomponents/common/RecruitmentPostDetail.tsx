@@ -106,7 +106,7 @@ const RecruitmentPostDetail = () => {
                                             </div>)
                                             :
                                             <div className="btn-assign">
-                                                <button onClick={handleOpen}>Appy Now!</button>
+                                                <button onClick={handleOpen}>Apply Now!</button>
                                             </div>
                                 }
                             </div>

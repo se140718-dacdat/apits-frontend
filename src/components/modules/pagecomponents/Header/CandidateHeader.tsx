@@ -9,6 +9,7 @@ import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAddressCard, faRightFromBracket, faBell } from '@fortawesome/free-solid-svg-icons'
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 
 interface Props {
@@ -42,9 +43,10 @@ const CandidateHeader: FC<Props> = (props) => {
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Find Jobs</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Inteview</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/specialty">Course</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/interview">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/notification">Notification</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
                                 <div className='navlink user-wrap' onClick={(e) => {
@@ -75,7 +77,30 @@ const CandidateHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
+                                <OverlayTrigger
+                                    trigger="click"
+                                    key={'bottom'}
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Popover id={`popover-positioned-bottom`} className='notification-popup-cover'>
+                                            <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
+                                            <Popover.Body>
+                                                <div className='notification-popup-item'>
+                                                    <strong>You have Assigned!</strong>
+                                                    <br></br>
+                                                    <span>We assign you to FPT Software Company</span>
+                                                </div>
+                                                <div className='notification-popup-item'>
+                                                    <strong>You have Assigned!</strong>
+                                                    <br></br>
+                                                    <span>We assign you to FPT Software Company</span>
+                                                </div>
+                                            </Popover.Body>
+                                        </Popover>
+                                    }
+                                >
+                                    <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
+                                </OverlayTrigger>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

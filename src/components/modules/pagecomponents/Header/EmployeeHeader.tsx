@@ -1,7 +1,7 @@
 import { faAddressCard, faBell, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
@@ -75,7 +75,23 @@ const EmployeeHeader: FC<Props> = (props) => {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             {renderHandle()}
                             <Nav className='nav-right'>
-                                <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
+                                <OverlayTrigger
+                                    trigger="click"
+                                    key={'bottom'}
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Popover id={`popover-positioned-bottom`}>
+                                            <Popover.Header as="h3">{`Popover bottom`}</Popover.Header>
+                                            <Popover.Body>
+                                                <strong>Holy guacamole!</strong> Check this info.
+                                            </Popover.Body>
+                                        </Popover>
+                                    }
+                                >
+                                    <Button variant="secondary">
+                                        <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
+                                    </Button>
+                                </OverlayTrigger>
                                 <div className='navlink user-wrap' onClick={(e) => {
                                     e.stopPropagation();
                                     (show == "") ?
@@ -83,7 +99,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
-                                        <div className='user-name' style={{marginRight: "8px"}}>{account?.information.employeeName}</div>
+                                        <div className='user-name' style={{ marginRight: "8px" }}>{account?.information.employeeName}</div>
                                         <img className='avt' src="/images/avt.jpg" alt="" />
                                         <FontAwesomeIcon icon={faChevronDown} />
                                     </div>

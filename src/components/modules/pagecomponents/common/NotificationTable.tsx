@@ -9,7 +9,7 @@ interface Props {
   interviews: Interview[];
 }
 
-const InterviewTable: React.FC<Props> = ({ interviews }) => {
+const NotifcationTable: React.FC<Props> = ({ interviews }) => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
   const [columns, setColumns] = useState<GridColDef[]>([]);
 
@@ -68,8 +68,8 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
     } else {
       setColumns([
         { field: "id", headerName: "ID", flex: 0.2 },
-        { field: "type", headerName: "Type", flex: 0.5 },
-        { field: "title", headerName: "Title", flex: 1.2 },
+        { field: "type", headerName: "Type", flex: 0.8 },
+        { field: "title", headerName: "Title", flex: 0.8 },
         { field: "date", headerName: "Date", flex: 0.5 },
         { field: "time", headerName: "Time", flex: 0.5 },
         { field: "duration", headerName: "Duration", flex: 0.5 },
@@ -103,4 +103,4 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
   );
 };
 
-export default InterviewTable;
+export default NotifcationTable;

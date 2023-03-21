@@ -189,3 +189,27 @@ a {
     text-decoration: none !important;
     text-transform: capitalize;
 }
+
+.notification-popup-item:hover {
+    cursor: pointer !important;
+    background-color: rgba(242, 114, 41, 0.8);
+    border-radius: 5px;
+}
+
+.notification-popup-item {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+}
+
+.notification-popup-cover {
+    max-width: 500px !important;
+}
+
+.see-all {
+    float: right;
+    color: var(--primary-color);
+}
+.see-all:hover {
+    cursor: pointer;
+    color: var(--primary-color);
+}

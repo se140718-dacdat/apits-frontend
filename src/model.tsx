@@ -172,3 +172,10 @@ export interface Interview {
     host: string;
     type: number;
 }
+
+export interface NotificationCandidate {
+    id: string;
+    type: string;
+    title: string;
+    
+}

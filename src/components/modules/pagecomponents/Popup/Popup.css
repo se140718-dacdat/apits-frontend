@@ -1,7 +1,7 @@
 #Popup {
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 200vh;
     top: 0;
     background-color: rgba(242, 114, 41, 0.5);
     z-index: 12;
@@ -11,8 +11,8 @@
 
 #Popup .icon-close {
     position: absolute;
-    right: 37%;
-    top: 12%;
+    right: 38%;
+    top: 5%;
 }
 
 #Popup .icon-close:hover {
@@ -22,8 +22,8 @@
 #Popup .popup-container {
     background-color: var(--white-color);
     margin: auto;
-    width: 30%;
-    height: 85%;
+    width: 26%;
+    height: 35%;
     padding: 32px 60px;
     display: flex;
     flex-direction: column;

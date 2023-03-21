@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React, { FC, FormEvent, useState, Dispatch, SetStateAction } from 'react'
+import React, { FC, FormEvent, useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { NavLink } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,11 @@ const Popup: FC<Props> = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        setMessageLogin("");
+        setMessageRegister("");
+    }, [props.popup])
+
     const loginHandler = async (e: FormEvent) => {
         e.preventDefault();
         try {
@@ -34,9 +39,13 @@ const Popup: FC<Props> = (props) => {
                 email: username,
                 password: password
             }
-            loginUser(userLogin, dispatch, navigate, false);
-            props.isDisplay('');
-            props.isPopup(0);
+            if (await loginUser(userLogin, dispatch, navigate, false)) {
+                props.isDisplay('');
+                props.isPopup(0);
+            }
+            else {
+                setMessageLogin("The user or password that you've entered is incorrect.")
+            }
         } catch (error) {
             console.log(error)
         }
@@ -55,29 +64,12 @@ const Popup: FC<Props> = (props) => {
 
     const registerHandler = () => {
         if (password == confirm) {
-            if (props.popup == 3) {
-                const newUser: RegisterEnterprise = {
-                    name: name,
-                    address: address,
-                    phone: phone,
-                    email: username,
-                    password: password
-                }
-
-                const userForLogin: Login = {
-                    email: username,
-                    password: password
-                }
-                registerEnterprise(newUser, userForLogin, navigate, dispatch);
-                setMessageRegister("");
-            } else {
-                const newUser: Login = {
-                    email: username,
-                    password: password
-                }
-                registerCandidate(newUser, navigate, dispatch);
-                setMessageRegister("");
+            const newUser: Login = {
+                email: username,
+                password: password
             }
+            registerCandidate(newUser, navigate, dispatch);
+            setMessageRegister("");
         }
         else {
             setMessageRegister("Password confirm and password not match!");
@@ -97,7 +89,7 @@ const Popup: FC<Props> = (props) => {
                         <h4>Login</h4>
                         <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
                         <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} />
-                        <p>{messageLogin}</p>
+                        <p style={{ color: "red" }}>{messageLogin}</p>
                         <button type='submit' className="btn-submit">
                             Login
                         </button>
@@ -112,30 +104,30 @@ const Popup: FC<Props> = (props) => {
                         </div>
                     </form>
                 )
-            case 3:
-                return (
-                    <div className="popup-container" style={{ height: "95%" }}>
-                        <i className="pi pi-times icon-close" onClick={() => {
-                            props.isDisplay('');
-                            props.isPopup(0);
-                        }}></i>
-                        <div className="logo"><img className='logo' src="/images/ApitsLogo.png" alt="logo" /></div>
-                        <h4>Sign Up</h4>
-                        <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
-                        <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} autoComplete="on" />
-                        <input type="password" className='input' placeholder='Confirm Password' onChange={(e) => { setConfirm(e.target.value) }} autoComplete="on" />
-                        <input type="text" className='input' placeholder='Company Name' onChange={(e) => { setName(e.target.value) }} autoComplete="on" />
-                        <input type="text" className='input' placeholder='Company Address' onChange={(e) => { setAddress(e.target.value) }} autoComplete="on" />
-                        <input type="text" className='input' placeholder='Phone' onChange={(e) => { setPhone(e.target.value) }} autoComplete="on" />
-                        <p>{messageRegister}</p>
-                        <button className="btn-submit" onClick={registerHandler}>
-                            Join APITS
-                        </button>
-                    </div>
-                )
+            // case 3:
+            //     return (
+            //         <div className="popup-container" style={{ height: "40%" }}>
+            //             <i className="pi pi-times icon-close" onClick={() => {
+            //                 props.isDisplay('');
+            //                 props.isPopup(0);
+            //             }}></i>
+            //             <div className="logo"><img className='logo' src="/images/ApitsLogo.png" alt="logo" /></div>
+            //             <h4>Sign Up</h4>
+            //             <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
+            //             <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} autoComplete="on" />
+            //             <input type="password" className='input' placeholder='Confirm Password' onChange={(e) => { setConfirm(e.target.value) }} autoComplete="on" />
+            //             <input type="text" className='input' placeholder='Company Name' onChange={(e) => { setName(e.target.value) }} autoComplete="on" />
+            //             <input type="text" className='input' placeholder='Company Address' onChange={(e) => { setAddress(e.target.value) }} autoComplete="on" />
+            //             <input type="text" className='input' placeholder='Phone' onChange={(e) => { setPhone(e.target.value) }} autoComplete="on" />
+            //             <p style={{ color: "red" }}>{messageRegister}</p>
+            //             <button className="btn-submit" onClick={registerHandler}>
+            //                 Join APITS
+            //             </button>
+            //         </div>
+            //     )
             default:
                 return (
-                    <div className="popup-container" style={{ height: "95%" }}>
+                    <div className="popup-container" style={{ height: "30%" }}>
                         <i className="pi pi-times icon-close" onClick={() => {
                             props.isDisplay('');
                             props.isPopup(0);
@@ -145,19 +137,10 @@ const Popup: FC<Props> = (props) => {
                         <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
                         <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} autoComplete="on" />
                         <input type="password" className='input' placeholder='Confirm Password' onChange={(e) => { setConfirm(e.target.value) }} autoComplete="on" />
-                        <p>{messageRegister}</p>
+                        <p style={{ color: "red" }}>{messageRegister}</p>
                         <button className="btn-submit" onClick={registerHandler}>
                             Join APITS
                         </button>
-                        <div className="or">
-                            <div className="distance"></div>
-                            <span>OR</span>
-                            <div className="distance"></div>
-                        </div>
-                        <div className="btn-login-google btn">
-                            <img src="images/google-icon.svg" alt="google icon" />
-                            <div className="google">Log in with Google</div>
-                        </div>
                     </div>
                 )
         }

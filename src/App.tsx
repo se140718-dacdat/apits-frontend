@@ -26,6 +26,7 @@ import Specialty from './components/pages/Employee/Manager/Specialty';
 import Request from './components/modules/pagecomponents/common/Request';
 import InterviewList from './components/pages/Employee/Manager/InterviewList';
 import InterviewCreate from './components/pages/Employee/Manager/InterviewCreate';
+import Notification from './components/modules/pagecomponents/common/Notification';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -67,6 +68,7 @@ const App: FC = () => {
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/create-interview' element={<InterviewCreate />}></Route>;
+        <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
     </div>

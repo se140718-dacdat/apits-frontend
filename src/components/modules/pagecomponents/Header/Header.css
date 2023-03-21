@@ -16,3 +16,7 @@
 #Header .nav-right *{
     margin-left: 20px !important;
 }
+
+#Header .notification-item {
+    background-color: var(--primary-color) !important;
+}

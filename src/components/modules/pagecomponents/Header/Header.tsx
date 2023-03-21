@@ -54,8 +54,7 @@ const Header: FC<Props> = (props) => {
                                         handleDisplay("display", 2) : handleDisplay("", 0);
                                 }}>Apply as a Candidate</Nav.Link>
                                 <button className='btn'  onClick={() => {
-                                    display == '' ?
-                                        handleDisplay("display", 3) : handleDisplay("", 0);
+                                    navigate("/register-enterprise")
                                 }}>Hire Top IT</button>
                             </Nav>
                         </Navbar.Collapse>
