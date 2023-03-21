@@ -1,0 +1,130 @@
+#ContractCreateForm {
+    background-color: rgb(252, 228, 212);
+}
+
+#ContractCreateForm .container {
+    height: 55vh;
+}
+
+#ContractCreateForm .contract__type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white-color);
+    background-color: var(--primary-color);
+    height: 3rem;
+    font-size: 30px;
+    position: sticky;
+    top: 0;
+}
+
+#ContractCreateForm .contract__type .btn-create {
+    outline: none;
+    border: none;
+    position: absolute;
+    right: 2rem;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    color: var(--primary-color);
+    background-color: var(--white-color);
+}
+
+#ContractCreateForm .contract__type .btn-create:hover {
+    background-color: rgba(255, 158, 93, 0.466);
+    color: var(--white-color);
+    transition: 0.2s;
+}
+
+#ContractCreateForm .contract__type select {
+    padding: 0 .3rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+
+#ContractCreateForm .national-crest {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+#ContractCreateForm .national-crest div {
+    width: 280px;
+    border-top: 2px solid var(--black-color);
+    margin-top: 8px;
+}
+
+#ContractCreateForm .centered {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+#ContractCreateForm .centered h3 {
+    width: 500px;
+    text-align: center;
+}
+
+#ContractCreateForm .pages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0;
+}
+
+#ContractCreateForm .pages h5 {
+    text-decoration: underline;
+}
+
+#ContractCreateForm .page-size {
+    width: 1041px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    margin-bottom: 1rem;
+    padding: 4rem;
+    background-color: var(--white-color);
+}
+
+#ContractCreateForm .page-size.page__5 {
+    position: relative;
+}
+#ContractCreateForm .signature {
+    display: flex;
+    justify-content: space-between;
+}
+
+#ContractCreateForm .signature-left,
+#ContractCreateForm .signature-right {
+    width: 50%;
+}
+
+#ContractCreateForm .input-w130 {
+    width: 130px;
+}
+#ContractCreateForm .input-w200 {
+    width: 200px;
+}
+#ContractCreateForm .input-w250 {
+    width: 250px;
+}
+#ContractCreateForm .input-w300 {
+    width: 300px;
+}
+#ContractCreateForm .input-w400 {
+    width: 400px;
+}
+#ContractCreateForm .input-w30 {
+    width: 30px;
+}
+
+#ContractCreateForm .input-text {
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid var(--black-color);
+    color: var(--primary-color);
+    outline: none;
+}
