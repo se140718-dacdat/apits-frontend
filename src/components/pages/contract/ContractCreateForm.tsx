@@ -18,6 +18,9 @@ const ContractCreateForm = () => {
     const [amount, setAmount] = useState('');
     const [signature, setSignature] = useState('');
     const [dateSign, setDateSig] = useState('');
+    const [isPreview, setIsPreview] = useState(false);
+
+
 
     return (
         <div id="ContractCreateForm">
@@ -28,7 +31,7 @@ const ContractCreateForm = () => {
                     <option >CONTRACT OF LABOR SUPPLY</option>
                     <option >EMPLOYMENT CONTRACT AGREEMENT</option>
                 </select>
-                <button className="btn-create">Create</button>
+                <button className="btn-preview" onClick={() => setIsPreview(!isPreview)}>{isPreview ? 'Edit' : 'Review'}</button>
             </div>
             {
                 contractType === 'CONTRACT OF LABOR SUPPLY'
@@ -52,14 +55,14 @@ const ContractCreateForm = () => {
                                 <span>At the bank: TP Bank </span><br />
                                 <span>Account name: APITS</span><br />
 
-                                <h5>PARTY B:<input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} /></h5>
-                                <span>Address: <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} /></span><br />
-                                <span>Phone: <input type='text' className='input-w200 input-text' value={phoneB} onChange={e => setPhoneB(e.target.value)} /></span><br />
-                                <span>Tax Code: <input type='text' className='input-w200 input-text' value={taxB} onChange={e => setTaxB(e.target.value)} /></span><br />
-                                <span>Representative: <input type='text' className='input-w200 input-text' value={representativeB} onChange={e => setRepresentativeB(e.target.value)} /></span> <span>Position: <input type='text' className='input-w200 input-text' value={positionB} onChange={e => setPositionB(e.target.value)} /></span><br />
-                                <span>Account No.: <input type='text' className='input-w200 input-text' value={accNumB} onChange={e => setAccNumB(e.target.value)} /></span><br />
-                                <span>At the bank: <input type='text' className='input-w200 input-text' value={accBankB} onChange={e => setAccBankB(e.target.value)} /> </span><br />
-                                <span>Account name: <input type='text' className='input-w200 input-text' value={accNameB} onChange={e => setAccNameB(e.target.value)} /></span><br />
+                                <h5>PARTY B:{isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}</h5>
+                                <span>Address: {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />}</span><br />
+                                <span>Phone: {isPreview ? phoneB : <input type='text' className='input-w200 input-text' value={phoneB} onChange={e => setPhoneB(e.target.value)} />}</span><br />
+                                <span>Tax Code: {isPreview ? taxB : <input type='text' className='input-w200 input-text' value={taxB} onChange={e => setTaxB(e.target.value)} />}</span><br />
+                                <span>Representative: {isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} onChange={e => setRepresentativeB(e.target.value)} />}</span><div className="space"></div> <span>Position: {isPreview ? positionB : <input type='text' className='input-w200 input-text' value={positionB} onChange={e => setPositionB(e.target.value)} />} </span><br />
+                                <span>Account No.: {isPreview ? accNumB : <input type='text' className='input-w200 input-text' value={accNumB} onChange={e => setAccNumB(e.target.value)} />}</span><br />
+                                <span>At the bank: {isPreview ? accBankB : <input type='text' className='input-w200 input-text' value={accBankB} onChange={e => setAccBankB(e.target.value)} />} </span><br />
+                                <span>Account name: {isPreview ? accNameB : <input type='text' className='input-w200 input-text' value={accNameB} onChange={e => setAccNameB(e.target.value)} />} </span><br />
                                 <p>After discussion, the two parties herbey agreed on the content of the contract with the following terms</p>
 
                                 <h5>ACTICLE 1: CONTENT OF CONTRACT</h5>
@@ -68,8 +71,8 @@ const ContractCreateForm = () => {
                                 <p>1.3 Working place: at HBC VIETNAM Company</p>
 
                                 <h5>ARTICLE 2: CONTRACT TERM</h5>
-                                <p>2.1 Term of validity of the Contract: from <input type='text' className='input-w130 input-text' value={dateStart} onChange={e => setDateStart(e.target.value)} />. until the end of the day <input type='text' className='input-w130 input-text' value={dateEnd} onChange={e => setDateEnd(e.target.value)} /></p>
-                                <p>2.2 The number of Employees supplied by Party A for Party B is expected to be <input type='text' className='input-w30 input-text' value={amount} onChange={e => setAmount(e.target.value)} /> people.</p>
+                                <p>2.1 Term of validity of the Contract: from {isPreview ? dateStart : <input type='text' className='input-w130 input-text' value={dateStart} onChange={e => setDateStart(e.target.value)} />}. until the end of the day {isPreview ? dateEnd : <input type='text' className='input-w130 input-text' value={dateEnd} onChange={e => setDateEnd(e.target.value)} />}</p>
+                                <p>2.2 The number of Employees supplied by Party A for Party B is expected to be {isPreview ? amount : <input type='text' className='input-w30 input-text' value={amount} onChange={e => setAmount(e.target.value)} />} people.</p>
                                 <p>2.3 Working time at Party B:</p>
                                 <p>- Standard time: 08 hours / person / day; 6 days / week.</p>
                                 <p>- Outside the standard time, it is possible to overtime according to the business needs of Party B.</p>
@@ -114,21 +117,25 @@ const ContractCreateForm = () => {
                                 <div className="signature">
                                     <div className="signature-left">
                                         <h6>REPRESENTATIVE OF PARTY A</h6>
-                                        <p>Name:<input type='text' className='input-w200 input-text' /><br />
-                                            Signature:<input type='text' className='input-w200 input-text' /><br />
-                                            Date:<input type='text' className='input-w200 input-text' />
+                                        <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
+                                            <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
+                                            <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
                                         </p>
                                     </div>
                                     <div className="signature-right">
                                         <h6>REPRESENTATIVE OF PARTY B</h6>
-                                        <p>Name:<input type='text' className='input-w200 input-text' value={representativeB} /><br />
-                                            Signature:<input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} /><br />
-                                            Date:<input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />
+                                        <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
+                                            <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
+                                            <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
                                         </p>
                                     </div>
                                 </div>
                             </div>
+                            <div className="btn-create">
+                                <button className=" btn">Create</button>
+                            </div>
                         </div>
+
                     )
                     : contractType === 'EMPLOYMENT CONTRACT AGREEMENT'
                         ? (
@@ -143,19 +150,19 @@ const ContractCreateForm = () => {
                                         <h3>EMPLOYMENT CONTRACT AGREEMENT</h3>
                                     </div>
                                     <h5>PARTIES</h5>
-                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on <input type='text' className='input-w130 input-text' /> (the “Effective Date”), by and between <input type='text' className='input-w130 input-text' />, with an address of <input type='text' className='input-w200 input-text' /> (hereinafter referred to as the “Employer”), and <input type='text' className='input-w130 input-text' />, with an address of <input type='text' className='input-w200 input-text' /> (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
+                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? 'District 9 Ho Chi Minh city' : <input type='text' value={'District 9 Ho Chi Minh city'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
                                     <h5>DUTIES AND RESPONSIBILITIES</h5>
                                     <p>-	During the employment period, the Employee shall have the responsibility to perform the following duties:<br />
-                                        1.	<input type='text' className='input-w400 input-text' /><br />
-                                        2.	<input type='text' className='input-w400 input-text' /><br />
-                                        3.	<input type='text' className='input-w400 input-text' /><br />
-                                        4.	<input type='text' className='input-w400 input-text' /><br />
-                                        5.	<input type='text' className='input-w400 input-text' /><br />
-                                        6.	<input type='text' className='input-w400 input-text' /><br />
-                                        7.	<input type='text' className='input-w400 input-text' /><br />
-                                        8.	<input type='text' className='input-w400 input-text' /><br />
-                                        9.	<input type='text' className='input-w400 input-text' /><br />
-                                        10.	<input type='text' className='input-w400 input-text' /><br />
+                                        <label className="lb-space">1.</label> 	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}  <br />
+                                        <label className="lb-space">2.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">3.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">4.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">5.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">6.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">7.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">8.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">9.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">10.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
                                         <br />
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
@@ -164,25 +171,25 @@ const ContractCreateForm = () => {
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
-                                        1.	<input type='text' className='input-w300 input-text' /><br />
-                                        2.	<input type='text' className='input-w300 input-text' /><br />
-                                        3.	<input type='text' className='input-w300 input-text' /><br />
+                                        1.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        2.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        3.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
                                     </p>
                                     <h5>WORKING HOURS AND LOCATION</h5>
-                                    <p>-	The Employee agrees that he/she will be working from <input type='text' className='input-w130 input-text' />to <input type='text' className='input-w130 input-text' /> (Monday to Friday), with a <input type='text' className='input-w130 input-text' />lunch break.<br />
-                                        -	In particular, the Employee agrees that he/she will work on average <input type='text' className='input-w200 input-text' /> hours per week.<br />
-                                        -	The Employee’s place of work shall be located in <input type='text' className='input-w130 input-text' /> or such other location as the Parties may agree upon from time to time.<br />
+                                    <p>-	The Employee agrees that he/she will be working from {isPreview ? '' : <input type='text' className='input-w130 input-text' />}to {isPreview ? '' : <input type='text' className='input-w130 input-text' />} (Monday to Friday), with a {isPreview ? '' : <input type='text' className='input-w130 input-text' />}lunch break.<br />
+                                        -	In particular, the Employee agrees that he/she will work on average {isPreview ? '' : <input type='text' className='input-w200 input-text' />} hours per week.<br />
+                                        -	The Employee’s place of work shall be located in {isPreview ? '' : <input type='text' className='input-w130 input-text' />} or such other location as the Parties may agree upon from time to time.<br />
                                     </p>
                                     <h5>TERMs OF AGREEMENT</h5>
-                                    <p>-	This Agreement shall be effective on the date of signing this Agreement and will end on <input type='text' className='input-w200 input-text' />.<br />
+                                    <p>-	This Agreement shall be effective on the date of signing this Agreement and will end on {isPreview ? '' : <input type='text' className='input-w200 input-text' />}.<br />
                                         -	Upon the end of the term of the Agreement, this Agreement will not be automatically renewed for a new term.<br />
                                     </p>
 
                                     <h5>TERMINATION</h5>
                                     <p>-	This Agreement may be terminated in case the following occurs:</p>
                                     <p>1.	Immediately in case one of the Parties breaches this Agreement.<br />
-                                        2.	At any given time by providing a written notice to the other party <input type='text' className='input-w200 input-text' /> days prior to terminating the Agreement.<br />
-                                        -	Upon terminating this Agreement, the Employee will be required to return all Employer’s materials, products or any other content at his/her earliest convenience, but not beyond <input type='text' className='input-w200 input-text' /> days.</p>
+                                        2.	At any given time by providing a written notice to the other party {isPreview ? '' : <input type='text' className='input-w200 input-text' />} days prior to terminating the Agreement.<br />
+                                        -	Upon terminating this Agreement, the Employee will be required to return all Employer’s materials, products or any other content at his/her earliest convenience, but not beyond {isPreview ? '' : <input type='text' className='input-w200 input-text' />} days.</p>
                                     <h5>CONFIDENTIALITY </h5>
                                     <p>-	All terms and conditions of this Agreement and any materials provided during the term of the Agreement must be kept confidential by the Employee, unless the disclosure is required pursuant to process of law. <br />
                                         -	Disclosing or using this information for any purpose beyond the scope of this Agreement, or beyond the exceptions set forth above, is expressly forbidden without the prior consent of the Employer.
@@ -217,25 +224,24 @@ const ContractCreateForm = () => {
 
                                     <div className="signature">
                                         <div className="signature-left">
-                                            <h6>EMPLOYEE</h6>
-                                            <p>Name:<input type='text' className='input-w200 input-text' /><br />
-                                                Signature:<input type='text' className='input-w200 input-text' /><br />
-                                                Date:<input type='text' className='input-w200 input-text' />
+                                            <h6>REPRESENTATIVE OF PARTY A</h6>
+                                            <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
+                                                <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
+                                                <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
                                             </p>
                                         </div>
                                         <div className="signature-right">
-                                            <h6>EMPLOYER</h6>
-                                            <p>Name:<input type='text' className='input-w200 input-text' /><br />
-                                                Signature:<input type='text' className='input-w200 input-text' /><br />
-                                                Date:<input type='text' className='input-w200 input-text' />
+                                            <h6>REPRESENTATIVE OF PARTY B</h6>
+                                            <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
+                                                <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
+                                                <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
                                             </p>
                                         </div>
                                     </div>
-
-
                                 </div>
-
-
+                                <div className="btn-create">
+                                    <button className=" btn">Create</button>
+                                </div>
                             </div>
                         )
                         : <div className="container"></div>
