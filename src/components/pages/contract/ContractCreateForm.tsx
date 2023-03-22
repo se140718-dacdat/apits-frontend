@@ -19,6 +19,7 @@ const ContractCreateForm = () => {
     const [signature, setSignature] = useState('');
     const [dateSign, setDateSig] = useState('');
     const [isPreview, setIsPreview] = useState(false);
+    const [salary, setSalary] = useState('');
 
 
 
@@ -167,7 +168,7 @@ const ContractCreateForm = () => {
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
                                     <h5>PAY AND COMPENSATION</h5>
-                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of <input type='text' className='input-w130 input-text' /> payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
+                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(e.target.value)} />} payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
@@ -176,20 +177,20 @@ const ContractCreateForm = () => {
                                         3.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
                                     </p>
                                     <h5>WORKING HOURS AND LOCATION</h5>
-                                    <p>-	The Employee agrees that he/she will be working from {isPreview ? '' : <input type='text' className='input-w130 input-text' />}to {isPreview ? '' : <input type='text' className='input-w130 input-text' />} (Monday to Friday), with a {isPreview ? '' : <input type='text' className='input-w130 input-text' />}lunch break.<br />
-                                        -	In particular, the Employee agrees that he/she will work on average {isPreview ? '' : <input type='text' className='input-w200 input-text' />} hours per week.<br />
-                                        -	The Employee’s place of work shall be located in {isPreview ? '' : <input type='text' className='input-w130 input-text' />} or such other location as the Parties may agree upon from time to time.<br />
+                                    <p>-	The Employee agrees that he/she will be working from Monday to Friday, with a 5 lunch break.<br />
+                                        -	In particular, the Employee agrees that he/she will work on average 40 hours per week.<br />
+                                        -	The Employee’s place of work shall be located in {addressB} or such other location as the Parties may agree upon from time to time.<br />
                                     </p>
                                     <h5>TERMs OF AGREEMENT</h5>
-                                    <p>-	This Agreement shall be effective on the date of signing this Agreement and will end on {isPreview ? '' : <input type='text' className='input-w200 input-text' />}.<br />
+                                    <p>-	This Agreement shall be effective on the date of signing this Agreement.<br />
                                         -	Upon the end of the term of the Agreement, this Agreement will not be automatically renewed for a new term.<br />
                                     </p>
 
                                     <h5>TERMINATION</h5>
-                                    <p>-	This Agreement may be terminated in case the following occurs:</p>
-                                    <p>1.	Immediately in case one of the Parties breaches this Agreement.<br />
-                                        2.	At any given time by providing a written notice to the other party {isPreview ? '' : <input type='text' className='input-w200 input-text' />} days prior to terminating the Agreement.<br />
-                                        -	Upon terminating this Agreement, the Employee will be required to return all Employer’s materials, products or any other content at his/her earliest convenience, but not beyond {isPreview ? '' : <input type='text' className='input-w200 input-text' />} days.</p>
+                                    <p>-	This Agreement may be terminated in case the following occurs:<br />
+                                        1.	Immediately in case one of the Parties breaches this Agreement.<br />
+                                        2.	At any given time by providing a written notice to the other party 7 days prior to terminating the Agreement.<br />
+                                        -	Upon terminating this Agreement, the Employee will be required to return all Employer’s materials, products or any other content at his/her earliest convenience, but not beyond 7 days.</p>
                                     <h5>CONFIDENTIALITY </h5>
                                     <p>-	All terms and conditions of this Agreement and any materials provided during the term of the Agreement must be kept confidential by the Employee, unless the disclosure is required pursuant to process of law. <br />
                                         -	Disclosing or using this information for any purpose beyond the scope of this Agreement, or beyond the exceptions set forth above, is expressly forbidden without the prior consent of the Employer.
