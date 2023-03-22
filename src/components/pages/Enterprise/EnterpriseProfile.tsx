@@ -1,10 +1,13 @@
 import React, { FC } from 'react'
 import "./EnterpriseProfile.css";
-import { faEarthAmericas, faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faEarthAmericas, faBuilding, faLocationDot, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 
 
 const EnterpriseProfile: FC = () => {
+    const account = useSelector((state: any) => state.auth.login.currentUser);
+
     return (
         <div id='EnterpriseProfile'>
             <div className="profile-container">
@@ -18,10 +21,13 @@ const EnterpriseProfile: FC = () => {
                             <div className="information-left">
                                 <div className="enterprise-name">Công Ty Cổ Phần TGA</div>
                                 <div className="flex-haft">
-                                    <div className="enterprise-link inline-block">
+                                    <div className="enterprise-about inline-block">
                                         <FontAwesomeIcon icon={faEarthAmericas} className="icon pr-4" />
                                         https://tuyendung.mia.vn/</div>
-                                    <div className="employee-quantity inline-block">
+                                    <div className="enterprise-about inline-block">
+                                        <FontAwesomeIcon icon={faEnvelope} className="icon pr-4" />
+                                        {account.information.email}</div>
+                                    <div className="enterprise-about inline-block">
                                         <FontAwesomeIcon icon={faBuilding} className="icon pr-4" />
                                         100-499 nhân viên</div>
                                 </div>

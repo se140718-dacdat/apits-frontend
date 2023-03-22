@@ -48,7 +48,7 @@
 }
 
 #EnterpriseProfile .information-left {
-   width: 50%;
+   width: 70%;
 }
 #EnterpriseProfile .enterprise-name {
     font-weight: bold;
@@ -111,4 +111,14 @@
     justify-content: space-between;
     flex-wrap: nowrap;
 
+}
+
+#EnterpriseProfile .enterprise-about {
+    margin-right: 16px;
+}
+
+
+#EnterpriseProfile .enterprise-about .icon {
+    margin-right: 8px;
+    color: var(--primary-color);
 }

@@ -106,7 +106,7 @@ const EnterpriseRegister = () => {
                             <div className="group-input">
                                 <label>Company Industry:</label>
                                 <div className="form-input">
-                                    <input type="text" className="input regis-input input-phone" placeholder="IT Sofware" required onChange={(e) => { setIndustry(e.target.value) }} />
+                                    <input type="text" className="input regis-input input-phone" placeholder="IT Software" required onChange={(e) => { setIndustry(e.target.value) }} />
                                     <span className="text-err"></span>
                                 </div>
                             </div>
