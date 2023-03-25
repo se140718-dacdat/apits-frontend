@@ -34,7 +34,7 @@ const Footer = () => {
                 <div>
                     <FontAwesomeIcon icon={faLocationDot} className='icon-size' />
 
-                    <p><span>Q9, Thu Duc city</span> Ho Chi Minh city, Viet Nam</p>
+                    <p><span>Dictrict 9, Thu Duc city</span> Ho Chi Minh city, Viet Nam</p>
                 </div>
 
                 <div>
