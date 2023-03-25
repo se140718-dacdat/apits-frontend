@@ -13,7 +13,7 @@
     color: var(--white-color);
     background-color: var(--primary-color);
     height: 3rem;
-    font-size: 30px;
+    font-size: 24px;
     position: sticky;
     top: 0;
 }
@@ -29,7 +29,7 @@
     background-color: var(--white-color);
 }
 
-#ContractpreviewForm .contract__type .btn-preview:hover {
+#ContractCreateForm .contract__type .btn-preview:hover {
     background-color: rgba(255, 158, 93, 0.466);
     color: var(--white-color);
     transition: 0.2s;
@@ -42,6 +42,21 @@
     background-color: transparent;
 }
 
+#ContractCreateForm .type-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#ContractCreateForm .text-black {
+    color: var(--black-color);
+}
+
+#ContractCreateForm .type-item .left-icon{
+    padding: 0.2rem;
+    margin-right: .5rem;
+    color: var(--primary-color);
+}
 
 #ContractCreateForm .national-crest {
     display: flex;

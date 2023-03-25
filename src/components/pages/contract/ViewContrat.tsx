@@ -1,68 +1,17 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./ContractCreateForm.css"
+
 import { useState } from "react";
-import { faFileContract } from "@fortawesome/free-solid-svg-icons";
-import { Dropdown } from "react-bootstrap";
+import "./ContractCreateForm.css"
 
-const ContractCreateForm = () => {
-    const [contractType, setContractType] = useState('');
-    const [partyB, setPartyB] = useState('');
-    const [addressB, setAddressB] = useState('');
-    const [phoneB, setPhoneB] = useState('');
-    const [taxB, setTaxB] = useState('');
-    const [representativeB, setRepresentativeB] = useState('');
-    const [positionB, setPositionB] = useState('');
-    const [accNumB, setAccNumB] = useState('');
-    const [accBankB, setAccBankB] = useState('');
-    const [accNameB, setAccNameB] = useState('');
-    const [dateStart, setDateStart] = useState('');
-    const [dateEnd, setDateEnd] = useState('');
-    const [amount, setAmount] = useState('');
+const ViewContract = () => {
+    const [isSigned, setIsSigned] = useState(false);
+    const [name, setName] = useState('');
     const [signature, setSignature] = useState('');
-    const [dateSign, setDateSig] = useState('');
-    const [isPreview, setIsPreview] = useState(false);
-    const [salary, setSalary] = useState('');
-
-
+    const [dateSign, setDateSign] = useState('');
+    let contractType = 'CONTRACT OF LABOR SUPPLY';
+    contractType = 'EMPLOYMENT CONTRACT AGREEMENT';
 
     return (
         <div id="ContractCreateForm">
-            <div className="contract__type">
-                <label className="">Contract type:</label>
-
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic" className="text-black">
-                        {contractType === '' ? 'Select type of Contract' : contractType}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item id="Contract type" onClick={e => setContractType('CONTRACT OF LABOR SUPPLY')}>
-                            {
-                                <div className="type-item">
-                                    <div className="left-icon"><FontAwesomeIcon icon={faFileContract} /></div>
-                                    <div className="right-content">
-                                        <label className="specialty-title">Contract of Labor Supply</label>
-                                        <label className="specialty-description"></label>
-                                    </div>
-                                </div>
-                            }
-                        </Dropdown.Item>
-                        <Dropdown.Item id="Contract type" onClick={e => setContractType('EMPLOYMENT CONTRACT AGREEMENT')}>
-                            {
-                                <div className="type-item">
-                                    <div className="left-icon"><FontAwesomeIcon icon={faFileContract} /></div>
-                                    <div className="right-content">
-                                        <label className="specialty-title">Employment Contract Argreement</label>
-                                        <label className="specialty-description"></label>
-                                    </div>
-                                </div>
-                            }
-                        </Dropdown.Item>
-
-                    </Dropdown.Menu>
-                </Dropdown>
-                <button className="btn-preview" onClick={() => setIsPreview(!isPreview)}>{isPreview ? 'Edit' : 'Review'}</button>
-            </div>
             {
                 contractType === 'CONTRACT OF LABOR SUPPLY'
                     ? (
@@ -79,20 +28,18 @@ const ContractCreateForm = () => {
                                 <h5>PARTY A: APITS</h5>
                                 <span>Address: HCM</span><br />
                                 <span>Phone: +84 948.678.678</span><br />
-                                <span>Tax Code: 0502249266</span><br />
                                 <span>Representative: Mr. A </span> <span>Position: DIRECTOR</span><br />
                                 <span>Account No.: 0222 686 686</span><br />
                                 <span>At the bank: TP Bank </span><br />
                                 <span>Account name: APITS</span><br />
 
-                                <h5>PARTY B:{isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}</h5>
-                                <span>Address: {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />}</span><br />
-                                <span>Phone: {isPreview ? phoneB : <input type='text' className='input-w200 input-text' value={phoneB} onChange={e => setPhoneB(e.target.value)} />}</span><br />
-                                <span>Tax Code: {isPreview ? taxB : <input type='text' className='input-w200 input-text' value={taxB} onChange={e => setTaxB(e.target.value)} />}</span><br />
-                                <span>Representative: {isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} onChange={e => setRepresentativeB(e.target.value)} />}</span><div className="space"></div> <span>Position: {isPreview ? positionB : <input type='text' className='input-w200 input-text' value={positionB} onChange={e => setPositionB(e.target.value)} />} </span><br />
-                                <span>Account No.: {isPreview ? accNumB : <input type='text' className='input-w200 input-text' value={accNumB} onChange={e => setAccNumB(e.target.value)} />}</span><br />
-                                <span>At the bank: {isPreview ? accBankB : <input type='text' className='input-w200 input-text' value={accBankB} onChange={e => setAccBankB(e.target.value)} />} </span><br />
-                                <span>Account name: {isPreview ? accNameB : <input type='text' className='input-w200 input-text' value={accNameB} onChange={e => setAccNameB(e.target.value)} />} </span><br />
+                                <h5>PARTY B:ABC company</h5>
+                                <span>Address: District 1, Ho Chi Minh city</span><br />
+                                <span>Phone: +84 912.686.868</span><br />
+                                <span>Representative: Nguyen Van A</span><div className="space"></div> <span>Position: DIRECTOR </span><br />
+                                <span>Account No.: 0222 686 868 </span><br />
+                                <span>At the bank:  TP Bank</span><br />
+                                <span>Account name:  Nguyen Van A</span><br />
                                 <p>After discussion, the two parties herbey agreed on the content of the contract with the following terms</p>
 
                                 <h5>ACTICLE 1: CONTENT OF CONTRACT</h5>
@@ -101,8 +48,8 @@ const ContractCreateForm = () => {
                                 <p>1.3 Working place: at HBC VIETNAM Company</p>
 
                                 <h5>ARTICLE 2: CONTRACT TERM</h5>
-                                <p>2.1 Term of validity of the Contract: from {isPreview ? dateStart : <input type='text' className='input-w130 input-text' value={dateStart} onChange={e => setDateStart(e.target.value)} />}. until the end of the day {isPreview ? dateEnd : <input type='text' className='input-w130 input-text' value={dateEnd} onChange={e => setDateEnd(e.target.value)} />}</p>
-                                <p>2.2 The number of Employees supplied by Party A for Party B is expected to be {isPreview ? amount : <input type='text' className='input-w30 input-text' value={amount} onChange={e => setAmount(e.target.value)} />} people.</p>
+                                <p>2.1 Term of validity of the Contract: from 20/03/2023. until the end of the day 20/09/2023</p>
+                                <p>2.2 The number of Employees supplied by Party A for Party B is expected to be 10 people.</p>
                                 <p>2.3 Working time at Party B:</p>
                                 <p>- Standard time: 08 hours / person / day; 6 days / week.</p>
                                 <p>- Outside the standard time, it is possible to overtime according to the business needs of Party B.</p>
@@ -147,22 +94,27 @@ const ContractCreateForm = () => {
                                 <div className="signature">
                                     <div className="signature-left">
                                         <h6>REPRESENTATIVE OF PARTY A</h6>
-                                        <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                            <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                            <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
+                                        <p><label className="label-signature-name">Name:</label>Tran Van Tam<br />
+                                            <label className="label-signature-name">Signature:</label>Tamtv<br />
+                                            <label className="label-signature-name">Date:</label>20/03/2023
                                         </p>
                                     </div>
                                     <div className="signature-right">
                                         <h6>REPRESENTATIVE OF PARTY B</h6>
-                                        <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
-                                            <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
-                                            <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
+                                        <p><label className="label-signature-name">Name:</label>{name}<br />
+                                            <label className="label-signature-name">Signature:</label>{signature}<br />
+                                            <label className="label-signature-name">Date:</label>{dateSign}
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div className="btn-create">
-                                <button className=" btn">Create</button>
+                                <button className=" btn" onClick={() => {
+                                    setIsSigned(true)
+                                    setName('Nguyen Van A')
+                                    setSignature('Anv')
+                                    setDateSign('20/03/2023')
+                                }}> {isSigned ? 'SIGNED' : 'SIGN'} </button>
                             </div>
                         </div>
 
@@ -180,35 +132,35 @@ const ContractCreateForm = () => {
                                         <h3>EMPLOYMENT CONTRACT AGREEMENT</h3>
                                     </div>
                                     <h5>PARTIES</h5>
-                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? 'District 9 Ho Chi Minh city' : <input type='text' value={'District 9 Ho Chi Minh city'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
+                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on 20/03/2023 (the “Effective Date”), by and between Apits, with an address of District 9, Ho Chi Minh city (hereinafter referred to as the “Employer”), and ABC company, with an address of District 1, Ho Chi Minh city (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
                                     <h5>DUTIES AND RESPONSIBILITIES</h5>
                                     <p>-	During the employment period, the Employee shall have the responsibility to perform the following duties:<br />
-                                        <label className="lb-space">1.</label> 	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}  <br />
-                                        <label className="lb-space">2.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">3.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">4.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">5.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">6.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">7.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">8.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">9.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">10.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        <label className="lb-space">1.</label> Analysis and evaluation of customer requirements. <br />
+                                        <label className="lb-space">2.</label> Software design and development.<br />
+                                        <label className="lb-space">3.</label> Maintenance and product upgrades.	<br />
+                                        <label className="lb-space">4.</label> Source code management.<br />
+                                        <label className="lb-space">5.</label> Testing and bug fixing.<br />
+                                        <label className="lb-space">6.</label> Product integration with other systems.<br />
+                                        <label className="lb-space">7.</label> Participation in product development.<br />
+                                        <label className="lb-space">8.</label> Interaction with customers and partners.<br />
+                                        <label className="lb-space">9.</label> Ensuring safety and security for the product.<br />
+                                        <label className="lb-space">10.</label> Improving skills and knowledge.<br />
                                         <br />
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
                                     <h5>PAY AND COMPENSATION</h5>
-                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(e.target.value)} />} payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
+                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of 1000$ payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
-                                        1.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        2.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        3.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        1.	Career opportunities: IT companies can provide employees with opportunities to develop their careers and become experts in their field.<br />
+                                        2.	Comfortable and flexible working environment: IT companies often have a comfortable work environment, focus on work results and provide flexible working arrangements such as remote work or flexible hours.<br />
+                                        3.	Attractive income: The IT industry is one of the industries with high income and good promotion opportunities. IT companies usually pay salaries commensurate with the skills and experience of employees, as well as provide benefits such as health insurance, accident insurance, training, etc.<br />
                                     </p>
                                     <h5>WORKING HOURS AND LOCATION</h5>
                                     <p>-	The Employee agrees that he/she will be working from Monday to Friday, with a 5 lunch break.<br />
                                         -	In particular, the Employee agrees that he/she will work on average 40 hours per week.<br />
-                                        -	The Employee’s place of work shall be located in {addressB} or such other location as the Parties may agree upon from time to time.<br />
+                                        -	The Employee’s place of work shall be located in District 1, Ho Chi Minh city or such other location as the Parties may agree upon from time to time.<br />
                                     </p>
                                     <h5>TERMs OF AGREEMENT</h5>
                                     <p>-	This Agreement shall be effective on the date of signing this Agreement.<br />
@@ -255,22 +207,27 @@ const ContractCreateForm = () => {
                                     <div className="signature">
                                         <div className="signature-left">
                                             <h6>REPRESENTATIVE OF PARTY A</h6>
-                                            <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                                <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                                <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
+                                            <p><label className="label-signature-name">Name:</label>Tran Van Tam<br />
+                                                <label className="label-signature-name">Signature:</label>Tamtv<br />
+                                                <label className="label-signature-name">Date:</label>20/03/2023
                                             </p>
                                         </div>
                                         <div className="signature-right">
                                             <h6>REPRESENTATIVE OF PARTY B</h6>
-                                            <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
-                                                <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
-                                                <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
+                                            <p><label className="label-signature-name">Name:</label>{name}<br />
+                                                <label className="label-signature-name">Signature:</label>{signature}<br />
+                                                <label className="label-signature-name">Date:</label>{dateSign}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="btn-create">
-                                    <button className=" btn">Create</button>
+                                    <button className=" btn" onClick={() => {
+                                        setIsSigned(true)
+                                        setName('Nguyen Van A')
+                                        setSignature('Anv')
+                                        setDateSign('20/03/2023')
+                                    }}> {isSigned ? 'SIGNED' : 'SIGN'} </button>
                                 </div>
                             </div>
                         )
@@ -280,4 +237,4 @@ const ContractCreateForm = () => {
     );
 }
 
-export default ContractCreateForm;
+export default ViewContract;
