@@ -12,21 +12,27 @@ import { useNavigate } from 'react-router-dom';
 import { updateCandidate } from '../../../redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { minHeight } from '@mui/system';
 const developerList: Array<string> = ['Frontend Developer', 'Backend Developer', 'Tester', 'DevOps Developer', 'FullStack Developer', 'Network Engineer', 'Cybersecurity', 'Cloud Administrator', 'Database Administrator', 'Cloud DevOps Engineer'];
 
 
 const storage = getStorage();
 
 const CandidateRegister = () => {
-    const user = useSelector((state: any) => state.auth.login.currentUser);
+    const account = useSelector((state: any) => state.auth.login.currentUser);
+    const user = useSelector((state: any) => state.user.user.user);
     const now = new Date();
-    const [birth, setBirth] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
-    const [gender, setGender] = useState<string>("Male");
-    const [avatar, setAvatar] = useState<string>("/images/avt-blank.png");
-    const [fullName, setFullName] = useState<string>("");
-    const [phone, setPhone] = useState<string>("");
-    const [address, setAddress] = useState<string>("");
+    const form50 = document.getElementById("form-50%") as HTMLElement
+
+    const [birth, setBirth] = React.useState<Dayjs | null>(user?.dob || dayjs(now.toLocaleDateString()));
+    const [gender, setGender] = useState<string>(user?.gender || "Male");
+    const [avatar, setAvatar] = useState<string>(user?.image || "/images/avt-blank.png");
+    const [fullName, setFullName] = useState<string>(user?.name || "Full name");
+    const [phone, setPhone] = useState<string>(user?.phone || "Phone");
+    const [address, setAddress] = useState<string>(user?.address || "Address");
     const [cv, setCv] = useState<string>("");
+    const [payment, setPayment] = useState<string>(user?.payment || "VNPay number");
+    const [description, setDescription] = useState<string>(user?.description || "Full name");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
@@ -36,15 +42,26 @@ const CandidateRegister = () => {
         setGender(e);
     }
 
+    form50?.addEventListener('submit', (event: any) => {
+        event.preventDefault();
+        setProgress("100%");
+        const registerModal = document.getElementById("CandidateRegister")!;
+        (registerModal as HTMLElement).style.height = "auto";
+    });
+
     useEffect(() => {
-        console.log(user)
+        // if (user?.cv) {
+        //     const url = user?.cv;
+        //     const fileName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1));
+        //     setCvName(fileName.substring(0, fileName.lastIndexOf("?")));
+        // }
     }, [specialties])
 
     const handleChangeProgress = (progess: string, height: string) => {
         setProgress(progess);
         const registerModal = document.getElementById("CandidateRegister")!;
         (registerModal as HTMLElement).style.height = height;
-        
+
     }
 
     const handleAddSpecialty = (specialty: String) => {
@@ -93,12 +110,14 @@ const CandidateRegister = () => {
             phone: phone,
             image: avatar,
             gender: gender,
-            dob: "2023-03-06T06:12:41.626Z",
+            payment: payment,
+            dob: `${birth?.format('YYYY-MM-DD')}`,
             address: address,
-            cv: cv
+            cv: cv,
+            description: description
         }
-        console.log(newUser)
-        // updateCandidate(user.information.id, navigate, newUser, dispatch)
+        console.log(newUser);
+        updateCandidate(user?.id, navigate, newUser, dispatch)
     }
 
     const handleProgress = () => {
@@ -109,24 +128,57 @@ const CandidateRegister = () => {
                         <img className='logo' src="/images/ApitsLogo.png" alt="logo" />
                         <h3 className="register-header">Welcome to Apits. Let’s get started!</h3>
                         <div style={{ fontSize: "0.9rem", marginBottom: "8%" }}>Your application should only take a few minutes. Based on the information you provide, our screening team will determine the best path for you going forward.</div>
-                        <div className='form-container'>
+                        <form id='form-50%' className='form-container'>
                             <div className="form-input">
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faUser} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Full name' required onChange={(e) => { setFullName(e.target.value) }} />
+                                <input
+                                    type="text"
+                                    value={fullName}
+                                    placeholder={fullName}
+                                    onChange={(e) => {
+                                        setFullName(e.target.value);
+                                    }}
+                                    required
+                                />
                             </div>
                             <div className="form-input">
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faPhone} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Phone' onChange={(e) => { setPhone(e.target.value) }} />
+                                <input
+                                    type="text"
+                                    value={phone}
+                                    placeholder={phone}
+                                    onChange={(e) => {
+                                        setPhone(e.target.value);
+                                    }}
+                                    required
+                                    pattern="[0-9]{10}"
+                                    onInvalid={(e) => {
+                                        const target = e.target as HTMLInputElement;
+                                        target.setCustomValidity('Please enter a valid 10-digit phone number');
+                                    }}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLInputElement;
+                                        target.setCustomValidity('');
+                                    }}
+                                />
                             </div>
                             <div className="form-input">
                                 <div className="input-icon">
                                     <FontAwesomeIcon icon={faHouse} className="icon" />
                                 </div>
-                                <input type="text" placeholder='Address' onChange={(e) => { setAddress(e.target.value) }} />
+                                <input
+                                    type="text"
+                                    value={address}
+                                    placeholder={address}
+                                    onChange={(e) => {
+                                        setAddress(e.target.value);
+                                    }}
+                                    required
+                                />
                             </div>
                             <div className="haft-input-cover">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -162,19 +214,21 @@ const CandidateRegister = () => {
                             <div className="form-import">
                                 <div className="form-import-header">Personal CV:</div>
                                 <div className="haft-input-cover">
-                                    <input type="file" id="img-file" accept='.pdf' onChange={(e) => { convertFile(e.target.files, "cv") }} />
+                                    <input type="file" id="cv-file" accept='.pdf' onChange={(e) => {
+                                        convertFile(e.target.files, "cv");
+                                    }} />
                                 </div>
                             </div>
                             <div className="footer-register">
                                 <div className="btn-continue">
-                                    <button className='btn' type='submit' onClick={() => { handleChangeProgress("100%", "auto") }}>Continue</button>
+                                    <button className='btn' type='submit'>Continue</button>
                                 </div>
                                 <div className="register-status">
                                     <div className="register-progress">50% complete</div>
                                     <div className="status-description">You’re one step closer to unlocking access to working with the world’s top companies</div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 )
             case "100%":
@@ -238,10 +292,33 @@ const CandidateRegister = () => {
                                 <div className="input-icon">
                                     <img src="/images/momo.png" alt="" className='icon' />
                                 </div>
-                                <input type="text" placeholder='Momo number' />
+                                <input
+                                    type="text"
+                                    placeholder={payment}
+                                    onChange={(e) => {
+                                        setPayment(e.target.value);
+                                    }}
+                                    required
+                                    pattern="[0-9]{10}"
+                                    onInvalid={(e) => {
+                                        const target = e.target as HTMLInputElement;
+                                        target.setCustomValidity('Please enter a valid 10-digit VNPay number');
+                                    }}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLInputElement;
+                                        target.setCustomValidity('');
+                                    }}
+                                />
                             </div>
-                            <textarea className="form-input description" placeholder="Description" style={{ minHeight: "200px" }} />
-
+                            <textarea
+                                className='form-input description'
+                                style={{ minHeight: "200px" }}
+                                placeholder={description}
+                                onChange={(e) => {
+                                    setDescription(e.target.value);
+                                }}
+                                required
+                            />
                             <div className="footer-register">
                                 <div className="btn-continue">
                                     <button className='btn' onClick={() => { registerHandle() }}>Finish</button>

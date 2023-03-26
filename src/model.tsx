@@ -34,7 +34,9 @@ export interface CandidateUpdate {
     gender: string;
     dob: string;
     address: string;
+    payment: string;
     cv: string;
+    description: string;
 }
 
 export interface User {

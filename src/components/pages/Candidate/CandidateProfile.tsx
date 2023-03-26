@@ -58,7 +58,7 @@ export const CandidateProfile: FC = () => {
                         </div>
                         <div className="col-right">
                             <div className="col-half mb-50">
-                                <div className="fullname">Đắc Đạt</div>
+                                <div className="fullname">{user?.name}</div>
                                 <div className="btn-cover">
                                     <button className="btn-edit btn" onClick={()=>{navigate("/update-candidate")}}>Edit Profile</button>
                                 </div>
