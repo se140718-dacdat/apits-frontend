@@ -14,7 +14,7 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
             if (!isRegister) {
                 navigate("/");
             } else {
-                navigate("/register-candidate");
+                navigate("/update-candidate");
             }
         } else {
             return res.data.data;
@@ -52,7 +52,7 @@ export const loginUserByGoogle = async (result, dispatch, navigate) => {
         });
         dispatch(loginSuccess(res.data.data));
         console.log(res.data.data)
-        navigate("/register-candidate");
+        navigate("/update-candidate");
     } catch (err) {
         dispatch(loginFailed());
     }

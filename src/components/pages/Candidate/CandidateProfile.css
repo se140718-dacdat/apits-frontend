@@ -11,6 +11,7 @@
     z-index: 5;
     position: inherit;
     top: -200px;
+    align-items: flex-start;
 }
 
 #CandidateProfile .banner {
@@ -24,7 +25,6 @@
 #CandidateProfile .right {
     flex-wrap: wrap;
     display: flex;
-    flex-direction: row;
     width: 30%;
     border-radius: 5px 5px 0 0;
 }
@@ -125,6 +125,7 @@
 
 #CandidateProfile .profile-body {
     width: 100%;
+    padding: 12px 24px;
 }
 
 #CandidateProfileModal .input {
@@ -169,7 +170,7 @@
 
 #CandidateProfile .item {
     display: flex;
-    margin: 24px;
+    margin: 24px 0;
     align-items: flex-end;
 }
 
@@ -192,12 +193,15 @@
 
 #CandidateProfile .item-verify {
     color: #007fed;
+}
 
+#CandidateProfile .item-verify:hover {
+    text-decoration: none !important;
 }
 
 
 #CandidateProfile .item-verify:hover {
-    cursor: pointer;    
+    cursor: pointer;
     text-decoration: underline;
 }
 
@@ -210,4 +214,22 @@
     width: 100%;
     padding: 12px 0 !important;
     border-radius: 0 0 10px 10px !important;
+}
+
+#CandidateProfile .certificate-link {
+    margin-bottom: 1rem;
+}
+
+
+#CandidateProfile .certificate-link:hover {
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+#CandidateProfile .issued-time {
+    padding: 12px;
+}
+
+#CandidateProfile .issued-time>* {
+    width: 100%;
 }

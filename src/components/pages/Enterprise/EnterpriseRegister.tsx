@@ -25,7 +25,10 @@ const EnterpriseRegister = () => {
             address: address,
             phone: phone,
             email: username,
-            password: password
+            password: password,
+            scale: scale,
+            industry: industry,
+            introduction: introduce
         }
         registerEnterprise(newUser, navigate);
         navigate("/")

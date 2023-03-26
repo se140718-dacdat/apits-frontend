@@ -213,3 +213,22 @@ a {
     cursor: pointer;
     color: var(--primary-color);
 }
+
+
+.col-haft {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.col-haft > * {
+    width: 45%;
+}
+
+.issued-time {
+    padding: 12px;
+}
+
+.issued-time > * {
+    width: 100%;
+}

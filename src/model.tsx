@@ -14,9 +14,14 @@ export interface RegisterEnterprise {
     name: string;
     address: string;
     phone: string;
+    scale: string;
+    industry: string;
+    introduction: string;
     email: string;
     password: string;
 }
+
+
 export interface UserLogin {
     token: string;
     roleID: number;
@@ -29,6 +34,7 @@ export interface CandidateUpdate {
     gender: string;
     dob: string;
     address: string;
+    cv: string;
 }
 
 export interface User {

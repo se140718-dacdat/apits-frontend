@@ -58,7 +58,7 @@ const App: FC = () => {
         }></Route>;
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
-        <Route path='/register-candidate' element={<CandidateRegister />}></Route>;
+        <Route path='/update-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/register-enterprise' element={<EnterpriseRegister />}></Route>;
         <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
         <Route path='/candidates' element={<Candidates />}></Route>;
