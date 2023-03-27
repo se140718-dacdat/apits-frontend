@@ -39,6 +39,7 @@ export const registerEnterprise = async (newUser, navigate) => {
     try {
         const res = await axios.post("/account/auth/registerForEnterprise", newUser);
         console.log(res.data);
+        navigate("/")
     } catch (error) {
         return error
     }

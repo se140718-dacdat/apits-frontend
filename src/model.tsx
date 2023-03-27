@@ -19,6 +19,7 @@ export interface RegisterEnterprise {
     introduction: string;
     email: string;
     password: string;
+    website: string;
 }
 
 

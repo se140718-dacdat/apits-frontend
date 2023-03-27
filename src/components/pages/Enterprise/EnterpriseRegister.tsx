@@ -17,21 +17,33 @@ const EnterpriseRegister = () => {
     const [scale, setScale] = useState<string>("");
     const [industry, setIndustry] = useState<string>("");
     const [introduce, setIntroduce] = useState<string>("");
+    const [website, setWebsite] = useState<string>("");
+    const [registerMsg, setRegisterMsg] = useState<string>("");
 
+    const form = document.getElementById("enterprise-register-form") as HTMLElement
+
+    form?.addEventListener('submit', (event: any) => {
+        event.preventDefault();
+        registerHandler();
+    });
 
     const registerHandler = () => {
-        const newUser: RegisterEnterprise = {
-            name: name,
-            address: address,
-            phone: phone,
-            email: username,
-            password: password,
-            scale: scale,
-            industry: industry,
-            introduction: introduce
+        if (password !== confirm) {
+            setRegisterMsg("Confirm password doesn't match!")
+        } else {
+            const newUser: RegisterEnterprise = {
+                name: name,
+                address: address,
+                phone: phone,
+                email: username,
+                password: password,
+                scale: scale,
+                industry: industry,
+                introduction: introduce,
+                website: website,
+            }
+            registerEnterprise(newUser, navigate);
         }
-        registerEnterprise(newUser, navigate);
-        navigate("/")
     }
 
     return (
@@ -45,7 +57,7 @@ const EnterpriseRegister = () => {
                 </div>
             </div>
             <div className="container">
-                <form action="">
+                <form id="enterprise-register-form">
                     <div className="form-group">
                         <div className="tilte">Account</div>
                         <div className="underline"></div>
@@ -60,15 +72,15 @@ const EnterpriseRegister = () => {
                             <div className="group-input">
                                 <label>Password:</label>
                                 <div className="form-input">
-                                    <input type="text" className="input regis-input" placeholder="Password" required onChange={(e) => { setPassword(e.target.value) }} />
+                                    <input type="password" className="input regis-input" placeholder="Password" required onChange={(e) => { setPassword(e.target.value) }} />
                                     <span className="text-err"></span>
                                 </div>
                             </div>
                             <div className="group-input">
                                 <label>Confirm Password:</label>
                                 <div className="form-input">
-                                    <input type="text" className="input regis-input" placeholder="Confirm Password" required onChange={(e) => { setConfirm(e.target.value) }} />
-                                    <span className="text-err"></span>
+                                    <input type="password" className="input regis-input" placeholder="Confirm Password" required onChange={(e) => { setConfirm(e.target.value) }} />
+                                    <span className="text-err">{registerMsg}</span>
                                 </div>
                             </div>
                         </div>
@@ -78,6 +90,13 @@ const EnterpriseRegister = () => {
                         <div className="tilte">Company Information</div>
                         <div className="underline"></div>
                         <div className="content">
+                            <div className="group-input">
+                                <label>Company website:</label>
+                                <div className="form-input">
+                                    <input type="text" className="input regis-input" placeholder="Company website" required onChange={(e) => { setWebsite(e.target.value) }} />
+                                    <span className="text-err"></span>
+                                </div>
+                            </div>
                             <div className="group-input">
                                 <label>Company name:</label>
                                 <div className="form-input">
@@ -129,7 +148,7 @@ const EnterpriseRegister = () => {
                     </div>
                     <div className="group-button">
                         <button className="btn btn-cancel" onClick={() => { navigate("/") }}>Cancel</button>
-                        <button className="btn" type="submit" onClick={() => { registerHandler() }}>Finish</button>
+                        <button className="btn" type="submit">Finish</button>
                     </div>
                 </form>
             </div>

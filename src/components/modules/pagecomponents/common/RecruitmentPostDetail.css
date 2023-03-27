@@ -205,3 +205,12 @@
     overflow-y: scroll !important;
     max-height: 80% !important;
 }
+
+#RecruitmentPostDetail .description-item {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+#RecruitmentPostDetail .description-item .icon {
+    font-size: 1.2rem;
+}

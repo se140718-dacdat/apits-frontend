@@ -1,5 +1,5 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
-import { faBusinessTime, faCoins, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson } from '@fortawesome/free-solid-svg-icons';
+import { faAddressBook, faBusinessTime, faCoins, faDotCircle, faEnvelope, faLocationDot, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import Box from '@mui/material/Box';
@@ -140,14 +140,6 @@ const RecruitmentPostDetail = () => {
                                             </div>
                                         </div>
                                         <div className="general-item">
-                                            <FontAwesomeIcon icon={faMarsAndVenus} className="icon primary-color" />
-                                            <div>
-                                                <strong>Gender</strong>
-                                                <br />
-                                                <span>Male</span>
-                                            </div>
-                                        </div>
-                                        <div className="general-item">
                                             <FontAwesomeIcon icon={faMedal} className="icon primary-color" />
                                             <div>
                                                 <strong>Experience</strong>
@@ -162,9 +154,6 @@ const RecruitmentPostDetail = () => {
                                                 <br />
                                                 <span>17 days left to apply</span>
                                             </div>
-                                        </div>
-                                        <div className="address">
-
                                         </div>
                                     </div>
                                 </div>
@@ -231,9 +220,6 @@ const RecruitmentPostDetail = () => {
                                     <div className="item">
                                         Developer
                                     </div>
-                                    <div className="item">
-                                        Data Engineer
-                                    </div>
                                 </div>
                             </div>
                             <div className="right-item">
@@ -254,6 +240,23 @@ const RecruitmentPostDetail = () => {
                                 <p className='item-name'>Introduce</p>
                                 <div className="description p0-14">
                                     <span>Công ty TNHH SAPAN VIỆT NAM, là start-up công nghệ cung cấp hệ thống và dịch vụ logistic và fulfillment cho các các website thương mại điện tử tại thị trường Mỹ. Chúng tôi đã và đang phục vụ hơn 20 website thương mại điện tử lớn tại Mỹ. Sứ mệnh của chúng tôi là dành mọi nguồn lực để xây dựng, vận hành và phát triển hoạt động kinh doanh thương mại điện tử tạo ra các thương hiệu có giá trị toàn cầu.</span>
+                                </div>
+                            </div>
+                            <div className="right-item">
+                                <p className='item-name'>Contact</p>
+                                <div className="description p0-14">
+                                    <div className="description-item">
+                                        <FontAwesomeIcon icon={faUser} className="icon primary-color mr-8" />
+                                        HR 1
+                                    </div>
+                                    <div className="description-item">
+                                        <FontAwesomeIcon icon={faEnvelope} className="icon primary-color mr-8" />
+                                        hr1@gmail.com
+                                    </div>
+                                    <div className="description-item">
+                                        <FontAwesomeIcon icon={faAddressBook} className="icon primary-color mr-8" />
+                                        0123456789
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -367,7 +370,7 @@ const RecruitmentPostDetail = () => {
                         :
                         (
                             <div></div>
-                            )
+                        )
             }
         </div>
     )

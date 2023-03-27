@@ -1,14 +1,14 @@
 import { Fragment, useState } from "react";
 import "./EnterpriseCreatePost.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook, faBuilding, faChevronLeft, faClose, faEnvelope, faPhone, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAddressBook, faBuilding, faChevronLeft, faClock, faClose, faEnvelope, faLocationDot, faMedal, faPerson, faPhone, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./SkillItems.css"
 
 const EnterpriseCreatePost = () => {
     const [etpProcess, setEtpProcess] = useState("EnterpriseCreatePost");
     const [typeOfProject, setTypeOfProject] = useState('Developers');
     const [roleToHire, setRoleToHire] = useState('New idea or project');
-    const [howLong, setHowLong] = useState('Less than 1 week');
+    const [howLong, setHowLong] = useState('1 to 3 months');
     const [levelOfTime, setLevelOfTime] = useState('Full time (40 or more hrs/week)');
     const [whenStart, setWhenStart] = useState('Immediately');
     const [workRemote, setWorkRemote] = useState('Yes');
@@ -46,7 +46,7 @@ const EnterpriseCreatePost = () => {
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>What type of project are you hiring for?</h3>
+                            <h3>What type of expertise are you hiring for?</h3>
                             <div className="radio">
                                 <input type="radio"
                                     value='Developers'
@@ -115,46 +115,12 @@ const EnterpriseCreatePost = () => {
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>What role would you like to hire?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='New idea or project'
-                                    checked={roleToHire === 'New idea or project'}
-                                    onChange={(e) => setRoleToHire(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">New idea or project</span>
-                                </label>
+                            <h3>Tell us about your recruitment</h3>
+                            <div className="input-tab">
+                                <input type="text" className="input-text input-style" placeholder="Title" style={{ paddingLeft: "16px", width: "100%" }} />
                             </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Existing project that needs more resources'
-                                    checked={roleToHire === 'Existing project that needs more resources'}
-                                    onChange={(e) => setRoleToHire(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">Existing project that needs more resources</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Ongoing assistance or consultation'
-                                    checked={roleToHire === 'Ongoing assistance or consultation'}
-                                    onChange={(e) => setRoleToHire(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Ongoing assistance or consultation</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="None of the above, I'm just looking to learn more about Apits"
-                                    checked={roleToHire === "None of the above, I'm just looking to learn more about Apits"}
-                                    onChange={(e) => setRoleToHire(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">None of the above, I'm just looking to learn more about Apits</span>
-                                </label>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Job description" style={{ paddingLeft: "16px", width: "100%", height: "150px" }} />
                             </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
@@ -173,27 +139,32 @@ const EnterpriseCreatePost = () => {
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>How long do you need the developer?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Less than 1 week'
-                                    checked={howLong === 'Less than 1 week'}
-                                    onChange={(e) => setHowLong(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Less than 1 week</span>
-                                </label>
+                            <h3>Tell us more about your recruitment</h3>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Candidate requirements" style={{ paddingLeft: "16px", width: "100%", height: "150px" }} />
                             </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='1 to 4 weeks'
-                                    checked={howLong === '1 to 4 weeks'}
-                                    onChange={(e) => setHowLong(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">1 to 4 weeks</span>
-                                </label>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Benefits" style={{ paddingLeft: "16px", width: "100%", height: "150px" }} />
                             </div>
+                            <div className="bot-button btn-res1">
+                                <div className="btn-back">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                    <a href="#" onClick={() => { setEtpProcess('EnterpriseCreatePost1') }}>Back</a>
+                                </div>
+                                <button className="btn con-btn" onClick={() => { setEtpProcess('EnterpriseCreatePost3') }}>Next</button>
+                            </div>
+                        </div>
+                        <div className="content-right">
+                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
+                        </div>
+                    </div>
+
+                );
+            case 'EnterpriseCreatePost3':
+                return (
+                    <div id="EnterpriseCreatePost">
+                        <div className="content-left">
+                            <h3>How long do you need the {typeOfProject}?</h3>
                             <div className="radio">
                                 <input type="radio"
                                     value='1 to 3 months'
@@ -216,30 +187,40 @@ const EnterpriseCreatePost = () => {
                             </div>
                             <div className="radio">
                                 <input type="radio"
-                                    value="Longer than 6 months"
-                                    checked={howLong === "Longer than 6 months"}
+                                    value="7 to 9 months"
+                                    checked={howLong === "7 to 9 months"}
                                     onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
-                                    <span className="radio-header">Longer than 6 months</span>
+                                    <span className="radio-header">7 to 9 months</span>
                                 </label>
                             </div>
                             <div className="radio">
                                 <input type="radio"
-                                    value="I'll decide later"
-                                    checked={howLong === "I'll decide later"}
+                                    value="10 to 12 months"
+                                    checked={howLong === "10 to 12 months"}
                                     onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
-                                    <span className="radio-header">I'll decide later</span>
+                                    <span className="radio-header">10 to 12 months</span>
+                                </label>
+                            </div>
+                            <div className="radio">
+                                <input type="radio"
+                                    value="I will decide later"
+                                    checked={howLong === "I will decide later"}
+                                    onChange={(e) => setHowLong(e.target.value)}
+                                />
+                                <label className="radio-content">
+                                    <span className="radio-header">I will decide later</span>
                                 </label>
                             </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost1')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost2')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost3')}>Next</button>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost4')}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -247,7 +228,7 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost3':
+            case 'EnterpriseCreatePost4':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
@@ -272,32 +253,12 @@ const EnterpriseCreatePost = () => {
                                     <span className="radio-header">Part time (Less than 40 hrs/week)</span>
                                 </label>
                             </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Hourly'
-                                    checked={levelOfTime === 'Hourly'}
-                                    onChange={(e) => setLevelOfTime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Hourly</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="I'll decide later"
-                                    checked={levelOfTime === "I'll decide later"}
-                                    onChange={(e) => setLevelOfTime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">I'll decide later</span>
-                                </label>
-                            </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost2')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost3')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost4')}>Next</button>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost5')}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -305,7 +266,7 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost4':
+            case 'EnterpriseCreatePost5':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
@@ -377,68 +338,6 @@ const EnterpriseCreatePost = () => {
                                             )
                                 }
                             </div>
-
-
-
-
-                            <div className="bot-button btn-res1">
-                                <div className="btn-back">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost3')}>Back</a>
-                                </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost5')}>Next</button>
-                            </div>
-                        </div>
-                        <div className="content-right">
-                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                        </div>
-                    </div>
-                );
-            case 'EnterpriseCreatePost5':
-                return (
-                    <div id="EnterpriseCreatePost">
-                        <div className="content-left">
-                            <h3>When do you need the developer to start?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Immediately'
-                                    checked={whenStart === 'Immediately'}
-                                    onChange={(e) => setWhenStart(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Immediately</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='In 1 to 2 weeks'
-                                    checked={whenStart === 'In 1 to 2 weeks'}
-                                    onChange={(e) => setWhenStart(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">In 1 to 2 weeks</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='More than 2 weeks from now'
-                                    checked={whenStart === 'More than 2 weeks from now'}
-                                    onChange={(e) => setWhenStart(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">More than 2 weeks from now</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="I'll decide later"
-                                    checked={whenStart === "I'll decide later"}
-                                    onChange={(e) => setWhenStart(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">I'll decide later</span>
-                                </label>
-                            </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
@@ -456,36 +355,30 @@ const EnterpriseCreatePost = () => {
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>Are you open to working with a remote developer?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Yes'
-                                    checked={workRemote === 'Yes'}
-                                    onChange={(e) => setWorkRemote(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Yes</span>
-                                </label>
+                            <h3>General information</h3>
+                            <div className="input-tab">
+                                <div className="input-icon">
+                                    <FontAwesomeIcon icon={faPerson} />
+                                </div>
+                                <input type="text" className="input-text input-style" placeholder="Quantity" />
                             </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='No'
-                                    checked={workRemote === 'No'}
-                                    onChange={(e) => setWorkRemote(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">No</span>
-                                </label>
+                            <div className="input-tab">
+                                <div className="input-icon">
+                                    <FontAwesomeIcon icon={faMedal} />
+                                </div>
+                                <input type="text" className="input-text input-style" placeholder="Experience" />
                             </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="I'm not sure"
-                                    checked={workRemote === "I'm not sure"}
-                                    onChange={(e) => setWorkRemote(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">I'm not sure</span>
-                                </label>
+                            <div className="input-tab">
+                                <div className="input-icon">
+                                    <FontAwesomeIcon icon={faClock} />
+                                </div>
+                                <input type="text" className="input-text input-style" placeholder="Recruitment deadline" />
+                            </div>
+                            <div className="input-tab">
+                                <div className="input-icon">
+                                    <FontAwesomeIcon icon={faLocationDot} />
+                                </div>
+                                <input type="text" className="input-text input-style" placeholder="Work location" />
                             </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
@@ -537,22 +430,12 @@ const EnterpriseCreatePost = () => {
                             </div>
                             <div className="radio">
                                 <input type="radio"
-                                    value='More than $110/hr'
-                                    checked={budget === 'More than $110/hr'}
-                                    onChange={(e) => setBudget(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">More than $110/hr</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="Not sure on budget yet"
-                                    checked={budget === "Not sure on budget yet"}
-                                    onChange={(e) => setBudget(e.target.value)}
+                                    value="I will decide later"
+                                    checked={howLong === "I will decide later"}
+                                    onChange={(e) => setHowLong(e.target.value)}
                                 />
                                 <label className="radio-content">
-                                    <span className="radio-header">Not sure on budget yet</span>
+                                    <span className="radio-header">I will decide later</span>
                                 </label>
                             </div>
                             <div className="bot-button btn-res1">
@@ -575,15 +458,15 @@ const EnterpriseCreatePost = () => {
                             <h3>Success! Let's connect you with candidate.</h3>
                             <div className="input-tab">
                                 <div className="input-icon">
-                                    <FontAwesomeIcon icon={faEnvelope} />
+                                    <FontAwesomeIcon icon={faUser} />
                                 </div>
-                                <input type="text" className="input-text input-style" placeholder="Email" />
+                                <input type="text" className="input-text input-style" placeholder="HR specialist name" />
                             </div>
                             <div className="input-tab">
                                 <div className="input-icon">
-                                    <FontAwesomeIcon icon={faBuilding} />
+                                    <FontAwesomeIcon icon={faEnvelope} />
                                 </div>
-                                <input type="text" className="input-text input-style" placeholder="Company name" />
+                                <input type="text" className="input-text input-style" placeholder="Email" />
                             </div>
                             <div className="input-tab">
                                 <div className="input-icon">
@@ -591,22 +474,15 @@ const EnterpriseCreatePost = () => {
                                 </div>
                                 <input type="text" className="input-text input-style" placeholder="Contact me" />
                             </div>
-                            <div className="input-tab">
-                                <div className="input-icon">
-                                    <FontAwesomeIcon icon={faPhone} />
-                                </div>
-                                <input type="text" className="input-text input-style" placeholder="+84 94 123 45 67 (Optional)" />
-                            </div>
-
                             <div className="prolicy">
                                 <p>By completing signup, you are agreeing to Apits’s<span className="text-underline">Terms of Service</span>, <span className="text-underline">Privacy Policy</span>, <span className="text-underline">Sourced Talent Matching Agreement</span>, and <span className="text-underline">Cookie Policy</span> and that Apits may monitor or record audio or video calls for quality assurance and training purposes.</p>
                             </div>
-
-
                             <div className="bot-button btn-res1">
-                                <button className="btn con-btn" onClick={handleClick}>
-                                    <a href="/" style={{color: "var(--white-color)"}}>next</a>
-                                </button>
+                                <div className="btn-back">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost7')}>Back</a>
+                                </div>
+                                <button className="btn con-btn">Finish</button>
                             </div>
                         </div>
                         <div className="content-right">
