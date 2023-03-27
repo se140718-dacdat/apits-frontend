@@ -54,12 +54,9 @@ interface CandidateEntity {
     createAt: Date;
 }
 
-interface PostEntity {
-    id: number;
-    //vị trí tuyển dụng
-    position: string;
+export interface PostEntity {
     title: string;
-    specialtyList: List;
+    specialty: string;
     skillList: List;
     //description, requirements, benefits (textarea)
     description: string;
@@ -67,12 +64,16 @@ interface PostEntity {
     benefits: string;
     //Fulltime hoặc part-time
     workForm: string;
-    quanity: number;
+    quantity: number;
     //Ngày post hết hạn
-    exprid: Date;
+    exprid: string;
     experience: string;
+    hiringTime: string;
     salary: string;
-    status: boolean;
+    workLocation: string;
+    hrName: string;
+    hrPhone: string;
+    hrEmail: string;    
 }
 
 interface EmployeeEntity {

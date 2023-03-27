@@ -21,9 +21,9 @@ const storage = getStorage();
 const CandidateRegister = () => {
     const account = useSelector((state: any) => state.auth.login.currentUser);
     const user = useSelector((state: any) => state.user.user.user);
-    const now = new Date();
     const form50 = document.getElementById("form-50%") as HTMLElement
-
+    const now = new Date();
+    
     const [birth, setBirth] = React.useState<Dayjs | null>(user?.dob || dayjs(now.toLocaleDateString()));
     const [gender, setGender] = useState<string>(user?.gender || "Male");
     const [avatar, setAvatar] = useState<string>(user?.image || "/images/avt-blank.png");
