@@ -187,4 +187,32 @@ export interface NotificationCandidate {
     type: string;
     title: string;
     
+}export interface CourseEntity {
+    id: number;
+    link: string;
+    name: string;
+    status: string;
+}
+
+export interface LevelEntity {
+    id: number;
+    name: string;
+    status: string;
+    courses: CourseEntity[];
+}
+
+export interface SkillEntity {
+    id: number;
+    name: string;
+    image: string;
+    status: string;
+    levels: LevelEntity[];
+}
+
+
+export interface SpecialtyEntity {
+    id: number;
+    name: string;
+    status: string;
+    skills: SkillEntity[];
 }

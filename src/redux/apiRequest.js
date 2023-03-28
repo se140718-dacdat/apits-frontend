@@ -2,6 +2,7 @@ import { async } from "@firebase/util";
 import { useDispatch } from "react-redux";
 import axios from "../api/axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess } from "./authSlice";
+import { specialtyStart, specialtySuccess } from "./specialtySlice";
 import { userFailed, userStart, userSuccess } from "./userSlice";
 
 export const loginUser = async (user, dispatch, navigate, isRegister) => {
@@ -98,6 +99,16 @@ export const getCandidateById = async (id) => {
     try {
         const res = await axios.get(`/candidate/getCandidateByID?id=${id}`)
         return res.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getSpecialties = async (dispatch) => {
+    try {
+        const res = await axios.get("/special-skill/getAllSpecDetails")
+        console.log(res.data.data)
+        dispatch(specialtySuccess(res.data.data));
     } catch (error) {
         return error
     }

@@ -17,7 +17,7 @@ import Candidates from './components/pages/Employee/Manager/Candidates';
 import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
 import Enterprises from './components/pages/Employee/HR/Enterprises';
 import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
-import { logoutUser } from './redux/apiRequest';
+import { getSpecialties, logoutUser } from './redux/apiRequest';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
@@ -27,11 +27,17 @@ import Request from './components/modules/pagecomponents/common/Request';
 import InterviewList from './components/pages/Employee/Manager/InterviewList';
 import InterviewCreate from './components/pages/Employee/Manager/InterviewCreate';
 import Notification from './components/modules/pagecomponents/common/Notification';
+import Footer from './components/modules/pagecomponents/footer/Footer';
+import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getSpecialties(dispatch);
+  }, [])
 
   return (
     <div id="App">
@@ -69,8 +75,10 @@ const App: FC = () => {
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
+        <Route path='/contract' element={<ContractCreateForm/>}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
+      <Footer/>
     </div>
   )
 }
