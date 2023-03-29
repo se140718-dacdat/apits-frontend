@@ -1,5 +1,5 @@
 #ContractCreateForm {
-    background-color: #8F654D;
+    background-color: var(--white-color);
 }
 
 #ContractCreateForm .container {
