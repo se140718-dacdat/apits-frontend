@@ -39,12 +39,11 @@ export const CandidateProfile: FC = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(course)
-    }, [course])
+    }, [course, basic, advanced, intensive])
 
     const fetchData = async (): Promise<SpecialtyEntity[]> => {
-        const response = await axios.get<{ data: { candidateSpecialList: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = response?.data?.data?.candidateSpecialList;
+        const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
+        const data = response?.data?.data?.specials;
         if (data) {
             const intersection = specialtiesSystem.filter((element1: SpecialtyEntity) => {
                 const element2 = data.find((element: any) => element.id === element1.id);
@@ -53,8 +52,9 @@ export const CandidateProfile: FC = () => {
             setSpecialty(intersection[0])
             setSpecialties(intersection);
             setBasic(specialties[0].skills[0].levels[0].courses);
-            setAdvanced(specialties[0].skills[1].levels[0].courses);
-            setIntensive(specialties[0].skills[2].levels[0].courses);
+            setAdvanced(specialties[0].skills[0].levels[1].courses);
+            setIntensive(specialties[0].skills[0].levels[2].courses);
+            console.log(advanced)
         }
         return data;
     }

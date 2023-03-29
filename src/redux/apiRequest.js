@@ -117,7 +117,6 @@ export const getSpecialtiesByCandidateId = async (id) => {
 export const getSpecialties = async (dispatch) => {
     try {
         const res = await axios.get("/special-skill/getAllSpecDetails")
-        console.log(res.data.data)
         dispatch(specialtySuccess(res.data.data));
     } catch (error) {
         return error

@@ -73,7 +73,7 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
         }
 
       ]);
-    } else if (user?.position.name !== "MANAGER") {
+    } else if (user?.position?.name !== "MANAGER") {
       setColumns([
         { field: "id", headerName: "ID", flex: 0.2 },
         { field: "title", headerName: "Title", flex: 0.8 },
