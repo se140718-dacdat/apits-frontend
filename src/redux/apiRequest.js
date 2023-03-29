@@ -73,12 +73,12 @@ export const logoutUser = async (dispatch, navigate) => {
     }
 }
 
-export const updateCandidate = async (id, navigate, data, dispatch) => {
+export const updateCandidate = async (id, navigate, data, dispatch, specialties) => {
     dispatch(userStart());
     try {
         const res = await axios.put(`/candidate/update?id=${id}`, data)
-        console.log(res.data.data);
         dispatch(userSuccess(res.data.data));
+        addSpecialtiesCandidate(id, specialties)
         navigate("/");
     } catch (err) {
         dispatch(userFailed())
@@ -104,11 +104,35 @@ export const getCandidateById = async (id) => {
     }
 }
 
+export const getSpecialtiesByCandidateId = async (id) => {
+    try {
+        const res = await axios.get(`/canspec/getListSpecsWithCan/${id}`)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+
 export const getSpecialties = async (dispatch) => {
     try {
         const res = await axios.get("/special-skill/getAllSpecDetails")
         console.log(res.data.data)
         dispatch(specialtySuccess(res.data.data));
+    } catch (error) {
+        return error
+    }
+}
+
+export const addSpecialtiesCandidate = async (id, specialties) => {
+    try {
+        specialties.forEach(async specialty => {
+            const res = await axios.post("/canspec/create", {
+                candidateId: id,
+                specialId: specialty.id
+            })
+            console.log(res)
+        });
     } catch (error) {
         return error
     }

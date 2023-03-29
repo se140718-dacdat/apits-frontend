@@ -16,7 +16,7 @@ interface Props {
 
 const EmployeeHeader: FC<Props> = (props) => {
     const [show, setShow] = useState<string>("display-none");
-    const account = useSelector((state: any) => state.auth.login.currentUser);
+    const user = useSelector((state: any) => state.user.user.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -57,8 +57,8 @@ const EmployeeHeader: FC<Props> = (props) => {
                 return (
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/">Interview</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/">Course</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/interview">Interview</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/specialty">Course</Nav.Link>
                     </Nav>
                 )
             default:
@@ -75,23 +75,6 @@ const EmployeeHeader: FC<Props> = (props) => {
                         <Navbar.Collapse id="responsive-navbar-nav">
                             {renderHandle()}
                             <Nav className='nav-right'>
-                                <OverlayTrigger
-                                    trigger="click"
-                                    key={'bottom'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Popover id={`popover-positioned-bottom`}>
-                                            <Popover.Header as="h3">{`Popover bottom`}</Popover.Header>
-                                            <Popover.Body>
-                                                <strong>Holy guacamole!</strong> Check this info.
-                                            </Popover.Body>
-                                        </Popover>
-                                    }
-                                >
-                                    <Button variant="secondary">
-                                        <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
-                                    </Button>
-                                </OverlayTrigger>
                                 <div className='navlink user-wrap' onClick={(e) => {
                                     e.stopPropagation();
                                     (show == "") ?
@@ -99,16 +82,15 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
-                                        <div className='user-name' style={{ marginRight: "8px" }}>{account?.information.employeeName}</div>
                                         <img className='avt' src="/images/avt.jpg" alt="" />
-                                        <FontAwesomeIcon icon={faChevronDown} />
+                                        <div className='user-name'>{user?.employeeName}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
                                             <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
-                                                <span className='user-info-name'>{account?.information.employeeName}</span>
-                                                <span className='user-info-email'>{account?.email}</span>
+                                                <span className='user-info-name'>{user?.employeeName}</span>
+                                                <span className='user-info-email'>{user?.email}</span>
                                             </div>
                                         </div>
                                         <Nav.Link href='/profile' className="dropdown-option" style={{ color: "var(--black-color)" }}>
@@ -121,6 +103,30 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
+                                <OverlayTrigger
+                                    trigger="click"
+                                    key={'bottom'}
+                                    placement={'bottom'}
+                                    overlay={
+                                        <Popover id={`popover-positioned-bottom`} className='notification-popup-cover'>
+                                            <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
+                                            <Popover.Body>
+                                                <div className='notification-popup-item'>
+                                                    <strong>You have Assigned!</strong>
+                                                    <br></br>
+                                                    <span>We assign you to FPT Software Company</span>
+                                                </div>
+                                                <div className='notification-popup-item'>
+                                                    <strong>You have Assigned!</strong>
+                                                    <br></br>
+                                                    <span>We assign you to FPT Software Company</span>
+                                                </div>
+                                            </Popover.Body>
+                                        </Popover>
+                                    }
+                                >
+                                    <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
+                                </OverlayTrigger>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

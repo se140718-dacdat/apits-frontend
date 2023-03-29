@@ -29,6 +29,7 @@ import InterviewCreate from './components/pages/Employee/Manager/InterviewCreate
 import Notification from './components/modules/pagecomponents/common/Notification';
 import Footer from './components/modules/pagecomponents/footer/Footer';
 import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
+import NotificationList from './components/pages/Candidate/CandidateNotificationList';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -76,6 +77,7 @@ const App: FC = () => {
         <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<ContractCreateForm/>}></Route>;
+        <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer/>

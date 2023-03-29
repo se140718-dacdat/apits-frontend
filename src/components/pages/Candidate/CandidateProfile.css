@@ -233,3 +233,129 @@
 #CandidateProfile .issued-time>* {
     width: 100%;
 }
+
+
+#CandidateProfile .distance-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#CandidateProfile .course-list * {
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+
+#CandidateProfile .course-item {
+    position: relative;
+}
+
+
+#CandidateProfile .course-view {
+    position: absolute;
+    right: 0;
+    color: var(--link-color);
+    font-weight: 500;
+}
+
+
+#CandidateSkillModal {
+    min-width: 40%;
+}
+
+#CandidateSkillModal .btn-close {
+    margin-right: 18px;
+}
+
+#CandidateSkillModal .skill-modal-title {
+    display: flex;
+    align-items: center;
+}
+
+
+#CandidateSkillModal .modal-content img {
+    width: 56px;
+    height: 56px;
+    margin-right: 12px;
+}
+
+#CandidateSkillModal .course-heading * {
+    font-weight: bold;
+}
+
+
+
+#CandidateSkillModal .level-content {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+    margin-bottom: 8px;
+    padding: 0 24px;
+}
+
+#CandidateSkillModal .level-content:last-child {
+    border-bottom: none;
+}
+
+#CandidateSkillModal .course-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#CandidateSkillModal .course-row * {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+#CandidateSkillModal .course-row .col1 {
+    overflow: hidden;
+    width: 70%;
+}
+
+#CandidateSkillModal .course-data .col1 {
+    color: var(--link-color);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#CandidateSkillModal .course-data .col1:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+#CandidateSkillModal .course-row .col3 {
+    width: 10%;
+    justify-self: center;
+}
+
+#CandidateSkillModal .course-row .col3 * {
+    text-align: center;
+}
+
+
+#CandidateSkillModal .course-row .col3 button {
+    width: 100%;
+}
+
+
+#CandidateSkillModal .course-row .col2 {
+    width: 11.5%;
+
+}
+
+#CandidateSkillModal .btn-learn,
+#CandidateSkillModal .btn-certificate {
+    background-color: var(--primary-color) !important;
+    border: none !important;
+    color: var(--white-color) !important;
+    border-radius: 5px !important;
+    font-weight: 500 !important;
+    padding: 5px;
+}
+
+#CandidateSkillModal .btn-learn:hover,
+#CandidateSkillModal .btn-certificate:hover,
+#CandidateProfile .course-view {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+

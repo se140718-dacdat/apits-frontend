@@ -2,18 +2,18 @@ import { faUser, faHouse, faPhone, faVenusMars, faCamera, faChevronLeft, faPlus,
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
-import { CandidateUpdate, genderList } from '../../../model';
+import { CandidateUpdate, genderList, SpecialtyEntity } from '../../../model';
 import "./CandidateRegister.css";
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { useNavigate } from 'react-router-dom';
-import { updateCandidate } from '../../../redux/apiRequest';
+import { addSpecialtiesCandidate, getSpecialtiesByCandidateId, updateCandidate } from '../../../redux/apiRequest';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { minHeight } from '@mui/system';
-const developerList: Array<string> = ['Frontend Developer', 'Backend Developer', 'Tester', 'DevOps Developer', 'FullStack Developer', 'Network Engineer', 'Cybersecurity', 'Cloud Administrator', 'Database Administrator', 'Cloud DevOps Engineer'];
+import axios from '../../../api/axios';
 
 
 const storage = getStorage();
@@ -21,6 +21,7 @@ const storage = getStorage();
 const CandidateRegister = () => {
     const account = useSelector((state: any) => state.auth.login.currentUser);
     const user = useSelector((state: any) => state.user.user.user);
+    const specialties = useSelector((state: any) => state.specialty.specialties.specialty);
     const form50 = document.getElementById("form-50%") as HTMLElement
     const now = new Date();
     
@@ -36,7 +37,7 @@ const CandidateRegister = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
-    const [specialties, setSpecialties] = useState<String[]>([]);
+    const [selectSpecialties, setSelectSpecialties] = useState<SpecialtyEntity[]>([]);
 
     const handleSelect = (e: string) => {
         setGender(e);
@@ -50,12 +51,22 @@ const CandidateRegister = () => {
     });
 
     useEffect(() => {
+        fetchData();
         // if (user?.cv) {
         //     const url = user?.cv;
         //     const fileName = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1));
         //     setCvName(fileName.substring(0, fileName.lastIndexOf("?")));
         // }
-    }, [specialties])
+    }, [])
+
+    const fetchData = async (): Promise<SpecialtyEntity[]> => {
+        const response = await axios.get<{data: {candidateSpecialList: SpecialtyEntity[]}}>(`/canspec/getListSpecsWithCan/${user?.id}`);
+        const data = response?.data?.data?.candidateSpecialList;
+        if(data) {
+            setSelectSpecialties(data);
+        }
+        return data;
+    }
 
     const handleChangeProgress = (progess: string, height: string) => {
         setProgress(progess);
@@ -64,16 +75,16 @@ const CandidateRegister = () => {
 
     }
 
-    const handleAddSpecialty = (specialty: String) => {
-        if (!specialties.includes(specialty)) {
-            setSpecialties((prevSpecialties) => [...prevSpecialties, specialty]);
+    const handleAddSpecialty = (specialty: SpecialtyEntity) => {
+        if (!selectSpecialties.some((s) => s.id === specialty.id)) {
+            setSelectSpecialties((prevSpecialties) => [...prevSpecialties, specialty]);
         }
     }
 
-    const handleRemoveSpecialty = (specialty: String) => {
-        if (specialties.includes(specialty)) {
-            setSpecialties((prevSpecialties) => prevSpecialties.filter((e) => e !== specialty));
-            console.log(specialties)
+    const handleRemoveSpecialty = (specialty: SpecialtyEntity) => {
+        if (selectSpecialties.includes(specialty)) {
+            setSelectSpecialties((prevSpecialties) => prevSpecialties.filter((e) => e.id !== specialty.id));
+            console.log(selectSpecialties)
         }
     }
 
@@ -116,8 +127,7 @@ const CandidateRegister = () => {
             cv: cv,
             description: description
         }
-        console.log(newUser);
-        updateCandidate(user?.id, navigate, newUser, dispatch)
+        updateCandidate(user?.id, navigate, newUser, dispatch, specialties);
     }
 
     const handleProgress = () => {
@@ -264,10 +274,10 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        specialties.map((specialty: String, key: number) =>
+                                        selectSpecialties.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleRemoveSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faXmark} />
-                                                <span>{specialty}</span>
+                                                <span>{specialty.name}</span>
                                             </button>
                                         )
                                     }
@@ -279,10 +289,10 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        developerList.map((specialty: String, key: number) =>
+                                        specialties.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faPlus} />
-                                                <span>{specialty}</span>
+                                                <span>{specialty?.name}</span>
                                             </button>
                                         )
                                     }

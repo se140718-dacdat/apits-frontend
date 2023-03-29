@@ -46,7 +46,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/specialty">Course</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/interview">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/notification">Notification</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/candidate-notification">Notification</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
                                 <div className='navlink user-wrap' onClick={(e) => {

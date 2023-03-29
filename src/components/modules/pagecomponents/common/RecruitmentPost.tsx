@@ -51,15 +51,12 @@ const RecruitmentPost = () => {
                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                         </div>
                         <div className="post-detail inline-block">
-                            <div className="post-name">Developer</div>
-                            <div className="post-company-name">FPT Software HCM </div>
+                            <div className="post-name">PHP Developer (Magento)</div>
+                            <div className="post-company-name">CÔNG TY CỔ PHẦN GIẢI PHÁP CÔNG NGHỆ HTCSOFT VIỆT NAM</div>
                         </div>
                         <div className="skills">
                             <div className="skill">
-                                JavaScript
-                            </div>
-                            <div className="skill">
-                                ReactJS
+                                SQL
                             </div>
                             <div className="skill">
                                 Java

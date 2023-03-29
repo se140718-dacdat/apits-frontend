@@ -186,7 +186,7 @@ export interface NotificationCandidate {
     id: string;
     type: string;
     title: string;
-    
+
 }export interface CourseEntity {
     id: number;
     link: string;
@@ -216,3 +216,17 @@ export interface SpecialtyEntity {
     status: string;
     skills: SkillEntity[];
 }
+
+
+
+export interface Notification {
+    id: string;
+    title: string;
+    date: string;
+    time: string;
+    WorkForm: string;
+    Salary: string;
+    Company: string;
+    type: number;
+}
+;

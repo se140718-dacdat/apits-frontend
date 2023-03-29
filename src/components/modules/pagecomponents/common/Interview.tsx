@@ -10,7 +10,8 @@ interface Props {
 }
 
 const InterviewTable: React.FC<Props> = ({ interviews }) => {
-  const user = useSelector((state: any) => state.auth.login.currentUser);
+  const account = useSelector((state: any) => state.auth.login.currentUser);
+  const user = useSelector((state: any) => state.user.user.user);
   const [columns, setColumns] = useState<GridColDef[]>([]);
 
 
@@ -32,7 +33,7 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
   }));
 
   const roleHandle = () => {
-    if (user?.role.name == "ENTERPRISE") {
+    if (account?.role.name == "ENTERPRISE") {
       setColumns([
         { field: "id", headerName: "ID", flex: 0.2 },
         { field: "title", headerName: "Title", flex: 0.8 },
@@ -40,7 +41,14 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
         { field: "time", headerName: "Time", flex: 0.5 },
         { field: "duration", headerName: "Duration", flex: 0.5 },
         { field: "participant", headerName: "Participant", flex: 0.8 },
-        { field: "link", headerName: "Link meeting", flex: 1.2 },
+        {
+          field: "link",
+          headerName: "Link meeting",
+          flex: 1.2,
+          renderCell: (params) => (
+            <a href={params.value}>{params.value}</a>
+          ),
+        },
         {
           field: 'reject',
           headerName: '',
@@ -53,7 +61,47 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
           ),
         },
         {
-          field: 'approve',
+          field: 'confirm',
+          headerName: '',
+          flex: 0.5,
+          width: 170,
+          renderCell: (params) => (
+            <Button variant="contained" color="success">
+              Approve
+            </Button>
+          ),
+        }
+
+      ]);
+    } else if (user?.position.name !== "MANAGER") {
+      setColumns([
+        { field: "id", headerName: "ID", flex: 0.2 },
+        { field: "title", headerName: "Title", flex: 0.8 },
+        { field: "date", headerName: "Date", flex: 0.5 },
+        { field: "time", headerName: "Time", flex: 0.5 },
+        { field: "duration", headerName: "Duration", flex: 0.5 },
+        { field: "participant", headerName: "Participant", flex: 0.8 },
+        {
+          field: "link",
+          headerName: "Link meeting",
+          flex: 1.2,
+          renderCell: (params) => (
+            <a href={params.value}>{params.value}</a>
+          ),
+        },
+        {
+          field: 'reject',
+          headerName: '',
+          flex: 0.5,
+          width: 170,
+          renderCell: (params) => (
+            <Button variant="contained" color="error">
+              Reject
+            </Button>
+          ),
+        },
+        {
+          field: 'confirm',
           headerName: '',
           flex: 0.5,
           width: 170,
@@ -75,14 +123,21 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
         { field: "duration", headerName: "Duration", flex: 0.5 },
         { field: "host", headerName: "Host", flex: 0.8 },
         { field: "participant", headerName: "Participant", flex: 0.8 },
-        { field: "link", headerName: "Link meeting", flex: 1.2 },
+        {
+          field: "link",
+          headerName: "Link meeting",
+          flex: 1.2,
+          renderCell: (params) => (
+            <a href={params.value}>{params.value}</a>
+          ),
+        },
         {
           field: 'edit',
           headerName: '',
           flex: 0.5,
           width: 170,
           renderCell: (params) => (
-            <Button variant="contained" style={{backgroundColor: "var(--primary-color)"}}>
+            <Button variant="contained" style={{ backgroundColor: "var(--primary-color)" }}>
               Edit
             </Button>
           ),

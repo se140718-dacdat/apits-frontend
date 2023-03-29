@@ -28,22 +28,18 @@ const EnterpriseRegister = () => {
     });
 
     const registerHandler = () => {
-        if (password !== confirm) {
-            setRegisterMsg("Confirm password doesn't match!")
-        } else {
-            const newUser: RegisterEnterprise = {
-                name: name,
-                address: address,
-                phone: phone,
-                email: username,
-                password: password,
-                scale: scale,
-                industry: industry,
-                introduction: introduce,
-                website: website,
-            }
-            registerEnterprise(newUser, navigate);
+        const newUser: RegisterEnterprise = {
+            name: name,
+            address: address,
+            phone: phone,
+            email: username,
+            password: password,
+            scale: scale,
+            industry: industry,
+            introduction: introduce,
+            website: website,
         }
+        registerEnterprise(newUser, navigate);
     }
 
     return (

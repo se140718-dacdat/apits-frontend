@@ -9,7 +9,7 @@ const interviews = [
     {
         id: "1",
         title: "Interview for Recruitment ABC",
-        date: "15/03/2023",
+        date: "02/04/2023",
         time: "15:00-16:00",
         duration: "60 minutes",
         host: "FPT Fsoftware",
@@ -17,6 +17,28 @@ const interviews = [
         link: "https://meet.google.com/nth-fvqt-xfd?pli=1&fbclid=IwAR3BnBYI_DWasftRsE52uNvwA4CzlG7CMGMoyvYBh2zIjWppJVhT6b2UXnk",
         type: 2
     },
+    {
+        id: "2",
+        title: "Interview for Java Basic Test",
+        date: "28/03/2023",
+        time: "15:00-16:00",
+        duration: "60 minutes",
+        host: "Professor 1",
+        participant: "Lương Hồ Đắc Đạt",
+        link: "https://meet.google.com/nth-fvqt-xfd?pli=1&fbclid=IwAR3BnBYI_DWasftRsE52uNvwA4CzlG7CMGMoyvYBh2zIjWppJVhT6b2UXnk",
+        type: 1
+    },
+    {
+        id: "3",
+        title: "Interview for OOP concepts Test",
+        date: "01/04/2023",
+        time: "15:00-16:00",
+        duration: "60 minutes",
+        host: "Professor 1",
+        participant: "Lương Hồ Đắc Đạt",
+        link: "https://meet.google.com/nth-fvqt-xfd?pli=1&fbclid=IwAR3BnBYI_DWasftRsE52uNvwA4CzlG7CMGMoyvYBh2zIjWppJVhT6b2UXnk",
+        type: 1
+    }
 ];
 
 const InterviewList = () => {
