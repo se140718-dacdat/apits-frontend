@@ -84,13 +84,24 @@ const RecruitmentPost = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="post">
+                    <div className="post" onClick={()=>{navigate("/post-detail")}}>
                         <div className="avt-post-cover inline-block">
                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                         </div>
                         <div className="post-detail inline-block">
-                            <div className="post-name">Developer</div>
-                            <div className="post-company-name">FPT Software HCM </div>
+                            <div className="post-name">Backend Developer (Java)</div>
+                            <div className="post-company-name">FPT Software HCM</div>
+                        </div>
+                        <div className="skills">
+                            <div className="skill">
+                                OOP
+                            </div>
+                            <div className="skill">
+                                Java
+                            </div>
+                            <div className="skill">
+                                Spring boot
+                            </div>
                         </div>
                         <div className="post-description">
                             <div className="description-item">
@@ -107,7 +118,7 @@ const RecruitmentPost = () => {
                             </div>
                             <div className="description-item">
                                 <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
-                                HCM
+                                Đường D1, Đ. D1, Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh 715650
                             </div>
                         </div>
                     </div>

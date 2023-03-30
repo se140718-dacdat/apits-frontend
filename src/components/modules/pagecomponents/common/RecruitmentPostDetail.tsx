@@ -327,7 +327,7 @@ const RecruitmentPostDetail = () => {
                             <Box sx={style} className='assign-modal'>
                                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     <div className="assign-container">
-                                        <h2>Candidates assigned</h2>
+                                        <h2>Candidates</h2>
                                         <div className="candidates-container">
                                             <div className="filter">
                                                 <div className="filter-form-input">

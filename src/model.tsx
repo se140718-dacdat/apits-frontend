@@ -229,4 +229,8 @@ export interface Notification {
     Company: string;
     type: number;
 }
-;
+
+export interface Distance {
+    image: string;
+    levels: Level[]
+}

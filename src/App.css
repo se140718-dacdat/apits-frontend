@@ -237,3 +237,8 @@ a {
 .mb-24 {
     margin-bottom: 24px;
 }
+
+.hover-primary:hover {
+    color: var(--primary-color);
+    cursor: pointer;
+}
