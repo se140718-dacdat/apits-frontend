@@ -61,7 +61,7 @@ const Specialty = () => {
               }
             </Dropdown.Menu>
           </Dropdown>
-          <button className='btn-search ml-8'>Tìm</button>
+          <button className='btn-search ml-8'>Search</button>
         </div>
         <Table striped bordered hover>
           <thead>

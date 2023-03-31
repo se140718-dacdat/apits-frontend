@@ -302,7 +302,7 @@ const RecruitmentPostDetail = () => {
                                                     }
                                                 </Dropdown.Menu>
                                             </Dropdown>
-                                            <button className='btn-search ml-8'>Tìm</button>
+                                            <button className='btn-search ml-8'>Search</button>
                                         </div>
                                         <div style={{ height: 500, width: '100%' }}>
                                             {
@@ -352,7 +352,7 @@ const RecruitmentPostDetail = () => {
                                                         }
                                                     </Dropdown.Menu>
                                                 </Dropdown>
-                                                <button className='btn-search ml-8'>Tìm</button>
+                                                <button className='btn-search ml-8'>Search</button>
                                             </div>
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {

@@ -122,3 +122,53 @@
     margin-right: 8px;
     color: var(--primary-color);
 }
+
+#EnterpriseProfileModal {
+    min-width: 40%;
+}
+
+#EnterpriseProfileModal .edit-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#EnterpriseProfileModal .edit-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0 4px;
+}
+
+#EnterpriseProfileModal .edit-body {
+    padding: 20px 16px 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#EnterpriseProfileModal .modal-body {
+    padding: 16px 32px;
+}
+
+#EnterpriseProfileModal .edit-body img {
+    border-radius: 10px;
+}
+
+#EnterpriseProfileModal .cover-photo {
+    width: 70%;
+}
+
+#EnterpriseProfileModal .cover-photo img {
+    width: 100%;
+}
+
+
+#EnterpriseProfileModal .edit-input {
+    width: 100% !important;
+    margin-bottom: 16px;
+}
+
+
+
+
+
+

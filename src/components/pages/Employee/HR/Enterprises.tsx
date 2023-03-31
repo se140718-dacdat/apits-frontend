@@ -77,7 +77,7 @@ const Enterprises: FC<Props> = (props) => {
                             </div>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <button className='btn-search'>Tìm</button>
+                    <button className='btn-search'>Search</button>
                 </div>
                 <div style={{ height: 500, width: '100%' }}>
                     <DataGrid

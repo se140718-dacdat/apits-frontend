@@ -38,7 +38,7 @@ const RecruitmentPost = () => {
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>
-                <button className='btn-search ml-8'>Tìm</button>
+                <button className='btn-search ml-8'></button>
             </div>
             <div className="post-container">
                 <div className="container-header">

@@ -3,6 +3,7 @@
     --black-color: #000;
     --primary-color: #F27229;
     --link-color: #0d6efd;
+    --link-hover-color: #0a58ca;
 }
 
 * {
@@ -157,6 +158,10 @@ body {
     justify-content: right !important;
 }
 
+.flex-space-between {
+    justify-content: space-between !important;
+}
+
 .align-self {
     align-self: center !important;
 }
@@ -241,4 +246,30 @@ a {
 .hover-primary:hover {
     color: var(--primary-color);
     cursor: pointer;
+}
+
+.link {
+    color: var(--link-color);
+}
+
+.link:hover {
+    color: var(--link-hover-color);
+    cursor: pointer;
+}
+
+.fontsize-125rem {
+    font-size: 1.25rem;
+}
+
+.fontsize-10625rem {
+    font-size: 1.0625rem;
+}
+
+
+.bold {
+    font-weight: bold;
+}
+
+.weight400 {
+    font-weight: 400;
 }
