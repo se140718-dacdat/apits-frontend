@@ -1,7 +1,7 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faAddressBook, faBusinessTime, faCoins, faDotCircle, faEnvelope, faLocationDot, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -12,6 +12,9 @@ import { Candidate, Category, dataEngineer, developer } from '../../../../model'
 import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
+import { useParams } from 'react-router-dom';
+import { getPostByPostId } from '../../../../redux/apiRequest';
+import { Post } from '../../../../entity';
 
 
 const candidates: Candidate[] = [
@@ -56,12 +59,16 @@ const candidates: Candidate[] = [
 ];
 
 const RecruitmentPostDetail = () => {
-    const [category, setCategory] = useState<Category>(developer);
-    const categoryList: Category[] = [developer, dataEngineer]
+    const { id } = useParams();
     const account = useSelector((state: any) => state.auth.login.currentUser);
+
+    const [category, setCategory] = useState<Category>(developer);
     const [open, setOpen] = useState(false);
+    const [post, setPost] = useState<Post>();
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const categoryList: Category[] = [developer, dataEngineer]
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -75,7 +82,14 @@ const RecruitmentPostDetail = () => {
         p: 4,
     };
 
+    useEffect(() => {
+        fetchData();
+        console.log(id)
+    }, [])
 
+    const fetchData = async () => {
+        setPost(await getPostByPostId(id));
+    }
 
     return (
         <div id='RecruitmentPostDetail'>

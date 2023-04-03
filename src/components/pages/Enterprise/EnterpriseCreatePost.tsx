@@ -8,117 +8,84 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { useSelector } from "react-redux";
+import { SkillEntity, SpecialtyEntity } from "../../../model";
+import { createPost } from "../../../redux/apiRequest";
+import { useNavigate } from "react-router-dom";
 
 const EnterpriseCreatePost = () => {
-    const [etpProcess, setEtpProcess] = useState("EnterpriseCreatePost");
-    const specialties = [
-        {
-            id: 1,
-            name: "Developers",
-            description: "Software Developers, Data Scientists, DevOps, and QA"
-        },
-        {
-            id: 2,
-            name: "Designers",
-            description: "Web, Mobile, UI/UX, Branding, and Visual Designers"
-        },
-        {
-            id: 3,
-            name: "Project Managers",
-            description: "Digital Project Managers, IT Project Managers, Scrum Masters, and Agile Coaches"
-        },
-        {
-            id: 4,
-            name: "DevOps",
-            description: "Digital Product Managers, Product Owners, and Business Analysts"
-        },
-        {
-            id: 5,
-            name: "Tester",
-            description: "Tests software or similar projects for bugs, errors, defects, or any problems that the end-user might come across."
-        },
-    ]
-    const developerList: Array<string> = ['JavaScript', 'CSS', 'PhP', 'React', 'HTML', 'Node.js', 'IOS', 'MySQL', 'Python', 'C++'];
-    const testList: Array<string> = ['Test Plan', 'Test Auto', 'SDLC', 'Agile', 'Test web', 'Mobile Test', 'Database or SQL', 'Logic Test'];
-    const depOpsList: Array<string> = ['AWS', 'Kubernetes', 'Python', 'DevOps', 'Docker', 'CI', 'CD', 'Jenkins', 'AWS EC2', 'Ansible'];
     const now = new Date();
+    const navigate = useNavigate();
+    const user = useSelector((state: any) => state.user.user.user);
 
+
+    const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
+    const [etpProcess, setEtpProcess] = useState("EnterpriseCreatePost");
     const [exprid, setExprid] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
-    const [desired, setDesired] = useState('');
-    const [specialty, setSpecialty] = useState(specialties[0]);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [requirements, setRequiments] = useState('');
-    const [benefits, setBenefits] = useState('');
-    const [hiringTime, setHiringtime] = useState('1 to 3 months');
-    const [workForm, setWorkForm] = useState('Full time (40 or more hrs/week)');
-    const [salary, setSalary] = useState('Less than $70/hr');
-    const [skills, setSkills] = useState<string[]>([]);
-    const [skillList, setSkillList] = useState<string[]>([]);
-    const [quantity, setQuantity] = useState(0);
-    const [experience, setExperience] = useState('');
-    const [workLocation, setWorkLocation] = useState('');
-    const [hrName, setHrName] = useState('');
-    const [hrPhone, setHrPhone] = useState('');
-    const [hrEmail, setHrEmail] = useState('');
-    const [specialtySelect, setSpecialtySelect] = useState(specialties[0].name);
+    const [desired, setDesired] = useState<string>('');
+    const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [requirements, setRequiments] = useState<string>('');
+    const [benefits, setBenefits] = useState<string>('');
+    const [hiringTime, setHiringtime] = useState<string>('1 to 3 months');
+    const [workForm, setWorkForm] = useState<string>('Full time (40 or more hrs/week)');
+    const [salary, setSalary] = useState<string>('Less than $70/hr');
+    const [skills, setSkills] = useState<SkillEntity[]>([]);
+    const [quantity, setQuantity] = useState<number>(0);
+    const [experience, setExperience] = useState<string>('');
+    const [workLocation, setWorkLocation] = useState<string>('');
+    const [hrName, setHrName] = useState<string>('');
+    const [hrPhone, setHrPhone] = useState<string>('');
+    const [hrEmail, setHrEmail] = useState<string>('');
+
 
     useEffect(() => {
-        handleSelectSpecialty();
-    }, [specialtySelect])
+        console.log(specialty);
+    }, [specialty])
 
-    const handleSelectSpecialty = () => {
-        switch (specialtySelect) {
-            case specialties[0].name:
-                setSkills(developerList)
-                break;
-            case specialties[4].name:
-                setSkills(testList)
-                break;
-            case specialties[3].name:
-                setSkills(depOpsList)
-                break;
-            default:
-                setSkills([...developerList, ...testList, ...depOpsList])
-                break;
+
+    const handleSelectSkill = (skill: SkillEntity) => {
+        if (!skills.includes(skill)) {
+            setSkills((prevSkills) => [...prevSkills, skill]);
         }
     }
 
-    const handleSelectSkill = (skill: string) => {
-        if (!skillList.includes(skill)) {
-            setSkillList((prevSpecialties) => [...prevSpecialties, skill]);
-        }
-    }
-
-    const handleRemoveSkill = (skill: string) => {
-        if (skillList.includes(skill)) {
-            setSkillList((prevSpecialties) => prevSpecialties.filter((e) => e !== skill));
-            console.log(specialties)
+    const handleRemoveSkill = (skill: SkillEntity) => {
+        if (skills.includes(skill)) {
+            setSkills((prevSkills) => prevSkills.filter((e) => e.id !== skill.id));
         }
     }
 
 
 
     const handleClick = () => {
+        const skillList: number[] = [];
+        skills.forEach(skill => {
+            skillList.push(skill.id)
+        });
         const newPost: PostEntity = {
+            expiryDate: `${exprid?.format("YYYY-MM-DD")}`,
             title: title,
-            specialty: specialty.name,
-            description: description,
-            requirements: requirements,
-            benefits: benefits,
-            exprid: `${exprid?.format("YYYY-MM-DD")}`,
-            workForm: workForm,
-            skillList: skillList,
+            name: "",
             quantity: quantity,
+            benefits: benefits,
             experience: experience,
-            hiringTime: hiringTime,
+            typeOfWork: workForm,
+            salaryFrom: salary,
+            salaryTo: "",
+            description: description,
+            requirement: requirements,
             workLocation: workLocation,
-            salary: salary,
             hrName: hrName,
             hrEmail: hrEmail,
-            hrPhone: hrPhone
+            hrPhone: hrPhone,
+            enterpriseId: user?.id,
+            skillIds: skills.map(item => item.id),
+            specialtyIds: specialty.id,
         }
-        console.log(newPost);
+        console.log(newPost)
+        createPost(newPost, navigate);
     }
     const handleRegisProcess = () => {
         switch (etpProcess) {
@@ -128,7 +95,7 @@ const EnterpriseCreatePost = () => {
                         <div className="content-left">
                             <h3>What type of expertise are you hiring for?</h3>
                             {
-                                specialties.map((item, index) => {
+                                specialtiesSystem.map((item: SpecialtyEntity, index: number) => {
                                     return (
                                         <div className="radio" key={index}>
                                             <input type="radio"
@@ -140,7 +107,7 @@ const EnterpriseCreatePost = () => {
                                             />
                                             <label className="radio-content">
                                                 <span className="radio-header">{item.name}</span>
-                                                <span className="radio-description">{item.description}</span>
+                                                {/* <span className="radio-description">{item.description}</span> */}
                                             </label>
                                         </div>
                                     )
@@ -323,9 +290,9 @@ const EnterpriseCreatePost = () => {
                                 />
                                 <div className="skill-selected">
                                     {
-                                        skillList.map((name: string, key: number) =>
-                                            <button key={key} className="btn-item item-minus" onClick={() => handleRemoveSkill(name)}>
-                                                <span>{name}</span>
+                                        skills.map((skill: SkillEntity, key: number) =>
+                                            <button key={key} className="btn-item item-minus" onClick={() => handleRemoveSkill(skill)}>
+                                                <span>{skill.name}</span>
                                                 <FontAwesomeIcon icon={faClose} />
                                             </button>
                                         )
@@ -334,24 +301,25 @@ const EnterpriseCreatePost = () => {
                             </div>
                             <div className="skills">
                                 <span>Popular skills for</span>
-                                <select className="select-skills" onChange={(e) => { setSpecialtySelect(e.target.value) }}>
-                                    {
-                                        specialties.map((specialty, index) => {
-                                            return (
-                                                <option key={index} >{specialty.name}</option>
-                                            )
-                                        })
+                                <select className="select-skills" onChange={(e) => {
+                                    const selectedSpecialty = specialtiesSystem.find((specialty: SpecialtyEntity) => specialty.name === e.target.value);
+                                    if (selectedSpecialty) {
+                                        setSpecialty(selectedSpecialty);
                                     }
+                                }}>
+                                    {specialtiesSystem.map((specialty: SpecialtyEntity, index: number) => (
+                                        <option key={index}>{specialty.name}</option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="skill-items">
                                 <div className="btn-items">
                                     {
-                                        skills.map((skill, index) => {
+                                        specialty.skills.map((skill, index) => {
                                             return (
                                                 <button key={index} className="btn-item item-plus" onClick={() => handleSelectSkill(skill)}>
                                                     <FontAwesomeIcon icon={faPlus} />
-                                                    <span>{skill}</span>
+                                                    <span>{skill.name}</span>
                                                 </button>
                                             )
                                         })

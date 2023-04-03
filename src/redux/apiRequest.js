@@ -10,16 +10,20 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
     try {
         const res = await axios.post("/account/auth/login", user);
         console.log(res.data.message);
-        if (res.data.data) {
-            dispatch(loginSuccess(res.data.data));
-            dispatch(userSuccess(res.data.data.information));
-            if (!isRegister) {
-                navigate("/");
-            } else {
-                navigate("/update-candidate");
-            }
-        } else {
+        if(res.data.message == "Login Fail") {
             return res.data.message;
+        } else {
+            if (res.data.data) {
+                dispatch(loginSuccess(res.data.data));
+                dispatch(userSuccess(res.data.data.information));
+                if (!isRegister && res.data.message !== "Login Fail") {
+                    navigate("/");
+                } else {
+                    navigate("/update-candidate");
+                }
+            } else {
+                return res.data.message;
+            }
         }
     } catch (err) {
         dispatch(loginFailed());
@@ -39,7 +43,6 @@ export const registerCandidate = async (newUser, navigate, dispatch) => {
 export const registerEnterprise = async (newUser, navigate) => {
     try {
         const res = await axios.post("/account/auth/registerForEnterprise", newUser);
-        console.log(res.data);
         navigate("/")
     } catch (error) {
         return error
@@ -70,6 +73,33 @@ export const logoutUser = async (dispatch, navigate) => {
         navigate("/");
     } catch (err) {
         dispatch(logoutFailed());
+    }
+}
+
+export const getAllCandidates = async () => {
+    try {
+        const res = await axios.post("/candidate/getAll")
+        console.log(res)
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllEmployee = async () => {
+    try {
+        const res = await axios.get("/employee/getAllEmployees")
+        console.log(res.data.data.responseList)
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllEnterprise = async () => {
+    try {
+        const res = await axios.post("/enterprise/getAll")
+        console.log(res)
+    } catch (error) {
+        return error
     }
 }
 
@@ -136,3 +166,72 @@ export const addSpecialtiesCandidate = async (id, specialties) => {
         return error
     }
 }
+
+
+export const getCandidateCourses = async (id) => {
+    try {
+        const res = await axios.get(`/status-candidate-course/getListCourseByCandidateId?id=${id}`)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const startCourse = async (params) => {
+    try {
+        const res = await axios.post('/status-candidate-course/create', params)
+        console.log(res)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const submitCertificate = async (params) => {
+    try {
+        const res = await axios.post('/status-candidate-course/updateCertificate', params)
+        console.log(res)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const createPost = async (params, navigate) => {
+    try {
+        const res = await axios.post('/recruitmentRequest/create', params)
+        navigate("/enterprise-recruitment");
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const getListPostByEnterpriseId = async (id) => {
+    try {
+        const res = await axios.get(`/recruitmentRequest/getByCreator?id=${id}`)
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getPostByPostId = async (id) => {
+    try {
+        const res = await axios.get(`/recruitmentRequest/getById?id=${id}`)
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllPost = async () => {
+    try {
+        const res = await axios.get("/recruitmentRequest/getAll")
+        return res.data.data.responseList
+    } catch (error) {
+        return error
+    }
+}
+
+

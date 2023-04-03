@@ -313,7 +313,7 @@
 
 #CandidateSkillModal .course-row .col1 {
     overflow: hidden;
-    width: 70%;
+    width: 50%;
 }
 
 #CandidateSkillModal .course-data .col1 {
@@ -327,24 +327,13 @@
     opacity: 0.8;
 }
 
-#CandidateSkillModal .course-row .col3 {
-    width: 10%;
-    justify-self: center;
-}
-
-#CandidateSkillModal .course-row .col3 * {
-    text-align: center;
-}
-
-
-#CandidateSkillModal .course-row .col3 button {
-    width: 100%;
-}
-
 
 #CandidateSkillModal .course-row .col2 {
-    width: 11.5%;
+    width: 20%;
+}
 
+#CandidateSkillModal .course-row .col3 {
+    width: 20%;
 }
 
 #CandidateSkillModal .btn-learn,
@@ -363,5 +352,3 @@
     opacity: 0.8;
     cursor: pointer;
 }
-
-

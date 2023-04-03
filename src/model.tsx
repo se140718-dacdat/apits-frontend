@@ -5,21 +5,31 @@ export enum Roles {
     Enterprise = 4,
 }
 
+export enum Status {
+    NotStarted = "#9e9e9e",
+    Studying = "#2196f3",
+    Processing = "#ffc107",
+    Expired = "#f44336",
+    Done = "#4caf50"
+}
+
 export interface Login {
     email: string;
     password: string;
 }
+
+
 
 export interface RegisterEnterprise {
     name: string;
     address: string;
     phone: string;
     scale: string;
-    industry: string;
     introduction: string;
     email: string;
     password: string;
     website: string;
+    image: string;
 }
 
 
@@ -234,3 +244,38 @@ export interface Distance {
     image: string;
     levels: Level[]
 }
+
+export interface CandidateCourse {
+    id: number;
+    name: string;
+    link: string;
+    status: string;
+    sscId: number;
+    startAt: Date;
+}
+
+export interface CandidateCourses {
+    id: number;
+    name: string;
+    courses: CandidateCourse[]
+}
+
+export interface Employee {
+    id: number,
+    employeeName: string,
+    employeeCode: string,
+    phone: string,
+    gender: string,
+    address: string,
+    image: string,
+    dob: string,
+    status: string,
+    position: Position
+}
+
+export interface Position {
+    id: number;
+    name: string;
+    status: string;
+}
+

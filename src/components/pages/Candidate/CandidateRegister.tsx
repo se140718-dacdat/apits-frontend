@@ -34,7 +34,7 @@ const CandidateRegister = () => {
     const [address, setAddress] = useState<string>(user?.address || "Address");
     const [cv, setCv] = useState<string>("");
     const [payment, setPayment] = useState<string>(user?.payment || "VNPay number");
-    const [description, setDescription] = useState<string>(user?.description || "Full name");
+    const [description, setDescription] = useState<string>(user?.description || "Description");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
@@ -47,14 +47,16 @@ const CandidateRegister = () => {
 
     form50?.addEventListener('submit', (event: any) => {
         event.preventDefault();
+        console.log(cv)
         setProgress("100%");
         const registerModal = document.getElementById("CandidateRegister")!;
         (registerModal as HTMLElement).style.height = "auto";
     });
 
     useEffect(() => {
+        user?.cv && setCvName(getCVName(user?.cv));
         fetchData();
-    }, [])
+    }, [cv])
 
     const fetchData = async (): Promise<SpecialtyEntity[]> => {
         const response = await axios.get<{ data: { candidateSpecialList: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
@@ -102,11 +104,12 @@ const CandidateRegister = () => {
                 const downloadURL = await getDownloadURL(snapshot.ref);
 
                 // Set the state to the download URL
-                (type == "avater") ?
+                (type == "avatar") ?
                     setAvatar(downloadURL)
                     :
                     setCv(downloadURL)
-                    ;
+                    setCvName(getCVName(cv));
+                console.log(downloadURL)
             } catch (error) {
                 console.error(error);
             }
@@ -120,11 +123,12 @@ const CandidateRegister = () => {
             image: avatar,
             gender: gender,
             payment: payment,
-            dob: `${birth?.format('YYYY-MM-DD')}`,
+            dob: birth ? birth.format('YYYY-MM-DD') : '',
             address: address,
             cv: cv,
             description: description
         }
+        console.log(newUser);
         updateCandidate(user?.id, navigate, newUser, dispatch, specialties);
     }
 
@@ -223,7 +227,7 @@ const CandidateRegister = () => {
                                 <div className="form-import-header">Personal CV:</div>
                                 <div className="haft-input-cover">
                                     <label htmlFor="cv-file" className="file-label link">
-                                        {getCVName(user?.cv) || "Click here to upload CV"}
+                                        {user?.cv && getCVName(user?.cv) || "Click here to upload CV"}
                                     </label>
                                     <input
                                         type="file"

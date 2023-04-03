@@ -167,6 +167,95 @@
     margin-bottom: 16px;
 }
 
+#EnterpriseProfile .post {
+    flex-wrap: wrap;
+    display: flex;
+    border-radius: 5px;
+    padding:18px 24px;
+    margin: 10px 0;
+    width: 49%;
+    border: 1px solid #c4c4c4;
+}
+
+#EnterpriseProfile .post:hover {
+    background-color: rgba(242, 114, 41, 0.3);
+    cursor: pointer;
+}
+
+#EnterpriseProfile .post-detail {
+    margin: 0 24px;
+    width: 60%;
+}
+
+#EnterpriseProfile .avt-post-cover {
+    width: 100px;
+    height: 100px;
+    padding: 6px;
+    border-radius: 5px;
+    background-color: var(--white-color);
+}
+
+#EnterpriseProfile .post-avt {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+
+}
+
+#EnterpriseProfile .post-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    margin-top: 8px;
+}
+
+#EnterpriseProfile .post-company-name {
+    text-transform: capitalize;
+}
+
+#EnterpriseProfile .post-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 13px;
+}
+
+#EnterpriseProfile .btn-add-post {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    
+}
+
+#EnterpriseProfile .post-description {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-left: 6px;
+    border-top: 1px solid #e9eaec;
+    margin-top: 12px;
+}
+
+#EnterpriseProfile .description-item  {
+    margin-right: 24px;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+#EnterpriseProfile .skills {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+#EnterpriseProfile .skill {
+    color: var(--primary-color);
+    border-radius: 15px;
+    border: 1px solid #ebeced;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    padding: 4px 16px;
+}
 
 
 

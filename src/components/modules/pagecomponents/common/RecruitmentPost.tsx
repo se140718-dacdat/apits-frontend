@@ -1,12 +1,26 @@
 import { faBusinessTime, faClock, faCoins, faLocation, faLocationDot, faMagnifyingGlass, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "./RecruitmentPost.css";
+import { getAllPost } from '../../../../redux/apiRequest';
+import { Post } from '../../../../entity';
+import { getDaysLeft } from '../../../../handle';
 
 const RecruitmentPost = () => {
     const navigate = useNavigate();
+
+    const [posts, setPosts] = useState<Post[]>([]);
+
+    useEffect(() => {
+        fetchData();
+        console.log(posts[0])
+    }, [])
+
+    const fetchData = async () => {
+        setPosts(await getAllPost());
+    }
 
     return (
         <div id='RecruitmentPost'>
@@ -46,82 +60,50 @@ const RecruitmentPost = () => {
 
                 </div>
                 <div className="post-list">
-                    <div className="post" onClick={()=>{navigate("/post-detail")}}>
-                        <div className="avt-post-cover inline-block">
-                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                        </div>
-                        <div className="post-detail inline-block">
-                            <div className="post-name">PHP Developer (Magento)</div>
-                            <div className="post-company-name">CÔNG TY CỔ PHẦN GIẢI PHÁP CÔNG NGHỆ HTCSOFT VIỆT NAM</div>
-                        </div>
-                        <div className="skills">
-                            <div className="skill">
-                                SQL
-                            </div>
-                            <div className="skill">
-                                Java
-                            </div>
-                            <div className="skill">
-                                Python
-                            </div>
-                        </div>
-                        <div className="post-description">
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                $70 - $90/hr
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
-                                Fulltime
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                17 days left to apply
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
-                                Đường D1, Đ. D1, Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh 715650
-                            </div>
-                        </div>
-                    </div>
-                    <div className="post" onClick={()=>{navigate("/post-detail")}}>
-                        <div className="avt-post-cover inline-block">
-                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                        </div>
-                        <div className="post-detail inline-block">
-                            <div className="post-name">Backend Developer (Java)</div>
-                            <div className="post-company-name">FPT Software HCM</div>
-                        </div>
-                        <div className="skills">
-                            <div className="skill">
-                                OOP
-                            </div>
-                            <div className="skill">
-                                Java
-                            </div>
-                            <div className="skill">
-                                Spring boot
-                            </div>
-                        </div>
-                        <div className="post-description">
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                $70 - $90/hr
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
-                                Fulltime
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                17 days left to apply
-                            </div>
-                            <div className="description-item">
-                                <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
-                                Đường D1, Đ. D1, Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh 715650
-                            </div>
-                        </div>
-                    </div>
+                    {
+                        posts && posts.length > 0 && posts?.map((post: Post, index) => {
+                            return (
+                                <div className="post" onClick={() => { navigate(`/post-detail?id=${post.id}`) }} key={index}>
+                                    <div className="avt-post-cover inline-block">
+                                        <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                    </div>
+                                    <div className="post-detail inline-block">
+                                        <div className="post-name">{post.name}</div>
+                                        <div className="post-company-name">{post.name}</div>
+                                    </div>
+                                    <div className="skills">
+                                        <div className="skill">
+                                            SQL
+                                        </div>
+                                        <div className="skill">
+                                            Java
+                                        </div>
+                                        <div className="skill">
+                                            Python
+                                        </div>
+                                    </div>
+                                    <div className="post-description">
+                                        <div className="description-item">
+                                            <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
+                                            {post.salaryDetail}
+                                        </div>
+                                        <div className="description-item">
+                                            <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
+                                            {post.typeOfWork}
+                                        </div>
+                                        <div className="description-item">
+                                            <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                            {getDaysLeft(post?.date, post?.expiryDate) > 0 ? `${getDaysLeft(post?.date, post?.expiryDate)} days left to apply` : "Expired"}
+                                        </div>
+                                        <div className="description-item">
+                                            <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
+                                            {post.creator.address}
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>

@@ -1,10 +1,15 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import "./EnterpriseProfile.css";
-import { faEarthAmericas, faBuilding, faLocationDot, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faEarthAmericas, faBuilding, faLocationDot, faEnvelope, faCoins, faBusinessTime, faClock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from 'react-router-dom';
+import { getListPostByEnterpriseId } from '../../../redux/apiRequest';
+import { Post } from '../../../entity';
+import axios from '../../../api/axios';
+import { getDaysLeft } from '../../../handle';
 
 const storage = getStorage();
 
@@ -19,10 +24,37 @@ const EnterpriseProfile: FC = () => {
     const [website, setWebsite] = useState<string>(user?.website || "Website");
     const [address, setAddress] = useState<string>(user?.address || "Company address");
     const [introduction, setIntroduction] = useState<string>(user?.introduction || "Introduction");
+    const [posts, setPosts] = useState<Post[]>();
 
+    useEffect(() => {
+        fetchData();
+    }, [])
 
+    const navigate = useNavigate();
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
+
+    const fetchData = async (): Promise<Post[]> => {
+        const response = await axios.get<{ data: { responseList: Post[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}`);
+        const data = response?.data?.data?.responseList;
+        setPosts(data);
+        console.log(posts)
+        return data;
+    }
+
+    const handleEdit = () => {
+        const updateEnterprise = {
+            name: name,
+            email: email,
+            scale: scale,
+            website: website,
+            address: address,
+            introduction: introduction,
+            avatar: avatar,
+            cover: cover
+        }
+        console.log(updateEnterprise)
+    }
 
     const convertFile = async (files: FileList | null, type: string) => {
         if (files) {
@@ -97,71 +129,54 @@ const EnterpriseProfile: FC = () => {
                 </div>
                 <div className="profile-detail">
                     <h4>Recruitment Posts</h4>
-                    <div className="post-line">
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="post-line">
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="post-line">
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
-                        <div className="post">
-                            <div className="avt-post-cover inline-block">
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
-                            </div>
-                            <div className="post-detail inline-block">
-                                <div className="post-name">Video Producer</div>
-                                <div className="post-name">(Team Leader - Lương 25 - 30 Triệu)</div>
-                                <div className="post-company-name">Công Ty Cổ Phần TGA</div>
-                            </div>
-                        </div>
+                    <div className="post-list">
+                        {
+                            posts?.map((post: Post, index) => {
+                                return (
+                                    <div className="post" onClick={() => { navigate("/post-detail") }} key={index}>
+                                        <div className="avt-post-cover inline-block">
+                                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                        </div>
+                                        <div className="post-detail inline-block">
+                                            <div className="post-name">{post.name}</div>
+                                            <div className="post-company-name">{post.name}</div>
+                                        </div>
+                                        <div className="skills">
+                                            <div className="skill">
+                                                SQL
+                                            </div>
+                                            <div className="skill">
+                                                Java
+                                            </div>
+                                            <div className="skill">
+                                                Python
+                                            </div>
+                                        </div>
+                                        <div className="post-description">
+                                            <div className="description-item">
+                                                <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
+                                                {post.salaryDetail}
+                                            </div>
+                                            <div className="description-item">
+                                                <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
+                                                {post.typeOfWork}
+                                            </div>
+                                            <div className="description-item">
+                                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                                <div className="description-item">
+                                                    <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                                    {getDaysLeft(post?.date, post?.expiryDate) > 0 ? `${getDaysLeft(post?.date, post?.expiryDate)} days left to apply` : "Expired"}
+                                                </div>
+                                            </div>
+                                            <div className="description-item">
+                                                <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
+                                                {post.creator.address}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>
@@ -255,7 +270,7 @@ const EnterpriseProfile: FC = () => {
                                     onChange={(e) => {
                                         setIntroduction(e.target.value);
                                     }}
-                                    required 
+                                    required
                                 />
                             </FloatingLabel>
                         </div>
@@ -265,7 +280,11 @@ const EnterpriseProfile: FC = () => {
                     <Button className='button-close' variant="secondary" onClick={handleCloseUpdate}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseUpdate}>
+                    <Button variant="primary" onClick={() => {
+                        handleCloseUpdate();
+                        handleEdit();
+                    }
+                    }>
                         Save changes
                     </Button>
                 </Modal.Footer>

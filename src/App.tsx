@@ -30,6 +30,9 @@ import Notification from './components/modules/pagecomponents/common/Notificatio
 import Footer from './components/modules/pagecomponents/footer/Footer';
 import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
 import NotificationList from './components/pages/Candidate/CandidateNotificationList';
+import AdminHeader from './components/modules/pagecomponents/Header/AdminHeader';
+import CandidateList from './components/pages/Admin/CandidateList';
+import EmployeeList from './components/pages/Admin/EmployeeList';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -51,6 +54,8 @@ const App: FC = () => {
             return <EnterpriseHeader setUser={user} />;
           case "EMPLOYEE":
             return <EmployeeHeader position={user?.position.name} setUser={user} />
+          case "ADMIN":
+            return <AdminHeader setUser={user} />
           default:
             return <Header setUser={user} />
         }
@@ -63,6 +68,9 @@ const App: FC = () => {
               <EmployeeProfile />)
               : (<CandidateProfile />)
         }></Route>;
+        <Route path='/candidates-management' element={<CandidateList />}></Route>;
+        <Route path='/employee-management' element={<EmployeeList />}></Route>;
+
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/update-candidate' element={<CandidateRegister />}></Route>;
@@ -71,16 +79,17 @@ const App: FC = () => {
         <Route path='/candidates' element={<Candidates />}></Route>;
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail' element={<RecruitmentPostDetail />}></Route>;
+        <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
-        <Route path='/contract' element={<ContractCreateForm/>}></Route>;
+        <Route path='/contract' element={<ContractCreateForm />}></Route>;
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   )
 }

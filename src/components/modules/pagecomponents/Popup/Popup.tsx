@@ -4,8 +4,8 @@ import { NavLink } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { authentication } from '../../../../firebase-config';
-import { Login, RegisterEnterprise } from '../../../../model';
-import { loginUser, loginUserByGoogle, registerCandidate, registerEnterprise } from '../../../../redux/apiRequest';
+import { Login } from '../../../../model';
+import { loginUser, loginUserByGoogle, registerCandidate, } from '../../../../redux/apiRequest';
 import "./Popup.css"
 
 interface Props {
@@ -39,12 +39,12 @@ const Popup: FC<Props> = (props) => {
                 email: username,
                 password: password
             }
-            if (await loginUser(userLogin, dispatch, navigate, false)) {
-                props.isDisplay('');
-                props.isPopup(0);
+            if (await loginUser(userLogin, dispatch, navigate, false) == "Login Fail") {
+                setMessageLogin("The user or password that you've entered is incorrect.")
             }
             else {
-                setMessageLogin("The user or password that you've entered is incorrect.")
+                props.isDisplay('');
+                props.isPopup(0);
             }
         } catch (error) {
             console.log(error)

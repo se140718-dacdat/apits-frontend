@@ -56,12 +56,12 @@ const CandidateHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
-                                        <img className='avt' src="/images/avt.jpg" alt="" />
+                                        <img className='avt' src={user?.image} alt="" />
                                         <div className='user-name'>{user?.name}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
-                                            <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
+                                            <img src={user?.image} alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
                                                 <span className='user-info-name'>{user?.name}</span>
                                                 <span className='user-info-email'>{user?.email}</span>

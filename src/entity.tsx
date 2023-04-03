@@ -55,26 +55,43 @@ interface CandidateEntity {
 }
 
 export interface PostEntity {
-    title: string;
-    specialty: string;
-    skillList: List;
-    //description, requirements, benefits (textarea)
-    description: string;
-    requirements: string;
-    benefits: string;
-    //Fulltime hoặc part-time
-    workForm: string;
-    quantity: number;
-    //Ngày post hết hạn
-    exprid: string;
-    experience: string;
-    hiringTime: string;
-    salary: string;
-    workLocation: string;
-    hrName: string;
-    hrPhone: string;
-    hrEmail: string;    
+    expiryDate: string,
+    title: string,
+    name: string,
+    quantity: number,
+    benefits: string,
+    experience: string,
+    typeOfWork: string,
+    salaryFrom: string,
+    salaryTo: string,
+    description: string,
+    requirement: string,
+    workLocation: string,
+    hrName: string,
+    hrPhone: string,
+    hrEmail: string,
+    enterpriseId: number,
+    skillIds: number[],
+    specialtyIds: number
 }
+
+export interface Post {
+    id: 1,
+    date: Date,
+    expiryDate: Date,
+    industry: null,
+    name: string,
+    amount: 0,
+    jobLevel: null,
+    experience: string,
+    typeOfWork: string,
+    salaryDetail: string,
+    description: string,
+    requirement: string,
+    status: string,
+    creator: EnterpriseEntity
+}
+
 
 interface EmployeeEntity {
     id: number;
@@ -142,7 +159,7 @@ const sql: Skill = {
 export const backendDeveloper: Specialty = {
     id: 1,
     name: "Backend Developer",
-    skillList : [java, sql]
+    skillList: [java, sql]
 }
 
 interface Certificate {

@@ -22,11 +22,6 @@ const EnterpriseRegister = () => {
 
     const form = document.getElementById("enterprise-register-form") as HTMLElement
 
-    form?.addEventListener('submit', (event: any) => {
-        event.preventDefault();
-        registerHandler();
-    });
-
     const registerHandler = () => {
         const newUser: RegisterEnterprise = {
             name: name,
@@ -35,9 +30,9 @@ const EnterpriseRegister = () => {
             email: username,
             password: password,
             scale: scale,
-            industry: industry,
             introduction: introduce,
             website: website,
+            image: ""
         }
         registerEnterprise(newUser, navigate);
     }
@@ -144,7 +139,7 @@ const EnterpriseRegister = () => {
                     </div>
                     <div className="group-button">
                         <button className="btn btn-cancel" onClick={() => { navigate("/") }}>Cancel</button>
-                        <button className="btn" type="submit">Finish</button>
+                        <button className="btn" onClick={registerHandler}>Finish</button>
                     </div>
                 </form>
             </div>
