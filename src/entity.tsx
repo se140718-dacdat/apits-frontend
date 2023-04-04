@@ -28,6 +28,25 @@ interface Certificate {
     description: string;
 }
 
+export interface CandidateResponse {
+    address: string;
+    candidateCode: string;
+    createAt: string;
+    cv: string;
+    description: string;
+    dob: string;
+    email: string;
+    experience: string;
+    gender: string;
+    id: number;
+    image: string;
+    name: string;
+    payment: string;
+    personalcertificate: string;
+    phone: string;
+    status: string;
+}
+
 interface CandidateEntity {
     id: number;
     email: string;
@@ -72,7 +91,45 @@ export interface PostEntity {
     hrEmail: string,
     enterpriseId: number,
     skillIds: number[],
-    specialtyIds: number
+    specialtyIds: number[]
+}
+
+export interface PostResponse {
+    id: number,
+    expiryDate: string,
+    title: string,
+    name: string,
+    quantity: number,
+    benefits: string,
+    experience: string,
+    typeOfWork: string,
+    salaryFrom: string,
+    salaryTo: string,
+    description: string,
+    requirement: string,
+    workLocation: string,
+    hrName: string,
+    hrPhone: string,
+    hrEmail: string,
+    enterpriseId: number,
+    skillIds: number[],
+    specialtyIds: number[],
+    date: string,
+    creator: CreatorEntity
+}
+
+export interface CreatorEntity {
+    id: number;
+    name: string;
+    address: string;
+    status: string;
+    email: string;
+    phone: string;
+    website: string;
+    createAt: string;
+    scale: string;
+    image: string;
+    introduction: string;
 }
 
 export interface Post {

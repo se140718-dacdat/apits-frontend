@@ -6,26 +6,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCakeCandles, faCheck, faEnvelope, faHouse, faPhone, faRightToBracket, faUser, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 import "./ViewAssign.css";
 import { Dropdown } from "react-bootstrap";
+import { CandidateResponse } from "../../../entity";
 
 interface Props {
-    candidates: Candidate[];
+    candidates: CandidateResponse[];
 }
 
 const ViewAssign: React.FC<Props> = ({ candidates }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [selectedSpecialties, setSelectedSpecialties] = useState<{
-        [id: number]: string;
-    }>(
-        candidates.reduce(
-            (acc, candidate) => ({
-                ...acc,
-                [candidate.id]: candidate.specialties[0].name,
-            }),
-            {}
-        )
-    );
+    // const [selectedSpecialties, setSelectedSpecialties] = useState<{
+    //     [id: number]: string;
+    // }>(
+    //     candidates.reduce(
+    //         (acc, candidate) => ({
+    //             ...acc,
+    //             [candidate.id]: candidate.specialties[0].name,
+    //         }),
+    //         {}
+    //     )
+    // );
 
 
     const style = {
@@ -47,38 +48,38 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
         { field: "name", headerName: "Name", flex: 0.8 },
         { field: "gender", headerName: "Gender", flex: 0.5 },
         { field: "address", headerName: "Address", flex: 1.2 },
-        {
-            field: "specialty",
-            headerName: "Specialty",
-            flex: 1,
-            renderCell: ({ row }) => (
-                <select
-                    className="view-assign-specialty-select"
-                    value={selectedSpecialties[row.id]}
-                    onChange={(e) =>
-                        setSelectedSpecialties({
-                            ...selectedSpecialties,
-                            [row.id]: e.target.value,
-                        })
-                    }
-                >
-                    {row.specialties.map((specialty: Specialty) => (
-                        <option key={specialty.id} value={specialty.name}>
-                            {specialty.name}
-                        </option>
-                    ))}
-                </select>
-            ),
-        },
-        {
-            field: "skills",
-            headerName: "Skills",
-            flex: 1,
-            valueGetter: ({ row }) =>
-                row.specialties
-                    .find((specialty: Specialty) => specialty.name === selectedSpecialties[row.id])
-                    ?.skills.join(", ") ?? "",
-        },
+        // {
+        //     field: "specialty",
+        //     headerName: "Specialty",
+        //     flex: 1,
+        //     renderCell: ({ row }) => (
+        //         <select
+        //             className="view-assign-specialty-select"
+        //             value={selectedSpecialties[row.id]}
+        //             onChange={(e) =>
+        //                 setSelectedSpecialties({
+        //                     ...selectedSpecialties,
+        //                     [row.id]: e.target.value,
+        //                 })
+        //             }
+        //         >
+        //             {row.specialties.map((specialty: Specialty) => (
+        //                 <option key={specialty.id} value={specialty.name}>
+        //                     {specialty.name}
+        //                 </option>
+        //             ))}
+        //         </select>
+        //     ),
+        // },
+        // {
+        //     field: "skills",
+        //     headerName: "Skills",
+        //     flex: 1,
+        //     valueGetter: ({ row }) =>
+        //         row.specialties
+        //             .find((specialty: Specialty) => specialty.name === selectedSpecialties[row.id])
+        //             ?.skills.join(", ") ?? "",
+        // },
         {
             field: 'approve',
             headerName: '',
@@ -120,7 +121,7 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
         name: candidate.name,
         gender: candidate.gender,
         address: candidate.address,
-        specialties: candidate.specialties,
+        // specialties: candidate.specialties,
     }));
 
     return (

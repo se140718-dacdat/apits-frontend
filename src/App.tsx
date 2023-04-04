@@ -78,7 +78,6 @@ const App: FC = () => {
         <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
         <Route path='/candidates' element={<Candidates />}></Route>;
         <Route path='/enterprises' element={<Enterprises />}></Route>;
-        <Route path='/post-detail' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/request' element={<Request />}></Route>;

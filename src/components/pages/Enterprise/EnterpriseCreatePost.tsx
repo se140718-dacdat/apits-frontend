@@ -82,7 +82,7 @@ const EnterpriseCreatePost = () => {
             hrPhone: hrPhone,
             enterpriseId: user?.id,
             skillIds: skills.map(item => item.id),
-            specialtyIds: specialty.id,
+            specialtyIds: [specialty.id],
         }
         console.log(newPost)
         createPost(newPost, navigate);

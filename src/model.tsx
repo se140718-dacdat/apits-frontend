@@ -1,3 +1,5 @@
+import { GridRowId } from "@mui/x-data-grid";
+
 export enum Roles {
     Admin = 1,
     Candidate = 2,
@@ -250,7 +252,7 @@ export interface CandidateCourse {
     name: string;
     link: string;
     status: string;
-    sscId: number;
+    sccId: number;
     startAt: Date;
 }
 
@@ -279,3 +281,11 @@ export interface Position {
     status: string;
 }
 
+export interface Assign {
+    status: string;
+    experience: string;
+    screeningStatus: string;
+    recruitmentRequestId: number,
+    assignerId: number,
+    candidateIds: GridRowId[]
+}

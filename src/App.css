@@ -283,3 +283,11 @@ a {
 .weight400 {
     font-weight: 400;
 }
+
+.float-right {
+    float: right;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}

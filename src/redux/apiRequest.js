@@ -134,6 +134,16 @@ export const getCandidateById = async (id) => {
     }
 }
 
+export const getCandidateBySpecialtyId = async (id) => {
+    try {
+        const res = await axios.get(`/canspec/getListCansWithSpec?specId=${id}`)
+        console.log(res.data.data.candidates)
+        return res.data.data.candidates
+    } catch (error) {
+        return error
+    }
+}
+
 export const getSpecialtiesByCandidateId = async (id) => {
     try {
         const res = await axios.get(`/canspec/getListSpecsWithCan/${id}`)
@@ -180,7 +190,7 @@ export const getCandidateCourses = async (id) => {
 export const startCourse = async (params) => {
     try {
         const res = await axios.post('/status-candidate-course/create', params)
-        console.log(res)
+        console.log(params)
         return res
     } catch (error) {
         return error
@@ -189,8 +199,7 @@ export const startCourse = async (params) => {
 
 export const submitCertificate = async (params) => {
     try {
-        const res = await axios.post('/status-candidate-course/updateCertificate', params)
-        console.log(res)
+        const res = await axios.put('/status-candidate-course/updateCertificate', params)
         return res
     } catch (error) {
         return error
@@ -227,8 +236,18 @@ export const getPostByPostId = async (id) => {
 
 export const getAllPost = async () => {
     try {
-        const res = await axios.get("/recruitmentRequest/getAll")
+        const res = await axios.get("/recruitmentRequest/getAll?pageNo=0&pageSize=40")
         return res.data.data.responseList
+    } catch (error) {
+        return error
+    }
+}
+
+export const assignCandidates = async (params) => {
+    try {
+        const res = await axios.post("/assign/create", params)
+        console.log(res);
+        return res
     } catch (error) {
         return error
     }

@@ -7,7 +7,7 @@ import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from 'react-router-dom';
 import { getListPostByEnterpriseId } from '../../../redux/apiRequest';
-import { Post } from '../../../entity';
+import { Post, PostResponse } from '../../../entity';
 import axios from '../../../api/axios';
 import { getDaysLeft } from '../../../handle';
 
@@ -24,7 +24,7 @@ const EnterpriseProfile: FC = () => {
     const [website, setWebsite] = useState<string>(user?.website || "Website");
     const [address, setAddress] = useState<string>(user?.address || "Company address");
     const [introduction, setIntroduction] = useState<string>(user?.introduction || "Introduction");
-    const [posts, setPosts] = useState<Post[]>();
+    const [posts, setPosts] = useState<PostResponse[]>();
 
     useEffect(() => {
         fetchData();
@@ -34,8 +34,8 @@ const EnterpriseProfile: FC = () => {
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
 
-    const fetchData = async (): Promise<Post[]> => {
-        const response = await axios.get<{ data: { responseList: Post[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}`);
+    const fetchData = async (): Promise<PostResponse[]> => {
+        const response = await axios.get<{ data: { responseList: PostResponse[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}`);
         const data = response?.data?.data?.responseList;
         setPosts(data);
         console.log(posts)
@@ -131,14 +131,14 @@ const EnterpriseProfile: FC = () => {
                     <h4>Recruitment Posts</h4>
                     <div className="post-list">
                         {
-                            posts?.map((post: Post, index) => {
+                            posts?.map((post: PostResponse, index) => {
                                 return (
-                                    <div className="post" onClick={() => { navigate("/post-detail") }} key={index}>
+                                    <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
                                         <div className="avt-post-cover inline-block">
                                             <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                                         </div>
                                         <div className="post-detail inline-block">
-                                            <div className="post-name">{post.name}</div>
+                                            <div className="post-name">{post.title}</div>
                                             <div className="post-company-name">{post.name}</div>
                                         </div>
                                         <div className="skills">
@@ -155,19 +155,16 @@ const EnterpriseProfile: FC = () => {
                                         <div className="post-description">
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                                {post.salaryDetail}
+                                                {post.salaryFrom}
                                             </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
                                                 {post.typeOfWork}
                                             </div>
                                             <div className="description-item">
-                                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                                <div className="description-item">
                                                     <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
                                                     {getDaysLeft(post?.date, post?.expiryDate) > 0 ? `${getDaysLeft(post?.date, post?.expiryDate)} days left to apply` : "Expired"}
                                                 </div>
-                                            </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
                                                 {post.creator.address}

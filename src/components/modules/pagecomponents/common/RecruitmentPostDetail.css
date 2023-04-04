@@ -147,9 +147,6 @@
     padding: 16px;
 }
 
-#RecruitmentPostDetail .right-item {
-    margin-bottom: 8px;
-}
 
 #RecruitmentPostDetail .item-name {
     margin-bottom: 8px !important;
@@ -213,4 +210,26 @@
 
 #RecruitmentPostDetail .description-item .icon {
     font-size: 1.2rem;
+}
+
+#AssignModal .modal-item * {
+    display: inline-block;
+}
+
+#AssignModal .modal-list {
+    margin-left: 24px;
+}
+
+#AssignModal .item-name {
+    font-size: 1.1rem;
+}
+
+#AssignModal .item {
+    font-size: 0.8rem;
+    padding: 4px 16px;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 15px;
+    margin-right: 8px;
+    margin-bottom: 8px;
 }

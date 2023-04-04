@@ -7,68 +7,31 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import "./RecruitmentPostDetail.css";
 import { Dropdown } from 'react-bootstrap';
-import "./Filter.css"
-import { Candidate, Category, dataEngineer, developer } from '../../../../model';
+import "./Filter.css";
+import { Candidate, Category, SpecialtyEntity, dataEngineer, developer } from '../../../../model';
 import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import { useParams } from 'react-router-dom';
-import { getPostByPostId } from '../../../../redux/apiRequest';
-import { Post } from '../../../../entity';
-
-
-const candidates: Candidate[] = [
-    {
-        id: 1,
-        name: "Lương Hồ Đắc Đạt",
-        address: "Bình Chánh, HCM",
-        gender: "Male",
-        specialties: [
-            {
-                id: 1,
-                name: "Front-end",
-                skills: ["React", "JavaScript", "CSS"],
-            },
-            {
-                id: 2,
-                name: "Back-end",
-                skills: ["Node.js", "SQL", "PHP"],
-            },
-        ],
-        status: "approved"
-    },
-    {
-        id: 2,
-        name: "Phạm Thành Long",
-        address: "Biên Hòa, Đồng Nai",
-        gender: "Male",
-        specialties: [
-            {
-                id: 1,
-                name: "Front-end",
-                skills: ["Angular", "TypeScript", "HTML"],
-            },
-            {
-                id: 3,
-                name: "Database",
-                skills: ["SQL Server", "Oracle", "MySQL"],
-            },
-        ],
-        status: ""
-    },
-];
+import { getCandidateBySpecialtyId, getPostByPostId } from '../../../../redux/apiRequest';
+import { CandidateResponse, PostResponse } from '../../../../entity';
+import { getDaysLeft } from '../../../../handle';
+import MessageBox from '../Popup/MessageBox/MessageBox';
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
     const account = useSelector((state: any) => state.auth.login.currentUser);
+    const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
 
-    const [category, setCategory] = useState<Category>(developer);
+    const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [open, setOpen] = useState(false);
-    const [post, setPost] = useState<Post>();
+    const [post, setPost] = useState<PostResponse>();
+    const [candidates, setCandidates] = useState<CandidateResponse[]>([]);
+
+
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const categoryList: Category[] = [developer, dataEngineer]
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -84,11 +47,15 @@ const RecruitmentPostDetail = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(id)
-    }, [])
+        getCandidatesForAssign();
+    }, [specialty])
 
     const fetchData = async () => {
         setPost(await getPostByPostId(id));
+    }
+
+    const getCandidatesForAssign = async () => {
+        setCandidates(await getCandidateBySpecialtyId(specialty.id));
     }
 
     return (
@@ -102,11 +69,11 @@ const RecruitmentPostDetail = () => {
                                     <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                                 </div>
                                 <div className="post-header-content">
-                                    <h1 className="post-name">{`PHP Developer (Magento)`}</h1>
-                                    <div className="company-name">CÔNG TY CỔ PHẦN GIẢI PHÁP CÔNG NGHỆ HTCSOFT VIỆT NAM</div>
+                                    <h1 className="post-name">{post?.title}</h1>
+                                    <div className="company-name">{post?.creator.name}</div>
                                     <div className="post-time">
                                         <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                        Hạn nộp hồ sơ: 08/04/2023
+                                        Hạn nộp hồ sơ: {`${post?.expiryDate}`}
                                     </div>
                                 </div>
                                 {
@@ -134,7 +101,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Salary</strong>
                                                 <br />
-                                                <span>$70 - $90/hr</span>
+                                                <span>{post?.salaryFrom}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -142,7 +109,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Work form</strong>
                                                 <br />
-                                                <span>Fulltime</span>
+                                                <span>{post?.typeOfWork}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -150,7 +117,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Quantity</strong>
                                                 <br />
-                                                <span>4 persons</span>
+                                                <span>{post?.quantity} persons</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -158,7 +125,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Experience</strong>
                                                 <br />
-                                                <span>1 year</span>
+                                                <span>{post?.experience}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -166,7 +133,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Time remainding</strong>
                                                 <br />
-                                                <span>17 days left to apply</span>
+                                                <span>{post && getDaysLeft(post?.date, post?.expiryDate)} days left to apply</span>
                                             </div>
                                         </div>
                                     </div>
@@ -174,7 +141,7 @@ const RecruitmentPostDetail = () => {
                                 <div className="general-information" style={{ marginBottom: "32px" }}>
                                     <p>Work location</p>
                                     <div className="general-item">
-                                        <span>- Hà Nội: Ngõ 8 Nguyễn Văn Lộc, Mộ Lao, Hà Đông</span>
+                                        <span>-{post?.workLocation}</span>
                                     </div>
                                 </div>
                                 <div className="general-description">
@@ -219,13 +186,13 @@ const RecruitmentPostDetail = () => {
                             <div className="right-item">
                                 <p className='item-name'>Website</p>
                                 <div className="item-description">
-                                    <a href='https://www.topcv.vn/viec-lam/lap-trinh-vien-front-end-develop-wordpress/944198.html'>https://www.topcv.vn/viec-lam/lap-trinh-vien-front-end-develop-wordpress/944198.html</a>
+                                    <a href={post?.creator.website} style={{ textTransform: "none" }}>{post?.creator.website}</a>
                                 </div>
                             </div>
                             <div className="right-item">
                                 <p className='item-name'>Company Scale</p>
                                 <div className="description p0-14">
-                                    Over 1000
+                                    {post?.creator.scale}
                                 </div>
                             </div>
                             <div className="right-item">
@@ -253,7 +220,7 @@ const RecruitmentPostDetail = () => {
                             <div className="right-item">
                                 <p className='item-name'>Introduce</p>
                                 <div className="description p0-14">
-                                    <span>Công ty TNHH SAPAN VIỆT NAM, là start-up công nghệ cung cấp hệ thống và dịch vụ logistic và fulfillment cho các các website thương mại điện tử tại thị trường Mỹ. Chúng tôi đã và đang phục vụ hơn 20 website thương mại điện tử lớn tại Mỹ. Sứ mệnh của chúng tôi là dành mọi nguồn lực để xây dựng, vận hành và phát triển hoạt động kinh doanh thương mại điện tử tạo ra các thương hiệu có giá trị toàn cầu.</span>
+                                    <span>{post?.creator.introduction}</span>
                                 </div>
                             </div>
                             <div className="right-item">
@@ -261,15 +228,15 @@ const RecruitmentPostDetail = () => {
                                 <div className="description p0-14">
                                     <div className="description-item">
                                         <FontAwesomeIcon icon={faUser} className="icon primary-color mr-8" />
-                                        HR 1
+                                        {post?.hrName}
                                     </div>
                                     <div className="description-item">
                                         <FontAwesomeIcon icon={faEnvelope} className="icon primary-color mr-8" />
-                                        hr1@gmail.com
+                                        {post?.hrEmail}
                                     </div>
                                     <div className="description-item">
                                         <FontAwesomeIcon icon={faAddressBook} className="icon primary-color mr-8" />
-                                        0123456789
+                                        {post?.hrPhone}
                                     </div>
                                 </div>
                             </div>
@@ -280,6 +247,7 @@ const RecruitmentPostDetail = () => {
             {
                 (account?.role.name === "EMPLOYEE") ?
                     (<Modal
+                        id="AssignModal"
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="modal-modal-title"
@@ -287,7 +255,29 @@ const RecruitmentPostDetail = () => {
                     >
                         <Box sx={style} className='assign-modal'>
                             <Typography id="modal-modal-title" variant="h6" component="h2">
-                                Brief Information
+                                <h2>Brief Information</h2>
+                                <div className="modal-item">
+                                    <p className='item-name'>Specialty:</p>
+                                    <div className="modal-list">
+                                        <div className="item">
+                                            Developer
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal-item">
+                                    <p className='item-name'>Skills:</p>
+                                    <div className="modal-list">
+                                        <div className="item">
+                                            Java
+                                        </div>
+                                        <div className="item">
+                                            Python
+                                        </div>
+                                        <div className="item">
+                                            SQL
+                                        </div>
+                                    </div>
+                                </div>
                             </Typography>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 <div className="assign-container">
@@ -302,14 +292,16 @@ const RecruitmentPostDetail = () => {
                                             </div>
                                             <Dropdown className="filter-dropdown ml-8">
                                                 <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-                                                    <span>{category.categoryName}</span>
+                                                    <span>{specialty?.name}</span>
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu className='filter-menu'>
                                                     {
-                                                        categoryList.map((category) => {
+                                                        specialtiesSystem.map((specialty: SpecialtyEntity) => {
                                                             return (
-                                                                <div key={category.categoryId}>
-                                                                    <Dropdown.Item className='filter-item' onClick={() => { setCategory(category) }}>{category.categoryName}</Dropdown.Item>
+                                                                <div key={specialty.id}>
+                                                                    <Dropdown.Item className='filter-item' onClick={() => {
+                                                                        setSpecialty(specialty)
+                                                                    }}>{specialty.name}</Dropdown.Item>
                                                                 </div>
                                                             )
                                                         })
@@ -352,14 +344,16 @@ const RecruitmentPostDetail = () => {
                                                 </div>
                                                 <Dropdown className="filter-dropdown ml-8">
                                                     <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-                                                        <span>{category.categoryName}</span>
+                                                        <span>{specialty.name}</span>
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu className='filter-menu'>
                                                         {
-                                                            categoryList.map((category) => {
+                                                            specialtiesSystem.map((specialty: SpecialtyEntity) => {
                                                                 return (
-                                                                    <div key={category.categoryId}>
-                                                                        <Dropdown.Item className='filter-item' onClick={() => { setCategory(category) }}>{category.categoryName}</Dropdown.Item>
+                                                                    <div key={specialty.id}>
+                                                                        <Dropdown.Item className='filter-item' onClick={() => {
+                                                                            setSpecialty(specialty);
+                                                                        }}>{specialty.name}</Dropdown.Item>
                                                                     </div>
                                                                 )
                                                             })

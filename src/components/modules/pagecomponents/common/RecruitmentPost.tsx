@@ -5,13 +5,13 @@ import { Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "./RecruitmentPost.css";
 import { getAllPost } from '../../../../redux/apiRequest';
-import { Post } from '../../../../entity';
+import { Post, PostEntity, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 
 const RecruitmentPost = () => {
     const navigate = useNavigate();
 
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<PostResponse[]>([]);
 
     useEffect(() => {
         fetchData();
@@ -61,14 +61,14 @@ const RecruitmentPost = () => {
                 </div>
                 <div className="post-list">
                     {
-                        posts && posts.length > 0 && posts?.map((post: Post, index) => {
+                        posts && posts.length > 0 && posts?.map((post: PostResponse, index) => {
                             return (
-                                <div className="post" onClick={() => { navigate(`/post-detail?id=${post.id}`) }} key={index}>
+                                <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
                                     <div className="avt-post-cover inline-block">
                                         <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                                     </div>
                                     <div className="post-detail inline-block">
-                                        <div className="post-name">{post.name}</div>
+                                        <div className="post-name">{post.title}</div>
                                         <div className="post-company-name">{post.name}</div>
                                     </div>
                                     <div className="skills">
@@ -85,7 +85,7 @@ const RecruitmentPost = () => {
                                     <div className="post-description">
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                            {post.salaryDetail}
+                                            {post.salaryFrom}
                                         </div>
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />

@@ -32,7 +32,6 @@ const EmployeeHeader: FC<Props> = (props) => {
 
 
     const renderHandle = () => {
-        console.log(props.position)
         switch (props.position) {
             case "MANAGER":
                 return (

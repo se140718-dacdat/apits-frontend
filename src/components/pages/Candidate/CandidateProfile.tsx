@@ -14,7 +14,7 @@ import { CandidateCourse, CandidateCourses, CourseEntity, Distance, LevelEntity,
 import axios from '../../../api/axios';
 import { isEmpty } from '@firebase/util';
 import { formatDateMonthYear, getCVName } from '../../../convert';
-import { startCourse } from '../../../redux/apiRequest';
+import { startCourse, submitCertificate } from '../../../redux/apiRequest';
 
 
 export const CandidateProfile: FC = () => {
@@ -37,7 +37,8 @@ export const CandidateProfile: FC = () => {
     const [issuedTime, setIssuedTime] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [candidateCourses, setCandidateCourses] = useState<CandidateCourses>();
     const [levelId, setLevelId] = useState<number>();
-    const [status, setStatus] = useState<string>();
+    const [statusId, setStatusId] = useState<number>();
+    const [certificate, setCertificate] = useState<string>();
 
 
     useEffect(() => {
@@ -53,7 +54,6 @@ export const CandidateProfile: FC = () => {
                 const element2 = data.find((element: any) => element.id === element1.id);
                 return element2 != null;
             });
-            console.log(intersection)
             setSpecialty(intersection[0]);
             setSpecialties(intersection);
         }
@@ -71,15 +71,25 @@ export const CandidateProfile: FC = () => {
             candidateId: user?.id,
             skillId: skill?.id,
             levelId: levelId,
-            courseId: course?.id
+            courseId: course?.id,
+            certificate: ""
         }
+        console.log(request);
         startCourse(request);
         window.open(course?.link)
     }
 
+    const handleSubmitCertificate = () => {
+        const request = {
+            id: statusId,
+            certificate: certificate
+        }
+        submitCertificate(request);
+        handleCloseSubmitCertificate();
+    }
+
     const renderCourseBtnHandle = (deadlineStr: string) => {
         const tmp = candidateCourses?.courses.find((item: CandidateCourse) => item.id === course?.id)
-        console.log(tmp)
         if (tmp) {
             switch (tmp?.status) {
                 case "STUDYING":
@@ -93,6 +103,8 @@ export const CandidateProfile: FC = () => {
                         )
                         : (
                             <Button variant="primary" onClick={() => {
+                                setStatusId(tmp?.sccId);
+                                console.log(statusId)
                                 handleShowSubmitCertificate1();
                             }}>
                                 Submit Certificate
@@ -539,14 +551,14 @@ export const CandidateProfile: FC = () => {
                 <Modal.Body>
                     <div className="input">
                         <span><img src={skill?.image} alt="" style={{ width: "32px", height: "32px" }} /> {course?.name}</span>
-                        <input className='input-profile' type="text" placeholder='Certificate Link' />
+                        <input className='input-profile' type="text" placeholder='Certificate Link' onChange={(e)=>{setCertificate(e.target.value)}}/>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className='button-close' variant="secondary" onClick={handleCloseSubmitCertificate}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseSubmitCertificate}>
+                    <Button variant="primary" onClick={handleSubmitCertificate}>
                         Submit
                     </Button>
                 </Modal.Footer>
