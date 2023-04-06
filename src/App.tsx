@@ -33,6 +33,7 @@ import NotificationList from './components/pages/Candidate/CandidateNotification
 import AdminHeader from './components/modules/pagecomponents/Header/AdminHeader';
 import CandidateList from './components/pages/Admin/CandidateList';
 import EmployeeList from './components/pages/Admin/EmployeeList';
+import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssign';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -70,7 +71,6 @@ const App: FC = () => {
         }></Route>;
         <Route path='/candidates-management' element={<CandidateList />}></Route>;
         <Route path='/employee-management' element={<EmployeeList />}></Route>;
-
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/update-candidate' element={<CandidateRegister />}></Route>;
@@ -85,7 +85,9 @@ const App: FC = () => {
         <Route path='/create-interview' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
+
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
+        <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />

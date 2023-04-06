@@ -17,7 +17,6 @@ const InterviewTable: React.FC<Props> = ({ interviews }) => {
 
   useEffect(() => {
     roleHandle();
-    console.log(rows)
   }, [])
 
   const rows: Interview[] = interviews.map((interview) => ({

@@ -123,13 +123,13 @@ const CandidateRegister = () => {
             image: avatar,
             gender: gender,
             payment: payment,
-            dob: birth ? birth.format('YYYY-MM-DD') : '',
+            dob: birth ? `${birth}` : '',
             address: address,
             cv: cv,
             description: description
         }
-        console.log(newUser);
-        updateCandidate(user?.id, navigate, newUser, dispatch, specialties);
+        console.log(selectSpecialties);
+        updateCandidate(user?.id, navigate, newUser, dispatch, selectSpecialties);
     }
 
     const handleProgress = () => {

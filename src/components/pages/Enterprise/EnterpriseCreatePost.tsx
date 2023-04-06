@@ -3,15 +3,17 @@ import "./EnterpriseCreatePost.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook, faBuilding, faChevronLeft, faClock, faClose, faEnvelope, faLocationDot, faMedal, faPerson, faPhone, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./SkillItems.css"
-import { PostEntity } from "../../../entity";
+import { PostEntity, SkillRequire, SkillSelect } from "../../../entity";
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { useSelector } from "react-redux";
-import { SkillEntity, SpecialtyEntity } from "../../../model";
+import { LevelEntity, SkillEntity, SpecialtyEntity } from "../../../model";
 import { createPost } from "../../../redux/apiRequest";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
+
 
 const EnterpriseCreatePost = () => {
     const now = new Date();
@@ -24,6 +26,7 @@ const EnterpriseCreatePost = () => {
     const [exprid, setExprid] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [desired, setDesired] = useState<string>('');
     const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
+    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [requirements, setRequiments] = useState<string>('');
@@ -31,7 +34,7 @@ const EnterpriseCreatePost = () => {
     const [hiringTime, setHiringtime] = useState<string>('1 to 3 months');
     const [workForm, setWorkForm] = useState<string>('Full time (40 or more hrs/week)');
     const [salary, setSalary] = useState<string>('Less than $70/hr');
-    const [skills, setSkills] = useState<SkillEntity[]>([]);
+    const [skills, setSkills] = useState<SkillSelect[]>([]);
     const [quantity, setQuantity] = useState<number>(0);
     const [experience, setExperience] = useState<string>('');
     const [workLocation, setWorkLocation] = useState<string>('');
@@ -41,29 +44,34 @@ const EnterpriseCreatePost = () => {
 
 
     useEffect(() => {
-        console.log(specialty);
-    }, [specialty])
+    }, [skills])
 
 
-    const handleSelectSkill = (skill: SkillEntity) => {
-        if (!skills.includes(skill)) {
-            setSkills((prevSkills) => [...prevSkills, skill]);
+    const handleSelectSkill = (skill: SkillEntity, level: LevelEntity) => {
+        if (!skills.some(skillSelect => skillSelect.skillId === skill.id)) {
+            const skillSelect: SkillSelect = {
+                skillId: skill.id,
+                skillName: skill.name,
+                levelId: level.id,
+                levelName: level.name
+            }
+            setSkills((prevSkills) => [...prevSkills, skillSelect]);
         }
     }
 
-    const handleRemoveSkill = (skill: SkillEntity) => {
-        if (skills.includes(skill)) {
-            setSkills((prevSkills) => prevSkills.filter((e) => e.id !== skill.id));
+    const handleRemoveSkill = (skill: SkillSelect) => {
+        if (skills.some(skillSelect => skillSelect === skill)) {
+            setSkills((prevSkill) => prevSkill.filter((e) => e !== skill))
         }
     }
 
 
 
     const handleClick = () => {
-        const skillList: number[] = [];
-        skills.forEach(skill => {
-            skillList.push(skill.id)
-        });
+        const skillList: SkillRequire[] = skills.map(({ skillId, levelId }) => ({
+            skillId,
+            levelId,
+          }));
         const newPost: PostEntity = {
             expiryDate: `${exprid?.format("YYYY-MM-DD")}`,
             title: title,
@@ -81,8 +89,8 @@ const EnterpriseCreatePost = () => {
             hrEmail: hrEmail,
             hrPhone: hrPhone,
             enterpriseId: user?.id,
-            skillIds: skills.map(item => item.id),
-            specialtyIds: [specialty.id],
+            skillIds: skillList,
+            specialty: specialtySelect.name,
         }
         console.log(newPost)
         createPost(newPost, navigate);
@@ -100,9 +108,9 @@ const EnterpriseCreatePost = () => {
                                         <div className="radio" key={index}>
                                             <input type="radio"
                                                 value={item.name}
-                                                checked={item.name === specialty.name}
+                                                checked={item.name === specialtySelect.name}
                                                 onChange={() => {
-                                                    setSpecialty(item);
+                                                    setSpecialtySelect(item);
                                                 }}
                                             />
                                             <label className="radio-content">
@@ -175,7 +183,7 @@ const EnterpriseCreatePost = () => {
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>How long do you need the {specialty.name}?</h3>
+                            <h3>How long do you need the {specialtySelect.name}?</h3>
                             <div className="radio">
                                 <input type="radio"
                                     value='1 to 3 months'
@@ -290,9 +298,9 @@ const EnterpriseCreatePost = () => {
                                 />
                                 <div className="skill-selected">
                                     {
-                                        skills.map((skill: SkillEntity, key: number) =>
+                                        skills.map((skill: SkillSelect, key: number) =>
                                             <button key={key} className="btn-item item-minus" onClick={() => handleRemoveSkill(skill)}>
-                                                <span>{skill.name}</span>
+                                                <span>{skill.skillName}</span>
                                                 <FontAwesomeIcon icon={faClose} />
                                             </button>
                                         )
@@ -317,10 +325,26 @@ const EnterpriseCreatePost = () => {
                                     {
                                         specialty.skills.map((skill, index) => {
                                             return (
-                                                <button key={index} className="btn-item item-plus" onClick={() => handleSelectSkill(skill)}>
-                                                    <FontAwesomeIcon icon={faPlus} />
-                                                    <span>{skill.name}</span>
-                                                </button>
+                                                <div style={{ display: "inline-block" }} key={index}>
+                                                    {/* <button key={index} className="btn-item item-plus" onClick={() => handleSelectSkill(skill)}>
+                                                        <FontAwesomeIcon icon={faPlus} />
+                                                        <span>{skill.name}</span>
+                                                    </button> */}
+                                                    <Dropdown>
+                                                        <Dropdown.Toggle variant="success" className="btn-item item-plus" id="dropdown-basic">
+                                                            {skill.name}
+                                                        </Dropdown.Toggle>
+                                                        <Dropdown.Menu>
+                                                            {
+                                                                skill.levels.map((level, index) => {
+                                                                    return (
+                                                                        <Dropdown.Item onClick={() => handleSelectSkill(skill, level)} key={index}>{level.name}</Dropdown.Item>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
+                                                </div>
                                             )
                                         })
                                     }

@@ -8,15 +8,16 @@ import Modal from '@mui/material/Modal';
 import "./RecruitmentPostDetail.css";
 import { Dropdown } from 'react-bootstrap';
 import "./Filter.css";
-import { Candidate, Category, SpecialtyEntity, dataEngineer, developer } from '../../../../model';
+import { Candidate, Category, SkillEntity, SpecialtyEntity, dataEngineer, developer } from '../../../../model';
 import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import { useParams } from 'react-router-dom';
-import { getCandidateBySpecialtyId, getPostByPostId } from '../../../../redux/apiRequest';
-import { CandidateResponse, PostResponse } from '../../../../entity';
+import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getPostByPostId } from '../../../../redux/apiRequest';
+import { CandidateForAssign, CandidateResponse, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import MessageBox from '../Popup/MessageBox/MessageBox';
+import axios from '../../../../api/axios';
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
@@ -26,7 +27,7 @@ const RecruitmentPostDetail = () => {
     const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
-    const [candidates, setCandidates] = useState<CandidateResponse[]>([]);
+    const [candidates, setCandidates] = useState<CandidateForAssign[]>([]);
 
 
 
@@ -47,15 +48,21 @@ const RecruitmentPostDetail = () => {
 
     useEffect(() => {
         fetchData();
-        getCandidatesForAssign();
-    }, [specialty])
+        // getCandidatesForAssign();
+        const str = `skillIds=${post?.skills[0].skillId}&levelIds=${post?.skills[0].levelId}`
+        console.log(str);
+    }, [post])
 
     const fetchData = async () => {
         setPost(await getPostByPostId(id));
+        setCandidates(await getCandidatesForAssign());
     }
 
-    const getCandidatesForAssign = async () => {
-        setCandidates(await getCandidateBySpecialtyId(specialty.id));
+    const getCandidatesForAssign = async (): Promise<CandidateForAssign[]> => {
+        const str = `skillIds=${post?.skills[0].skillId}&levelIds=${post?.skills[0].levelId}`
+        // const str = post?.skills.map((item) => item.skillId).map(val => `skillIds=${val}`).join('&');
+        const response = await axios.get<CandidateForAssign[]>(`/candidate/getListCandidateBySkill?${str}`);
+        return response.data;
     }
 
     return (
@@ -133,7 +140,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Time remainding</strong>
                                                 <br />
-                                                <span>{post && getDaysLeft(post?.date, post?.expiryDate)} days left to apply</span>
+                                                <span>{post && getDaysLeft(post?.createAt, post?.expiryDate)} days left to apply</span>
                                             </div>
                                         </div>
                                     </div>
@@ -199,22 +206,22 @@ const RecruitmentPostDetail = () => {
                                 <p className='item-name'>Specialty</p>
                                 <div className="item-list">
                                     <div className="item">
-                                        Developer
+                                        {post?.specialty}
                                     </div>
                                 </div>
                             </div>
                             <div className="right-item">
                                 <p className='item-name'>Skills</p>
                                 <div className="item-list">
-                                    <div className="item">
-                                        Java
-                                    </div>
-                                    <div className="item">
-                                        Python
-                                    </div>
-                                    <div className="item">
-                                        SQL
-                                    </div>
+                                    {
+                                        post?.skills && post?.skills.length > 0 && post?.skills.map((skill, index) => {
+                                            return (
+                                                <div className="item" key={index}>
+                                                    {skill.skillName}
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
                             <div className="right-item">

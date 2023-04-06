@@ -44,7 +44,8 @@ export const CandidateProfile: FC = () => {
     useEffect(() => {
         fetchData();
         fetchData1();
-    }, [course])
+        console.log(candidateCourses)
+    }, [course, certificate])
 
     const fetchData = async (): Promise<SpecialtyEntity[]> => {
         const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);

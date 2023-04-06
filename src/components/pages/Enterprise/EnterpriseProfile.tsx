@@ -35,7 +35,7 @@ const EnterpriseProfile: FC = () => {
     const handleShowUpdate = () => setShowUpdate(true);
 
     const fetchData = async (): Promise<PostResponse[]> => {
-        const response = await axios.get<{ data: { responseList: PostResponse[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}`);
+        const response = await axios.get<{ data: { responseList: PostResponse[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=0&pageSize=20`);
         const data = response?.data?.data?.responseList;
         setPosts(data);
         console.log(posts)
@@ -89,21 +89,21 @@ const EnterpriseProfile: FC = () => {
                     <img src="https://static.topcv.vn/company_covers/cong-ty-co-phan-tga-c3d802c3b6c9f22302425aa2424a87f3-63ec41af5f944.jpg" className='banner' alt="" />
                     <div className="overview">
                         <div className="avt-cover">
-                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" className='avt-enterprise' alt="" />
+                            <img src={user?.image} className='avt-enterprise' alt="" />
                         </div>
                         <div className="information">
                             <div className="information-left">
-                                <div className="enterprise-name">Công Ty Cổ Phần TGA</div>
+                                <div className="enterprise-name">{user?.name}</div>
                                 <div className="flex-haft">
                                     <div className="enterprise-about inline-block">
                                         <FontAwesomeIcon icon={faEarthAmericas} className="icon pr-4" />
-                                        https://tuyendung.mia.vn/</div>
+                                        {user?.website}</div>
                                     <div className="enterprise-about inline-block">
                                         <FontAwesomeIcon icon={faEnvelope} className="icon pr-4" />
                                         {user?.email}</div>
                                     <div className="enterprise-about inline-block">
                                         <FontAwesomeIcon icon={faBuilding} className="icon pr-4" />
-                                        100-499 nhân viên</div>
+                                        {user?.scale}</div>
                                 </div>
                             </div>
                             <div className="information-right">
@@ -123,8 +123,8 @@ const EnterpriseProfile: FC = () => {
                     </div>
                     <h6>Company Address</h6>
                     <div className="address">
-                        <FontAwesomeIcon icon={faLocationDot} className="icon pr-4" />
-                        117-119 Bạch đằng, Phường 15, Quận Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam
+                        <FontAwesomeIcon icon={faLocationDot} className="icon pr-4" style={{color: "var(--primary-color)"}} />
+                        {user?.address}
                     </div>
                 </div>
                 <div className="profile-detail">
@@ -163,7 +163,7 @@ const EnterpriseProfile: FC = () => {
                                             </div>
                                             <div className="description-item">
                                                     <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                                    {getDaysLeft(post?.date, post?.expiryDate) > 0 ? `${getDaysLeft(post?.date, post?.expiryDate)} days left to apply` : "Expired"}
+                                                    {getDaysLeft(post?.createAt, post?.expiryDate) > 0 ? `${getDaysLeft(post?.createAt, post?.expiryDate)} days left to apply` : "Expired"}
                                                 </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />

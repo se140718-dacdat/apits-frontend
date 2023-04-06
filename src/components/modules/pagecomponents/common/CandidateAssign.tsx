@@ -1,12 +1,14 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { DataGrid, GridColDef, GridRowId } from '@mui/x-data-grid';
-import { CandidateResponse } from "../../../../entity";
+import { CandidateForAssign, CandidateResponse } from "../../../../entity";
 import { Assign, Status } from "../../../../model";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { assignCandidates } from "../../../../redux/apiRequest";
 
 interface Props {
-  candidates: CandidateResponse[];
+  candidates: CandidateForAssign[];
 }
 
 const CandidateAssign: React.FC<Props> = ({ candidates }) => {
@@ -32,7 +34,7 @@ const CandidateAssign: React.FC<Props> = ({ candidates }) => {
         recruitmentRequestId: Number(id)
       }
       setMessage('');
-      console.log(request);
+      assignCandidates(request);
     } else {
       setMessage("Please select at least 1 candidate to assign!");
     }

@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCakeCandles, faCheck, faEnvelope, faHouse, faPhone, faRightToBracket, faUser, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 import "./ViewAssign.css";
 import { Dropdown } from "react-bootstrap";
-import { CandidateResponse } from "../../../entity";
+import { CandidateForAssign, CandidateResponse } from "../../../entity";
 
 interface Props {
-    candidates: CandidateResponse[];
+    candidates: CandidateForAssign[];
 }
 
 const ViewAssign: React.FC<Props> = ({ candidates }) => {

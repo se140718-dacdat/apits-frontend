@@ -52,11 +52,11 @@ const RecruitmentPost = () => {
                         </div>
                     </Dropdown.Menu>
                 </Dropdown>
-                <button className='btn-search ml-8'></button>
+                <button className='btn-search ml-8'>Search</button>
             </div>
             <div className="post-container">
                 <div className="container-header">
-                    <div className='quantity'><strong>871</strong> Post</div>
+                    <div className='quantity'><strong>{posts?.length}</strong> Post</div>
 
                 </div>
                 <div className="post-list">
@@ -93,7 +93,7 @@ const RecruitmentPost = () => {
                                         </div>
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                            {getDaysLeft(post?.date, post?.expiryDate) > 0 ? `${getDaysLeft(post?.date, post?.expiryDate)} days left to apply` : "Expired"}
+                                            {getDaysLeft(post?.createAt, post?.expiryDate) > 0 ? `${getDaysLeft(post?.createAt, post?.expiryDate)} days left to apply` : "Expired"}
                                         </div>
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />

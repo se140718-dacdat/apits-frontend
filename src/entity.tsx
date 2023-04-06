@@ -90,8 +90,20 @@ export interface PostEntity {
     hrPhone: string,
     hrEmail: string,
     enterpriseId: number,
-    skillIds: number[],
-    specialtyIds: number[]
+    skillIds: SkillRequire[],
+    specialty: string;
+}
+
+export interface SkillRequire {
+    skillId: number,
+    levelId: number
+}
+
+export interface SkillSelect {
+    skillId: number;
+    skillName: string;
+    levelId: number;
+    levelName: string;
 }
 
 export interface PostResponse {
@@ -112,11 +124,56 @@ export interface PostResponse {
     hrPhone: string,
     hrEmail: string,
     enterpriseId: number,
-    skillIds: number[],
-    specialtyIds: number[],
-    date: string,
+    skills: SkillSelect[],
+    specialty: string,
+    createAt: string,
     creator: CreatorEntity
 }
+
+export interface SkillResponse {
+    id: number;
+    name: string;
+}
+
+export interface SpecialtyResponse {
+    id: number;
+    name: string;
+}
+
+export interface AssignResponse {
+    id: number;
+    date: string;
+    status: string;
+    recruitmentRequest: PostResponse;
+    assigner: EmployeeEntity
+}
+
+export interface CandidateAssignRow {
+    id: string;
+    recruitment: string;
+    specialty: string;
+    salaryFrom: string;
+    typeOfWork: string;
+    deadline: string;
+    recruitmentId: number;
+}
+
+export interface CandidateForAssign {
+    address: string;
+    createAt: string;
+    cv: string;
+    dob: string;
+    email: string;
+    gender: string;
+    id: number
+    image: string;
+    name: string;
+    payment: string;
+    phone: string;
+    skills: SkillResponse[];
+    status: string;
+}
+
 
 export interface CreatorEntity {
     id: number;

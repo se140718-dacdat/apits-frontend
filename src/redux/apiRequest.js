@@ -5,6 +5,7 @@ import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logou
 import { specialtyStart, specialtySuccess } from "./specialtySlice";
 import { userFailed, userStart, userSuccess } from "./userSlice";
 
+//Authentication
 export const loginUser = async (user, dispatch, navigate, isRegister) => {
     dispatch(loginStart());
     try {
@@ -29,25 +30,6 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
         dispatch(loginFailed());
     }
 };
-
-export const registerCandidate = async (newUser, navigate, dispatch) => {
-    try {
-        console.log(newUser)
-        await axios.post("/account/auth/registerForCandidate", newUser)
-        loginUser(newUser, dispatch, navigate, true);
-    } catch (error) {
-        return error
-    }
-}
-
-export const registerEnterprise = async (newUser, navigate) => {
-    try {
-        const res = await axios.post("/account/auth/registerForEnterprise", newUser);
-        navigate("/")
-    } catch (error) {
-        return error
-    }
-}
 
 export const loginUserByGoogle = async (result, dispatch, navigate) => {
     dispatch(logoutStart());
@@ -76,28 +58,23 @@ export const logoutUser = async (dispatch, navigate) => {
     }
 }
 
-export const getAllCandidates = async () => {
+//Candidate
+
+export const adminRegisterCandidate = async (newUser, navigate) => {
     try {
-        const res = await axios.post("/candidate/getAll")
+        const res = await axios.post("/candidate/create", newUser)
+        navigate("/")
         console.log(res)
     } catch (error) {
         return error
     }
 }
 
-export const getAllEmployee = async () => {
+export const registerCandidate = async (newUser, navigate, dispatch) => {
     try {
-        const res = await axios.get("/employee/getAllEmployees")
-        console.log(res.data.data.responseList)
-    } catch (error) {
-        return error
-    }
-}
-
-export const getAllEnterprise = async () => {
-    try {
-        const res = await axios.post("/enterprise/getAll")
-        console.log(res)
+        console.log(newUser)
+        await axios.post("/account/auth/registerForCandidate", newUser)
+        loginUser(newUser, dispatch, navigate, true);
     } catch (error) {
         return error
     }
@@ -115,11 +92,10 @@ export const updateCandidate = async (id, navigate, data, dispatch, specialties)
     }
 }
 
-export const adminRegisterCandidate = async (newUser, navigate) => {
+export const getCandidateBySpecialtyId = async (id) => {
     try {
-        const res = await axios.post("/candidate/create", newUser)
-        navigate("/")
-        console.log(res)
+        const res = await axios.get(`/canspec/getListCansWithSpec?specId=${id}`)
+        return res.data.data.candidates
     } catch (error) {
         return error
     }
@@ -134,30 +110,30 @@ export const getCandidateById = async (id) => {
     }
 }
 
-export const getCandidateBySpecialtyId = async (id) => {
+export const getAllCandidates = async () => {
     try {
-        const res = await axios.get(`/canspec/getListCansWithSpec?specId=${id}`)
-        console.log(res.data.data.candidates)
-        return res.data.data.candidates
+        const res = await axios.post("/candidate/getAll")
+        console.log(res)
     } catch (error) {
         return error
     }
 }
 
-export const getSpecialtiesByCandidateId = async (id) => {
+export const getCandidateByListSkill = async (params) => {
     try {
-        const res = await axios.get(`/canspec/getListSpecsWithCan/${id}`)
+        const res = await axios.get(`/candidate/getListCandidateBySkill?${params}`)
+        console.log(res);
         return res
     } catch (error) {
         return error
     }
 }
 
-
-export const getSpecialties = async (dispatch) => {
+export const getListCandidateAssign = async (params) => {
     try {
-        const res = await axios.get("/special-skill/getAllSpecDetails")
-        dispatch(specialtySuccess(res.data.data));
+        const res = await axios.post(`/assign/getRecruitmentRequestById/{id}?requestId=${params}`)
+        console.log(res);
+        return res
     } catch (error) {
         return error
     }
@@ -177,6 +153,37 @@ export const addSpecialtiesCandidate = async (id, specialties) => {
     }
 }
 
+//Skill
+export const getAllSkill = async () => {
+    try {
+        const res = await axios.get("/skill/getAllPaging")
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+//Specialty
+
+export const getSpecialties = async (dispatch) => {
+    try {
+        const res = await axios.get("/special-skill/getAllSpecDetails")
+        dispatch(specialtySuccess(res.data.data));
+    } catch (error) {
+        return error
+    }
+}
+
+export const getSpecialtiesByCandidateId = async (id) => {
+    try {
+        const res = await axios.get(`/canspec/getListSpecsWithCan/${id}`)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+//Course
 
 export const getCandidateCourses = async (id) => {
     try {
@@ -205,6 +212,39 @@ export const submitCertificate = async (params) => {
         return error
     }
 }
+
+//Employee
+
+export const getAllEmployee = async () => {
+    try {
+        const res = await axios.get("/employee/getAllEmployees")
+        console.log(res.data.data.responseList)
+    } catch (error) {
+        return error
+    }
+}
+
+//Enterprise
+
+export const registerEnterprise = async (newUser, navigate) => {
+    try {
+        const res = await axios.post("/account/auth/registerForEnterprise", newUser);
+        navigate("/")
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllEnterprise = async () => {
+    try {
+        const res = await axios.post("/enterprise/getAll")
+        console.log(res)
+    } catch (error) {
+        return error
+    }
+}
+
+//Post
 
 export const createPost = async (params, navigate) => {
     try {
@@ -243,6 +283,8 @@ export const getAllPost = async () => {
     }
 }
 
+//Assign
+
 export const assignCandidates = async (params) => {
     try {
         const res = await axios.post("/assign/create", params)
@@ -253,4 +295,21 @@ export const assignCandidates = async (params) => {
     }
 }
 
+export const getAllAssign = async () => {
+    try {
+        const res = await axios.post("/assign/getAll")
+        console.log(res.data);
+        return res
+    } catch (error) {
+        return error
+    }
+}
 
+export const confirmAssign = async (id, candidateId) => {
+    try {
+        const res = await axios.put(`/assign/approvedByCandidate/{id}?id=${id}&candidateId=${candidateId}`)
+        console.log(res);
+    } catch (err) {
+        return err
+    }
+}
