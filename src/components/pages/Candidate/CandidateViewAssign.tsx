@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./CandidateViewAssign.css";
 import { useSelector } from 'react-redux';
 import { AssignResponse, CandidateAssignRow } from '../../../entity';
-import { confirmAssign, getAllAssign } from '../../../redux/apiRequest';
+import { confirmAssign, getAllAssign, getListAssignByCandidateId } from '../../../redux/apiRequest';
 import axios from '../../../api/axios';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { getDaysLeft } from '../../../handle';
@@ -19,14 +19,15 @@ const CandidateViewAssign = () => {
   }, [])
 
   const fetchData = async (): Promise<AssignResponse[]> => {
-    const response = await axios.get<{ data: { responseList: AssignResponse[] } }>("/assign/getAll");
-    const data = response?.data?.data?.responseList;
+    const response = await axios.get<{ data: AssignResponse[]}>(`/assign/getListAssignByCandidateId?candidateId=${user?.id}`);
+    const data = response?.data?.data;
     setAssigns(data);
     return data;
   }
 
-  const handleConfirmAssign = (id: number, candidateId: number) => {
-    confirmAssign(id, candidateId);
+
+  const handleConfirmAssign = (id: number) => {
+    confirmAssign(id, user?.id);
   }
 
   const rows: CandidateAssignRow[] = assigns?.map((assign) => ({
@@ -36,8 +37,8 @@ const CandidateViewAssign = () => {
     salaryFrom: assign?.recruitmentRequest.salaryFrom,
     typeOfWork: assign?.recruitmentRequest.typeOfWork,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
-    recruitmentId: assign.recruitmentRequest.id
-    // candidateId: assign.candidateId
+    recruitmentId: assign.recruitmentRequest.id,
+    status: assign.status
   }));
 
   const columns: GridColDef[] = [
@@ -62,9 +63,11 @@ const CandidateViewAssign = () => {
       flex: 0.8,
       width: 170,
       renderCell: (params) => (
-        <Button variant="contained" color="success" onClick={()=>{handleConfirmAssign(params.row.id, params.row.candidateId)}}>
+        (params.row.status !== "CONFIRM") ? 
+        <Button variant="contained" color="success" onClick={()=>{handleConfirmAssign(params.row.id)}}>
           Confirm
         </Button>
+        : <div>Confirmed</div>
       ),
     }
   ]

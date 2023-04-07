@@ -60,6 +60,7 @@ export const logoutUser = async (dispatch, navigate) => {
 
 //Candidate
 
+
 export const adminRegisterCandidate = async (newUser, navigate) => {
     try {
         const res = await axios.post("/candidate/create", newUser)
@@ -153,6 +154,15 @@ export const addSpecialtiesCandidate = async (id, specialties) => {
     }
 }
 
+export const getCandidateCourseProcessing = async () => {
+    try {
+        const res = await axios.get(`/status-candidate-course/getListSCCByStatusPROCESSING`)
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
 //Skill
 export const getAllSkill = async () => {
     try {
@@ -219,6 +229,15 @@ export const getAllEmployee = async () => {
     try {
         const res = await axios.get("/employee/getAllEmployees")
         console.log(res.data.data.responseList)
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllEmployees = async () => {
+    try {
+        const res = await axios.get("/employee/getAllEmployees")
+        return res.data.data.responseList;
     } catch (error) {
         return error
     }
@@ -311,5 +330,79 @@ export const confirmAssign = async (id, candidateId) => {
         console.log(res);
     } catch (err) {
         return err
+    }
+}
+
+export const getListAssignByCandidateId = async (params) => {
+    try {
+        const res = await axios.get(`/assign/getListAssignByCandidateId?candidateId=${params}`)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const getCandidatesConfirmed = async (params) => {
+    try {
+        const res = await axios.get(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${params}`)
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const approveCandidate = async (params) => {
+    try {
+        const res = await axios.get(`/assign/approvedAssignEnterprise?id=${params}`)
+    } catch (error) {
+        return error
+    }
+}
+
+export const rejectCandidate = async (assignId, candidateId) => {
+    try {
+        const res = await axios.put(`/assign/rejectedByCandidate/{id}?id=${assignId}&candidateId=${candidateId}`)
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllAssignApproved = async () => {
+    try {
+        const res = await axios.get("/assign/getListCandidateAPPROVE")
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+//New Candidate
+
+export const getAllNewCandidate = async () => {
+    try {
+        const res = await axios.get("/waiting-list/getAll");
+        return res.data.data;
+    } catch (error) {
+        return error
+    }
+}
+
+// Interview
+
+export const createInterviewAssign = async (request) => {
+    try {
+        const res = await axios.post("/createInterviewWithEnterprise", request);
+        return res;
+    } catch (error) {
+        return error
+    }
+}
+
+export const createInterviewProfessor = async (request) => {
+    try {
+        const res = await axios.post("/createInterviewWithProfessor", request);
+        return res;
+    } catch (error) {
+        return error
     }
 }

@@ -82,7 +82,7 @@ const App: FC = () => {
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
-        <Route path='/create-interview' element={<InterviewCreate />}></Route>;
+        <Route path='/create-interview/:type/:id' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
 

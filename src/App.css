@@ -136,6 +136,10 @@ body {
     display: inline-block;
 }
 
+.inline-block-cover * {
+    display: inline-block;
+}
+
 .pr-4 {
     padding-right: 4px;
 }

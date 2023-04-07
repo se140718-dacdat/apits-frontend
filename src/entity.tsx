@@ -1,4 +1,5 @@
 import { List } from "reselect/es/types";
+import { CourseEntity, SpecialtyEntity } from "./model";
 
 interface EnterpriseEntity {
     id: number;
@@ -144,7 +145,7 @@ export interface AssignResponse {
     id: number;
     date: string;
     status: string;
-    recruitmentRequest: PostResponse;
+    recruitmentRequest: PostAssign;
     assigner: EmployeeEntity
 }
 
@@ -159,19 +160,45 @@ export interface CandidateAssignRow {
 }
 
 export interface CandidateForAssign {
-    address: string;
-    createAt: string;
-    cv: string;
-    dob: string;
-    email: string;
-    gender: string;
     id: number
-    image: string;
     name: string;
-    payment: string;
+    email: string;
+    image: string;
     phone: string;
+    gender: string;
+    dob: string;
+    address: string;
+    cv: string;
+    payment: string;
     skills: SkillResponse[];
     status: string;
+    createAt: string;
+}
+
+export interface ConfirmedEntity {
+    assignId: number;
+    candidateResponse: CandidateConfirmed;
+}
+
+export interface ApprovedEntity {
+    assignId: number;
+    candidateResponse: CandidateConfirmed;
+    recruitmentRequest: PostResponse;
+}
+
+export interface CandidateConfirmed {
+    id: number
+    name: string;
+    email: string;
+    image: string;
+    phone: string;
+    gender: string;
+    dob: string;
+    address: string;
+    cv: string;
+    payment: string;
+    status: string;
+    createAt: string;
 }
 
 
@@ -206,14 +233,47 @@ export interface Post {
     creator: EnterpriseEntity
 }
 
+interface PostAssign {
+    id: number,
+    title: string,
+    benefits: string,
+    quantity: number,
+    createAt: string,
+    expiryDate: string,
+    experience: string,
+    typeOfWork: string,
+    salaryFrom: string,
+    salaryTo: string,
+    name: string,
+    description: string,
+    requirement: string,
+    workLocation: string,
+    hrName: string,
+    hrPhone: string,
+    hrEmail: string,
+    status: string
+    specialty: string,
+    creator: CreatorEntity,
+}
 
-interface EmployeeEntity {
+
+export interface EmployeeEntity {
+    id: number;
+    employeeName: string;
+    employeeCode: string;
+    phone: string;
+    gender: string;
+    address: string;
+    image: string;
+    dob: string;
+    status: string;
+    position: Position
+}
+
+interface Position {
     id: number;
     name: string;
-    email: string;
-    phone: string;
-    position: string;
-    status: boolean;
+    status: string;
 }
 
 interface Skill {
@@ -316,3 +376,107 @@ interface Experience {
 //         },
 //     }
 // }
+
+export interface contractLaborSupply {
+    name: String;
+    address: String;
+    phone: String,
+    taxcode: String,
+    representative: String,
+    accountBankId: String,
+    bankName: String,
+    accountBankName: String,
+    position: String,
+    fromTo: Date,
+    endTo: Date,
+    numOfEmployee: number;
+    createId: number;
+    signerId: number;
+    status: string;
+}
+
+export interface contractAgreement {
+    dateSigned: Date;
+    address: String;
+    nameEmployee: String;
+    addressEmployee: String;
+    missionEmployee: String;
+    salary: number;
+    benefits: String;
+    nameHiring: String;
+    signatureHiring: String;
+    signatureEmployee: String;
+    dateEmployeeSigned: Date;
+    createId: number;
+    signerId: number;
+    status: string;
+}
+
+export interface NewUserInterview {
+    id: number;
+    candidate: NewUser;
+    specialty: SpecialtyOnly;
+    status: string;
+}
+
+export interface NewUser {
+    id: number;
+    name: string;
+    phone: string;
+    candidateCode: string;
+    image: string;
+    gender: string;
+    createAt: string;
+    dob: string;
+    email: string;
+    address: string;
+    payment: string;
+    description: string;
+    experience: string;
+    personalCertificate: string;
+    cv: string;
+    status: string;
+}
+
+interface SpecialtyOnly {
+    id: number;
+    name: string;
+    status: string;
+}
+
+export interface CandidateCourseProcessing {
+    id: number;
+    candidate: NewUser;
+    course: CourseEntity
+}
+
+export interface Professor {
+    address: string;
+    dob: string;
+    employeeCode: string;
+    id: number;
+    image: string;
+    jobLevel: string;
+    name: string;
+    phone: string;
+    position: Position
+    status: string
+}
+
+export interface CreateInterviewAssign {
+    purpose: string;
+    date: string;
+    time: string;
+    linkMeeting: string;
+    type: string;
+    round: string;
+    description: string;
+    status: string;
+    duration: string;
+    address: string;
+    candidateConfirm: string;
+    managerId: number;
+    candidateId: number;
+    assignId: number;
+    enterpriseId: number;
+}

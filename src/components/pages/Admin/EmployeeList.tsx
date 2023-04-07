@@ -49,7 +49,7 @@ const EmployeeList = () => {
                 </thead>
                 <tbody>
                     {
-                        employees.length > 0 && employees.map((employee: Employee, index) => {
+                        employees?.length > 0 && employees.map((employee: Employee, index) => {
                             return (
                                 <tr>
                                     <td>

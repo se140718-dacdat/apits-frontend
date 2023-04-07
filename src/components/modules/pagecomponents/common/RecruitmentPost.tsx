@@ -61,7 +61,7 @@ const RecruitmentPost = () => {
                 </div>
                 <div className="post-list">
                     {
-                        posts && posts.length > 0 && posts?.map((post: PostResponse, index) => {
+                        posts && posts?.length > 0 && posts?.map((post: PostResponse, index) => {
                             return (
                                 <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
                                     <div className="avt-post-cover inline-block">

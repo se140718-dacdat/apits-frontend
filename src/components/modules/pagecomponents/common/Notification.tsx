@@ -66,7 +66,7 @@ console.log(props.roleName)
                                     </Dropdown>
                                     <button className='btn-search ml-8'>Search</button>
                                 </div>
-                                <InterviewTable interviews={interviews} />
+                                {/* <InterviewTable interviews={interviews} /> */}
                             </div>
                         )
                     )

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Candidate, Category, dataEngineer, developer, Level, level1, level2, level3, Specialty } from "../../../model";
 import { Box, Button, Modal, Typography } from '@mui/material';
@@ -6,16 +6,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCakeCandles, faCheck, faEnvelope, faHouse, faPhone, faRightToBracket, faUser, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 import "./ViewAssign.css";
 import { Dropdown } from "react-bootstrap";
-import { CandidateForAssign, CandidateResponse } from "../../../entity";
+import { ConfirmedEntity, CandidateForAssign, CandidateResponse } from "../../../entity";
+import { useParams } from "react-router-dom";
+import axios from "../../../api/axios";
+import { approveCandidate, rejectCandidate } from "../../../redux/apiRequest";
 
-interface Props {
-    candidates: CandidateForAssign[];
-}
 
-const ViewAssign: React.FC<Props> = ({ candidates }) => {
+const ViewAssign = () => {
+    const { id } = useParams();
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [candidates, setCandidates] = useState<ConfirmedEntity[]>([]);
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
     // const [selectedSpecialties, setSelectedSpecialties] = useState<{
     //     [id: number]: string;
     // }>(
@@ -27,6 +35,15 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
     //         {}
     //     )
     // );
+
+    const fetchData = async (): Promise<ConfirmedEntity[]> => {
+        const response = await axios.get<{ data: ConfirmedEntity[] }>(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
+        const data = response?.data?.data;
+        if (data) {
+            setCandidates(data);
+        }
+        return data;
+    }
 
 
     const style = {
@@ -42,6 +59,18 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
         p: 4,
     };
 
+    const handleApprove = (assignId: number) => {
+        approveCandidate(assignId)
+        fetchData();
+    }
+
+    const handleReject = (assignId: number, candidateId: number) => {
+        // const request = {
+        //     id: 
+        // }
+        rejectCandidate(assignId, candidateId)
+        fetchData();
+    }
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", flex: 0.2 },
@@ -80,25 +109,26 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
         //             .find((specialty: Specialty) => specialty.name === selectedSpecialties[row.id])
         //             ?.skills.join(", ") ?? "",
         // },
-        {
-            field: 'approve',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-                <Button variant="contained" color="success">
-                    Approve
-                </Button>
-            ),
-        },
+
         {
             field: 'reject',
             headerName: '',
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-                <Button variant="contained" color="error">
+                <Button variant="contained" color="error" onClick={()=>{handleReject(params.row.assignId, params.row.id)}}>
                     Reject
+                </Button>
+            ),
+        },
+        {
+            field: 'approve',
+            headerName: '',
+            flex: 0.5,
+            width: 170,
+            renderCell: (params) => (
+                <Button variant="contained" color="success" onClick={()=>{handleApprove(params.row.assignId)}}>
+                    Approve
                 </Button>
             ),
         }
@@ -117,11 +147,11 @@ const ViewAssign: React.FC<Props> = ({ candidates }) => {
     ];
 
     const rows = candidates.map((candidate) => ({
-        id: candidate.id,
-        name: candidate.name,
-        gender: candidate.gender,
-        address: candidate.address,
-        // specialties: candidate.specialties,
+        id: candidate.candidateResponse.id,
+        name: candidate.candidateResponse.name,
+        gender: candidate.candidateResponse.gender,
+        address: candidate.candidateResponse.address,
+        assignId: candidate.assignId
     }));
 
     return (

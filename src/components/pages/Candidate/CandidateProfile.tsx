@@ -226,7 +226,7 @@ export const CandidateProfile: FC = () => {
         const advancedSkills = specialty?.skills
             .flatMap((skill) => {
                 const advancedLevels = skill.levels.filter((level) => level.name === levelName);
-                if (advancedLevels.length > 0) {
+                if (advancedLevels?.length > 0) {
                     return {
                         ...skill,
                         levels: advancedLevels

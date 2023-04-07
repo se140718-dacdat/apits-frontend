@@ -13,8 +13,8 @@ import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import { useParams } from 'react-router-dom';
-import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getPostByPostId } from '../../../../redux/apiRequest';
-import { CandidateForAssign, CandidateResponse, PostResponse } from '../../../../entity';
+import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getCandidatesConfirmed, getPostByPostId } from '../../../../redux/apiRequest';
+import { CandidateConfirmed, CandidateForAssign, CandidateResponse, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import MessageBox from '../Popup/MessageBox/MessageBox';
 import axios from '../../../../api/axios';
@@ -48,9 +48,7 @@ const RecruitmentPostDetail = () => {
 
     useEffect(() => {
         fetchData();
-        // getCandidatesForAssign();
         const str = `skillIds=${post?.skills[0].skillId}&levelIds=${post?.skills[0].levelId}`
-        console.log(str);
     }, [post])
 
     const fetchData = async () => {
@@ -319,10 +317,7 @@ const RecruitmentPostDetail = () => {
                                         </div>
                                         <div style={{ height: 500, width: '100%' }}>
                                             {
-                                                (account?.role.name === "EMPLOYEE") ?
-                                                    <CandidateAssign candidates={candidates} />
-                                                    :
-                                                    <ViewAssign candidates={candidates} />
+                                                <CandidateAssign candidates={candidates} />
                                             }
                                         </div>
                                     </div>
@@ -371,10 +366,7 @@ const RecruitmentPostDetail = () => {
                                             </div>
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {
-                                                    (account?.role.name === "EMPLOYEE") ?
-                                                        <CandidateAssign candidates={candidates} />
-                                                        :
-                                                        <ViewAssign candidates={candidates} />
+                                                    <ViewAssign />
                                                 }
                                             </div>
                                         </div>
