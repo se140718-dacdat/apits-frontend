@@ -2,25 +2,40 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { Button, Dropdown, Table } from 'react-bootstrap';
-import { Category, dataEngineer, developer, Level, level1, level2, level3, Skill } from '../../../../model';
+import { Category, dataEngineer, developer, Level, level1, level2, level3, Skill, SpecialtyEntity } from '../../../../model';
 import "./Specialty.css";
+import { SpecialtyResponse } from '../../../../entity';
+import { getSpecialties } from '../../../../redux/apiRequest';
+import axios from '../../../../api/axios';
 
 const Specialty = () => {
-  const [category, setCategory] = useState<Category>(developer);
-  const categoryList: Category[] = [developer, dataEngineer]
-  const levelList: Level[] = [level1, level2, level3]
-  const [level, setLevel] = useState<Level>(level1);
-  const [skills, setSkills] = useState<Skill[]>(category.skillList);
-  const [editing, setEdditing] = useState<string>();
+
+  const [specialties, setSpecialties] = useState<SpecialtyResponse[]>([]);
+  const [specialty, setSpecialty] = useState<SpecialtyEntity>();
+  const [specialtySelect, setSpecialtySelect] = useState<SpecialtyResponse>();
 
   useEffect(() => {
-    setSkills(category.skillList)
-  }, [category])
+    fetchData();
+  }, [])
 
+  async function fetchData() {
+    const res = await axios.get("/specialty/getAll");
+    const data = await res.data.data;
+    setSpecialties(data);
+    setSpecialtySelect(data[0]);
+    getSpecialtyDetail(data[0].id)
+  }
+
+  async function getSpecialtyDetail(id: number) {
+    const res = await axios.get(`/special-skill/getSpecialDetail?id=${id}`);
+    const data = await res.data.data;
+    setSpecialty(data);
+    console.log(specialty);
+  }
 
   return (
     <div id='Specialty'>
-      <h2>Specialty Management</h2>
+      <h2>All Skills</h2>
       <div className="specialty-container">
         <div className="filter">
           <div className="filter-form-input">
@@ -31,30 +46,17 @@ const Specialty = () => {
           </div>
           <Dropdown className="filter-dropdown ml-8">
             <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-              <span>{category.categoryName}</span>
+              <span>{specialtySelect?.name}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu className='filter-menu'>
               {
-                categoryList.map((category) => {
+                specialties.map((specialty) => {
                   return (
-                    <div key={category.categoryId}>
-                      <Dropdown.Item className='filter-item' onClick={() => { setCategory(category) }}>{category.categoryName}</Dropdown.Item>
-                    </div>
-                  )
-                })
-              }
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown className="filter-dropdown ml-8" style={{ width: "18%" }}>
-            <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-              <span>{level.levelName}</span>
-            </Dropdown.Toggle>
-            <Dropdown.Menu className='filter-menu'>
-              {
-                levelList.map((level) => {
-                  return (
-                    <div key={level.levelId}>
-                      <Dropdown.Item className='filter-item' onClick={() => { setLevel(level) }}>{level.levelName}</Dropdown.Item>
+                    <div key={specialty.id}>
+                      <Dropdown.Item className='filter-item' onClick={() => {
+                        setSpecialtySelect(specialty);
+                        getSpecialtyDetail(specialty.id);
+                      }}>{specialty.name}</Dropdown.Item>
                     </div>
                   )
                 })
@@ -63,65 +65,38 @@ const Specialty = () => {
           </Dropdown>
           <button className='btn-search ml-8'>Search</button>
         </div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th style={{ width: "5%" }}>ID</th>
-              <th style={{ width: "5%" }}>Icon</th>
-              <th style={{ width: "15%" }}>Skill Name</th>
-              <th style={{ width: "70%" }}>Course Link</th>
-              <th style={{ width: "5%" }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {skills.map((skill) => {
-              if (editing == skill.skillId) {
-                return (
-                  <tr key={skill.skillId}>
-                    <td>
-                      {skill.skillId}
-                    </td>
-                    <td>
-                      <img src={skill.skillIcon} alt="" className="item-icon" />
-                    </td>
-                    <td>
-                      <input style={{ padding: "8px", width: "100%" }} type="text" value={skill.skillName} />
-                    </td>
-                    <td>
-                      <input style={{ padding: "8px", width: "100%" }} type="text" value={"https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true"} />
-                    </td>
-                    <td>
-                      <button className='btn-save' onClick={() => { setEdditing("") }}>Save</button>
-                    </td>
-                    <td>
-                      <button className='btn-cancel' onClick={() => { setEdditing("") }}>Cancel</button>
-                    </td>
-                  </tr>
-                );
-              } else {
-                return (
-                  <tr key={skill.skillId}>
-                    <td>
-                      {skill.skillId}
-                    </td>
-                    <td>
-                      <img src={skill.skillIcon} alt="" className="item-icon" />
-                    </td>
-                    <td>
-                      {skill.skillName}
-                    </td>
-                    <td>
-                      https://www.coursera.org/programs/fpt-university-jan-may-2023-yfdrt?collectionId=&currentTab=CATALOG&productId=qLFYrxnoEeWwrBKfKrqlSQ&productType=course&showMiniModal=true
-                    </td>
-                    <td>
-                      <button className='btn-edit' onClick={() => { setEdditing(skill.skillId) }}>Edit</button>
-                    </td>
-                  </tr>
-                )
-              }
-            })}
-          </tbody>
-        </Table>
+        {
+          specialty?.skills.map((skill) => {
+            return (
+              <div className="skill-container" key={skill?.id}>
+                <span className="skill-name">{skill?.name}</span>
+                <div className="courses">
+                  {
+                    skill.levels.map((level) => {
+                      return (
+                        <div className='level-cover'>
+                          {
+                            level.courses.map((course) => {
+                              return (
+                                <div className="course">
+                                  <img src={skill?.image} alt="" className='skill-icon' />
+                                  <div className="course-description">
+                                    <h3 className='course-name'>{course?.name}</h3>
+                                    <span className="level">{level?.name}</span>
+                                  </div>
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
     </div>
   )

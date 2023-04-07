@@ -4,6 +4,7 @@
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+    background-color: var(--white-color);
 }
 
 .filter-form-input {
@@ -32,6 +33,7 @@
 }
 
 .filter-input-icon {
+    background-color: var(--white-color);
     color: #858585;
     height: 45px;
     padding: 3px;

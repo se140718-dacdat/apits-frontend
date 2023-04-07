@@ -36,12 +36,12 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   const tableRender = () => {
     switch (type) {
       case "Enterprise":
-        const rowsCandidate = assigns.map((item) => ({
+        const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
           id: item.assignId,
           title: item.recruitmentRequest.title,
           candidateName: item.candidateResponse.name,
           enterpriseName: item.recruitmentRequest.creator.name
-        }));
+        })) : [];
 
         const columnsCandidate: GridColDef[] = [
           { field: "id", headerName: "ID", flex: 0.2 },
@@ -54,7 +54,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={()=> {navigate(`/create-interview/${type}/${params.row.id}`)}}>
+              <Button variant="contained" color="primary" onClick={() => { navigate(`/create-interview/${type}/${params.row.id}`) }}>
                 Create
               </Button>
             ),
@@ -66,13 +66,13 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
           pagination
           checkboxSelection />)
       case "Test":
-        const rowsTest = candidates.map((item) => ({
+        const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
           id: item.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           courseName: item.course.name,
           courseId: item.course.id
-        }));
+        })) : [];
 
         const columnsTest: GridColDef[] = [
           { field: "id", headerName: "ID", flex: 0.2 },
@@ -85,7 +85,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={()=> {navigate(`/create-interview/${type}/${params.row.id}`)}}>
+              <Button variant="contained" color="primary" onClick={() => { navigate(`/create-interview/${type}/${params.row.id}`) }}>
                 Create
               </Button>
             ),
@@ -99,13 +99,13 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             checkboxSelection />
         )
       default:
-        const rows = newUsers.map((item) => ({
+        const rows = candidates?.length > 0 ? newUsers?.map((item) => ({
           id: item.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           specialtyName: item.specialty.name,
           specialtyId: item.specialty.id
-        }));
+        })) : [];
 
         const columns: GridColDef[] = [
           { field: "id", headerName: "ID", flex: 0.2 },
@@ -118,7 +118,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={()=> {navigate(`/create-interview/${type}/${params.row.id}`)}}>
+              <Button variant="contained" color="primary" onClick={() => { navigate(`/create-interview/${type}/${params.row.id}`) }}>
                 Create
               </Button>
             ),

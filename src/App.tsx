@@ -17,7 +17,7 @@ import Candidates from './components/pages/Employee/Manager/Candidates';
 import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
 import Enterprises from './components/pages/Employee/HR/Enterprises';
 import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
-import { getSpecialties, logoutUser } from './redux/apiRequest';
+import { getSpecialtiesDetail, logoutUser } from './redux/apiRequest';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
@@ -41,7 +41,7 @@ const App: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getSpecialties(dispatch);
+    // getSpecialtiesDetail(dispatch);
   }, [])
 
   return (

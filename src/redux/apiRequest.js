@@ -175,7 +175,17 @@ export const getAllSkill = async () => {
 
 //Specialty
 
-export const getSpecialties = async (dispatch) => {
+export const getSpecialties = async () => {
+    try {
+        const res = await axios.get("/specialty/getAll")
+        console.log(res.data.data);
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getSpecialtiesDetail = async (dispatch) => {
     try {
         const res = await axios.get("/special-skill/getAllSpecDetails")
         dispatch(specialtySuccess(res.data.data));

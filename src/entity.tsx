@@ -480,3 +480,21 @@ export interface CreateInterviewAssign {
     assignId: number;
     enterpriseId: number;
 }
+
+export interface CreateInterviewProfessor {
+    purpose: string;
+    date: string;
+    time: string;
+    linkMeeting: string;
+    type: string;
+    round: string;
+    description: string;
+    status: string;
+    duration: string;
+    address: string;
+    candidateConfirm: string;
+    managerId: number;
+    candidateId: number;
+    assignId: number;
+    professorId: number;
+}

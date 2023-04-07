@@ -1,37 +1,81 @@
 #Specialty {
     padding: 2% 10% 5%;
+    background-color: #F0F0F0;
 }
 
 #Specialty h2 {
     color: var(--primary-color);
 }
 
-#Specialty .item-icon {
-    width: 32px;
-    height: 32px;
-    color: #5DC26A;
+#Specialty .skill-container {
+    width: 100%;
 }
 
-#Specialty .btn-edit,
-#Specialty .btn-save,
-#Specialty .btn-cancel {
-    padding: 6px 4px;
-    border-radius: 5px;
-    width: 7rem;
-    border: none;
-    color: var(--white-color);
-    font-weight: 500;
+#Specialty .skill-name {
+    display: block;
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 24px 0;
 }
 
-
-#Specialty .btn-edit {
-    background-color: var(--primary-color);
+#Specialty .courses {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-#Specialty .btn-save {
-    background-color: #5DC26A;
+#Specialty .course-description {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
 }
 
-#Specialty .btn-cancel {
-    background-color: #DC3545;
+#Specialty .course {
+    background-color: var(--white-color);
+    padding: 18px;
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 400px;
+}
+
+#Specialty .course:hover {
+    cursor: pointer;
+}
+
+#Specialty .course:hover .course-name {
+    text-decoration: underline;
+    color: #139ff0;
+}
+
+#Specialty .course-name {
+    font-size: 1.2rem;
+}
+
+#Specialty .skill-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 18px;
+}
+
+#Specialty .level {
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
+}
+
+#Specialty .level-cover {
+    display: flex;
+    flex-wrap: wrap;
+    width: 33.3333%;
+    justify-content: center;
 }
