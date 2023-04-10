@@ -62,33 +62,33 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/profile' element={
+        <Route path='/profile' element={
           (user?.role.name) == "ENTERPRISE" ? <EnterpriseProfile />
             :
             (user?.role.name) === "EMPLOYEE" ? (
               <EmployeeProfile />)
               : (<CandidateProfile />)
         }></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/candidates-management' element={<CandidateList />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/employee-management' element={<EmployeeList />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/employee-recruitment' element={<RecruitmentPost />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/update-candidate' element={<CandidateRegister />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/register-enterprise' element={<EnterpriseRegister />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/create-post' element={<EnterpriseCreatePost />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/candidates' element={<Candidates />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/enterprises' element={<Enterprises />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/specialty' element={<Specialty />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/candidate-courses' element={<CandidateCourse />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/request' element={<Request />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/interview' element={<InterviewList />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/notification' element={<Notification roleName={user?.role.name} />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/contract' element={<ContractCreateForm />}></Route>;
+        <Route path='/candidates-management' element={<CandidateList />}></Route>;
+        <Route path='/employee-management' element={<EmployeeList />}></Route>;
+        <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
+        <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
+        <Route path='/update-candidate' element={<CandidateRegister />}></Route>;
+        <Route path='/register-enterprise' element={<EnterpriseRegister />}></Route>;
+        <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
+        <Route path='/candidates' element={<Candidates />}></Route>;
+        <Route path='/enterprises' element={<Enterprises />}></Route>;
+        <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
+        <Route path='/specialty' element={<Specialty />}></Route>;
+        <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
+        <Route path='/request' element={<Request />}></Route>;
+        <Route path='/interview' element={<InterviewList />}></Route>;
+        <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
+        <Route path='/contract' element={<ContractCreateForm />}></Route>;
 
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
-        <Route path='https://dacdat--bejewelled-sopapillas-9d63f0.netlify.app/' element={<LandingPage />}></Route>;
+        <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
+        <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
+        <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />
     </div>
