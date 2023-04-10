@@ -51,7 +51,7 @@ const EnterpriseRegister = () => {
                 image: ""
             }
             console.log(newUser)
-            // registerEnterprise(newUser, navigate);
+            registerEnterprise(newUser, navigate);
         }
     }
 
