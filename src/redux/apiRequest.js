@@ -227,7 +227,8 @@ export const startCourse = async (params) => {
 export const submitCertificate = async (params) => {
     try {
         const res = await axios.put('/status-candidate-course/updateCertificate', params)
-        return res
+        console.log(res.data.message)
+        return res.data.message
     } catch (error) {
         return error
     }
@@ -398,21 +399,3 @@ export const getAllNewCandidate = async () => {
 }
 
 // Interview
-
-export const createInterviewAssign = async (request) => {
-    try {
-        const res = await axios.post("/createInterviewWithEnterprise", request);
-        return res;
-    } catch (error) {
-        return error
-    }
-}
-
-export const createInterviewProfessor = async (request) => {
-    try {
-        const res = await axios.post("/createInterviewWithProfessor", request);
-        return res;
-    } catch (error) {
-        return error
-    }
-}

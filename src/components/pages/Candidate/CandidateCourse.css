@@ -1,0 +1,82 @@
+#CandidateCourse {
+    padding: 2% 10% 5%;
+    background-color: #F0F0F0;
+}
+
+#CandidateCourse h2 {
+    color: var(--primary-color);
+}
+
+#CandidateCourse .skill-container {
+    width: 100%;
+}
+
+#CandidateCourse .skill-name {
+    display: block;
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 24px 0;
+}
+
+#CandidateCourse .courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#CandidateCourse .course-description {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+#CandidateCourse .course {
+    background-color: var(--white-color);
+    padding: 18px;
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 33%;
+}
+
+
+#CandidateCourse .course:hover {
+    cursor: pointer;
+}
+
+#CandidateCourse .course:hover .course-name {
+    text-decoration: underline;
+    color: #139ff0;
+}
+
+#CandidateCourse .course-name {
+    font-size: 1.2rem;
+}
+
+#CandidateCourse .skill-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 18px;
+}
+
+#CandidateCourse .level {
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
+}
+
+#CandidateCourse .level-cover {
+    display: flex;
+    flex-wrap: wrap;
+    width: 33.3333%;
+    justify-content: center;
+}

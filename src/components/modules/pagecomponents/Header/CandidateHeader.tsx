@@ -43,7 +43,7 @@ const CandidateHeader: FC<Props> = (props) => {
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Find Jobs</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/specialty">Course</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/candidate-courses">Course</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/interview">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/candidate-notification">Notification</Nav.Link>

@@ -7,11 +7,10 @@ import "./InterviewList.css";
 import { useState } from 'react';
 
 const interviewType = [
-    "Check",
-    "Enterprise",
-    "Test"
+    "CHECK",
+    "ENTERPRISE",
+    "TEST"
 ]
-
 
 const InterviewList = () => {
     const navigate = useNavigate();
@@ -45,7 +44,6 @@ const InterviewList = () => {
                 <button className='btn-search ml-8'>Search</button>
             </div>
             <InterviewTable type={type} id={id} />
-            <a className='btn' href='create-interview' >Create Interview</a>
         </div>
     )
 }

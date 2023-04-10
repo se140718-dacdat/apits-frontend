@@ -204,6 +204,7 @@ export interface NotificationCandidate {
     link: string;
     name: string;
     status: string;
+    startAt: Date;
 }
 
 export interface LevelEntity {

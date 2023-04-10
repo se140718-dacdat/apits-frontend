@@ -25,7 +25,6 @@ import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
 import Specialty from './components/pages/Employee/Manager/Specialty';
 import Request from './components/modules/pagecomponents/common/Request';
 import InterviewList from './components/pages/Employee/Manager/InterviewList';
-import InterviewCreate from './components/pages/Employee/Manager/InterviewCreate';
 import Notification from './components/modules/pagecomponents/common/Notification';
 import Footer from './components/modules/pagecomponents/footer/Footer';
 import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
@@ -34,6 +33,7 @@ import AdminHeader from './components/modules/pagecomponents/Header/AdminHeader'
 import CandidateList from './components/pages/Admin/CandidateList';
 import EmployeeList from './components/pages/Admin/EmployeeList';
 import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssign';
+import CandidateCourse from './components/pages/Candidate/CandidateCourses';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -80,9 +80,9 @@ const App: FC = () => {
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
+        <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
-        <Route path='/create-interview/:type/:id' element={<InterviewCreate />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
 

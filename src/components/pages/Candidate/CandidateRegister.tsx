@@ -15,6 +15,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { minHeight } from '@mui/system';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
+import moment from 'moment';
 
 
 const storage = getStorage();
@@ -59,8 +60,8 @@ const CandidateRegister = () => {
     }, [cv])
 
     const fetchData = async (): Promise<SpecialtyEntity[]> => {
-        const response = await axios.get<{ data: { candidateSpecialList: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = response?.data?.data?.candidateSpecialList;
+        const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
+        const data = response?.data?.data?.specials;
         if (data) {
             setSelectSpecialties(data);
         }
@@ -108,7 +109,7 @@ const CandidateRegister = () => {
                     setAvatar(downloadURL)
                     :
                     setCv(downloadURL)
-                    setCvName(getCVName(cv));
+                setCvName(getCVName(cv));
                 console.log(downloadURL)
             } catch (error) {
                 console.error(error);
@@ -123,11 +124,12 @@ const CandidateRegister = () => {
             image: avatar,
             gender: gender,
             payment: payment,
-            dob: birth ? `${birth}` : '',
+            dob: birth ? moment(birth.toString()).format('YYYY-MM-DD') : '',
             address: address,
             cv: cv,
             description: description
         }
+        console.log(newUser);
         console.log(selectSpecialties);
         updateCandidate(user?.id, navigate, newUser, dispatch, selectSpecialties);
     }

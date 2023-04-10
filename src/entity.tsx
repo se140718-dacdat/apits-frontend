@@ -463,38 +463,21 @@ export interface Professor {
     status: string
 }
 
-export interface CreateInterviewAssign {
-    purpose: string;
+
+export interface InterviewCreate {
+    title: string;
     date: string;
     time: string;
     linkMeeting: string;
-    type: string;
-    round: string;
-    description: string;
-    status: string;
     duration: string;
-    address: string;
-    candidateConfirm: string;
+    type: string;
     managerId: number;
     candidateId: number;
-    assignId: number;
-    enterpriseId: number;
+    hostId: number;
+    tmpId: number
 }
 
-export interface CreateInterviewProfessor {
-    purpose: string;
-    date: string;
-    time: string;
-    linkMeeting: string;
-    type: string;
-    round: string;
-    description: string;
-    status: string;
-    duration: string;
-    address: string;
-    candidateConfirm: string;
-    managerId: number;
-    candidateId: number;
-    assignId: number;
-    professorId: number;
+export interface Duration {
+    name: string;
+    value: number;
 }
