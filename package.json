@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:dev": "dotenv -e .env.development react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv-cli": "^7.2.1",
     "gh-pages": "^5.0.0",
     "inquirer": "^8.1.0"
   }
