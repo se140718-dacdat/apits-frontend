@@ -1,6 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./ContractCreateForm.css"
 import { useState } from "react";
+import "./ContractCreateForm.css";
 
 const ContractCreateForm = () => {
     const [contractType, setContractType] = useState('');

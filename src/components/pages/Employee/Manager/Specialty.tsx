@@ -1,12 +1,11 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Table } from 'react-bootstrap';
-import { Category, dataEngineer, developer, Level, level1, level2, level3, Skill, SpecialtyEntity } from '../../../../model';
-import "./Specialty.css";
-import { SpecialtyResponse } from '../../../../entity';
-import { getSpecialties } from '../../../../redux/apiRequest';
+import { useEffect, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
 import axios from '../../../../api/axios';
+import { SpecialtyResponse } from '../../../../entity';
+import { SpecialtyEntity } from '../../../../model';
+import "./Specialty.css";
 
 const Specialty = () => {
 

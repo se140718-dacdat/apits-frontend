@@ -1,21 +1,20 @@
-import { faUser, faHouse, faPhone, faVenusMars, faCamera, faChevronLeft, faPlus, faX, faMinus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faChevronLeft, faHouse, faPhone, faPlus, faUser, faVenusMars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'react-bootstrap';
-import { CandidateUpdate, genderList, SpecialtyEntity } from '../../../model';
-import "./CandidateRegister.css";
-import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { useNavigate } from 'react-router-dom';
-import { addSpecialtiesCandidate, getSpecialtiesByCandidateId, updateCandidate } from '../../../redux/apiRequest';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { minHeight } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
-import moment from 'moment';
+import { CandidateUpdate, SpecialtyEntity, genderList } from '../../../model';
+import { updateCandidate } from '../../../redux/apiRequest';
+import "./CandidateRegister.css";
 
 
 const storage = getStorage();

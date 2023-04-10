@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import "./AdminPage.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Table } from 'react-bootstrap';
-import { Employee } from '../../../model';
-import { getAllEmployee, getPostByPostId } from '../../../redux/apiRequest';
 import axios from '../../../api/axios';
+import { Employee } from '../../../model';
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);

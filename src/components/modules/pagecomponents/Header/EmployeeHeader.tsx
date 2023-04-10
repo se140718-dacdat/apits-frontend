@@ -1,7 +1,7 @@
-import { faAddressCard, faBell, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faBell, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Button, Container, Nav, Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { Container, Nav, Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';

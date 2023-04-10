@@ -1,9 +1,9 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react'
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { FC } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import "./Enterprises.css";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 interface Props {
 

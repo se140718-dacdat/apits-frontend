@@ -1,20 +1,19 @@
-import React, { FC, useEffect, useState } from 'react'
-import "./CandidateProfile.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightToBracket, faPhone, faCakeCandles, faHouse, faVenusMars, faUser, faEnvelope, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { Dropdown, Modal, NavLink } from 'react-bootstrap';
-import Button from 'react-bootstrap/esm/Button';
-import { useSelector } from 'react-redux';
-import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { faCakeCandles, faCheck, faEnvelope, faHouse, faPhone, faRightToBracket, faUser, faVenusMars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { FC, useEffect, useState } from 'react';
+import { Dropdown, Modal } from 'react-bootstrap';
+import Button from 'react-bootstrap/esm/Button';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { CandidateCourse, CandidateCourses, CourseEntity, Distance, LevelEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
 import axios from '../../../api/axios';
-import { isEmpty } from '@firebase/util';
 import { formatDateMonthYear, getCVName } from '../../../convert';
+import { CandidateCourse, CandidateCourses, CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
 import { startCourse, submitCertificate } from '../../../redux/apiRequest';
+import "./CandidateProfile.css";
 
 
 export const CandidateProfile: FC = () => {

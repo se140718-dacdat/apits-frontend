@@ -1,14 +1,14 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Button, Dropdown, Modal } from 'react-bootstrap';
-import "./CandidateCourse.css";
+import { useSelector } from 'react-redux';
 import axios from '../../../api/axios';
 import { SpecialtyResponse } from '../../../entity';
 import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
-import { useSelector } from 'react-redux';
-import { startCourse, submitCertificate } from '../../../redux/apiRequest';
+import { startCourse } from '../../../redux/apiRequest';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import "./CandidateCourse.css";
 
 const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
