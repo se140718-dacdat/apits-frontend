@@ -39,8 +39,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build:dev": "dotenv -e .env.development react-scripts build",
-    "build:prod": "dotenv -e .env.production react-scripts build",
+    "build": "npm run build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
