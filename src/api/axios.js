@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: 'fu-apits-be.azurewebsites.net'
+    baseURL: 'https://fu-apits-be.azurewebsites.net/'
 });
