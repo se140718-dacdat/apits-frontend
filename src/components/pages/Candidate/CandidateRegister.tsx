@@ -50,7 +50,9 @@ const CandidateRegister = () => {
         console.log(cv)
         setProgress("100%");
         const registerModal = document.getElementById("CandidateRegister")!;
-        (registerModal as HTMLElement).style.height = "auto";
+        if(registerModal) {
+            (registerModal as HTMLElement).style.height = "auto";
+        }
     });
 
     useEffect(() => {
@@ -213,7 +215,7 @@ const CandidateRegister = () => {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         {
-                                            genderList.map((gender, index) => {
+                                            genderList?.map((gender, index) => {
                                                 return (
                                                     <div key={index}>
                                                         <Dropdown.Item onClick={() => { handleSelect(gender) }}>{gender}</Dropdown.Item>
@@ -286,7 +288,7 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        selectSpecialties.map((specialty: SpecialtyEntity, key: number) =>
+                                        selectSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleRemoveSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faXmark} />
                                                 <span>{specialty.name}</span>
@@ -301,7 +303,7 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        specialties.map((specialty: SpecialtyEntity, key: number) =>
+                                        specialties?.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faPlus} />
                                                 <span>{specialty?.name}</span>
