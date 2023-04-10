@@ -62,13 +62,13 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        <Route path='/profile' element={
+        {/* <Route path='/profile' element={
           (user?.role.name) == "ENTERPRISE" ? <EnterpriseProfile />
             :
             (user?.role.name) === "EMPLOYEE" ? (
               <EmployeeProfile />)
               : (<CandidateProfile />)
-        }></Route>;
+        }></Route>; */}
         <Route path='/candidates-management' element={<CandidateList />}></Route>;
         <Route path='/employee-management' element={<EmployeeList />}></Route>;
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
@@ -83,10 +83,10 @@ const App: FC = () => {
         <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
-        <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
+        {/* <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>; */}
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
 
-        <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
+        {/* <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>; */}
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
