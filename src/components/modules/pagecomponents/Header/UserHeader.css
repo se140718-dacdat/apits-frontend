@@ -1,0 +1,133 @@
+#UserHeader {
+    border-bottom: 1px solid #ebeced;
+}
+
+#UserHeader .navbar {
+    height: 64px;
+    font-weight: 500;
+    background-color: var(--white-color) !important;
+}
+
+#UserHeader .navlink {
+    color: var(--black-color) !important;
+    margin: 0 12px;
+}
+
+
+#UserHeader .navlink::after {
+    color: var(--primary-color) !important;
+}
+
+#UserHeader .nav-right * >{
+    margin-left: 20px !important;
+}
+
+#UserHeader .avt {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border-radius: 50%;
+}
+
+#UserHeader .avt img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+#UserHeader .flex-css {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+#UserHeader .dropdown {
+    position: absolute;
+    top: 90%;
+    background-color: var(--white-color);
+    z-index: 12;
+    padding: 12px;
+    border-radius: 5px;
+    box-shadow: 0 3px 13px 0 rgba(32, 40, 49, 0.5);
+}
+
+#UserHeader .relative {
+    position: relative;
+}
+
+
+#UserHeader .user-option {
+    z-index: 24;
+    top: 100%;
+    right: 0%;
+    position: absolute;
+    width: 280px;
+    padding: 24px 0;
+    box-shadow: 0 6px 24px 0 rgb(0 0 0 / 12%), 0 3px 8px 0 rgb(0 0 0 / 6%);
+    border-radius: 5px;
+    background-color: #ffff;
+}
+
+#UserHeader .user-info-avt {
+    width: 64px;
+    height: 64px;
+    border-radius: 50px;
+    margin-right: 12px;
+}
+
+#UserHeader .user-info {
+    display: flex;
+    padding: 0 24px 12px;
+    border-bottom: 1px solid var(--black-color);
+}
+
+#UserHeader .user-info .block >* {
+    display: block;
+}
+
+#UserHeader .user-info-email {
+    font-size: 12px;
+    color: #aaaaaa;
+    font-weight: 600;
+}
+
+#UserHeader .user-wrap {
+    user-select: none;
+    position: relative;
+}
+
+#UserHeader .dropdown-option {
+    width: 100%;
+    padding: 12px 24px;
+}
+
+#UserHeader .dropdown-option:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color) !important;
+    cursor: pointer;
+}
+
+#UserHeader .dropdown-option .icon {
+    margin-right: 8px;
+}
+
+#UserHeader .btn-add-post {
+    background-color: var(--black-color);
+    color: var(--white-color) !important;
+    padding: 0 30px;
+    border-radius: 30px;
+    border: none;
+}
+
+#UserHeader .btn-add-post:hover {
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+#UserHeader .btn-add-post .icon {
+    margin-right: 8px !important;
+}
+
+#UserHeader .hover-primary:hover {
+    color: var(--primary-color) !important;
+    cursor: pointer;
+}

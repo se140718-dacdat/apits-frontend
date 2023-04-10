@@ -1,0 +1,354 @@
+#CandidateProfile {
+    width: 100%;
+    position: relative;
+}
+
+#CandidateProfile .profile-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%;
+    z-index: 5;
+    position: inherit;
+    top: -200px;
+    align-items: flex-start;
+}
+
+#CandidateProfile .banner {
+    width: 100%;
+}
+
+#CandidateProfile .left {
+    width: 65%;
+}
+
+#CandidateProfile .right {
+    flex-wrap: wrap;
+    display: flex;
+    width: 30%;
+    border-radius: 5px 5px 0 0;
+}
+
+#CandidateProfile .profile {
+    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+#CandidateProfile .profile-input,
+#CandidateProfile .profile {
+    border-radius: 10px;
+    width: 100%;
+    background-color: var(--white-color);
+    box-shadow: 0 3px 13px 0 rgba(32, 40, 49, 0.5);
+    margin-bottom: 32px;
+}
+
+#CandidateProfile .col-left {
+    width: 35%;
+}
+
+#CandidateProfile .col-right {
+    position: relative;
+    width: 60%;
+}
+
+#CandidateProfile .col-half {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 25px !important;
+}
+
+#CandidateProfile .profile-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+#CandidateProfile .work-status {
+    width: 100%;
+}
+
+#CandidateProfile .col-half span {
+    margin-left: 24px;
+    text-transform: capitalize;
+}
+
+#CandidateProfile .fullname {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#CandidateProfile .btn-cover {
+    width: 30%;
+    padding: 0 !important;
+}
+
+#CandidateProfile .btn-edit {
+    float: right;
+}
+
+#CandidateProfile .avatar {
+    width: 265px;
+    height: 265px;
+    border-radius: 10px;
+}
+
+#CandidateProfile .b-0 {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+#CandidateProfile .join {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+#CandidateProfile .icon {
+    margin-right: 12px;
+    color: var(--primary-color);
+    width: 25px;
+    height: 25px;
+}
+
+#CandidateProfile .profile-header {
+    border-bottom: 1px solid #D9D9D9;
+    padding: 12px 24px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#CandidateProfile .profile-header-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#CandidateProfile .profile-body {
+    width: 100%;
+    padding: 12px 24px;
+}
+
+#CandidateProfileModal .input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    flex-wrap: wrap;
+}
+
+#CandidateProfileModal .input * {
+    width: 100%;
+}
+
+#CandidateProfileModal .input-profile {
+    padding: 12px;
+    border-radius: 5px;
+}
+
+#CandidateProfileModal .input span {
+    align-content: center;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+
+#CandidateProfileModal .input textarea {
+    min-height: 300px;
+}
+
+
+#CandidateProfile .level {
+    background-color: var(--white-color);
+    font-size: 0.8rem;
+    border-radius: 10px;
+    color: #75787d;
+    text-transform: uppercase;
+    border: 1px solid #DEDEDE;
+    padding: 0 8px;
+    margin: 0 8px;
+}
+
+#CandidateProfile .item {
+    display: flex;
+    margin: 24px 0;
+    align-items: center;
+}
+
+#CandidateProfile .item-name {
+    margin-left: 12px;
+    text-transform: capitalize;
+}
+
+#CandidateProfile .item-icon {
+    width: 32px;
+    height: 32px;
+    color: #5DC26A;
+}
+
+#CandidateProfile .item-verify,
+#CandidateProfile .icon-check {
+    margin-left: auto;
+    order: 2;
+}
+
+#CandidateProfile .item-verify {
+    color: #007fed;
+}
+
+#CandidateProfile .item-verify:hover {
+    text-decoration: none !important;
+}
+
+
+#CandidateProfile .item-verify:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#CandidateProfile .icon-check {
+    color: #5DC26A;
+}
+
+#CandidateProfile .btn-update-specialty {
+    margin-top: 24px;
+    width: 100%;
+    padding: 12px 0 !important;
+    border-radius: 0 0 10px 10px !important;
+}
+
+#CandidateProfile .certificate-link {
+    margin-bottom: 1rem;
+}
+
+
+#CandidateProfile .certificate-link:hover {
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+#CandidateProfile .issued-time {
+    padding: 12px;
+}
+
+#CandidateProfile .issued-time>* {
+    width: 100%;
+}
+
+
+#CandidateProfile .distance-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#CandidateProfile .course-list * {
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+
+#CandidateProfile .course-item {
+    position: relative;
+}
+
+
+#CandidateProfile .course-view {
+    position: absolute;
+    right: 0;
+    color: var(--link-color);
+    font-weight: 500;
+}
+
+
+#CandidateSkillModal {
+    min-width: 40%;
+}
+
+#CandidateSkillModal .btn-close {
+    margin-right: 18px;
+}
+
+#CandidateSkillModal .skill-modal-title {
+    display: flex;
+    align-items: center;
+}
+
+
+#CandidateSkillModal .modal-content img {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+
+#CandidateSkillModal .course-heading * {
+    font-weight: bold;
+}
+
+
+
+#CandidateSkillModal .level-content {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+    margin-bottom: 8px;
+    padding: 0 24px;
+}
+
+#CandidateSkillModal .level-content:last-child {
+    border-bottom: none;
+}
+
+#CandidateSkillModal .course-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#CandidateSkillModal .course-row * {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+#CandidateSkillModal .course-row .col1 {
+    overflow: hidden;
+    width: 50%;
+}
+
+#CandidateSkillModal .course-data .col1 {
+    color: var(--link-color);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#CandidateSkillModal .course-data .col1:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+
+#CandidateSkillModal .course-row .col2 {
+    width: 20%;
+}
+
+#CandidateSkillModal .course-row .col3 {
+    width: 20%;
+}
+
+#CandidateSkillModal .btn-learn,
+#CandidateSkillModal .btn-certificate {
+    background-color: var(--primary-color) !important;
+    border: none !important;
+    color: var(--white-color) !important;
+    border-radius: 5px !important;
+    font-weight: 500 !important;
+    padding: 5px;
+}
+
+#CandidateSkillModal .btn-learn:hover,
+#CandidateSkillModal .btn-certificate:hover,
+#CandidateProfile .course-view {
+    opacity: 0.8;
+    cursor: pointer;
+}

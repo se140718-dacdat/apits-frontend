@@ -1,0 +1,229 @@
+#ViewAssign .profile-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    z-index: 5;
+    position: inherit;
+    top: -200px;
+}
+
+#ViewAssign .banner {
+    width: 100%;
+}
+
+#ViewAssign .left {
+    width: 65%;
+}
+
+#ViewAssign .right {
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    width: 30%;
+    border-radius: 5px 5px 0 0;
+}
+
+#ViewAssign .profile {
+    flex-wrap: nowrap;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px;
+}
+
+#ViewAssign .profile-input,
+#ViewAssign .profile {
+    border-radius: 10px;
+    width: 100%;
+    background-color: var(--white-color);
+    box-shadow: 0 3px 13px 0 rgba(32, 40, 49, 0.5);
+    margin-bottom: 32px;
+}
+
+#ViewAssign .col-left {
+    width: 35%;
+}
+
+#ViewAssign .col-right {
+    position: relative;
+    width: 60%;
+}
+
+#ViewAssign .col-half {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+#ViewAssign .work-status {
+    width: 100%;
+}
+
+#ViewAssign .col-half span {
+    margin-left: 24px;
+    text-transform: capitalize;
+}
+
+#ViewAssign .fullname {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#ViewAssign .btn-cover {
+    width: 30%;
+    padding: 0 !important;
+}
+
+#ViewAssign .btn-edit {
+    float: right;
+}
+
+#ViewAssign .avatar {
+    width: 265px;
+    height: 265px;
+    border-radius: 10px;
+}
+
+#ViewAssign .b-0 {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+#ViewAssign .join {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+#ViewAssign .icon {
+    margin-right: 12px;
+    color: var(--primary-color);
+    width: 25px;
+    height: 25px;
+}
+
+#ViewAssign .profile-header {
+    border-bottom: 1px solid #D9D9D9;
+    padding: 12px 24px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#ViewAssign .profile-header-name {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+#ViewAssign .profile-body {
+    width: 100%;
+}
+
+#ViewAssignModal .input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    flex-wrap: wrap;
+}
+
+#ViewAssignModal .input * {
+    width: 100%;
+}
+
+#ViewAssignModal .input-profile {
+    padding: 12px;
+    border-radius: 5px;
+}
+
+#ViewAssignModal .input span {
+    align-content: center;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+
+#ViewAssignModal .input textarea {
+    min-height: 300px;
+}
+
+
+#ViewAssign .level {
+    background-color: var(--white-color);
+    font-size: 0.8rem;
+    border-radius: 10px;
+    color: #75787d;
+    text-transform: uppercase;
+    border: 1px solid #DEDEDE;
+    padding: 0 8px;
+    margin: 0 8px;
+}
+
+#ViewAssign .item {
+    display: flex;
+    margin: 24px;
+    align-items: flex-end;
+}
+
+#ViewAssign .item-name {
+    margin-left: 12px;
+    text-transform: capitalize;
+}
+
+#ViewAssign .item-icon {
+    width: 32px;
+    height: 32px;
+    color: #5DC26A;
+}
+
+#ViewAssign .item-verify,
+#ViewAssign .icon-check {
+    margin-left: auto;
+    order: 2;
+}
+
+#ViewAssign .item-verify {
+    color: #007fed;
+
+}
+
+
+#ViewAssign .item-verify:hover {
+    cursor: pointer;    
+    text-decoration: underline;
+}
+
+#ViewAssign .icon-check {
+    color: #5DC26A;
+}
+
+#ViewAssign .btn-update-specialty {
+    margin-top: 24px;
+    width: 100%;
+    padding: 12px 0 !important;
+    border-radius: 0 0 10px 10px !important;
+}
+
+#ViewAssign select {
+    padding: 6px 16px !important;
+    background-color: var(--primary-color) !important;
+    color: var(--white-color) !important;
+}
+
+
+.view-assign-specialty-select {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .view-assign-specialty-select:hover,
+  .view-assign-specialty-select:focus {
+    border-color: #4a90e2;
+    cursor: pointer;
+  }

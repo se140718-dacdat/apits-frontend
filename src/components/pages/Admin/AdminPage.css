@@ -1,0 +1,7 @@
+#AdminPage {
+    padding: 2% 2% 5%;
+}
+
+#AdminPage h2 {
+    color: var(--primary-color);
+}

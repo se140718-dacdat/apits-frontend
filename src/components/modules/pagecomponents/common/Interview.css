@@ -1,0 +1,163 @@
+#InterviewCreateModal  {
+    position: relative;
+}
+
+#InterviewCreateModal h3 {
+    color: var(--primary-color);
+}
+
+#InterviewCreateModal .input-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#InterviewCreateModal .input-title {
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#InterviewCreateModal .input-container input {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+#InterviewCreateModal .interview-type
+ {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#InterviewCreateModal .participant-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+#InterviewCreateModal .participant__icon--plus {
+    width: 25px;
+    height: 25px;
+    margin-left: 12px;
+    color: var(--primary-color);
+}
+
+#InterviewCreateModal .participant-container .icon {
+    margin-left: 8px;
+}
+
+#InterviewCreateModal .participant-title {
+    width: 20%;
+}
+
+
+
+#PopupInterviewer .header {
+    text-align: center;
+}
+
+#PopupInterviewer .filter-interview-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.65rem;
+    cursor: pointer;
+}
+
+
+#PopupInterviewer .filter-interview-title {
+    font-size: 26px;
+    padding-top: 1rem;
+ }
+
+#PopupInterviewer .interviewer-search {
+    padding: 1rem;
+    height: 75%;
+}
+
+#PopupInterviewer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 14;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#PopupInterviewer .layer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ccc;
+    opacity: 0.6;
+}
+
+#PopupInterviewer .interviewer-container {
+    position: absolute;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 80%;
+    top: 10%;
+}
+
+#PopupInterviewer .input-pos {
+    position: relative;
+}
+
+#PopupInterviewer input {
+    padding: 4px 16px;
+}
+
+#PopupInterviewer .icon-search {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 22px;
+    right: 24px;
+    padding: 4px;
+    color: var(--primary-color);
+}
+#PopupInterviewer .icon-search:hover {
+    background-color: #f2732941;
+    border-radius: 50%;
+}
+
+
+#PopupInterviewer .search-name {
+    width: 100%;
+}
+
+#PopupInterviewer .search-name-interviewer {
+    transition: 0.3s;
+    padding: 0.5rem;
+}
+
+#PopupInterviewer .search-icon {
+    display: none;
+}
+
+#PopupInterviewer .search-name-interviewer:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+#PopupInterviewer .search-name-interviewer:active {
+    background-color: #bd4500;
+}
+
+#PopupInterviewer .search-name-interviewer:hover .search-icon {
+    display: inline;
+}

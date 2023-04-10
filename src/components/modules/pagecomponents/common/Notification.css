@@ -1,0 +1,7 @@
+#Notification {
+    padding: 2% 10% 5%;
+}
+
+#Notification h2 {
+    color: var(--primary-color);
+}

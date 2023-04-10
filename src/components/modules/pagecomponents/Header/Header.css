@@ -1,0 +1,22 @@
+#Header .navbar {
+    height: 64px;
+    font-weight: 500;
+    background-color: var(--white-color) !important;
+}
+
+#Header .navlink {
+    color: var(--black-color) !important;
+}
+
+
+#Header .navlink:hover {
+    color: var(--primary-color) !important;
+}
+
+#Header .nav-right *{
+    margin-left: 20px !important;
+}
+
+#Header .notification-item {
+    background-color: var(--primary-color) !important;
+}
