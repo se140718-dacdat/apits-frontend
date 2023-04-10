@@ -39,7 +39,7 @@ export const loginUserByGoogle = async (result, dispatch, navigate) => {
             "token": result.user.accessToken
         });
         dispatch(loginSuccess(res.data.data));
-        dispatch(userSuccess(null));
+        dispatch(userSuccess(res.data.data.candidate));
         console.log(res.data.data)
         navigate("/update-candidate");
     } catch (err) {
@@ -258,6 +258,7 @@ export const getAllEmployees = async () => {
 
 export const registerEnterprise = async (newUser, navigate) => {
     try {
+        console.log(newUser);
         const res = await axios.post("/account/auth/registerForEnterprise", newUser);
         navigate("/")
     } catch (error) {

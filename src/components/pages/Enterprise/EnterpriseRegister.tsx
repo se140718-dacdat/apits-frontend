@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import "./EnterpriseRegister.css"
 import { Login, RegisterEnterprise } from "../../../model";
 import { registerEnterprise } from "../../../redux/apiRequest";
@@ -20,21 +20,39 @@ const EnterpriseRegister = () => {
     const [website, setWebsite] = useState<string>("");
     const [registerMsg, setRegisterMsg] = useState<string>("");
 
-    const form = document.getElementById("enterprise-register-form") as HTMLElement
+    // useEffect(() => {
+    //     const form = document.getElementById("enterprise-register-form") as HTMLElement
+    //     form?.addEventListener('submit', (event: any) => {
+    //         event.preventDefault();
+    //         registerHandler();
+    //     });
+
+    //     return () => {
+    //         form?.removeEventListener('submit', (event: any) => {
+    //             event.preventDefault();
+    //             registerHandler();
+    //         });
+    //     };
+
+    // }, [])
+
 
     const registerHandler = () => {
-        const newUser: RegisterEnterprise = {
-            name: name,
-            address: address,
-            phone: phone,
-            email: username,
-            password: password,
-            scale: scale,
-            introduction: introduce,
-            website: website,
-            image: ""
+        if (confirm === password) {
+            const newUser: RegisterEnterprise = {
+                name: name,
+                address: address,
+                phone: phone,
+                email: username,
+                password: password,
+                scale: scale,
+                introduction: introduce,
+                website: website,
+                image: ""
+            }
+            console.log(newUser)
+            // registerEnterprise(newUser, navigate);
         }
-        registerEnterprise(newUser, navigate);
     }
 
     return (
@@ -48,7 +66,7 @@ const EnterpriseRegister = () => {
                 </div>
             </div>
             <div className="container">
-                <form id="enterprise-register-form">
+                <div id="enterprise-register-form">
                     <div className="form-group">
                         <div className="tilte">Account</div>
                         <div className="underline"></div>
@@ -84,7 +102,7 @@ const EnterpriseRegister = () => {
                             <div className="group-input">
                                 <label>Company website:</label>
                                 <div className="form-input">
-                                    <input type="text" className="input regis-input" placeholder="Company website" required onChange={(e) => { setWebsite(e.target.value) }} />
+                                    <input type="text" className="input regis-input" onChange={(e) => { setWebsite(e.target.value) }}  placeholder="Company website" required/>
                                     <span className="text-err"></span>
                                 </div>
                             </div>
@@ -139,9 +157,9 @@ const EnterpriseRegister = () => {
                     </div>
                     <div className="group-button">
                         <button className="btn btn-cancel" onClick={() => { navigate("/") }}>Cancel</button>
-                        <button className="btn" onClick={registerHandler}>Finish</button>
+                        <button className="btn" onClick={()=>{registerHandler()}}>Finish</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
