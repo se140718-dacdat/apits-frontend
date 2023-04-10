@@ -27,6 +27,11 @@ import InterviewList from './components/pages/Employee/Manager/InterviewList';
 import Specialty from './components/pages/Employee/Manager/Specialty';
 import EnterpriseCreatePost from './components/pages/Enterprise/EnterpriseCreatePost';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
+import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
+import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
+import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
+import Notification from './components/modules/pagecomponents/common/Notification';
+import NotificationList from './components/pages/Candidate/CandidateNotificationList';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -55,13 +60,13 @@ const App: FC = () => {
         }
       })()}
       <Routes>
-        {/* <Route path='/profile' element={
+        <Route path='/profile' element={
           (user?.role.name) == "ENTERPRISE" ? <EnterpriseProfile />
             :
             (user?.role.name) === "EMPLOYEE" ? (
               <EmployeeProfile />)
               : (<CandidateProfile />)
-        }></Route>; */}
+        }></Route>;
         <Route path='/candidates-management' element={<CandidateList />}></Route>;
         <Route path='/employee-management' element={<EmployeeList />}></Route>;
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
@@ -76,10 +81,9 @@ const App: FC = () => {
         <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
-        {/* <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>; */}
+        <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
-
-        {/* <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>; */}
+        <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>

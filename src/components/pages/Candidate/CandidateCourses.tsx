@@ -44,7 +44,7 @@ const CandidateCourse = () => {
 
     async function fetchData() {
         const res = await axios.get(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = await res.data.data.specials;
+        const data = await res?.data.data.specials;
         setSpecialties(data);
         setSpecialtySelect(data[0]);
         getSpecialtyDetail(data[0].id)

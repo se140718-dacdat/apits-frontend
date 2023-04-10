@@ -22,7 +22,6 @@
 #CandidateCourse .courses {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 
 #CandidateCourse .course-description {
@@ -41,6 +40,7 @@
     flex-wrap: nowrap;
     align-items: center;
     width: 33%;
+    margin-right: 28px;
 }
 
 
