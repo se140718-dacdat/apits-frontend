@@ -81,12 +81,10 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         : setShow("")
                                 }}>
                                     <div className="flex-css relative hover-primary">
-                                        <img className='avt' src="/images/avt.jpg" alt="" />
                                         <div className='user-name'>{user?.employeeName}</div>
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
-                                            <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
                                                 <span className='user-info-name'>{user?.employeeName}</span>
                                                 <span className='user-info-email'>{user?.email}</span>

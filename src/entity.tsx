@@ -469,7 +469,7 @@ export interface InterviewCreate {
     date: string;
     time: string;
     linkMeeting: string;
-    duration: string;
+    duration: number;
     type: string;
     managerId: number;
     candidateId: number;

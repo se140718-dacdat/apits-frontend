@@ -14,6 +14,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faClose, faMagnifyingGlass, faPlusCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Button as ButtonBootsrap } from 'react-bootstrap';
+import MessageBox from "../Popup/MessageBox/MessageBox";
+import axios from "../../../../api/axios";
+import moment from "moment";
 
 
 interface Props {
@@ -58,7 +61,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   const [date, setDate] = useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
   const [time, setTime] = useState('');
   const [link, setLink] = useState<string>('');
-  const [duration, setDuration] = useState(durations[0].name);
+  const [duration, setDuration] = useState(durations[0].value);
   const [participantA, setParticipantA] = useState<string>('');
   const [participantB, setParticipantB] = useState<string>('');
   const [course, setCourse] = useState<string>('');
@@ -90,6 +93,20 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     setNewUsers(await getAllNewCandidate());
     setCandidates(await getCandidateCourseProcessing());
     setEmployees(await getAllEmployees());
+  }
+
+  const createInterview = async (request: InterviewCreate) => {
+    console.log(request);
+    try {
+      await axios.post("/createInterview", request).then(function (res) {
+        console.log(res.data.message)
+        setMessage(res.data.message);
+        setMessageStatus("green");
+        handleCloseInterviewCreate();
+      })
+    } catch (error) {
+      return error
+    }
   }
 
   const tableRender = () => {
@@ -211,23 +228,25 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     }
   }
 
+  const getDurationValue = (name: string): number | undefined => durations.find(duration => duration.name === name)?.value;
   const handleCreateInterview = () => {
     switch (type) {
       case "CHECK":
         if (courseId !== undefined && participantAId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
             title: title,
-            date: `${date}`,
+            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
             linkMeeting: link,
             duration: duration,
-            type: type,
+            type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: courseId,
             candidateId: participantAId,
             hostId: professor?.id
           }
-          console.log(request);
+          console.log(request)
+          createInterview(request);
         } else {
           console.log("ERROR")
         }
@@ -241,13 +260,13 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             time: time,
             linkMeeting: link,
             duration: duration,
-            type: type,
+            type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: assignId,
             candidateId: participantAId,
             hostId: participantBId
           }
-          console.log(request);
+          createInterview(request);
         } else {
           console.log("ERROR")
         }
@@ -261,13 +280,13 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             time: time,
             linkMeeting: link,
             duration: duration,
-            type: type,
+            type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: specialtyId,
             candidateId: participantAId,
             hostId: professor?.id
           }
-          console.log(request);
+          createInterview(request);
         } else {
           console.log("ERROR")
         }
@@ -312,10 +331,15 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
 
   return (
     <div id="Interview">
+      {
+        message != '' ?
+          <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+          :
+          null
+      }
       <div style={{ height: 400, width: "100%" }}>
         {tableRender()}
       </div>
-
       <Modal id="InterviewCreateModal" show={showInterviewCreate} onHide={handleCloseInterviewCreate}>
         <Modal.Header closeButton>
           <Modal.Title>Meeting form section</Modal.Title>
@@ -378,7 +402,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             <div className="input-container">
               <span className="input-title">Expected duration:</span>
               <div className="gr-right form-input-select">
-                <select className="form-select select-duration" onChange={e => setDuration(e.target.value)}>
+                <select className="form-select select-duration" onChange={e => setDuration(parseInt(e.target.value))}>
                   {
                     durations?.map((duration) => {
                       return (
