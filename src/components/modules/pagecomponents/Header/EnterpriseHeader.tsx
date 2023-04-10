@@ -15,6 +15,7 @@ interface Props {
     setUser: Dispatch<SetStateAction<User | null>>;
 }
 const EnterpriseHeader: FC<Props> = (props) => {
+    const user = useSelector((state: any) => state.user.user.user);
     const [show, setShow] = useState<string>("display-none");
     const account = useSelector((state: any) => state.auth.login.currentUser);
     const dispatch = useDispatch();
@@ -59,12 +60,12 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                 }}>
                                     <div className="flex-css relative hover-primary">
                                         <div className='user-name' style={{marginRight: "8px"}}>{account?.information.name}</div>
-                                        <img className='avt' src="/images/avt.jpg" alt="" />
+                                        <img className='avt' src={user?.image} alt="" />
                                         <FontAwesomeIcon icon={faChevronDown} />
                                     </div>
                                     <div className={`user-option ${show}`}>
                                         <div className="user-info">
-                                            <img src="/images/avt.jpg" alt="user-avt" className='user-info-avt' />
+                                            <img src={user?.image} alt="user-avt" className='user-info-avt' />
                                             <div className='block'>
                                                 <span className='user-info-name'>{account?.information.name}</span>
                                                 <span className='user-info-email'>{account?.information.email}</span>
