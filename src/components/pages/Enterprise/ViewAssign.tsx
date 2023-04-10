@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Candidate, Category, dataEngineer, developer, Level, level1, level2, level3, Specialty } from "../../../model";
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { faCakeCandles, faHouse, faPhone, faRightToBracket, faVenusMars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCakeCandles, faCheck, faEnvelope, faHouse, faPhone, faRightToBracket, faUser, faVenusMars } from "@fortawesome/free-solid-svg-icons";
-import "./ViewAssign.css";
+import { Box, Button, Modal, Typography } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { ConfirmedEntity, CandidateForAssign, CandidateResponse } from "../../../entity";
 import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
+import { ConfirmedEntity } from "../../../entity";
 import { approveCandidate, rejectCandidate } from "../../../redux/apiRequest";
+import "./ViewAssign.css";
 
 
 const ViewAssign = () => {

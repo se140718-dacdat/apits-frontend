@@ -1,8 +1,6 @@
-import { async } from "@firebase/util";
-import { useDispatch } from "react-redux";
 import axios from "../api/axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess } from "./authSlice";
-import { specialtyStart, specialtySuccess } from "./specialtySlice";
+import { specialtySuccess } from "./specialtySlice";
 import { userFailed, userStart, userSuccess } from "./userSlice";
 
 //Authentication

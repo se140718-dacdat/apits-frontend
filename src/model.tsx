@@ -158,28 +158,6 @@ export interface Candidate {
     status: string;
 }
 
-interface UserCandidate {
-    id: number;
-    name: string;
-    specialties: SpecialtyDemo[]
-}
-
-interface SkillDemo {
-    id: string;
-    name: string;
-}
-
-interface LevelDemo {
-    id: string;
-    name: string;
-    skills: Skill[]
-}
-
-interface SpecialtyDemo {
-    id: string;
-    name: string;
-    level: Level[]
-}
 
 
 export interface Interview {

@@ -1,18 +1,18 @@
-import React, { Fragment, useState, useEffect } from "react";
-import "./EnterpriseCreatePost.css"
+import { faAddressBook, faChevronLeft, faClose, faEnvelope, faLocationDot, faMedal, faPerson, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook, faBuilding, faChevronLeft, faClock, faClose, faEnvelope, faLocationDot, faMedal, faPerson, faPhone, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
-import "./SkillItems.css"
-import { PostEntity, SkillRequire, SkillSelect } from "../../../entity";
-import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { Fragment, useEffect, useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { PostEntity, SkillRequire, SkillSelect } from "../../../entity";
 import { LevelEntity, SkillEntity, SpecialtyEntity } from "../../../model";
 import { createPost } from "../../../redux/apiRequest";
-import { useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
+import "./EnterpriseCreatePost.css";
+import "./SkillItems.css";
 
 
 const EnterpriseCreatePost = () => {

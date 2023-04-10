@@ -1,13 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react"
-import "./EnterpriseRegister.css"
-import { Login, RegisterEnterprise } from "../../../model";
+import { RegisterEnterprise } from "../../../model";
 import { registerEnterprise } from "../../../redux/apiRequest";
+import "./EnterpriseRegister.css";
 
 const EnterpriseRegister = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirm, setConfirm] = useState<string>("");
