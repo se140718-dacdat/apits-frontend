@@ -53,12 +53,11 @@ const CandidateCourse = () => {
     async function getSpecialtyDetail(id: number) {
         const res = await axios.get(`/canspec/getASpecDetailByCandidateId?candidateId=${user?.id}&specialId=${id}`);
         const data = await res.data.data;
-        console.log(data)
         setSpecialty(data.specialty);
     }
 
 
-    const handleStartCourse = () => {
+    const handleStartCourse = async () => {
         const request = {
             candidateId: user?.id,
             skillId: skill?.id,
@@ -66,8 +65,18 @@ const CandidateCourse = () => {
             courseId: course?.id,
             certificate: ""
         }
-        startCourse(request);
-        window.open(course?.link)
+        // startCourse(request);
+        await axios.post('/status-candidate-course/create', request).then(function (res) {
+            console.log(res.data.message)
+            if (res.data.message == "SUCCESS") {
+                setMessage("Started!");
+                setMessageStatus("green");
+                if (specialtySelect !== undefined) {
+                    getSpecialtyDetail(specialtySelect?.id)
+                }
+                window.open(course?.link);
+            }
+        })
     }
 
     const handleSubmitCertificate = async () => {

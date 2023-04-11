@@ -32,6 +32,7 @@ import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
 import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
 import Notification from './components/modules/pagecomponents/common/Notification';
 import NotificationList from './components/pages/Candidate/CandidateNotificationList';
+import { getSpecialtiesDetail } from './redux/apiRequest';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -39,7 +40,7 @@ const App: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // getSpecialtiesDetail(dispatch);
+    getSpecialtiesDetail(dispatch);
   }, [])
 
   return (

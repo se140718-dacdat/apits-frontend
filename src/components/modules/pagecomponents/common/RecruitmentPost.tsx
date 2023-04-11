@@ -15,11 +15,12 @@ const RecruitmentPost = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(posts[0])
+        console.log(posts)
     }, [])
 
     const fetchData = async () => {
         setPosts(await getAllPost());
+        console.log(posts)
     }
 
     return (
@@ -63,29 +64,32 @@ const RecruitmentPost = () => {
                     {
                         posts && posts?.length > 0 && posts?.map((post: PostResponse, index) => {
                             return (
-                                <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
+                                <div className="post" onClick={() => { 
+                                    navigate(`/post-detail/${post.id}`) 
+                                    }} key={index}>
                                     <div className="avt-post-cover inline-block">
                                         <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                                     </div>
                                     <div className="post-detail inline-block">
                                         <div className="post-name">{post.title}</div>
-                                        <div className="post-company-name">{post.name}</div>
+                                        <div className="post-company-name">{post.creator.name}</div>
                                     </div>
+
                                     <div className="skills">
-                                        <div className="skill">
-                                            SQL
-                                        </div>
-                                        <div className="skill">
-                                            Java
-                                        </div>
-                                        <div className="skill">
-                                            Python
-                                        </div>
+                                        {
+                                            post?.skills.map((skill, index) => {
+                                                return (
+                                                    <div className="skill" key={index}>
+                                                        {skill.skillName}
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                     <div className="post-description">
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                            {post.salaryFrom}
+                                            {post.salaryDetail}
                                         </div>
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />

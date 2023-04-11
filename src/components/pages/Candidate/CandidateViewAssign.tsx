@@ -28,6 +28,7 @@ const CandidateViewAssign = () => {
 
   const handleConfirmAssign = (id: number) => {
     confirmAssign(id, user?.id);
+    fetchData();
   }
 
   const rows: CandidateAssignRow[] = assigns?.map((assign) => ({

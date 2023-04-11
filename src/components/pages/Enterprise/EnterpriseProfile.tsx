@@ -114,16 +114,10 @@ const EnterpriseProfile: FC = () => {
                 </div>
                 <div className="profile-detail">
                     <h4>Introduction</h4>
-                    <div className="enterprise-introduction">
-                        Được thổi hồn từ niềm đam mê du lịch của Founder Trần Anh Tuấn, thương hiệu MIA.vn đã ra đời vào năm 2014 với tầm nhìn trở thành chuỗi hành lý số 1 tại thị trường Việt Nam.
-
-                        Với niềm tin mãnh liệt: nhà bán lẻ không bán sản phẩm, và chỉ bán cho Khách hàng sự hài lòng - niềm vui khi mua sắm, thương hiệu MIA.vn – thuộc công ty TGA đã có chỗ vững chắc trong lòng khách hàng trong suốt 8 năm nay.
-
-                        Đến nay, chúng tôi đã có hơn 24 cửa hàng bán lẻ trên toàn quốc. Chặng hành trình tiếp theo sẽ là chinh phục cột mốc 100 cửa hàng trên toàn quốc vào năm 2026.
-                    </div>
+                    <div className="enterprise-introduction">{user?.introduction}</div>
                     <h6>Company Address</h6>
                     <div className="address">
-                        <FontAwesomeIcon icon={faLocationDot} className="icon pr-4" style={{color: "var(--primary-color)"}} />
+                        <FontAwesomeIcon icon={faLocationDot} className="icon pr-4" style={{ color: "var(--primary-color)" }} />
                         {user?.address}
                     </div>
                 </div>
@@ -139,32 +133,32 @@ const EnterpriseProfile: FC = () => {
                                         </div>
                                         <div className="post-detail inline-block">
                                             <div className="post-name">{post.title}</div>
-                                            <div className="post-company-name">{post.name}</div>
+                                            <div className="post-company-name">{post.creator.name}</div>
                                         </div>
                                         <div className="skills">
-                                            <div className="skill">
-                                                SQL
-                                            </div>
-                                            <div className="skill">
-                                                Java
-                                            </div>
-                                            <div className="skill">
-                                                Python
-                                            </div>
+                                            {
+                                                post?.skills.map((skill, index) => {
+                                                    return (
+                                                        <div className="skill" key={index}>
+                                                            {skill.skillName}
+                                                        </div>
+                                                    )
+                                                })
+                                            }
                                         </div>
                                         <div className="post-description">
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                                {post.salaryFrom}
+                                                {post.salaryDetail}
                                             </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />
                                                 {post.typeOfWork}
                                             </div>
                                             <div className="description-item">
-                                                    <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
-                                                    {getDaysLeft(post?.createAt, post?.expiryDate) > 0 ? `${getDaysLeft(post?.createAt, post?.expiryDate)} days left to apply` : "Expired"}
-                                                </div>
+                                                <FontAwesomeIcon icon={faClock} className="icon primary-color mr-8" />
+                                                {getDaysLeft(post?.createAt, post?.expiryDate) > 0 ? `${getDaysLeft(post?.createAt, post?.expiryDate)} days left to apply` : "Expired"}
+                                            </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faLocationDot} className="icon primary-color mr-8" />
                                                 {post.creator.address}

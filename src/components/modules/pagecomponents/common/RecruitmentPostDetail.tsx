@@ -106,7 +106,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Salary</strong>
                                                 <br />
-                                                <span>{post?.salaryFrom}</span>
+                                                <span>{post?.salaryDetail}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -265,22 +265,22 @@ const RecruitmentPostDetail = () => {
                                     <p className='item-name'>Specialty:</p>
                                     <div className="modal-list">
                                         <div className="item">
-                                            Developer
+                                            {post?.specialty}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="modal-item">
                                     <p className='item-name'>Skills:</p>
                                     <div className="modal-list">
-                                        <div className="item">
-                                            Java
-                                        </div>
-                                        <div className="item">
-                                            Python
-                                        </div>
-                                        <div className="item">
-                                            SQL
-                                        </div>
+                                        {
+                                            post?.skills.map((skill, index) => {
+                                                return (
+                                                    <div className="item" key={index}>
+                                                        {skill.skillName}
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
                             </Typography>

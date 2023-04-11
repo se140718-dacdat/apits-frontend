@@ -116,7 +116,7 @@ export interface PostResponse {
     benefits: string,
     experience: string,
     typeOfWork: string,
-    salaryFrom: string,
+    salaryDetail: string,
     salaryTo: string,
     description: string,
     requirement: string,
@@ -465,13 +465,14 @@ export interface Professor {
 
 
 export interface InterviewCreate {
-    title: string;
+    purpose: string;
     date: string;
     time: string;
     linkMeeting: string;
     duration: number;
     type: string;
     managerId: number;
+    description: string;
     candidateId: number;
     hostId: number;
     tmpId: number

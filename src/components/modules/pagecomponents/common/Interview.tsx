@@ -234,9 +234,10 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       case "CHECK":
         if (courseId !== undefined && participantAId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
-            title: title,
+            purpose: title,
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
+            description: "",
             linkMeeting: link,
             duration: duration,
             type: type.toUpperCase(),
@@ -255,8 +256,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       case "HIRE":
         if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined) {
           const request: InterviewCreate = {
-            title: title,
-            date: `${date}`,
+            purpose: title,
+            description: "",
+            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
             linkMeeting: link,
             duration: duration,
@@ -275,8 +277,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       default:
         if (specialtyId !== undefined && participantAId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
-            title: title,
-            date: `${date}`,
+            purpose: title,
+            description: "",
+            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
             linkMeeting: link,
             duration: duration,

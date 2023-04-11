@@ -215,8 +215,7 @@ export const getCandidateCourses = async (id) => {
 export const startCourse = async (params) => {
     try {
         const res = await axios.post('/status-candidate-course/create', params)
-        console.log(params)
-        return res
+        return res.data.message
     } catch (error) {
         return error
     }
