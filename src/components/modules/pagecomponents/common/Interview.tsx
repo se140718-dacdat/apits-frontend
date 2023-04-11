@@ -111,7 +111,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
 
   const tableRender = () => {
     switch (type) {
-      case "ENTERPRISE":
+      case "HIRE":
         const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
           id: item.assignId,
           title: item.recruitmentRequest.title,
@@ -252,7 +252,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
         }
         break;
 
-      case "ENTERPRISE":
+      case "HIRE":
         if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined) {
           const request: InterviewCreate = {
             title: title,
@@ -295,7 +295,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   }
 
   const handleCheckType = () => {
-    if (type === "ENTERPRISE") {
+    if (type === "HIRE") {
       return (
         <div className="participant-container">
           <span className="participant-title">Professor:</span>
@@ -355,7 +355,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
               <span className="input-title">Interview Type:</span>
               <span className="interview-type">
                 {
-                  type == "ENTERPRISE"
+                  type == "HIRE"
                     ? "Interview with Enterprise"
                     : type == "TEST"
                       ? "Test specialty with Professor"

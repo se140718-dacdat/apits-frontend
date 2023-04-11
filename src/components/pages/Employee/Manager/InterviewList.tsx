@@ -8,7 +8,7 @@ import "./InterviewList.css";
 
 const interviewType = [
     "CHECK",
-    "ENTERPRISE",
+    "HIRE",
     "TEST"
 ]
 
