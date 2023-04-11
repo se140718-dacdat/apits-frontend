@@ -152,6 +152,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       case "CHECK":
         const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
           id: item.id,
+          candidateId: item.candidate.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           courseName: item.course.name,
@@ -171,7 +172,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             renderCell: (params) => (
               <Button variant="contained" color="primary" onClick={() => {
                 setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.id);
+                setParticipantAId(params.row.candidateId);
                 setCourse(params.row.courseName);
                 setCourseId(params.row.courseId)
                 handleShowInterviewCreate()
@@ -188,8 +189,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             pagination />
         )
       default:
-        const rows = candidates?.length > 0 ? newUsers?.map((item) => ({
+        const rows = newUsers?.length > 0 ? newUsers?.map((item) => ({
           id: item.id,
+          candidateId: item.candidate.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           specialtyName: item.specialty.name,
@@ -210,7 +212,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
               <Button variant="contained" color="primary" onClick={() => {
                 setSpecialtyId(params.row.specialtyId);
                 setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.id);
+                setParticipantAId(params.row.candidateId);
                 setSpecialty(params.row.specialtyName);
                 handleShowInterviewCreate()
               }}>

@@ -196,14 +196,10 @@ const CandidateCourse = () => {
                         View Interview
                     </Button>
                 )
-            // case "DONE":
-            //     return (
-            //         <Button variant="primary" onClick={() => {
-            //             handleCloseCourse();
-            //         }}>
-            //             View Interview
-            //         </Button>
-            //     )
+            case "DONE":
+                return (
+                    null
+                )
             default:
                 return (
                     <Button variant="primary" onClick={() => {

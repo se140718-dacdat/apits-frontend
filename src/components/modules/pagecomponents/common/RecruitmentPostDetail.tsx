@@ -91,9 +91,10 @@ const RecruitmentPostDetail = () => {
                                                 <button onClick={handleOpen}>Assigned List</button>
                                             </div>)
                                             :
-                                            <div className="btn-assign">
-                                                <button onClick={handleOpen}>Apply Now!</button>
-                                            </div>
+                                            null
+                                            // <div className="btn-assign">
+                                            //     <button onClick={handleOpen}>Apply Now!</button>
+                                            // </div>
                                 }
                             </div>
                             <div className="post-content">
