@@ -389,13 +389,12 @@ export const CandidateProfile: FC = () => {
                     </div>
                 </div>
                 <div className="right">
-                    <div className="profile-input">
+                    {/* <div className="profile-input">
                         <div className="profile-header flex-space-between">
                             <div className="profile-header-name">Specialty</div>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
                                     <span className="category-name">{`${specialty?.name}`}</span>
-                                    {/* <span className="level">{` Level ${levelList.find(lv => lv.levelId == category.levelId)?.levelName}`}</span> */}
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
@@ -419,7 +418,7 @@ export const CandidateProfile: FC = () => {
                             <div className="distance-title">Level Intensive</div>
                             {renderDistance("intensive")}
                         </div>
-                    </div>
+                    </div> */}
                     <div className="profile-input">
                         <div className="profile-header">
                             <div className="profile-header-name">Verifications</div>

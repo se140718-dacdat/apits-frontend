@@ -33,6 +33,9 @@ import { CandidateProfile } from './components/pages/Candidate/CandidateProfile'
 import Notification from './components/modules/pagecomponents/common/Notification';
 import NotificationList from './components/pages/Candidate/CandidateNotificationList';
 import { getSpecialtiesDetail } from './redux/apiRequest';
+import ProfessorInterview from './components/pages/Employee/Professor/ProfessorInterview';
+import CandidateInterview from './components/pages/Candidate/CandidateInterview';
+import EnterpriseInterview from './components/pages/Enterprise/EnterpriseInterview';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -86,6 +89,9 @@ const App: FC = () => {
         <Route path='/contract' element={<ContractCreateForm />}></Route>;
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
+        <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
+        <Route path='/candidate-interview' element={<CandidateInterview />}></Route>;
+        <Route path='/enterprise-interview' element={<EnterpriseInterview />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />

@@ -482,3 +482,19 @@ export interface Duration {
     name: string;
     value: number;
 }
+
+
+export interface InterviewResponse {
+    id: number;
+    purpose: string;
+    date: string;
+    time: string;
+    linkMeeting: string;
+    duration: number;
+    type: string;
+    managerId: number;
+    description: string;
+    candidateId: number;
+    hostId: number;
+    tmpId: number
+}
