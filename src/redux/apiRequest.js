@@ -397,3 +397,21 @@ export const getAllNewCandidate = async () => {
 }
 
 // Interview
+
+export const updateInterviewDone = async (id) => {
+    try {
+        const res = await axios.put(`/updateInterviewToDone?interviewID=${id}`);
+        return res.data.status;
+    } catch (error) {
+        return error
+    }
+}
+
+export const updateInterviewCancel = async (id) => {
+    try {
+        const res = await axios.put(`/updateInterviewToCancel?interviewID=${id}`);
+        return res.data.status;
+    } catch (error) {
+        return error
+    }
+}

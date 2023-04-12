@@ -497,4 +497,114 @@ export interface InterviewResponse {
     candidateId: number;
     hostId: number;
     tempId: number
+    status: string;
+}
+
+export interface InterviewDetail {
+    result: string;
+    description: string;
+    interviewID: number;
+}
+
+export interface interviewDetailResponse {
+    id: number;
+    startAt: string;
+    result: string;
+    recordMeeting: string;
+    description: string;
+    interview: InterviewForContract;
+}
+
+export interface InterviewForContract {
+    id: number;
+    purpose: string;
+    date: string;
+    link: string;
+    type: string;
+    description: string;
+    status: string;
+    duration: number;
+    manager: string;
+    note: number;
+    assign: AssignForContract
+}
+
+export interface AssignForContract {
+    id: number;
+    createAt: string;
+    status: string;
+    recruitmentRequest: PostResponse;
+    assigner: EmployeeEntity;
+    candidate: CandidateEntity;
+}
+
+export interface ContractLaborSupply {
+    name: string;
+    address: string;
+    phone: string;
+    taxCode: string;
+    representative: string;
+    accountBankId: string;
+    bankName: string;
+    accountBankName: string;
+    position: string;
+    fromTo: string;
+    endTo: string;
+    description: string;
+    numOfEmployee: number;
+    createId: number;
+    signerId: number;
+}
+
+export interface ContractAgreement {
+    dateSigned: string;
+    address: string;
+    description: string;
+    nameEmployee: string;
+    addressEmployee: string;
+    missionEmployee: string;
+    salary: number;
+    benefits: string;
+    nameHiring: string;
+    signatureHiring: string;
+    signatureEmployee: string;
+    dateEmployeeSigned: string;
+    createId: number;
+    signerId: number;
+}
+
+export interface ContractAgreementResponse {
+    id: number;
+    dateSigned: string;
+    address: string;
+    nameEmployee: string;
+    addressEmployee: string;
+    missionEmployee: string;
+    salary: number;
+    benefits: string;
+    nameHiring: string;
+    signatureHiring: string;
+    signatureEmployee: string;
+    dateEmployeeSigned: string;
+    employeeId: number;
+    status: string;
+}
+
+export interface ContractLarborSupplyResponse {
+    id: number;
+    name: string;
+    address: string;
+    phone: string;
+    taxCode: string;
+    description: string;
+    representative: string;
+    accountBankId: string;
+    bankName: string;
+    accountBankName: string;
+    position: string;
+    fromTo: string;
+    endTo: string;
+    numOfEmployee: number;
+    employeeId: number;
+    status: string;
 }

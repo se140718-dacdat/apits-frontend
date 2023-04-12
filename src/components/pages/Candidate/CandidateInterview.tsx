@@ -61,7 +61,14 @@ const CandidateInterview = () => {
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
             { field: "title", headerName: "Title", flex: 1.2 },
-            { field: "link", headerName: "Link", flex: 1.2 },
+            {
+                field: 'link',
+                headerName: 'Link',
+                flex: 1.2,
+                renderCell: (params) => (
+                    <a href={params.row.link}>{params.row.link}</a>
+                )
+            },
             { field: "date", headerName: "Date", flex: 0.8 },
             { field: "time", headerName: "Time", flex: 0.5 },
             { field: "duration", headerName: "Duration", flex: 0.5 },
@@ -89,7 +96,14 @@ const CandidateInterview = () => {
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
             { field: "title", headerName: "Title", flex: 1.2 },
-            { field: "link", headerName: "Link", flex: 1.2 },
+            {
+                field: 'link',
+                headerName: 'Link',
+                flex: 1.2,
+                renderCell: (params) => (
+                    <a href={params.row.link}>{params.row.link}</a>
+                )
+            },
             { field: "date", headerName: "Date", flex: 0.8 },
             { field: "time", headerName: "Time", flex: 0.5 },
             { field: "duration", headerName: "Duration", flex: 0.5 },
@@ -117,7 +131,14 @@ const CandidateInterview = () => {
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
             { field: "title", headerName: "Title", flex: 1.2 },
-            { field: "link", headerName: "Link", flex: 1.2 },
+            {
+                field: 'link',
+                headerName: 'Link',
+                flex: 1.2,
+                renderCell: (params) => (
+                    <a href={params.row.link}>{params.row.link}</a>
+                )
+            },
             { field: "date", headerName: "Date", flex: 0.8 },
             { field: "time", headerName: "Time", flex: 0.5 },
             { field: "duration", headerName: "Duration", flex: 0.5 },

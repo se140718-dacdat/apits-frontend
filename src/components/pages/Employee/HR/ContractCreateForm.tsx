@@ -1,40 +1,127 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import "./ContractCreateForm.css";
+import { ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
+import moment from "moment";
+import axios from "../../../../api/axios";
+import { useSelector } from "react-redux";
 
-const ContractCreateForm = () => {
-    const [contractType, setContractType] = useState('');
-    const [partyB, setPartyB] = useState('');
-    const [addressB, setAddressB] = useState('');
-    const [phoneB, setPhoneB] = useState('');
-    const [taxB, setTaxB] = useState('');
-    const [representativeB, setRepresentativeB] = useState('');
-    const [positionB, setPositionB] = useState('');
-    const [accNumB, setAccNumB] = useState('');
-    const [accBankB, setAccBankB] = useState('');
-    const [accNameB, setAccNameB] = useState('');
-    const [dateStart, setDateStart] = useState('');
-    const [dateEnd, setDateEnd] = useState('');
-    const [amount, setAmount] = useState('');
-    const [signature, setSignature] = useState('');
-    const [dateSign, setDateSig] = useState('');
+interface Props {
+    interviewDetail: interviewDetailResponse | undefined;
+    contractAgreement: ContractAgreementResponse | undefined;
+    contractLaborSupply: ContractLarborSupplyResponse | undefined;
+    setIsCreate: Dispatch<SetStateAction<boolean>>
+}
+
+const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreement, contractLaborSupply, setIsCreate }) => {
+    const user = useSelector((state: any) => state.user.user.user);
+
+    const [contractType, setContractType] = useState('Select Contract Type');
+    const [partyB, setPartyB] = useState<string>('');
+    const [addressB, setAddressB] = useState<string>('');
+    const [phoneB, setPhoneB] = useState<string>('');
+    const [taxB, setTaxB] = useState<string>('');
+    const [representativeB, setRepresentativeB] = useState<string>('');
+    const [positionB, setPositionB] = useState<string>('');
+    const [accNumB, setAccNumB] = useState<string>('');
+    const [accBankB, setAccBankB] = useState<string>('');
+    const [accNameB, setAccNameB] = useState<string>('');
+    const [dateStart, setDateStart] = useState<string>('');
+    const [dateEnd, setDateEnd] = useState<string>('');
+    const [signature, setSignature] = useState<string>('');
+    const [dateSign, setDateSig] = useState<string>('');
     const [isPreview, setIsPreview] = useState(false);
-    const [salary, setSalary] = useState('');
+    const [salary, setSalary] = useState<string>('');
+    const [missionEmployee, setMissionEmployee] = useState<string>('');
+    const [benefits, setBenefits] = useState<string>('');
+
+
+    useEffect(() => {
+        handleContractType();
+    }, [contractType]);
+
+    const handleContractType = () => {
+        if (interviewDetail !== undefined) {
+            switch (contractType) {
+                case 'CONTRACT OF LABOR SUPPLY':
+                    setPartyB(interviewDetail?.interview.assign.recruitmentRequest.creator.name);
+                    setPhoneB(interviewDetail.interview.assign.recruitmentRequest.hrPhone);
+                    break;
+                default:
+                    setPartyB(interviewDetail?.interview.assign.candidate.name);
+                    setPhoneB(interviewDetail.interview.assign.candidate.phone);
+                    break;
+            }
+        }
+    }
+
+    const handleCreateAgreement = async () => {
+        const request: ContractAgreement = {
+            dateSigned: dateSign,
+            address: addressB,
+            description: "",
+            nameEmployee: partyB,
+            addressEmployee: addressB,
+            missionEmployee: missionEmployee,
+            salary: parseInt(salary),
+            benefits: benefits,
+            nameHiring: interviewDetail !== undefined ? interviewDetail?.interview.assign.recruitmentRequest.creator.name : "",
+            signatureHiring: "Mr.A",
+            signatureEmployee: "",
+            dateEmployeeSigned: "",
+            createId: user?.id,
+            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0
+        }
+        console.log(request);
+        await axios.post("/contract/createContractAgreement", request).then((res) => {
+            console.log(res.data);
+            setIsCreate(false);
+        })
+    }
+
+    const handleCreateLarborSupply = async () => {
+        const request: ContractLaborSupply = {
+            name: partyB,
+            address: addressB,
+            phone: phoneB,
+            taxCode: taxB,
+            representative: representativeB,
+            accountBankId: accNumB,
+            bankName: accBankB,
+            accountBankName: accNameB,
+            position: positionB,
+            fromTo: dateStart,
+            endTo: dateEnd,
+            description: "",
+            numOfEmployee: 1,
+            createId: user?.id,
+            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0
+        }
+        await axios.post("/contract/createContractLaborSupply", request).then((res) => {
+            console.log(res.data);
+            setContractType('EMPLOYMENT CONTRACT AGREEMENT');
+        })
+    }
 
 
 
     return (
         <div id="ContractCreateForm">
-            <div className="contract__type">
-                <label className="">Contract type:</label>
-                <select onChange={(e) => setContractType(e.target.value)}>
-                    <option >Select type of Contract</option>
-                    <option >CONTRACT OF LABOR SUPPLY</option>
-                    <option >EMPLOYMENT CONTRACT AGREEMENT</option>
-                </select>
-                <button className="btn-preview" onClick={() => setIsPreview(!isPreview)}>{isPreview ? 'Edit' : 'Review'}</button>
-            </div>
             {
-                contractType === 'CONTRACT OF LABOR SUPPLY'
+                interviewDetail !== undefined ?
+                    <div className="contract__type">
+                        <label className="">Contract type:</label>
+                        <select onChange={(e) => setContractType(e.target.value)}>
+                            <option >Select Contract Type</option>
+                            <option >CONTRACT OF LABOR SUPPLY</option>
+                            <option >EMPLOYMENT CONTRACT AGREEMENT</option>
+                        </select>
+                        <button className="btn-preview" onClick={() => setIsPreview(!isPreview)}>{isPreview ? 'Edit' : 'Review'}</button>
+                    </div>
+                    : null
+            }
+
+            {
+                (contractLaborSupply !== undefined || contractType === 'CONTRACT OF LABOR SUPPLY')
                     ? (
                         <div className="pages">
                             <div className="page-size page__1">
@@ -72,8 +159,7 @@ const ContractCreateForm = () => {
 
                                 <h5>ARTICLE 2: CONTRACT TERM</h5>
                                 <p>2.1 Term of validity of the Contract: from {isPreview ? dateStart : <input type='text' className='input-w130 input-text' value={dateStart} onChange={e => setDateStart(e.target.value)} />}. until the end of the day {isPreview ? dateEnd : <input type='text' className='input-w130 input-text' value={dateEnd} onChange={e => setDateEnd(e.target.value)} />}</p>
-                                <p>2.2 The number of Employees supplied by Party A for Party B is expected to be {isPreview ? amount : <input type='text' className='input-w30 input-text' value={amount} onChange={e => setAmount(e.target.value)} />} people.</p>
-                                <p>2.3 Working time at Party B:</p>
+                                <p>2.2 Working time at Party B:</p>
                                 <p>- Standard time: 08 hours / person / day; 6 days / week.</p>
                                 <p>- Outside the standard time, it is possible to overtime according to the business needs of Party B.</p>
 
@@ -117,9 +203,9 @@ const ContractCreateForm = () => {
                                 <div className="signature">
                                     <div className="signature-left">
                                         <h6>REPRESENTATIVE OF PARTY A</h6>
-                                        <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                            <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                            <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
+                                        <p><label className="label-signature-name">Name:</label>Mr.A<br />
+                                            <label className="label-signature-name">Signature:</label>Mr.A<br />
+                                            <label className="label-signature-name">Date:</label>{moment(new Date()).format("DD-MM-YYYY")}
                                         </p>
                                     </div>
                                     <div className="signature-right">
@@ -132,12 +218,13 @@ const ContractCreateForm = () => {
                                 </div>
                             </div>
                             <div className="btn-create">
-                                <button className=" btn">Create</button>
+                                <button className="btn btn-cancel" onClick={() => { setIsCreate(false) }}>Cancel</button>
+                                <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
                             </div>
                         </div>
 
                     )
-                    : contractType === 'EMPLOYMENT CONTRACT AGREEMENT'
+                    : (contractAgreement !== undefined || contractType === 'EMPLOYMENT CONTRACT AGREEMENT')
                         ? (
                             <div className="pages">
                                 <div className="page-size">
@@ -153,16 +240,7 @@ const ContractCreateForm = () => {
                                     <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? 'District 9 Ho Chi Minh city' : <input type='text' value={'District 9 Ho Chi Minh city'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
                                     <h5>DUTIES AND RESPONSIBILITIES</h5>
                                     <p>-	During the employment period, the Employee shall have the responsibility to perform the following duties:<br />
-                                        <label className="lb-space">1.</label> 	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}  <br />
-                                        <label className="lb-space">2.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">3.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">4.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">5.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">6.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">7.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">8.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">9.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        <label className="lb-space">10.</label>	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        {isPreview ? missionEmployee : <textarea rows={5} className='p0-14' style={{ width: "100%" }} onChange={(e) => { setMissionEmployee(e.target.value) }} />}  <br />
                                         <br />
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
@@ -171,9 +249,7 @@ const ContractCreateForm = () => {
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
-                                        1.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        2.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
-                                        3.	{isPreview ? '' : <input type='text' className='input-w400 input-text' />}<br />
+                                        {isPreview ? benefits : <textarea rows={5} className='p0-14' style={{ width: "100%" }} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
                                     </p>
                                     <h5>WORKING HOURS AND LOCATION</h5>
                                     <p>-	The Employee agrees that he/she will be working from Monday to Friday, with a 5 lunch break.<br />
@@ -225,9 +301,9 @@ const ContractCreateForm = () => {
                                     <div className="signature">
                                         <div className="signature-left">
                                             <h6>REPRESENTATIVE OF PARTY A</h6>
-                                            <p><label className="label-signature-name">Name:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                                <label className="label-signature-name">Signature:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}<br />
-                                                <label className="label-signature-name">Date:</label>{isPreview ? '' : <input type='text' className='input-w200 input-text' />}
+                                            <p><label className="label-signature-name">Name:</label>Mr.A<br />
+                                                <label className="label-signature-name">Signature:</label>Mr.A<br />
+                                                <label className="label-signature-name">Date:</label>{moment(new Date()).format("DD-MM-YYYY")}
                                             </p>
                                         </div>
                                         <div className="signature-right">
@@ -240,7 +316,14 @@ const ContractCreateForm = () => {
                                     </div>
                                 </div>
                                 <div className="btn-create">
-                                    <button className=" btn">Create</button>
+                                    <button className="btn btn-cancel" onClick={() => { setIsCreate(false) }}>Cancel</button>
+                                    {
+                                        contractAgreement !== undefined ?
+                                            <button className=" btn" onClick={() => { handleCreateAgreement() }}>Sign</button>
+                                            :
+                                            <button className=" btn" onClick={() => { handleCreateAgreement() }}>Create</button>
+
+                                    }
                                 </div>
                             </div>
                         )

@@ -1,0 +1,7 @@
+#CandidateContract {
+    padding: 2% 10% 5%;
+}
+
+#CandidateContract h2 {
+    color: var(--primary-color);
+}

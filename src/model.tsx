@@ -208,6 +208,12 @@ export interface SpecialtyEntity {
     skills: SkillEntity[];
 }
 
+export interface CandidateSpecialty {
+    id: number;
+    name: string;
+    specialty: SpecialtyEntity;
+}
+
 
 
 export interface Notification {

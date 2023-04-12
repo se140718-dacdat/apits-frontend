@@ -1,15 +1,15 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Dropdown, Modal } from "react-bootstrap";
+import { ButtonGroup, Dropdown, Modal, ToggleButton } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "./EnterpriseInterview.css";
-import { InterviewResponse } from "../../../entity";
+import { InterviewDetail, InterviewResponse } from "../../../entity";
 import axios from "../../../api/axios";
 import MessageBox from "../../modules/pagecomponents/Popup/MessageBox/MessageBox";
-
+import { updateInterviewDone } from "../../../redux/apiRequest";
 
 const interviewType = [
   "HIRE"
@@ -23,18 +23,44 @@ const EnterpriseInterview = () => {
   const [showInterviewReport, setShowInterviewReport] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
+  const [interviewId, setInterviewId] = useState<number>();
+  const [result, setResult] = useState<string>('APPROVE');
+  const [description, setDescription] = useState<string>('');
 
 
+  const handleShowInterviewReport = () => setShowInterviewReport(true);
   const handleCloseInterviewReport = () => setShowInterviewReport(false);
+
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [interviewId]);
 
   async function fetchData() {
     const res = await axios.get(`/getInterivewOfEnterprise?enterpriseId=${user?.id}`);
     const data = await res?.data.data;
-    setInterviewHires(data);
+    setInterviewHires(data.filter((e: InterviewResponse) => e.status === "PENDING"));
+  }
+
+  const handleReport = async () => {
+    if(interviewId !== undefined) {
+      const request: InterviewDetail = {
+        interviewID: interviewId,
+        result: result,
+        description: description
+      }
+      await axios.post("/interview-detail/createInterviewDetail", request).then((res) => {
+        if(res.data.status == "SUCCESS") {
+          updateInterviewDone(interviewId);
+          setDescription('');
+          setResult('APPROVE');
+          setInterviewId(undefined);
+          setMessage("Report successfuly!");
+          setMessageStatus("green");
+          handleCloseInterviewReport();
+        }
+      })
+    }
   }
 
   const tableRenderHire = () => {
@@ -53,34 +79,31 @@ const EnterpriseInterview = () => {
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
-      { field: "link", headerName: "Link", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
       { field: "date", headerName: "Date", flex: 0.8 },
       { field: "time", headerName: "Time", flex: 0.5 },
       { field: "duration", headerName: "Duration", flex: 0.5 },
       {
-        field: 'fail',
+        field: 'interview',
         headerName: '',
         flex: 0.5,
         width: 170,
         renderCell: (params) => (
-          <Button variant="contained" style={{ backgroundColor: "red" }} onClick={() => {
+          <Button variant="contained" color="warning" onClick={() => {
+            setInterviewId(params.row.id)
+            handleShowInterviewReport();
           }}>
-            Fail
+            Report
           </Button>
         ),
       },
-      {
-        field: 'pass',
-        headerName: '',
-        flex: 0.5,
-        width: 170,
-        renderCell: (params) => (
-          <Button variant="contained" style={{ backgroundColor: "green" }} onClick={() => {
-          }}>
-            Pass
-          </Button>
-        ),
-      }
     ];
     return (
       <DataGrid rows={rows}
@@ -131,9 +154,22 @@ const EnterpriseInterview = () => {
           <Modal.Title>Interview Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">Result</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue={result}
+              name="radio-buttons-group"
+              onChange={(e)=>{setResult(e.target.value)}}
+            >
+              <FormControlLabel value="APPROVE" control={<Radio />} label="Approve" />
+              <FormControlLabel value="REJECT" control={<Radio />} label="Reject" />
+            </RadioGroup>
+          </FormControl>
+          <textarea name="result-description" className="p0-14" id="" rows={5} style={{width: "100%"}} placeholder="Description" required onChange={(e)=>{setDescription(e.target.value)}}></textarea>
         </Modal.Body>
         <Modal.Footer>
+          <button className="btn" onClick={() => { handleReport() }}>Report</button>
         </Modal.Footer>
       </Modal>
     </div>

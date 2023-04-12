@@ -5,3 +5,7 @@
 #ProfessorInterview h2 {
     color: var(--primary-color);
 }
+
+.report-course * {
+    margin-right: 18px;
+}

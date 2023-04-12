@@ -9,26 +9,32 @@ import axios from "../../../../api/axios";
 import { InterviewResponse } from "../../../../entity";
 import MessageBox from "../../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 import "./ProfessorInterview.css";
-import { SpecialtyEntity } from "../../../../model";
+import { CandidateSpecialty, SpecialtyEntity } from "../../../../model";
+import { updateInterviewCancel, updateInterviewDone } from "../../../../redux/apiRequest";
 
 
 const interviewType = [
   "CHECK",
-  "TEST"
+  "TEST",
+  "CHECK DONE",
+  "TEST DONE"
 ]
 
 const ProfessorInterview = () => {
   const user = useSelector((state: any) => state.user.user.user);
 
   const [type, setType] = useState<string>(interviewType[0])
-  const [interviewChecks, setInterviewChecks] = useState<InterviewResponse[]>([]);
-  const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
+  const [interviewChecksPending, setInterviewChecksPending] = useState<InterviewResponse[]>([]);
+  const [interviewChecksDone, setInterviewChecksDone] = useState<InterviewResponse[]>([]);
+  const [interviewTestsPending, setInterviewTestsPending] = useState<InterviewResponse[]>([]);
+  const [interviewTestsDone, setInterviewTestsDone] = useState<InterviewResponse[]>([]);
   const [showInterviewReport, setShowInterviewReport] = useState(false);
-  const [specialty, setSpecialty] = useState<SpecialtyEntity>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
-
+  const [candidate, setCandidate] = useState<CandidateSpecialty>();
   const [checkedCourses, setCheckedCourses] = useState<string[]>([]);
+  const [reportStatus, setReportStatus] = useState<boolean>(true);
+  const [interviewId, setInterviewId] = useState<number>();
 
   const handleCheckboxChange = (event: any) => {
     const courseId = event.target.id;
@@ -44,42 +50,49 @@ const ProfessorInterview = () => {
 
 
   useEffect(() => {
-    fetchData();
-  }, [specialty])
+    fetchTestInterview();
+    fetchCheckInterview();
+  }, [candidate, type])
 
-  async function fetchData() {
+  async function fetchTestInterview() {
     const res = await axios.get(`/getInterviewOfProfessorTypeTest?professorId=${user?.id}`);
     const data = await res?.data.data;
-    setInterviewTests(data);
-    const response = await axios.get(`/getInterviewOfProfessorTypeCheck?professorId=${user?.id}`);
-    const dataRes = await response?.data.data;
-    setInterviewChecks(dataRes);
+    setInterviewTestsPending(data.filter((e: InterviewResponse) => e.status === "PENDING"));
+    setInterviewTestsDone(data.filter((e: InterviewResponse) => e.status === "DONE"));
   }
 
+  async function fetchCheckInterview() {
+    const response = await axios.get(`/getInterviewOfProfessorTypeCheck?professorId=${user?.id}`);
+    const dataRes = await response?.data.data;
+    setInterviewChecksPending(dataRes.filter((e: InterviewResponse) => e.status === "PENDING"));
+    setInterviewChecksDone(dataRes.filter((e: InterviewResponse) => e.status === "DONE"));
+  }
+
+
   const handlePassCourse = async (candidateId: number, courseId: number) => {
-    const request = {
-      candidateId: candidateId,
-      courseId: courseId
-    }
-    await axios.put('/status-candidate-course/updateStatusDone', request).then(function (res) {
-      console.log(res.data.message)
+    await axios.put(`/status-candidate-course/updateStatusDone?candidateId=${candidateId}&coursesId=${courseId}`).then(async function (res) {
       if (res.data.message == "SUCCESS") {
-        setMessage("Submit successfuly!");
+        setMessage("Evaluate successfuly!");
         setMessageStatus("green");
+        await axios.put(`/updateInterviewToCancel?interviewID=${interviewId}`);
+        fetchCheckInterview();
       }
     })
   }
 
-  async function getSpecialtyDetail(id: number) {
-    const res = await axios.get(`/special-skill/getSpecialDetail?id=${id}`);
+  const handleFailCourse = async () => {
+    updateInterviewCancel(interviewId)
+    fetchCheckInterview();
+  }
+
+  async function getSpecialtyDetail(candidateId: number, specialtyId: number) {
+    const res = await axios.get(`/canspec/getASpecDetailByCandidateId?candidateId=${candidateId}&specialId=${specialtyId}`);
     const data = await res.data.data;
-    setSpecialty(data);
-    console.log(specialty);
+    setCandidate(data);
   }
 
   const tableRenderCheck = () => {
-
-    const rows = interviewChecks?.length > 0 ? interviewChecks?.map((item) => ({
+    const rows = interviewChecksPending?.length > 0 ? interviewChecksPending?.map((item) => ({
       id: item.id,
       candidateId: item.candidateId,
       link: item.linkMeeting,
@@ -93,7 +106,14 @@ const ProfessorInterview = () => {
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
-      { field: "link", headerName: "Link", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
       { field: "date", headerName: "Date", flex: 0.8 },
       { field: "time", headerName: "Time", flex: 0.5 },
       { field: "duration", headerName: "Duration", flex: 0.5 },
@@ -104,6 +124,8 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "red" }} onClick={() => {
+            setInterviewId(params.row.id)
+            handleFailCourse();
           }}>
             Fail
           </Button>
@@ -116,6 +138,7 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "green" }} onClick={() => {
+            setInterviewId(params.row.id)
             handlePassCourse(params.row.candidateId, params.row.courseId)
           }}>
             Pass
@@ -131,8 +154,55 @@ const ProfessorInterview = () => {
     )
   }
 
+  const tableRenderCheckDone = () => {
+    const rows = interviewChecksDone?.length > 0 ? interviewChecksDone?.map((item) => ({
+      id: item.id,
+      candidateId: item.candidateId,
+      link: item.linkMeeting,
+      title: item.purpose,
+      date: item.date,
+      time: item.time,
+      duration: item.duration,
+      courseId: item.tempId,
+      status: item.status
+    })) : [];
+
+    const columns: GridColDef[] = [
+      { field: "id", headerName: "ID", flex: 0.2 },
+      { field: "title", headerName: "Title", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
+      { field: "date", headerName: "Date", flex: 0.8 },
+      { field: "time", headerName: "Time", flex: 0.5 },
+      { field: "duration", headerName: "Duration", flex: 0.5 },
+      {
+        field: 'result',
+        headerName: '',
+        flex: 0.5,
+        width: 170,
+        renderCell: (params) => (
+          (params.row.status == "DONE")
+            ? <strong style={{ color: "green" }}>PASS</strong>
+            : <strong style={{ color: "red" }}>FAIL</strong>
+        ),
+      }
+    ];
+    return (
+      <DataGrid rows={rows}
+        columns={columns}
+        autoPageSize
+        pagination />
+    )
+  }
+
   const tableRenderTest = () => {
-    const rows = interviewTests?.length > 0 ? interviewTests?.map((item) => ({
+    const rows = interviewTestsPending?.length > 0 ? interviewTestsPending?.map((item) => ({
       id: item.id,
       candidateId: item.candidateId,
       link: item.linkMeeting,
@@ -146,7 +216,14 @@ const ProfessorInterview = () => {
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
-      { field: "link", headerName: "Link", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
       { field: "date", headerName: "Date", flex: 0.8 },
       { field: "time", headerName: "Time", flex: 0.5 },
       { field: "duration", headerName: "Duration", flex: 0.5 },
@@ -157,8 +234,8 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" color="warning" onClick={() => {
-            console.log(params.row.specialtyId)
-            getSpecialtyDetail(params.row.specialtyId);
+            getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
+            setInterviewId(params.row.id)
             handleShowInterviewReport();
           }}>
             Report
@@ -172,6 +249,79 @@ const ProfessorInterview = () => {
         autoPageSize
         pagination />
     )
+  }
+
+  const tableRenderTestDone = () => {
+    const rows = interviewTestsDone?.length > 0 ? interviewTestsDone?.map((item) => ({
+      id: item.id,
+      candidateId: item.candidateId,
+      link: item.linkMeeting,
+      title: item.purpose,
+      date: item.date,
+      time: item.time,
+      duration: item.duration,
+      specialtyId: item.tempId
+    })) : [];
+
+    const columns: GridColDef[] = [
+      { field: "id", headerName: "ID", flex: 0.2 },
+      { field: "title", headerName: "Title", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
+      { field: "date", headerName: "Date", flex: 0.8 },
+      { field: "time", headerName: "Time", flex: 0.5 },
+      { field: "duration", headerName: "Duration", flex: 0.5 },
+      {
+        field: 'interview',
+        headerName: '',
+        flex: 0.5,
+        width: 170,
+        renderCell: (params) => (
+          <Button variant="contained" color="warning" onClick={() => {
+            console.log(params.row.specialtyId)
+            getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
+            handleShowInterviewReport();
+          }}>
+            Detail
+          </Button>
+        ),
+      },
+    ];
+    return (
+      <DataGrid rows={rows}
+        columns={columns}
+        autoPageSize
+        pagination />
+    )
+  }
+
+  const handleReport = () => {
+    setReportStatus(true);
+    checkedCourses.map((courseId) => {
+      axios.put(`/status-candidate-course/updateStatusDoneByProfessor?candidateId=${candidate?.id}&coursesId=${courseId}`).then(function (res) {
+        if (res.data.message == "SUCCESS") {
+          setReportStatus(true);
+        } else {
+          setReportStatus(false)
+        }
+      })
+    })
+    if (reportStatus) {
+      setMessage("Report successfuly!");
+      setMessageStatus("green");
+      if (candidate !== undefined) {
+        getSpecialtyDetail(candidate?.id, candidate?.specialty.id);
+      }
+      updateInterviewDone(interviewId);
+      handleCloseInterviewReport();
+    }
+    fetchTestInterview();
   }
 
   return (
@@ -210,7 +360,11 @@ const ProfessorInterview = () => {
         {
           (type === interviewType[0])
             ? tableRenderCheck()
-            : tableRenderTest()
+            : (type === interviewType[1])
+              ? tableRenderTest()
+              : (type === interviewType[2])
+                ? tableRenderCheckDone()
+                : tableRenderTestDone()
         }
       </div>
       <Modal id="InterviewCreateModal" show={showInterviewReport} onHide={handleCloseInterviewReport}>
@@ -218,9 +372,13 @@ const ProfessorInterview = () => {
           <Modal.Title>Interview Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div>{specialty?.name}</div>
+          <div className="candidate-container">
+            <strong>Candidate:</strong>
+            <h3>{candidate?.name}</h3>
+          </div>
+          <h4>{candidate?.specialty.name}</h4>
           <div>
-            {specialty?.skills.map((skill) => {
+            {candidate?.specialty.skills.map((skill) => {
               return (
                 <div>
                   <span>{skill.name}</span>
@@ -230,12 +388,26 @@ const ProfessorInterview = () => {
                         skill.levels.map((level) =>
                           level.courses.map((course) => {
                             return (
-                              <Form.Check
-                                id={`${course.id}`}
-                                label={course.name}
-                                checked={checkedCourses.includes(`${course.id}`)}
-                                onChange={handleCheckboxChange}
-                              />
+                              course.status !== "DONE"
+                                ?
+                                <Form.Check
+                                  className="report-course"
+                                  style={{ display: "flex", alignItems: "center" }}
+                                  id={`${course.id}`}
+                                  label={course.name}
+                                  checked={checkedCourses.includes(`${course.id}`)}
+                                  onChange={handleCheckboxChange}
+                                />
+                                :
+                                <Form.Check
+                                  className="report-course"
+                                  style={{ display: "flex", alignItems: "center" }}
+                                  disabled
+                                  id={`${course.id}`}
+                                  label={course.name}
+                                  checked={checkedCourses.includes(`${course.id}`)}
+                                  onChange={handleCheckboxChange}
+                                />
                             )
                           }))
                       }
@@ -246,9 +418,9 @@ const ProfessorInterview = () => {
               )
             })}
           </div>
-          <button onClick={() => { console.log(checkedCourses) }}>Report</button>
         </Modal.Body>
         <Modal.Footer>
+          <button className="btn" onClick={() => { handleReport() }}>Report</button>
         </Modal.Footer>
       </Modal>
     </div>

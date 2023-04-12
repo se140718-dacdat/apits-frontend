@@ -36,6 +36,8 @@ import { getSpecialtiesDetail } from './redux/apiRequest';
 import ProfessorInterview from './components/pages/Employee/Professor/ProfessorInterview';
 import CandidateInterview from './components/pages/Candidate/CandidateInterview';
 import EnterpriseInterview from './components/pages/Enterprise/EnterpriseInterview';
+import HRContract from './components/pages/Employee/HR/HRContract';
+import CandidateContract from './components/pages/Candidate/CandidateContract';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -86,7 +88,8 @@ const App: FC = () => {
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
-        <Route path='/contract' element={<ContractCreateForm />}></Route>;
+        <Route path='/contract' element={<HRContract />}></Route>;
+        <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
