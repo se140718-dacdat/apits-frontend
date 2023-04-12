@@ -7,19 +7,34 @@ import { ButtonGroup, Dropdown, Modal, ToggleButton } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "./HRContract.css";
 import axios from "../../../../api/axios";
-import { interviewDetailResponse } from "../../../../entity";
+import { ContractAgreementResponse, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
 import ContractCreateForm from "./ContractCreateForm";
+import EnterpriseContract from "../../Candidate/EnterpriseContract";
+
+const types = [
+    "CREATE",
+    "CANDIDATE",
+    "ENTERPRISE"
+]
 
 
 const HRContract = () => {
     const user = useSelector((state: any) => state.user.user.user);
     const [interviewsDetail, setInterviewsDetail] = useState<interviewDetailResponse[]>([]);
+    const [entepriseContracts, setEnterpriseContracts] = useState<ContractLarborSupplyResponse[]>([]);
+    const [entepriseContract, setEnterpriseContract] = useState<ContractLarborSupplyResponse>();
+    const [candidateContracts, setCandidateContracts] = useState<ContractAgreementResponse[]>([]);
+    const [candidateContract, setCandidateContract] = useState<ContractAgreementResponse>();
     const [interviewDetail, setInterviewDetail] = useState<interviewDetailResponse>();
     const [isCreate, setIsCreate] = useState<boolean>(false);
+    const [type, setType] = useState<string>(types[0]);
+
 
     useEffect(() => {
         fetchData();
-    }, []);
+        fetchDataEnterpriseContract();
+        fetchDataCandidateContract();
+    }, [type]);
 
     async function fetchData() {
         const res = await axios.get("/interview-detail/getAllInterviewDetail");
@@ -27,10 +42,22 @@ const HRContract = () => {
         setInterviewsDetail(data.responseList);
     }
 
+    async function fetchDataEnterpriseContract() {
+        const res = await axios.get(`/contract/getContractLaborSupplyByEmployee?id=${user?.id}`);
+        const data = await res?.data.data;
+        setEnterpriseContracts(data);
+    }
+
+    async function fetchDataCandidateContract() {
+        const res = await axios.get(`/contract/getContractAgreementByEmployee?id=${user?.id}`);
+        const data = await res?.data.data;
+        setCandidateContracts(data);
+    }
+
     const handleShowCreate = () => { setIsCreate(true) };
 
 
-    const tableRenderHire = () => {
+    const tableRenderCreate = () => {
         const rows = interviewsDetail?.length > 0 ? interviewsDetail?.map((item) => ({
             id: item.id,
             interviewDetail: item,
@@ -71,12 +98,107 @@ const HRContract = () => {
         )
     }
 
+    const tableRenderCandidate = () => {
+        const rows = candidateContracts?.length > 0 ? candidateContracts?.map((item) => ({
+            id: item.id,
+            contract: item.id,
+            name: item.signatureEmployee
+        })) : [];
+
+        const columns: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "name", headerName: "Name", flex: 1.2 },
+            {
+                field: 'interview',
+                headerName: '',
+                flex: 0.5,
+                width: 170,
+                renderCell: (params) => (
+                    <Button variant="contained" color="warning" onClick={() => {
+                        handleShowCreate();
+                        setCandidateContract(params.row.interviewDetail)
+                    }}>
+                        Detail
+                    </Button>
+                ),
+            },
+        ];
+        return (
+            <DataGrid rows={rows}
+                columns={columns}
+                autoPageSize
+                pagination />
+        )
+    }
+
+    const tableRenderEnterprsie = () => {
+        const rows = entepriseContracts?.length > 0 ? entepriseContracts?.map((item) => ({
+            id: item.id,
+            contract: item,
+            name: item.name
+        })) : [];
+
+        const columns: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "name", headerName: "name", flex: 1.2 },
+            {
+                field: 'interview',
+                headerName: '',
+                flex: 0.5,
+                width: 170,
+                renderCell: (params) => (
+                    <Button variant="contained" color="warning" onClick={() => {
+                        handleShowCreate();
+                        setEnterpriseContract(params.row.interviewDetail)
+                    }}>
+                        Detail
+                    </Button>
+                ),
+            },
+        ];
+        return (
+            <DataGrid rows={rows}
+                columns={columns}
+                autoPageSize
+                pagination />
+        )
+    }
+
     const renderInterviewDetailList = () => {
         return (
             <div>
                 <h2>Contract</h2>
+                <div className="filter">
+                    <div className="filter-form-input">
+                        <div className="filter-input-icon">
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+                        </div>
+                        <input type="text" placeholder='Enter search keywords' />
+                    </div>
+                    <Dropdown className="filter-dropdown ml-8">
+                        <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                            <span>{type}</span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className='filter-menu'>
+                            {
+                                types.map((type, index) => {
+                                    return (
+                                        <Dropdown.Item className='filter-item' onClick={() => { setType(type) }} key={index}>{type}</Dropdown.Item>
+                                    )
+                                })
+                            }
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <button className='btn-search ml-8'>Search</button>
+                </div>
                 <div style={{ height: 400, width: "100%" }}>
-                    {tableRenderHire()}
+                    {
+                        type === types[0]
+                            ? tableRenderCreate()
+                            : type === types[1]
+                                ? tableRenderCandidate()
+                                : tableRenderEnterprsie()
+                    }
                 </div>
             </div>
         )
@@ -86,10 +208,10 @@ const HRContract = () => {
     return (
         <div id='HRContract'>
             {
-                isCreate ? 
-                <ContractCreateForm interviewDetail={interviewDetail} contractAgreement={undefined} contractLaborSupply={undefined} setIsCreate={setIsCreate} />
-                : 
-                renderInterviewDetailList()
+                isCreate ?
+                    <ContractCreateForm interviewDetail={interviewDetail} contractAgreement={candidateContract} contractLaborSupply={entepriseContract} setIsCreate={setIsCreate} />
+                    :
+                    renderInterviewDetailList()
             }
         </div>
     )
