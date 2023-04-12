@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Dropdown, Modal } from "react-bootstrap";
+import { Dropdown, Form, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "../../../../api/axios";
 import { InterviewResponse } from "../../../../entity";
 import MessageBox from "../../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 import "./ProfessorInterview.css";
+import { SpecialtyEntity } from "../../../../model";
 
 
 const interviewType = [
@@ -23,10 +24,20 @@ const ProfessorInterview = () => {
   const [interviewChecks, setInterviewChecks] = useState<InterviewResponse[]>([]);
   const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
   const [showInterviewReport, setShowInterviewReport] = useState(false);
+  const [specialty, setSpecialty] = useState<SpecialtyEntity>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
 
+  const [checkedCourses, setCheckedCourses] = useState<string[]>([]);
 
+  const handleCheckboxChange = (event: any) => {
+    const courseId = event.target.id;
+    if (event.target.checked) {
+      setCheckedCourses([...checkedCourses, courseId]);
+    } else {
+      setCheckedCourses(checkedCourses.filter(id => id !== courseId));
+    }
+  }
   const handleCloseInterviewReport = () => setShowInterviewReport(false);
   const handleShowInterviewReport = () => { setShowInterviewReport(true) };
 
@@ -34,7 +45,7 @@ const ProfessorInterview = () => {
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, [specialty])
 
   async function fetchData() {
     const res = await axios.get(`/getInterviewOfProfessorTypeTest?professorId=${user?.id}`);
@@ -45,7 +56,7 @@ const ProfessorInterview = () => {
     setInterviewChecks(dataRes);
   }
 
-  const handleSubmitCertificate = async (candidateId: number, courseId: number) => {
+  const handlePassCourse = async (candidateId: number, courseId: number) => {
     const request = {
       candidateId: candidateId,
       courseId: courseId
@@ -59,6 +70,13 @@ const ProfessorInterview = () => {
     })
   }
 
+  async function getSpecialtyDetail(id: number) {
+    const res = await axios.get(`/special-skill/getSpecialDetail?id=${id}`);
+    const data = await res.data.data;
+    setSpecialty(data);
+    console.log(specialty);
+  }
+
   const tableRenderCheck = () => {
 
     const rows = interviewChecks?.length > 0 ? interviewChecks?.map((item) => ({
@@ -69,7 +87,7 @@ const ProfessorInterview = () => {
       date: item.date,
       time: item.time,
       duration: item.duration,
-      courseId: item.tmpId
+      courseId: item.tempId
     })) : [];
 
     const columns: GridColDef[] = [
@@ -98,7 +116,7 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "green" }} onClick={() => {
-            handleSubmitCertificate(params.row.candidateId, params.row.courseId)
+            handlePassCourse(params.row.candidateId, params.row.courseId)
           }}>
             Pass
           </Button>
@@ -122,7 +140,7 @@ const ProfessorInterview = () => {
       date: item.date,
       time: item.time,
       duration: item.duration,
-      specialtyId: item.tmpId
+      specialtyId: item.tempId
     })) : [];
 
     const columns: GridColDef[] = [
@@ -139,6 +157,8 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" color="warning" onClick={() => {
+            console.log(params.row.specialtyId)
+            getSpecialtyDetail(params.row.specialtyId);
             handleShowInterviewReport();
           }}>
             Report
@@ -198,7 +218,35 @@ const ProfessorInterview = () => {
           <Modal.Title>Interview Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <div>{specialty?.name}</div>
+          <div>
+            {specialty?.skills.map((skill) => {
+              return (
+                <div>
+                  <span>{skill.name}</span>
+                  <Form>
+                    <div key={`${skill.id}`} className="mb-3">
+                      {
+                        skill.levels.map((level) =>
+                          level.courses.map((course) => {
+                            return (
+                              <Form.Check
+                                id={`${course.id}`}
+                                label={course.name}
+                                checked={checkedCourses.includes(`${course.id}`)}
+                                onChange={handleCheckboxChange}
+                              />
+                            )
+                          }))
+                      }
+                    </div>
 
+                  </Form>
+                </div>
+              )
+            })}
+          </div>
+          <button onClick={() => { console.log(checkedCourses) }}>Report</button>
         </Modal.Body>
         <Modal.Footer>
         </Modal.Footer>

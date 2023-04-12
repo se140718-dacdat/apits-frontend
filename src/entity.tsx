@@ -496,5 +496,5 @@ export interface InterviewResponse {
     description: string;
     candidateId: number;
     hostId: number;
-    tmpId: number
+    tempId: number
 }

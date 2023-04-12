@@ -47,7 +47,7 @@ const EnterpriseInterview = () => {
       date: item.date,
       time: item.time,
       duration: item.duration,
-      assignId: item.tmpId
+      assignId: item.tempId
     })) : [];
 
     const columns: GridColDef[] = [

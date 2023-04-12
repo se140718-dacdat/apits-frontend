@@ -55,7 +55,7 @@ const CandidateInterview = () => {
             date: item.date,
             time: item.time,
             duration: `${item.duration}p`,
-            courseId: item.tmpId
+            courseId: item.tempId
         })) : [];
 
         const columns: GridColDef[] = [
@@ -83,7 +83,7 @@ const CandidateInterview = () => {
             date: item.date,
             time: item.time,
             duration: `${item.duration}p`,
-            specialtyId: item.tmpId
+            specialtyId: item.tempId
         })) : [];
 
         const columns: GridColDef[] = [
@@ -111,7 +111,7 @@ const CandidateInterview = () => {
             date: item.date,
             time: item.time,
             duration: `${item.duration}p`,
-            specialtyId: item.tmpId
+            specialtyId: item.tempId
         })) : [];
 
         const columns: GridColDef[] = [

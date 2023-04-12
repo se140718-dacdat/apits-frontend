@@ -389,7 +389,7 @@ export const getAllAssignApproved = async () => {
 
 export const getAllNewCandidate = async () => {
     try {
-        const res = await axios.get("/waiting-list/getAll");
+        const res = await axios.get("/waiting-list/getAllStatusByUnCheck");
         return res.data.data;
     } catch (error) {
         return error

@@ -152,7 +152,7 @@ const CandidateCourse = () => {
                             {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">Deadline</div>}
                         </div>
                         <div className="course-row course-data">
-                            <div className="col1">{course?.link}</div>
+                            <div className="col1 hover"><a href={course?.link}>{course?.link}</a></div>
                             <div className="col2" style={{ fontWeight: "bold", color: status }}>{course?.status}</div>
                             {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">{deadlineStr}</div>}
                         </div>

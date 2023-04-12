@@ -76,6 +76,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   const [professor, setProfessor] = useState<Professor>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
+  const [testId, setTestId] = useState<number>();
 
 
 
@@ -96,13 +97,15 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   }
 
   const createInterview = async (request: InterviewCreate) => {
-    console.log(request);
     try {
-      await axios.post("/createInterview", request).then(function (res) {
-        console.log(res.data.message)
+      await axios.post("/createInterview", request).then(async function (res) {
         setMessage(res.data.message);
         setMessageStatus("green");
         handleCloseInterviewCreate();
+        if(type === "TEST") {
+          await axios.put(`/waiting-list/setStatusChecked?id=${testId}`);
+          fetchData();
+        }
       })
     } catch (error) {
       return error
@@ -214,6 +217,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
                 setParticipantA(params.row.candidateName);
                 setParticipantAId(params.row.candidateId);
                 setSpecialty(params.row.specialtyName);
+                setTestId(params.row.id);
                 handleShowInterviewCreate()
               }}>
                 Create
@@ -230,7 +234,6 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     }
   }
 
-  const getDurationValue = (name: string): number | undefined => durations.find(duration => duration.name === name)?.value;
   const handleCreateInterview = () => {
     switch (type) {
       case "CHECK":
