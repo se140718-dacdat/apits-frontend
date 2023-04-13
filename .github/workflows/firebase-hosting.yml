@@ -22,7 +22,7 @@ jobs:
         run: npm run build
 
       - name: Authenticate with Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v1
+        uses: FirebaseExtended/action-hosting-deploy@v2
         with:
           firebase_version: "9.x"
           project_id: ${{ secrets.FIREBASE_PROJECT_ID }}
