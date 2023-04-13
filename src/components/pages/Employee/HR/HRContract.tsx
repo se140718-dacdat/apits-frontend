@@ -1,15 +1,14 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { ButtonGroup, Dropdown, Modal, ToggleButton } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import "./HRContract.css";
 import axios from "../../../../api/axios";
 import { ContractAgreementResponse, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
 import ContractCreateForm from "./ContractCreateForm";
-import EnterpriseContract from "../../Candidate/EnterpriseContract";
+import "./HRContract.css";
 
 const types = [
     "CREATE",

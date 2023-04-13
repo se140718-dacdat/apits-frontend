@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import axios from '../../../api/axios';
 import { SpecialtyResponse } from '../../../entity';
 import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
-import { startCourse } from '../../../redux/apiRequest';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import "./CandidateCourse.css";
 

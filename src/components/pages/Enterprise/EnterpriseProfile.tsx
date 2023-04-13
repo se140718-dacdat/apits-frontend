@@ -1,15 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
-import "./EnterpriseProfile.css";
-import { faEarthAmericas, faBuilding, faLocationDot, faEnvelope, faCoins, faBusinessTime, faClock } from '@fortawesome/free-solid-svg-icons'
+import { faBuilding, faBusinessTime, faClock, faCoins, faEarthAmericas, faEnvelope, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSelector } from 'react-redux';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { FC, useEffect, useState } from 'react';
 import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getListPostByEnterpriseId } from '../../../redux/apiRequest';
-import { Post, PostResponse } from '../../../entity';
 import axios from '../../../api/axios';
+import { PostResponse } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
+import "./EnterpriseProfile.css";
 
 const storage = getStorage();
 

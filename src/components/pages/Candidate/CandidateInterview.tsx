@@ -1,13 +1,12 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Dropdown, Modal } from "react-bootstrap"
-import { useState, useEffect } from "react"
-import "./CandidateInterview.css";
-import { useSelector } from "react-redux";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Button } from "@mui/material";
-import { InterviewResponse } from "../../../entity";
+import { useEffect, useState } from "react";
+import { Dropdown, Modal } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
+import { InterviewResponse } from "../../../entity";
+import "./CandidateInterview.css";
 
 const interviewType = [
     "CHECK",

@@ -1,14 +1,11 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { ButtonGroup, Dropdown, Modal, ToggleButton } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import "./CandidateContract.css";
-import { ContractAgreementResponse } from "../../../entity";
 import axios from "../../../api/axios";
+import { ContractAgreementResponse } from "../../../entity";
 import ContractCreateForm from "../Employee/HR/ContractCreateForm";
+import "./CandidateContract.css";
 
 
 const CandidateContract = () => {
