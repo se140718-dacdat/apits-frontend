@@ -74,7 +74,7 @@ const ProfessorInterview = () => {
       if (res.data.message == "SUCCESS") {
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
-        await axios.put(`/updateInterviewToCancel?interviewID=${interviewId}`);
+        updateInterviewDone(interviewId);
         fetchCheckInterview();
       }
     })

@@ -312,28 +312,6 @@ const CandidateRegister = () => {
                                     }
                                 </div>
                             </div>
-                            <div className="form-input">
-                                <div className="input-icon">
-                                    <img src="/images/momo.png" alt="" className='icon' />
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder={payment}
-                                    onChange={(e) => {
-                                        setPayment(e.target.value);
-                                    }}
-                                    required
-                                    pattern="[0-9]{10}"
-                                    onInvalid={(e) => {
-                                        const target = e.target as HTMLInputElement;
-                                        target.setCustomValidity('Please enter a valid 10-digit VNPay number');
-                                    }}
-                                    onInput={(e) => {
-                                        const target = e.target as HTMLInputElement;
-                                        target.setCustomValidity('');
-                                    }}
-                                />
-                            </div>
                             <textarea
                                 className='form-input description'
                                 style={{ minHeight: "200px" }}
