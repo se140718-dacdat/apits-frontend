@@ -76,6 +76,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   const [professor, setProfessor] = useState<Professor>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
+  const [testId, setTestId] = useState<number>();
 
 
 
@@ -96,13 +97,15 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   }
 
   const createInterview = async (request: InterviewCreate) => {
-    console.log(request);
     try {
-      await axios.post("/createInterview", request).then(function (res) {
-        console.log(res.data.message)
+      await axios.post("/createInterview", request).then(async function (res) {
         setMessage(res.data.message);
         setMessageStatus("green");
         handleCloseInterviewCreate();
+        if(type === "TEST") {
+          await axios.put(`/waiting-list/setStatusChecked?id=${testId}`);
+          fetchData();
+        }
       })
     } catch (error) {
       return error
@@ -111,7 +114,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
 
   const tableRender = () => {
     switch (type) {
-      case "ENTERPRISE":
+      case "HIRE":
         const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
           id: item.assignId,
           title: item.recruitmentRequest.title,
@@ -152,6 +155,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       case "CHECK":
         const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
           id: item.id,
+          candidateId: item.candidate.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           courseName: item.course.name,
@@ -171,7 +175,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             renderCell: (params) => (
               <Button variant="contained" color="primary" onClick={() => {
                 setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.id);
+                setParticipantAId(params.row.candidateId);
                 setCourse(params.row.courseName);
                 setCourseId(params.row.courseId)
                 handleShowInterviewCreate()
@@ -188,8 +192,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             pagination />
         )
       default:
-        const rows = candidates?.length > 0 ? newUsers?.map((item) => ({
+        const rows = newUsers?.length > 0 ? newUsers?.map((item) => ({
           id: item.id,
+          candidateId: item.candidate.id,
           candidateName: item.candidate.name,
           phone: item.candidate.phone,
           specialtyName: item.specialty.name,
@@ -210,8 +215,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
               <Button variant="contained" color="primary" onClick={() => {
                 setSpecialtyId(params.row.specialtyId);
                 setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.id);
+                setParticipantAId(params.row.candidateId);
                 setSpecialty(params.row.specialtyName);
+                setTestId(params.row.id);
                 handleShowInterviewCreate()
               }}>
                 Create
@@ -228,15 +234,15 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     }
   }
 
-  const getDurationValue = (name: string): number | undefined => durations.find(duration => duration.name === name)?.value;
   const handleCreateInterview = () => {
     switch (type) {
       case "CHECK":
         if (courseId !== undefined && participantAId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
-            title: title,
+            purpose: title,
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
+            description: "",
             linkMeeting: link,
             duration: duration,
             type: type.toUpperCase(),
@@ -252,11 +258,12 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
         }
         break;
 
-      case "ENTERPRISE":
+      case "HIRE":
         if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined) {
           const request: InterviewCreate = {
-            title: title,
-            date: `${date}`,
+            purpose: title,
+            description: "",
+            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
             linkMeeting: link,
             duration: duration,
@@ -275,8 +282,9 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
       default:
         if (specialtyId !== undefined && participantAId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
-            title: title,
-            date: `${date}`,
+            purpose: title,
+            description: "",
+            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
             time: time,
             linkMeeting: link,
             duration: duration,
@@ -295,7 +303,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   }
 
   const handleCheckType = () => {
-    if (type === "ENTERPRISE") {
+    if (type === "HIRE") {
       return (
         <div className="participant-container">
           <span className="participant-title">Professor:</span>
@@ -355,7 +363,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
               <span className="input-title">Interview Type:</span>
               <span className="interview-type">
                 {
-                  type == "ENTERPRISE"
+                  type == "HIRE"
                     ? "Interview with Enterprise"
                     : type == "TEST"
                       ? "Test specialty with Professor"

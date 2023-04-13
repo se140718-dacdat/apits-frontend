@@ -1,21 +1,20 @@
-import { faUser, faHouse, faPhone, faVenusMars, faCamera, faChevronLeft, faPlus, faX, faMinus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCamera, faChevronLeft, faHouse, faPhone, faPlus, faUser, faVenusMars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'react-bootstrap';
-import { CandidateUpdate, genderList, SpecialtyEntity } from '../../../model';
-import "./CandidateRegister.css";
-import dayjs, { Dayjs } from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { useNavigate } from 'react-router-dom';
-import { addSpecialtiesCandidate, getSpecialtiesByCandidateId, updateCandidate } from '../../../redux/apiRequest';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { minHeight } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
-import moment from 'moment';
+import { CandidateUpdate, SpecialtyEntity, genderList } from '../../../model';
+import { updateCandidate } from '../../../redux/apiRequest';
+import "./CandidateRegister.css";
 
 
 const storage = getStorage();
@@ -51,7 +50,9 @@ const CandidateRegister = () => {
         console.log(cv)
         setProgress("100%");
         const registerModal = document.getElementById("CandidateRegister")!;
-        (registerModal as HTMLElement).style.height = "auto";
+        if(registerModal) {
+            (registerModal as HTMLElement).style.height = "auto";
+        }
     });
 
     useEffect(() => {
@@ -214,7 +215,7 @@ const CandidateRegister = () => {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         {
-                                            genderList.map((gender, index) => {
+                                            genderList?.map((gender, index) => {
                                                 return (
                                                     <div key={index}>
                                                         <Dropdown.Item onClick={() => { handleSelect(gender) }}>{gender}</Dropdown.Item>
@@ -287,7 +288,7 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        selectSpecialties.map((specialty: SpecialtyEntity, key: number) =>
+                                        selectSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleRemoveSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faXmark} />
                                                 <span>{specialty.name}</span>
@@ -302,7 +303,7 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        specialties.map((specialty: SpecialtyEntity, key: number) =>
+                                        specialties?.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faPlus} />
                                                 <span>{specialty?.name}</span>
@@ -310,28 +311,6 @@ const CandidateRegister = () => {
                                         )
                                     }
                                 </div>
-                            </div>
-                            <div className="form-input">
-                                <div className="input-icon">
-                                    <img src="/images/momo.png" alt="" className='icon' />
-                                </div>
-                                <input
-                                    type="text"
-                                    placeholder={payment}
-                                    onChange={(e) => {
-                                        setPayment(e.target.value);
-                                    }}
-                                    required
-                                    pattern="[0-9]{10}"
-                                    onInvalid={(e) => {
-                                        const target = e.target as HTMLInputElement;
-                                        target.setCustomValidity('Please enter a valid 10-digit VNPay number');
-                                    }}
-                                    onInput={(e) => {
-                                        const target = e.target as HTMLInputElement;
-                                        target.setCustomValidity('');
-                                    }}
-                                />
                             </div>
                             <textarea
                                 className='form-input description'

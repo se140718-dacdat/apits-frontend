@@ -1,14 +1,13 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Button, Dropdown, Modal } from 'react-bootstrap';
-import "./CandidateCourse.css";
+import { useSelector } from 'react-redux';
 import axios from '../../../api/axios';
 import { SpecialtyResponse } from '../../../entity';
 import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
-import { useSelector } from 'react-redux';
-import { startCourse, submitCertificate } from '../../../redux/apiRequest';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import "./CandidateCourse.css";
 
 const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
@@ -44,7 +43,7 @@ const CandidateCourse = () => {
 
     async function fetchData() {
         const res = await axios.get(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = await res.data.data.specials;
+        const data = await res?.data.data.specials;
         setSpecialties(data);
         setSpecialtySelect(data[0]);
         getSpecialtyDetail(data[0].id)
@@ -53,12 +52,11 @@ const CandidateCourse = () => {
     async function getSpecialtyDetail(id: number) {
         const res = await axios.get(`/canspec/getASpecDetailByCandidateId?candidateId=${user?.id}&specialId=${id}`);
         const data = await res.data.data;
-        console.log(data)
         setSpecialty(data.specialty);
     }
 
 
-    const handleStartCourse = () => {
+    const handleStartCourse = async () => {
         const request = {
             candidateId: user?.id,
             skillId: skill?.id,
@@ -66,8 +64,18 @@ const CandidateCourse = () => {
             courseId: course?.id,
             certificate: ""
         }
-        startCourse(request);
-        window.open(course?.link)
+        // startCourse(request);
+        await axios.post('/status-candidate-course/create', request).then(function (res) {
+            console.log(res.data.message)
+            if (res.data.message == "SUCCESS") {
+                setMessage("Started!");
+                setMessageStatus("green");
+                if (specialtySelect !== undefined) {
+                    getSpecialtyDetail(specialtySelect?.id)
+                }
+                window.open(course?.link);
+            }
+        })
     }
 
     const handleSubmitCertificate = async () => {
@@ -143,7 +151,7 @@ const CandidateCourse = () => {
                             {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">Deadline</div>}
                         </div>
                         <div className="course-row course-data">
-                            <div className="col1">{course?.link}</div>
+                            <div className="col1 hover"><a href={course?.link}>{course?.link}</a></div>
                             <div className="col2" style={{ fontWeight: "bold", color: status }}>{course?.status}</div>
                             {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">{deadlineStr}</div>}
                         </div>
@@ -187,14 +195,10 @@ const CandidateCourse = () => {
                         View Interview
                     </Button>
                 )
-            // case "DONE":
-            //     return (
-            //         <Button variant="primary" onClick={() => {
-            //             handleCloseCourse();
-            //         }}>
-            //             View Interview
-            //         </Button>
-            //     )
+            case "DONE":
+                return (
+                    null
+                )
             default:
                 return (
                     <Button variant="primary" onClick={() => {

@@ -1,9 +1,9 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react'
+import { FC } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import NotificationTable from './CandidateNotification';
 import "../../modules/pagecomponents/common/Notification.css";
+import NotificationTable from './CandidateNotification';
 
 interface Props {
     roleName: string;

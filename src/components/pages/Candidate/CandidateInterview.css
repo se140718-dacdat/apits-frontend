@@ -1,0 +1,7 @@
+#CandidateInterview {
+    padding: 2% 10% 5%;
+}
+
+#CandidateInterview h2 {
+    color: var(--primary-color);
+}

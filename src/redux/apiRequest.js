@@ -1,8 +1,6 @@
-import { async } from "@firebase/util";
-import { useDispatch } from "react-redux";
 import axios from "../api/axios";
 import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess } from "./authSlice";
-import { specialtyStart, specialtySuccess } from "./specialtySlice";
+import { specialtySuccess } from "./specialtySlice";
 import { userFailed, userStart, userSuccess } from "./userSlice";
 
 //Authentication
@@ -217,8 +215,7 @@ export const getCandidateCourses = async (id) => {
 export const startCourse = async (params) => {
     try {
         const res = await axios.post('/status-candidate-course/create', params)
-        console.log(params)
-        return res
+        return res.data.message
     } catch (error) {
         return error
     }
@@ -392,7 +389,7 @@ export const getAllAssignApproved = async () => {
 
 export const getAllNewCandidate = async () => {
     try {
-        const res = await axios.get("/waiting-list/getAll");
+        const res = await axios.get("/waiting-list/getAllStatusByUnCheck");
         return res.data.data;
     } catch (error) {
         return error
@@ -400,3 +397,21 @@ export const getAllNewCandidate = async () => {
 }
 
 // Interview
+
+export const updateInterviewDone = async (id) => {
+    try {
+        const res = await axios.put(`/updateInterviewToDone?interviewID=${id}`);
+        return res.data.status;
+    } catch (error) {
+        return error
+    }
+}
+
+export const updateInterviewCancel = async (id) => {
+    try {
+        const res = await axios.put(`/updateInterviewToCancel?interviewID=${id}`);
+        return res.data.status;
+    } catch (error) {
+        return error
+    }
+}

@@ -1,14 +1,14 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Dropdown } from 'react-bootstrap'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import InterviewTable from '../../../modules/pagecomponents/common/Interview';
 import "./InterviewList.css";
-import { useState } from 'react';
 
 const interviewType = [
     "CHECK",
-    "ENTERPRISE",
+    "HIRE",
     "TEST"
 ]
 

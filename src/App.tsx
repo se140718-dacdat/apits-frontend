@@ -1,39 +1,43 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './App.css';
 import Header from './components/modules/pagecomponents/Header/Header';
 import LandingPage from './components/pages/Landing/LandingPage';
-import { useSelector } from 'react-redux';
 
-import { Roles, User } from './model';
-import CandidateHeader from './components/modules/pagecomponents/Header/CandidateHeader';
-import { Route, Routes } from 'react-router';
-import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
-import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
-import CandidateRegister from './components/pages/Candidate/CandidateRegister';
-import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
-import EnterpriseCreatePost from './components/pages/Enterprise/EnterpriseCreatePost';
-import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeHeader';
-import Candidates from './components/pages/Employee/Manager/Candidates';
-import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
-import Enterprises from './components/pages/Employee/HR/Enterprises';
-import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
-import { getSpecialtiesDetail, logoutUser } from './redux/apiRequest';
 import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
-import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
-import Specialty from './components/pages/Employee/Manager/Specialty';
-import Request from './components/modules/pagecomponents/common/Request';
-import InterviewList from './components/pages/Employee/Manager/InterviewList';
-import Notification from './components/modules/pagecomponents/common/Notification';
-import Footer from './components/modules/pagecomponents/footer/Footer';
-import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
-import NotificationList from './components/pages/Candidate/CandidateNotificationList';
 import AdminHeader from './components/modules/pagecomponents/Header/AdminHeader';
+import CandidateHeader from './components/modules/pagecomponents/Header/CandidateHeader';
+import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeHeader';
+import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
+import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
+import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
+import Request from './components/modules/pagecomponents/common/Request';
+import Footer from './components/modules/pagecomponents/footer/Footer';
 import CandidateList from './components/pages/Admin/CandidateList';
 import EmployeeList from './components/pages/Admin/EmployeeList';
-import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssign';
 import CandidateCourse from './components/pages/Candidate/CandidateCourses';
+import CandidateRegister from './components/pages/Candidate/CandidateRegister';
+import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssign';
+import ContractCreateForm from './components/pages/Employee/HR/ContractCreateForm';
+import Enterprises from './components/pages/Employee/HR/Enterprises';
+import Candidates from './components/pages/Employee/Manager/Candidates';
+import InterviewList from './components/pages/Employee/Manager/InterviewList';
+import Specialty from './components/pages/Employee/Manager/Specialty';
+import EnterpriseCreatePost from './components/pages/Enterprise/EnterpriseCreatePost';
+import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
+import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
+import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
+import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
+import Notification from './components/modules/pagecomponents/common/Notification';
+import NotificationList from './components/pages/Candidate/CandidateNotificationList';
+import { getSpecialtiesDetail } from './redux/apiRequest';
+import ProfessorInterview from './components/pages/Employee/Professor/ProfessorInterview';
+import CandidateInterview from './components/pages/Candidate/CandidateInterview';
+import EnterpriseInterview from './components/pages/Enterprise/EnterpriseInterview';
+import HRContract from './components/pages/Employee/HR/HRContract';
+import CandidateContract from './components/pages/Candidate/CandidateContract';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -41,7 +45,7 @@ const App: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // getSpecialtiesDetail(dispatch);
+    getSpecialtiesDetail(dispatch);
   }, [])
 
   return (
@@ -84,10 +88,13 @@ const App: FC = () => {
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
-        <Route path='/contract' element={<ContractCreateForm />}></Route>;
-
+        <Route path='/contract' element={<HRContract />}></Route>;
+        <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
+        <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
+        <Route path='/candidate-interview' element={<CandidateInterview />}></Route>;
+        <Route path='/enterprise-interview' element={<EnterpriseInterview />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />

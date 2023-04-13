@@ -1,14 +1,14 @@
-import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { User } from '../../../../model';
+import { faAdd, faAddressCard, faBell, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAddressCard, faRightFromBracket, faBell, faChevronDown, faAdd } from '@fortawesome/free-solid-svg-icons'
 
 
 interface Props {
@@ -44,6 +44,7 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Post</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/request">Request</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/enterprise-interview">Interview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>

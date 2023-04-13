@@ -1,7 +1,7 @@
-import { faAddressCard, faBell, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faBell, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { Button, Container, Nav, Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { Container, Nav, Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
@@ -56,7 +56,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                 return (
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/interview">Interview</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/professor-interview">Interview</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/specialty">Course</Nav.Link>
                     </Nav>
                 )

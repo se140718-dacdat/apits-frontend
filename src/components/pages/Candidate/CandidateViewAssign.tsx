@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import "./CandidateViewAssign.css";
-import { useSelector } from 'react-redux';
-import { AssignResponse, CandidateAssignRow } from '../../../entity';
-import { confirmAssign, getAllAssign, getListAssignByCandidateId } from '../../../redux/apiRequest';
-import axios from '../../../api/axios';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { getDaysLeft } from '../../../handle';
 import { Button } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from '../../../api/axios';
+import { AssignResponse, CandidateAssignRow } from '../../../entity';
+import { getDaysLeft } from '../../../handle';
+import { confirmAssign } from '../../../redux/apiRequest';
+import "./CandidateViewAssign.css";
 
 const CandidateViewAssign = () => {
   const user = useSelector((state: any) => state.user.user.user);
@@ -28,6 +28,7 @@ const CandidateViewAssign = () => {
 
   const handleConfirmAssign = (id: number) => {
     confirmAssign(id, user?.id);
+    fetchData();
   }
 
   const rows: CandidateAssignRow[] = assigns?.map((assign) => ({

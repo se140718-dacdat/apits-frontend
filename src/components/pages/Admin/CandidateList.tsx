@@ -1,8 +1,7 @@
-import React from 'react'
 import "./AdminPage.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CandidateList = () => {
     return (

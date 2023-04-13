@@ -1,15 +1,15 @@
-import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { User } from '../../../../model';
+import { faAddressCard, faBell, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAddressCard, faRightFromBracket, faBell } from '@fortawesome/free-solid-svg-icons'
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 
 interface Props {
@@ -44,10 +44,11 @@ const CandidateHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Find Jobs</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/candidate-courses">Course</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/interview">Inteview</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/">Contract</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/candidate-notification">Notification</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/candidate-interview">Inteview</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/candidate-contract">Contract</Nav.Link>
+                                {/* <Nav.Link className='navlink hover-primary' href="/candidate-notification">Notification</Nav.Link> */}
                                 <Nav.Link className='navlink hover-primary' href="/candidate-view-assign">Assign</Nav.Link>
+                                <Nav.Link className='navlink hover-primary' href="/candidate-view-assign">TEST</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
                                 <div className='navlink user-wrap' onClick={(e) => {

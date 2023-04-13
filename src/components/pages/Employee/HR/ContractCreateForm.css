@@ -148,3 +148,9 @@
     padding-bottom: 2rem;
     
 }
+
+#ContractCreateForm .btn-cancel {
+    background-color: #f3f4f5 !important;
+    color: #212529 !important;
+    margin-right: 1.5rem;
+}
