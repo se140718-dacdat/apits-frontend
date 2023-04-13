@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "apits-32832",
+    "default": "apits-app",
     " ": "apits-32832"
   },
   "targets": {},
