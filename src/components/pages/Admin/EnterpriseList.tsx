@@ -1,16 +1,16 @@
-import "./AdminPage.css";
-import { useEffect, useState } from "react";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { CandidateResponse } from "../../../entity";
+import { useEffect, useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import axios from "../../../api/axios";
-import { Button, Dropdown } from "react-bootstrap";
+import { CreatorEntity, EmployeeEntity } from "../../../entity";
+import "./AdminPage.css";
 
 const filters = ["Status", "Active", "Disable"]
 
-const CandidateList = () => {
-    const [candidates, setCandidates] = useState<CandidateResponse[]>([]);
+const EnterpriseList = () => {
+    const [enterprises, setEnterprises] = useState<CreatorEntity[]>([]);
     const [filter, setFilter] = useState<string>(filters[0]);
 
 
@@ -19,10 +19,11 @@ const CandidateList = () => {
     }, [filter])
 
     async function fetchData() {
-        await axios.get("/candidate/getAll").then((res) => {
-            setCandidates(res.data.data);
+        await axios.get("/getAllEnterprise").then((res) => {
+            setEnterprises(res.data.data.responseList);
         })
     }
+
 
     const handleFilter = () => {
         switch (filter) {
@@ -30,28 +31,28 @@ const CandidateList = () => {
                 fetchData();
                 break;
             case filters[1]:
-                setCandidates(candidates.filter((e) => e.status === "ACTIVATE"));
+                setEnterprises(enterprises.filter((e) => e.status === "ACTIVATE"));
                 break;
             default:
-                setCandidates(candidates.filter((e) => e.status === "DISABLE"));
+                setEnterprises(enterprises.filter((e) => e.status === "DISABLE"));
                 break;
         }
     }
 
-    const rows = candidates.map((candidate) => ({
-        id: candidate.id,
-        name: candidate.name,
-        email: candidate.email,
-        phone: candidate.phone,
-        createAt: candidate.createAt,
-        status: candidate.status
+    const rows = enterprises.map((enterprise) => ({
+        id: enterprise.id,
+        name: enterprise.name,
+        email: enterprise.email,
+        phone: enterprise.phone,
+        createAt: enterprise.createAt,
+        status: enterprise.status,
     }));
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", flex: 0.2 },
         { field: "name", headerName: "Name", flex: 0.8 },
-        { field: "email", headerName: "Email", flex: 0.8 },
         { field: "phone", headerName: "Phone", flex: 0.8 },
+        { field: "email", headerName: "Email", flex: 0.8 },
         { field: "createAt", headerName: "Create At", flex: 0.8 },
         {
             field: 'status',
@@ -76,7 +77,7 @@ const CandidateList = () => {
 
     return (
         <div id='AdminPage'>
-            <h2>Candidates</h2>
+            <h2>Enterprise</h2>
             <div className="filter">
                 <div className="filter-form-input">
                     <div className="filter-input-icon">
@@ -110,4 +111,4 @@ const CandidateList = () => {
     )
 }
 
-export default CandidateList
+export default EnterpriseList

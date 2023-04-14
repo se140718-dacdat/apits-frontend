@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { DataGrid, GridColDef, GridRowId } from '@mui/x-data-grid';
 import { CandidateForAssign, CandidateResponse } from "../../../../entity";
 import { Assign, Status } from "../../../../model";
@@ -6,24 +6,31 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { assignCandidates } from "../../../../redux/apiRequest";
+import axios from "../../../../api/axios";
 
-interface Props {
-  candidates: CandidateForAssign[];
-}
-
-const CandidateAssign: React.FC<Props> = ({ candidates }) => {
+const CandidateAssign = () => {
   const user = useSelector((state: any) => state.user.user.user);
   const { id } = useParams();
 
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowId[]>([]);
   const [message, setMessage] = useState('');
+  const [candidates, setCandidates] = useState<CandidateForAssign[]>([]);
+
+  useEffect(() => {
+    fetchData()
+;  }, [])
+
+  
+  async function fetchData () {
+    const response = await axios.put(`/candidate/findCandidatebyRRId/${id}`);
+    setCandidates(response.data.data);
+}
 
   const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
     setSelectedRowIds(selectionModel.map((s) => Number(s)));
-    console.log(selectedRowIds);
   };
 
-  const handleAssign = () => {
+  const handleAssign = async () => {
     if (selectedRowIds.length > 0) {
       const request: Assign = {
         status: "ACTIVE",
@@ -34,7 +41,9 @@ const CandidateAssign: React.FC<Props> = ({ candidates }) => {
         recruitmentRequestId: Number(id)
       }
       setMessage('');
-      assignCandidates(request);
+      if(await assignCandidates(request) == 200) {
+        fetchData();
+      }
     } else {
       setMessage("Please select at least 1 candidate to assign!");
     }

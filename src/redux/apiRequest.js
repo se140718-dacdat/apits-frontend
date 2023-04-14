@@ -8,17 +8,26 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
     dispatch(loginStart());
     try {
         const res = await axios.post("/account/auth/login", user);
-        console.log(res.data.message);
         if(res.data.message == "Login Fail") {
             return res.data.message;
         } else {
             if (res.data.data) {
-                dispatch(loginSuccess(res.data.data));
-                dispatch(userSuccess(res.data.data.information));
-                if (!isRegister && res.data.message !== "Login Fail") {
-                    navigate("/");
+                if(res.data.data.role.name === "ADMIN") {
+                    dispatch(loginSuccess(res.data.data));
                 } else {
-                    navigate("/update-candidate");
+                    if(res.data.data.information.status !== "DISABLE") {
+                        console.log(res.data.data)
+                        dispatch(loginSuccess(res.data.data));
+                        dispatch(userSuccess(res.data.data.information));
+                        if (!isRegister && res.data.message !== "Login Fail") {
+                            navigate("/");
+                        } else {
+                            navigate("/update-candidate");
+                        }
+                    }
+                    else {
+                        return res.data.data.information.status;
+                    }
                 }
             } else {
                 return res.data.message;
@@ -316,8 +325,8 @@ export const getAllPost = async () => {
 export const assignCandidates = async (params) => {
     try {
         const res = await axios.post("/assign/create", params)
-        console.log(res);
-        return res
+        console.log(res.status);
+        return res.status
     } catch (error) {
         return error
     }

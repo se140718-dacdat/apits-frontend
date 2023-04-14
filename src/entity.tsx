@@ -259,7 +259,7 @@ interface PostAssign {
 
 export interface EmployeeEntity {
     id: number;
-    employeeName: string;
+    name: string;
     employeeCode: string;
     phone: string;
     gender: string;

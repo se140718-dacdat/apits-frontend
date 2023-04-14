@@ -27,7 +27,6 @@ const RecruitmentPostDetail = () => {
     const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
-    const [candidates, setCandidates] = useState<CandidateForAssign[]>([]);
 
 
 
@@ -48,20 +47,12 @@ const RecruitmentPostDetail = () => {
 
     useEffect(() => {
         fetchData();
-        const str = `skillIds=${post?.skills[0].skillId}&levelIds=${post?.skills[0].levelId}`
-    }, [post])
+    }, [])
 
     const fetchData = async () => {
         setPost(await getPostByPostId(id));
-        setCandidates(await getCandidatesForAssign());
     }
 
-    const getCandidatesForAssign = async (): Promise<CandidateForAssign[]> => {
-        const str = `skillIds=${post?.skills[0].skillId}&levelIds=${post?.skills[0].levelId}`
-        // const str = post?.skills.map((item) => item.skillId).map(val => `skillIds=${val}`).join('&');
-        const response = await axios.get<CandidateForAssign[]>(`/candidate/getListCandidateBySkill?${str}`);
-        return response.data;
-    }
 
     return (
         <div id='RecruitmentPostDetail'>
@@ -318,7 +309,7 @@ const RecruitmentPostDetail = () => {
                                         </div>
                                         <div style={{ height: 500, width: '100%' }}>
                                             {
-                                                <CandidateAssign candidates={candidates} />
+                                                <CandidateAssign />
                                             }
                                         </div>
                                     </div>

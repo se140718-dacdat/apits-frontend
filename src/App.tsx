@@ -38,6 +38,7 @@ import CandidateInterview from './components/pages/Candidate/CandidateInterview'
 import EnterpriseInterview from './components/pages/Enterprise/EnterpriseInterview';
 import HRContract from './components/pages/Employee/HR/HRContract';
 import CandidateContract from './components/pages/Candidate/CandidateContract';
+import EnterpriseList from './components/pages/Admin/EnterpriseList';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -75,6 +76,8 @@ const App: FC = () => {
         }></Route>;
         <Route path='/candidates-management' element={<CandidateList />}></Route>;
         <Route path='/employee-management' element={<EmployeeList />}></Route>;
+        <Route path='/enterprises-management' element={<EnterpriseList />}></Route>;
+
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/update-candidate' element={<CandidateRegister />}></Route>;

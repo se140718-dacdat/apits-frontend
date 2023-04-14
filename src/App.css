@@ -300,3 +300,22 @@ a {
 .mt-24 {
     margin-top: 24px;
 }
+
+
+.btn-admin-disable, 
+.btn-admin-active {
+    width: 100px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    padding: 5px 24px;
+    color: var(--white-color);
+}
+
+.btn-admin-active {
+    background-color: #4caf50;
+}
+
+.btn-admin-disable {
+    background-color: #f44336;
+}

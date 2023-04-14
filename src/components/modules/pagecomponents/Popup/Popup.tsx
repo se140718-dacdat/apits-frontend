@@ -42,6 +42,9 @@ const Popup: FC<Props> = (props) => {
             if (await loginUser(userLogin, dispatch, navigate, false) == "Login Fail") {
                 setMessageLogin("The user or password that you've entered is incorrect.")
             }
+            else if (await loginUser(userLogin, dispatch, navigate, false) == "DISABLE") {
+                setMessageLogin("Your account is disable, please contact to us!");
+            }
             else {
                 props.isDisplay('');
                 props.isPopup(0);
