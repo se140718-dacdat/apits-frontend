@@ -6,13 +6,15 @@ import { Dropdown } from "react-bootstrap";
 import axios from "../../../api/axios";
 import { EmployeeEntity } from "../../../entity";
 import "./AdminPage.css";
+import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 
 const filters = ["Status", "Active", "Disable"]
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
     const [filter, setFilter] = useState<string>(filters[0]);
-
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
 
     useEffect(() => {
         handleFilter();
@@ -21,6 +23,29 @@ const EmployeeList = () => {
     async function fetchData() {
         await axios.get("/employee/getAllEmployees").then((res) => {
             setEmployees(res.data.data.responseList);
+        })
+    }
+
+    
+    async function handleDisable(id: number) {
+        axios.put(`/employee/disable/${id}`).then((res) => {
+            const message = res.data.message;
+            if (message === "Disable employee successfully") {
+                fetchData();
+                setMessage(message);
+                setMessageStatus("green");
+            }
+        })
+    }
+
+    async function handleActive(id: number) {
+        axios.patch(`/employee/active/${id}`).then((res) => {
+            const message = res.data.message;
+            if (message === "Active employee successfully") {
+                fetchData();
+                setMessage(message);
+                setMessageStatus("green");
+            }
         })
     }
 
@@ -61,11 +86,13 @@ const EmployeeList = () => {
             renderCell: (params) => (
                 params.row.status == "ACTIVATE" ?
                     <button className="btn-admin-disable" style={{ backgroundColor: "#f44336" }} onClick={() => {
+                        handleDisable(params.row.id);
                     }}>
                         DISABLE
                     </button>
                     :
                     <button className="btn-admin-active" style={{ backgroundColor: "#4caf50" }} onClick={() => {
+                        handleActive(params.row.id);
                     }}>
                         ACTIVE
                     </button>
@@ -76,6 +103,12 @@ const EmployeeList = () => {
 
     return (
         <div id='AdminPage'>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             <h2>Employees</h2>
             <div className="filter">
                 <div className="filter-form-input">

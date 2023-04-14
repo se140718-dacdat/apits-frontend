@@ -1,22 +1,46 @@
-import "./AdminPage.css";
-import { useEffect, useState } from "react";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { CandidateResponse } from "../../../entity";
+import { useEffect, useState } from "react";
+import { Dropdown } from "react-bootstrap";
 import axios from "../../../api/axios";
-import { Button, Dropdown } from "react-bootstrap";
+import { CandidateResponse } from "../../../entity";
+import MessageBox from "../../modules/pagecomponents/Popup/MessageBox/MessageBox";
+import "./AdminPage.css";
 
 const filters = ["Status", "Active", "Disable"]
 
 const CandidateList = () => {
     const [candidates, setCandidates] = useState<CandidateResponse[]>([]);
     const [filter, setFilter] = useState<string>(filters[0]);
-
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
 
     useEffect(() => {
         handleFilter();
     }, [filter])
+
+    async function handleDisable(id: number) {
+        axios.put(`/candidate/delete/${id}`).then((res) => {
+            const message = res.data.message;
+            if (message === "Disable enterprise successfully") {
+                fetchData();
+                setMessage(message);
+                setMessageStatus("green");
+            }
+        })
+    }
+
+    async function handleActive(id: number) {
+        axios.patch(`/active/${id}`).then((res) => {
+            const message = res.data.message;
+            if (message === "Active enterprise successfully") {
+                fetchData();
+                setMessage(message);
+                setMessageStatus("green");
+            }
+        })
+    }
 
     async function fetchData() {
         await axios.get("/candidate/getAll").then((res) => {
@@ -61,11 +85,13 @@ const CandidateList = () => {
             renderCell: (params) => (
                 params.row.status == "ACTIVATE" ?
                     <button className="btn-admin-disable" style={{ backgroundColor: "#f44336" }} onClick={() => {
+                        handleDisable(params.row.id);
                     }}>
                         DISABLE
                     </button>
                     :
                     <button className="btn-admin-active" style={{ backgroundColor: "#4caf50" }} onClick={() => {
+                        handleActive(params.row.id);
                     }}>
                         ACTIVE
                     </button>
@@ -76,6 +102,12 @@ const CandidateList = () => {
 
     return (
         <div id='AdminPage'>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             <h2>Candidates</h2>
             <div className="filter">
                 <div className="filter-form-input">
