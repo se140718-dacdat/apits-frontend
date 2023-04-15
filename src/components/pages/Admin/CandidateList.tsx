@@ -21,9 +21,9 @@ const CandidateList = () => {
     }, [filter])
 
     async function handleDisable(id: number) {
-        axios.put(`/candidate/delete/${id}`).then((res) => {
+        axios.get(`/candidate/disable?id=${id}`).then((res) => {
             const message = res.data.message;
-            if (message === "Disable enterprise successfully") {
+            if (message === "Disable candidate successfully") {
                 fetchData();
                 setMessage(message);
                 setMessageStatus("green");
@@ -32,9 +32,9 @@ const CandidateList = () => {
     }
 
     async function handleActive(id: number) {
-        axios.patch(`/active/${id}`).then((res) => {
+        axios.get(`/candidate/active?id=${id}`).then((res) => {
             const message = res.data.message;
-            if (message === "Active enterprise successfully") {
+            if (message === "Active candidate successfully") {
                 fetchData();
                 setMessage(message);
                 setMessageStatus("green");

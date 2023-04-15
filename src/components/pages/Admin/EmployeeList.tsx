@@ -2,19 +2,33 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
+import { Button, Dropdown, Modal } from "react-bootstrap";
 import axios from "../../../api/axios";
 import { EmployeeEntity } from "../../../entity";
 import "./AdminPage.css";
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import { PositionResponse } from '../../../model';
 
 const filters = ["Status", "Active", "Disable"]
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
+    const [positions, setPositions] = useState<PositionResponse[]>([]);
+    const [position, setPosition] = useState<PositionResponse>();
     const [filter, setFilter] = useState<string>(filters[0]);
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
+    const [showCreate, setShowCreate] = useState(false);
+    const [username, setUsername] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+
+
+
+    const handleCloseCreate = () => setShowCreate(false);
+    const handleShowCreate = () => { setShowCreate(true) };
+
+
 
     useEffect(() => {
         handleFilter();
@@ -24,9 +38,32 @@ const EmployeeList = () => {
         await axios.get("/employee/getAllEmployees").then((res) => {
             setEmployees(res.data.data.responseList);
         })
+        await axios.get("/position/getAllPosition").then((res) => {
+            setPositions(res.data.data.responseList);
+            setPosition(res.data.data.responseList[0]);
+        })
     }
 
-    
+    const handleCreate = async () => {
+        const request = {
+            name: username,
+            phone: phone,
+            address: address,
+            positionName: position?.name
+        }
+
+        await axios.post("/account/createEmployee", request).then((res) => {
+            const message = res.data.message;
+            if (message === "Create employee successfully") {
+                fetchData();
+                handleCloseCreate();
+                setMessage(message);
+                setMessageStatus("green");
+            }
+        })
+    }
+
+
     async function handleDisable(id: number) {
         axios.put(`/employee/disable/${id}`).then((res) => {
             const message = res.data.message;
@@ -139,6 +176,59 @@ const EmployeeList = () => {
                     autoPageSize
                     pagination />
             </div>
+            <button className="btn float-right mt-24" onClick={() => { handleShowCreate() }}>Create New Employee</button>
+            <Modal id="EmployeeCreateModal" show={showCreate} onHide={handleCloseCreate}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create new Employee</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="create-container">
+                        <div className="group-input">
+                            <label>Username:</label>
+                            <div className="form-input">
+                                <input type="Username" className="input regis-input" placeholder="Username" required onChange={(e) => { setUsername(e.target.value) }} />
+                                <span className="text-err"></span>
+                            </div>
+                        </div>
+                        <div className="group-input">
+                            <label>Phone:</label>
+                            <div className="form-input">
+                                <input type="Phone" className="input regis-input" placeholder="Phone" required onChange={(e) => { setPhone(e.target.value) }} />
+                                <span className="text-err"></span>
+                            </div>
+                        </div>
+                        <div className="group-input">
+                            <label>Address:</label>
+                            <div className="form-input">
+                                <input type="Address" className="input regis-input" placeholder="Address" required onChange={(e) => { setAddress(e.target.value) }} />
+                                <span className="text-err"></span>
+                            </div>
+                        </div>
+                        <Dropdown>
+                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                                <span>{position?.name}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className='filter-menu'>
+                                {
+                                    positions.map((position, index) => {
+                                        return (
+                                            <Dropdown.Item className='filter-item' key={index} onClick={() => { setPosition(position) }}>{position.name}</Dropdown.Item>
+                                        )
+                                    })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button className='button-close' variant="secondary" onClick={handleCloseCreate}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={() => { handleCreate() }}>
+                        Create
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

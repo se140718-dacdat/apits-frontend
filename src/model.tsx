@@ -274,3 +274,10 @@ export interface Assign {
     assignerId: number,
     candidateIds: GridRowId[]
 }
+
+export interface PositionResponse {
+    id: number;
+    name: string;
+    status: string;
+    numberUsePosition: number;
+}
