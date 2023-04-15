@@ -4,7 +4,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import axios from "../../../api/axios";
-import { EmployeeEntity } from "../../../entity";
+import { EmployeeEntity, SpecialtyResponse } from "../../../entity";
 import "./AdminPage.css";
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import { PositionResponse } from '../../../model';
@@ -15,6 +15,8 @@ const EmployeeList = () => {
     const [employees, setEmployees] = useState<EmployeeEntity[]>([]);
     const [positions, setPositions] = useState<PositionResponse[]>([]);
     const [position, setPosition] = useState<PositionResponse>();
+    const [specialties, setSpecialties] = useState<SpecialtyResponse[]>([]);
+    const [specialty, setSpecialty] = useState<SpecialtyResponse>();
     const [filter, setFilter] = useState<string>(filters[0]);
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
@@ -42,6 +44,10 @@ const EmployeeList = () => {
             setPositions(res.data.data.responseList);
             setPosition(res.data.data.responseList[0]);
         })
+        await axios.get("/specialty/getAll").then((res) => {
+            setSpecialties(res.data.data);
+            setSpecialty(res.data.data[0]);
+        })
     }
 
     const handleCreate = async () => {
@@ -52,13 +58,17 @@ const EmployeeList = () => {
             positionName: position?.name
         }
 
-        await axios.post("/account/createEmployee", request).then((res) => {
+        await axios.post("/account/createEmployee", request).then(async (res) => {
             const message = res.data.message;
             if (message === "Create employee successfully") {
+                const id = res.data.data.employee.id;
                 fetchData();
                 handleCloseCreate();
                 setMessage(message);
                 setMessageStatus("green");
+                if(request.positionName === "PROFESSOR") {
+                    await axios.get(`/employee-specialty/create?employeeId=${id}&specialtyId=${specialty?.id}`)
+                }
             }
         })
     }
@@ -218,6 +228,24 @@ const EmployeeList = () => {
                                 }
                             </Dropdown.Menu>
                         </Dropdown>
+                        {
+                            position?.name === "PROFESSOR"
+                                ? <Dropdown className='mt-24'>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                                        <span>{specialty?.name}</span>
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu className='filter-menu'>
+                                        {
+                                            specialties.map((specialty, index) => {
+                                                return (
+                                                    <Dropdown.Item className='filter-item' key={index} onClick={() => { setSpecialty(specialty) }}>{specialty.name}</Dropdown.Item>
+                                                )
+                                            })
+                                        }
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                : null
+                        }
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
