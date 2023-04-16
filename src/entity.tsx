@@ -554,6 +554,7 @@ export interface ContractLaborSupply {
     numOfEmployee: number;
     createId: number;
     signerId: number;
+    salary: number;
 }
 
 export interface ContractAgreement {

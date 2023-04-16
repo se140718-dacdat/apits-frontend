@@ -57,6 +57,7 @@ const HRContract = () => {
 
 
     const tableRenderCreate = () => {
+        console.log(interviewsDetail);
         const rows = interviewsDetail?.length > 0 ? interviewsDetail?.map((item) => ({
             id: item.id,
             interviewDetail: item,

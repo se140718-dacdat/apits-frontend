@@ -34,7 +34,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const [signature, setSignature] = useState<string>('');
     const [dateSign, setDateSig] = useState<string>(formatDateMonthYear((new Date()).toString().slice(0, 16)));
     const [isPreview, setIsPreview] = useState(false);
-    const [salary, setSalary] = useState<string>('');
+    const [salary, setSalary] = useState<number>(0);
     const [missionEmployee, setMissionEmployee] = useState<string>('');
     const [benefits, setBenefits] = useState<string>('');
     const [candidate, setCandidate] = useState<CandidateEntity>();
@@ -58,7 +58,6 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                     setPhoneB(interviewDetail.interview.assign.candidate.phone);
                     setAddressB(interviewDetail.interview.assign.candidate.address);
                     setMissionEmployee(interviewDetail.interview.assign.recruitmentRequest.description);
-                    setSalary(interviewDetail.interview.assign.recruitmentRequest.salaryFrom)
                     break;
             }
         }
@@ -72,7 +71,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             nameEmployee: partyB,
             addressEmployee: addressB,
             missionEmployee: missionEmployee,
-            salary: parseInt(salary),
+            salary: salary,
             benefits: benefits,
             nameHiring: interviewDetail !== undefined ? interviewDetail?.interview.assign.recruitmentRequest.creator.name : "",
             signatureHiring: "Mr.A",
@@ -104,12 +103,14 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             description: "",
             numOfEmployee: 1,
             createId: user?.id,
+            salary: salary,
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0
         }
-        await axios.post("/contract/createContractLaborSupply", request).then((res) => {
-            console.log(res.data);
-            setContractType('EMPLOYMENT CONTRACT AGREEMENT');
-        })
+        console.log(request);
+        // await axios.post("/contract/createContractLaborSupply", request).then((res) => {
+        //     console.log(res.data);
+        //     setContractType('EMPLOYMENT CONTRACT AGREEMENT');
+        // })
     }
 
 
@@ -171,7 +172,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
                                 <h5>3. Giá cả và phương thức thanh toán</h5>
                                 <p>Bên B sẽ thanh toán cho Bên A số tiền cung cấp dịch vụ được thỏa thuận trong hợp đồng sau khi nhận được và chấp nhận dịch vụ. Phương thức thanh toán được thống nhất là chuyển khoản ngân hàng đến tài khoản ngân hàng của Bên A theo thông tin sau:</p>
-                                <p>Bên A và B đã thống nhất về mức phí dịch vụ dựa trên kinh nghiệm của ứng viên được cung cấp. Theo đó, với ứng viên có kinh nghiệm <strong>Fresher</strong>, mức phí dịch vụ là <strong>5%</strong> của mức lương cơ bản mà doanh nghiệp đã đề ra sau khi đã phỏng vấn với ứng viên là {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(e.target.value)} />}. Bên B sẽ thanh toán mức phí dịch vụ được thỏa thuận cho Bên A sau khi nhận được và chấp nhận dịch vụ.</p>
+                                <p>Bên A và B đã thống nhất về mức phí dịch vụ dựa trên kinh nghiệm của ứng viên được cung cấp. Theo đó, với ứng viên có kinh nghiệm <strong>Fresher</strong>, mức phí dịch vụ là <strong>5%</strong> của mức lương cơ bản mà doanh nghiệp đã đề ra sau khi đã phỏng vấn với ứng viên là {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(parseInt(e.target.value))} />}(VNĐ). Bên B sẽ thanh toán mức phí dịch vụ được thỏa thuận cho Bên A sau khi nhận được và chấp nhận dịch vụ.</p>
 
                                 <h5>4. Bảo mật thông tin</h5>
                                 <p>Bên A cam kết giữ bí mật thông tin</p>
@@ -258,7 +259,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
                                     <h5>PAY AND COMPENSATION</h5>
-                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(e.target.value)} />} payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
+                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} />} payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
