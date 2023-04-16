@@ -513,6 +513,7 @@ export interface interviewDetailResponse {
     recordMeeting: string;
     description: string;
     interview: InterviewForContract;
+    status: string;
 }
 
 export interface InterviewForContract {
@@ -608,4 +609,5 @@ export interface ContractLarborSupplyResponse {
     numOfEmployee: number;
     employeeId: number;
     status: string;
+    salary: number;
 }

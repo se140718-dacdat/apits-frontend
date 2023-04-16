@@ -38,6 +38,7 @@ import EnterpriseInterview from './components/pages/Enterprise/EnterpriseIntervi
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
 import { getSpecialtiesDetail } from './redux/apiRequest';
+import EnterpriseContract from './components/pages/Enterprise/EnterpriseContract';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -92,6 +93,7 @@ const App: FC = () => {
         <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<HRContract />}></Route>;
         <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
+        <Route path='/enterprise-contract' element={<EnterpriseContract />}></Route>;
         <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;

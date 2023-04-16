@@ -37,7 +37,7 @@ const EmployeeList = () => {
     }, [filter])
 
     async function fetchData() {
-        await axios.get("/employee/getAllEmployees").then((res) => {
+        await axios.get("/employee/getAllEmployees?pageNo=0&pageSize=20").then((res) => {
             setEmployees(res.data.data.responseList);
         })
         await axios.get("/position/getAllPosition").then((res) => {
@@ -67,7 +67,7 @@ const EmployeeList = () => {
                 setMessage(message);
                 setMessageStatus("green");
                 if(request.positionName === "PROFESSOR") {
-                    await axios.get(`/employee-specialty/create?employeeId=${id}&specialtyId=${specialty?.id}`)
+                    await axios.get(`/employee-specialty/create?employeeId=${id}&specialtyId=${specialty?.id}`);
                 }
             }
         })

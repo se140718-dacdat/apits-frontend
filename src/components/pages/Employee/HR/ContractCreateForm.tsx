@@ -1,12 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import "./ContractCreateForm.css";
-import { CandidateEntity, ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
-import moment from "moment";
-import axios from "../../../../api/axios";
-import { useSelector } from "react-redux";
-import { formatDateMonthYear } from "../../../../convert";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "../../../../api/axios";
+import { CandidateEntity, ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
+import "./ContractCreateForm.css";
 
 interface Props {
     interviewDetail: interviewDetailResponse | undefined;
@@ -18,6 +17,16 @@ interface Props {
 const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreement, contractLaborSupply, setIsCreate }) => {
     const user = useSelector((state: any) => state.user.user.user);
     const now = new Date();
+
+    const getSalary = () => {
+        if(contractLaborSupply) {
+            return contractLaborSupply.salary
+        } else if(contractAgreement) {
+            return contractAgreement.salary
+        } else {
+            return 0
+        }
+    }
 
     const [contractType, setContractType] = useState('Select Contract Type');
     const [partyB, setPartyB] = useState<string>('');
@@ -34,9 +43,9 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const [signature, setSignature] = useState<string>('');
     const [dateSign, setDateSig] = useState<string>(moment((new Date()).toString()).format('YYYY-MM-DD'));
     const [isPreview, setIsPreview] = useState(false);
-    const [salary, setSalary] = useState<number>();
-    const [missionEmployee, setMissionEmployee] = useState<string>('');
-    const [benefits, setBenefits] = useState<string>('');
+    const [salary, setSalary] = useState<number>(getSalary());
+    const [missionEmployee, setMissionEmployee] = useState<string>(contractAgreement ? contractAgreement.missionEmployee : '');
+    const [benefits, setBenefits] = useState<string>(contractAgreement ? contractAgreement.benefits : '');
     const [candidate, setCandidate] = useState<CandidateEntity>();
     const [requestLaborSupply, setRequestLaborSupply] = useState<ContractLaborSupply>();
 
@@ -82,13 +91,14 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0
         }
         console.log(request);
-          await axios.post("/contract/createContractLaborSupply", requestLaborSupply).then((res) => {
+        await axios.post("/contract/createContractLaborSupply", requestLaborSupply).then((res) => {
             console.log(res.data);
         })
         await axios.post("/contract/createContractAgreement", request).then((res) => {
             console.log(res.data);
             setIsCreate(false);
         })
+        await axios.put(`/interview-detail/changeStatusDoneByInterviewId?id=${interviewDetail?.interview.id}`)
     }
 
     const handleCreateLarborSupply = async () => {
@@ -238,7 +248,12 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                             </div>
                             <div className="btn-create">
                                 <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
-                                <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
+                                {
+                                    contractLaborSupply !== undefined ?
+                                        <button className=" btn" onClick={() => {}}>Sign</button>
+                                        :
+                                        <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
+                                }
                             </div>
                         </div>
 
@@ -335,7 +350,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                     <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                     {
                                         contractAgreement !== undefined ?
-                                            <button className=" btn" onClick={() => { handleCreateAgreement() }}>Sign</button>
+                                            <button className=" btn" onClick={() => { }}>Sign</button>
                                             :
                                             <button className=" btn" onClick={() => { handleCreateAgreement() }}>Create</button>
 

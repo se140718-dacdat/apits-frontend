@@ -38,7 +38,7 @@ const HRContract = () => {
     async function fetchData() {
         const res = await axios.get("/interview-detail/getAllInterviewDetail");
         const data = await res?.data.data;
-        setInterviewsDetail(data.responseList);
+        setInterviewsDetail(data.responseList.filter((e: interviewDetailResponse) => e.status !== "DONE"));
     }
 
     async function fetchDataEnterpriseContract() {
