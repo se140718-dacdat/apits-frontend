@@ -1,9 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import "./ContractCreateForm.css";
-import { ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
+import { CandidateEntity, ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
 import moment from "moment";
 import axios from "../../../../api/axios";
 import { useSelector } from "react-redux";
+import { formatDateMonthYear } from "../../../../convert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
     interviewDetail: interviewDetailResponse | undefined;
@@ -14,6 +17,7 @@ interface Props {
 
 const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreement, contractLaborSupply, setIsCreate }) => {
     const user = useSelector((state: any) => state.user.user.user);
+    const now = new Date();
 
     const [contractType, setContractType] = useState('Select Contract Type');
     const [partyB, setPartyB] = useState<string>('');
@@ -28,11 +32,12 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const [dateStart, setDateStart] = useState<string>('');
     const [dateEnd, setDateEnd] = useState<string>('');
     const [signature, setSignature] = useState<string>('');
-    const [dateSign, setDateSig] = useState<string>('');
+    const [dateSign, setDateSig] = useState<string>(formatDateMonthYear((new Date()).toString().slice(0, 16)));
     const [isPreview, setIsPreview] = useState(false);
     const [salary, setSalary] = useState<string>('');
     const [missionEmployee, setMissionEmployee] = useState<string>('');
     const [benefits, setBenefits] = useState<string>('');
+    const [candidate, setCandidate] = useState<CandidateEntity>();
 
 
     useEffect(() => {
@@ -44,11 +49,16 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             switch (contractType) {
                 case 'CONTRACT OF LABOR SUPPLY':
                     setPartyB(interviewDetail?.interview.assign.recruitmentRequest.creator.name);
-                    setPhoneB(interviewDetail.interview.assign.recruitmentRequest.hrPhone);
+                    setPhoneB(interviewDetail?.interview.assign.recruitmentRequest.hrPhone);
+                    setAddressB(interviewDetail?.interview.assign.recruitmentRequest.creator.address)
+                    setCandidate(interviewDetail?.interview.assign.candidate);
                     break;
                 default:
                     setPartyB(interviewDetail?.interview.assign.candidate.name);
                     setPhoneB(interviewDetail.interview.assign.candidate.phone);
+                    setAddressB(interviewDetail.interview.assign.candidate.address);
+                    setMissionEmployee(interviewDetail.interview.assign.recruitmentRequest.description);
+                    setSalary(interviewDetail.interview.assign.recruitmentRequest.salaryFrom)
                     break;
             }
         }
@@ -126,93 +136,96 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                         <div className="pages">
                             <div className="page-size page__1">
                                 <div className="national-crest">
-                                    <span>SOCIALIST REPUBLIC OF VIETNAM</span>
-                                    <span>Independence – Freedom – Happiness</span>
+                                    <span>Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam</span>
+                                    <span>Độc lập – tự do – hạnh phúc</span>
                                     <div></div>
                                 </div>
                                 <div className="centered">
-                                    <h3>CONTRACT OF LABOR SUPPLY</h3>
+                                    <h3>HỢP ĐỒNG CUNG CẤP NHÂN SỰ</h3>
                                 </div>
-                                <h5>PARTY A: APITS</h5>
-                                <span>Address: HCM</span><br />
-                                <span>Phone: +84 948.678.678</span><br />
-                                <span>Tax Code: 0502249266</span><br />
-                                <span>Representative: Mr. A </span> <span>Position: DIRECTOR</span><br />
-                                <span>Account No.: 0222 686 686</span><br />
-                                <span>At the bank: TP Bank </span><br />
-                                <span>Account name: APITS</span><br />
+                                <h5>Đơn vị cung cấp dịch vụ: APITS</h5>
+                                <span>Địa chỉ: 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh</span><br />
+                                <span>Số điện thoại: +84 948.678.678</span><br />
+                                <span>Email: apits@apits.com.vn </span><br />
 
-                                <h5>PARTY B:{isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}</h5>
-                                <span>Address: {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />}</span><br />
-                                <span>Phone: {isPreview ? phoneB : <input type='text' className='input-w200 input-text' value={phoneB} onChange={e => setPhoneB(e.target.value)} />}</span><br />
-                                <span>Tax Code: {isPreview ? taxB : <input type='text' className='input-w200 input-text' value={taxB} onChange={e => setTaxB(e.target.value)} />}</span><br />
-                                <span>Representative: {isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} onChange={e => setRepresentativeB(e.target.value)} />}</span><div className="space"></div> <span>Position: {isPreview ? positionB : <input type='text' className='input-w200 input-text' value={positionB} onChange={e => setPositionB(e.target.value)} />} </span><br />
-                                <span>Account No.: {isPreview ? accNumB : <input type='text' className='input-w200 input-text' value={accNumB} onChange={e => setAccNumB(e.target.value)} />}</span><br />
-                                <span>At the bank: {isPreview ? accBankB : <input type='text' className='input-w200 input-text' value={accBankB} onChange={e => setAccBankB(e.target.value)} />} </span><br />
-                                <span>Account name: {isPreview ? accNameB : <input type='text' className='input-w200 input-text' value={accNameB} onChange={e => setAccNameB(e.target.value)} />} </span><br />
-                                <p>After discussion, the two parties herbey agreed on the content of the contract with the following terms</p>
+                                <h5>Đơn vị sử dụng dịch vụ:{isPreview ? ` ${partyB}` : <input type='text' className='input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}</h5>
+                                <p>Địa chỉ: {addressB}</p>
+                                <p>Số điện thoại: {phoneB}</p>
+                                <p>Email: {interviewDetail?.interview.assign.recruitmentRequest.creator.email}</p>
 
-                                <h5>ACTICLE 1: CONTENT OF CONTRACT</h5>
-                                <p>1.1 Party A is responsible for providing labor supply services at the request of Party B in terms of quantity, type, norms, …</p>
-                                <p>1.2 Party A provides the number of Employees by increase or decrease at the request of Party B. Party B must notify Party A at least 07 working days in advance (For unexpected cases, the notice time is at least 03 days)</p>
-                                <p>1.3 Working place: at HBC VIETNAM Company</p>
+                                <p>Ngày ký: {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}</p>
 
-                                <h5>ARTICLE 2: CONTRACT TERM</h5>
-                                <p>2.1 Term of validity of the Contract: from {isPreview ? dateStart : <input type='text' className='input-w130 input-text' value={dateStart} onChange={e => setDateStart(e.target.value)} />}. until the end of the day {isPreview ? dateEnd : <input type='text' className='input-w130 input-text' value={dateEnd} onChange={e => setDateEnd(e.target.value)} />}</p>
-                                <p>2.2 Working time at Party B:</p>
-                                <p>- Standard time: 08 hours / person / day; 6 days / week.</p>
-                                <p>- Outside the standard time, it is possible to overtime according to the business needs of Party B.</p>
+                                <p>Giữa <strong>APITS</strong>, có trụ sở tại <strong>1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh</strong>, (sau đây gọi là "Bên A") và <strong>{partyB}</strong>, có trụ sở tại <strong>{addressB}</strong>, (sau đây gọi là "Bên B").</p>
 
-                                <h5>ARTICLE 3: RESPONSIBILITIES OF THE TWO PARTIES</h5>
-                                <h6>3.1 Responsibilities of Party A:</h6>
-                                <p>3.1.1 Party A ensures sufficient quantity and quality of employees in the course of implementing the purchase order according to Party B’s demand.</p>
-                                <p>3.1.2 Party A will arrange its candidates to work at Party B's company to ensure the following conditions: healthy enough to work, clear background, good moral character, honesty, good work ethic professional, have a sense of responsibility in the assigned work.</p>
-                                <p>3.1.3 Party A ensures to provide Party B with the right workforce to perform the work in accordance with the process and product quality required by Party B.</p>
-                                <p>3.1.4 Party A ensures all employees of Party A during the working at Party B’s company, always abide by the internal rules, labor discipline, principles of occupational safety and hygiene prescribed and prior noticed by Party B to Party A’s employees.</p>
-                                <p>3.1.5 Party A is responsible for the employee’s salary. Party A directly signs labor contracts for each employee working at Party B.</p>
-                                <p>3.1.6 Party A fully guarantees all other benefits for Party A's candidates who are working at Party B's workshop according to the level agreed with Party B.</p>
-                                <p>3.1.7 Party A ensures to provide an adequate number of employees to meet the business plan deadlines as required by Party B.</p>
-                                <p>3.1.8 If the employee of Party A wants to take leave, he / she must make an application one day in advance and must be approved by Party B’s manager to sign the application. Without the Manager’s consent, the employee is not allowed to take leave. (Except for force majeure cases such as illness, sickness, etc.)</p>
-                                <h6>Responsibilities of Party B:</h6>
-                                <p>3.2.1 Party B trains Party A's employees on Company Rules, Regulations on Occupational Safety and Health.</p>
-                                <p>3.2.2 Party B provides the facilities and tools for manufacturing and processing for Party A’s employees during the working process at Party B’s factory</p>
-                                <p>3.2.3 Party A’s employees are allowed to use the canteen and toilets and park their vehicles at the company’s parking lots.</p>
-                                <p>3.2.4 Party B provides initial health care services to Party A’s employees, in case of an accident in Party B’s factory areas, it must promptly notify Party A to handle together.</p>
-                                <p>3.2.5 Party B provides mid-shift meals to the employees of Party A who are working at the factory of Party B. If overtime for 03 hours or more, a further meal is added. </p>
+                                <h5>1. Nội dung của hợp đồng</h5>
+                                <p>Bên A cam kết cung cấp cho Bên B dịch vụ cung cấp nhân sự với thông tin như sau:</p>
+                                <ul>
+                                    <li>Tên nhân viên: <strong>{candidate?.name}</strong></li>
+                                    <li>Ngày sinh: <strong>{candidate?.dob.toString().slice(0, 10)}</strong></li>
+                                    <li>Giới tính: <strong>{candidate?.gender === "Male" ? "Nam" : "Nữ"}</strong></li>
+                                    <li>Địa Chỉ: <strong>{candidate?.address}</strong></li>
+                                </ul>
 
-                                <h5>ARTICLE 4: PRICE AND METHOD OF PAYMENT</h5>
-                                <p>4.1 Unit price. Based on attached price quotation (not included VAT)</p>
-                                <p>- Wage of weekday overtime is charged at 150% (according to the current labor code)</p>
-                                <p>- Wage of Sunday overtime is charged at 200% (according to the current Labor Code).</p>
-                                <p>- Wage of overtime on holidays and Tet holidays is charged at 300% (according to the current labor law).</p>
-                                <p>- Wage of Night Overtime is added 30% (according to the current labor law).</p>
-                                <p>4.2 Payment method: Bank transfer</p>
+                                <h5>2. Thời hạn của hợp đồng</h5>
+                                <p>Hợp đồng này có hiệu lực từ ngày ký và kết thúc sau khi các bên hoàn thành các điều kiện cụ thể được ghi trong hợp đồng hoặc được chấm dứt bởi bất kỳ bên nào thông qua thông báo bằng văn bản cho bên còn lại trước ít nhất 7 ngày.</p>
 
-                                <h5>ARTICLE 5: EXTENSION OR TERMINATION OF THE CONTRACT</h5>
-                                <p>5.1 This contract may be extended upon agreement of the two parties depending on the processing orders of each batch.</p>
-                                <p>5.2 If either party fails to agree to extend the contract after the expiration as stipulated in Article 2 of this contract, this contract will be automatically terminated and liquidated in the spirit of discussion between the two parties.</p>
-                                <p>5.3 Where either party requests to terminate the contract ahead of time as mentioned in Article 2, the two parties will discuss together to reach a mutual agreement and notify the other party in writing.</p>
+                                <h5>3. Giá cả và phương thức thanh toán</h5>
+                                <p>Bên B sẽ thanh toán cho Bên A số tiền cung cấp dịch vụ được thỏa thuận trong hợp đồng sau khi nhận được và chấp nhận dịch vụ. Phương thức thanh toán được thống nhất là chuyển khoản ngân hàng đến tài khoản ngân hàng của Bên A theo thông tin sau:</p>
+                                <p>Bên A và B đã thống nhất về mức phí dịch vụ dựa trên kinh nghiệm của ứng viên được cung cấp. Theo đó, với ứng viên có kinh nghiệm <strong>Fresher</strong>, mức phí dịch vụ là <strong>5%</strong> của mức lương cơ bản mà doanh nghiệp đã đề ra sau khi đã phỏng vấn với ứng viên là {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(e.target.value)} />}. Bên B sẽ thanh toán mức phí dịch vụ được thỏa thuận cho Bên A sau khi nhận được và chấp nhận dịch vụ.</p>
 
-                                <h5>ARTICLE 6: GENERAL PROVISIONS</h5>
-                                <p>The two parties commit to properly and fully comply with the terms stated in the contract, the violating party will be responsible as prescribed by law. In the course of contract performance, if there are any obstacles or difficulties, the two partieswill meet to discuss and resolve.</p>
-                                <p>All changes must be discussed in a spirit of cooperation in order to well perform the signed terms and clarify in writing the changes and supplements (if any).</p>
-                                <p>The two parties must regularly inform each other of the contract performance progress to promptly solve arising problems.</p>
-                                <p>Each party undertakes to keep the information provided by the other party confidential, or is allowed to access it during the course of work performance and must not disclose the information to any third party without the written consent of the other party.</p>
-                                <p>Any disputes during implementation will be settled on the basis of discussion and in the spirit of mutual understanding as well as for the benefit of the two parties. In case of failure of negotiation and settlement, all disputes will be resolved at the Dong Nai Provincial People’s Court. All costs and fees for settlement are borne by the violating party at the Court’s discretion.</p>
+                                <h5>4. Bảo mật thông tin</h5>
+                                <p>Bên A cam kết giữ bí mật thông tin</p>
+
+                                <h5>5. Trách nhiệm và nghĩa vụ của các bên</h5>
+                                <h6 className="ml-22">5.1. Trách nhiệm và nghĩa vụ của bên A:</h6>
+                                <ul className="ml-22">
+                                    <li>Cam kết cung cấp dịch vụ nhân sự theo yêu cầu của bên B đảm bảo tính chất chuyên nghiệp, trung thực và đáp ứng đầy đủ các tiêu chuẩn và điều kiện được ghi trong hợp đồng.</li>
+                                    <li>Có trách nhiệm bồi thường cho bên B nếu dịch vụ cung cấp của bên A gây ra thiệt hại đến quyền lợi và tài sản của bên B.</li>
+                                    <li>Bảo mật thông tin về bên B và nhân viên được cung cấp cho bên B.</li>
+                                </ul>
+                                <h6 className="ml-22">5.2. Trách nhiệm và nghĩa vụ của bên B:</h6>
+                                <ul className="ml-22">
+                                    <li>Thanh toán đầy đủ và đúng thời hạn số tiền được thỏa thuận trong hợp đồng.</li>
+                                    <li>Đảm bảo cung cấp đầy đủ thông tin về yêu cầu về nhân sự để bên A có thể cung cấp dịch vụ đúng theo yêu cầu của bên B.</li>
+                                    <li>Cam kết đảm bảo an toàn cho nhân viên được cung cấp từ bên A trong quá trình làm việc tại bên B</li>
+                                </ul>
+
+                                <h5>6. Điều khoản chấm dứt hợp đồng</h5>
+                                <h6 className="ml-22">6.1. Hợp đồng có thể chấm dứt khi:</h6>
+                                <ul className="ml-22">
+                                    <li>Bên A không đáp ứng đầy đủ hoặc không tuân thủ các điều kiện đã ghi trong hợp đồng và không sửa chữa trong vòng [số ngày] kể từ khi bên B thông báo bằng văn bản.</li>
+                                    <li>Bên A vi phạm các quy định pháp luật về cung cấp dịch vụ nhân sự.</li>
+                                    <li>Bên B không thanh toán đầy đủ hoặc không đúng thời hạn các khoản phí được thỏa thuận trong hợp đồng và không sửa chữa trong vòng [số ngày] kể từ khi bên A thông báo bằng văn bản.</li>
+                                </ul>
+
+                                <h6 className="ml-22">6.2. Trong trường hợp hợp đồng bị chấm dứt do lý do không phải là do bên A vi phạm thì bên B phải thanh toán cho bên A phần chi phí đã phát sinh cho dịch vụ cung cấp nhân sự đến thời điểm chấm dứt</h6>
+
+                                <h5>7. Điều khoản khác</h5>
+                                <h6 className="ml-22">7.1. Bên A và bên B cam kết thực hiện các điều khoản và điều kiện của hợp đồng này một cách nghiêm túc và trung thực.</h6>
+                                <h6 className="ml-22">7.2. Bất kỳ sự thay đổi hoặc bổ sung nào của hợp đồng này phải được thực hiện bằng văn bản và có sự đồng ý của cả hai bên.</h6>
+                                <h6 className="ml-22">7.3. Hợp đồng này sẽ có hiệu lực kể từ ngày ký kết và có thời hạn đến khi đủ điều kiện chấm dứt theo quy định của hợp đồng.</h6>
+                                <h6 className="ml-22">7.4. Bên A và bên B sẽ giải quyết các tranh chấp phát sinh liên quan đến hợp đồng này bằng đàm phán và giải quyết hòa bình. Trong trường hợp không giải quyết được bằng đàm phán, tranh chấp sẽ được đưa ra trọng tài tại Công ty APITS, 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh.</h6>
+
+                                <p>Trong chứng nhận này, bên A và bên B đã xác nhận rằng họ đã đọc, hiểu và chấp nhận tất cả các điều khoản và điều kiện được ghi trong hợp đồng này. Hợp đồng này có giá trị pháp lý và có hiệu lực sau khi được ký và đóng dấu bởi hai bên.</p><br />
 
                                 <div className="signature">
                                     <div className="signature-left">
-                                        <h6>REPRESENTATIVE OF PARTY A</h6>
-                                        <p><label className="label-signature-name">Name:</label>Mr.A<br />
-                                            <label className="label-signature-name">Signature:</label>Mr.A<br />
-                                            <label className="label-signature-name">Date:</label>{moment(new Date()).format("DD-MM-YYYY")}
+                                        <h6>Đại diện của bên A</h6>
+                                        <p><label className="label-signature-name">Bên A:</label>Công ty APITS<br />
+                                            <label className="label-signature-name">Đại diện:</label>Mr.A<br />
+                                            <label className="label-signature-name">Chức vụ:</label>Director<br />
+                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                            <div className="sign mt-24">
+                                                <FontAwesomeIcon icon={faCheck} style={{color: "green"}}/> Signed
+                                            </div>
                                         </p>
                                     </div>
                                     <div className="signature-right">
-                                        <h6>REPRESENTATIVE OF PARTY B</h6>
-                                        <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
-                                            <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
-                                            <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
+                                        <h6>Đại diện của bên B</h6>
+                                        <p><label className="label-signature-name">Bên B:</label>Công ty {partyB}<br />
+                                            <label className="label-signature-name">Đại diện:</label><input type="text" className="input-text" /><br />
+                                            <label className="label-signature-name">Chức vụ:</label><input type="text" className="input-text" /><br />
+                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
                                         </p>
                                     </div>
                                 </div>
@@ -237,10 +250,10 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         <h3>EMPLOYMENT CONTRACT AGREEMENT</h3>
                                     </div>
                                     <h5>PARTIES</h5>
-                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? 'District 9 Ho Chi Minh city' : <input type='text' value={'District 9 Ho Chi Minh city'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
+                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? '1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh' : <input type='text' value={'1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
                                     <h5>DUTIES AND RESPONSIBILITIES</h5>
                                     <p>-	During the employment period, the Employee shall have the responsibility to perform the following duties:<br />
-                                        {isPreview ? missionEmployee : <textarea rows={5} className='p0-14' style={{ width: "100%" }} onChange={(e) => { setMissionEmployee(e.target.value) }} />}  <br />
+                                        {isPreview ? missionEmployee : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} value={missionEmployee} onChange={(e) => { setMissionEmployee(e.target.value) }} />}  <br />
                                         <br />
                                         -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
                                     </p>
@@ -249,7 +262,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                     <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
                                     <h5>BENEFITS</h5>
                                     <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
-                                        {isPreview ? benefits : <textarea rows={5} className='p0-14' style={{ width: "100%" }} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
+                                        {isPreview ? benefits : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
                                     </p>
                                     <h5>WORKING HOURS AND LOCATION</h5>
                                     <p>-	The Employee agrees that he/she will be working from Monday to Friday, with a 5 lunch break.<br />

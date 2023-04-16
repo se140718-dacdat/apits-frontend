@@ -148,7 +148,7 @@ const EnterpriseProfile: FC = () => {
                                         <div className="post-description">
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                                {post.salaryDetail}
+                                                {post.salaryFrom}
                                             </div>
                                             <div className="description-item">
                                                 <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />

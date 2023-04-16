@@ -23,7 +23,7 @@ const CandidateList = () => {
     async function handleDisable(id: number) {
         axios.get(`/candidate/disable?id=${id}`).then((res) => {
             const message = res.data.message;
-            if (message === "Disable candidate successfully") {
+            if (message === "Disable Candidate Success") {
                 fetchData();
                 setMessage(message);
                 setMessageStatus("green");
@@ -34,7 +34,7 @@ const CandidateList = () => {
     async function handleActive(id: number) {
         axios.get(`/candidate/active?id=${id}`).then((res) => {
             const message = res.data.message;
-            if (message === "Active candidate successfully") {
+            if (message === "Active Candidate Success") {
                 fetchData();
                 setMessage(message);
                 setMessageStatus("green");

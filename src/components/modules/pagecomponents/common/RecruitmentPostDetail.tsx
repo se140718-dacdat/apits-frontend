@@ -98,7 +98,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Salary</strong>
                                                 <br />
-                                                <span>{post?.salaryDetail}</span>
+                                                <span>{post?.salaryFrom}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">

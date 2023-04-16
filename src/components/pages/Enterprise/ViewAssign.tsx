@@ -35,13 +35,10 @@ const ViewAssign = () => {
     //     )
     // );
 
-    const fetchData = async (): Promise<ConfirmedEntity[]> => {
-        const response = await axios.get<{ data: ConfirmedEntity[] }>(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
-        const data = response?.data?.data;
-        if (data) {
-            setCandidates(data);
-        }
-        return data;
+
+    async function fetchData () {
+        const response = await axios.get(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
+        setCandidates(response.data.data);
     }
 
 
@@ -58,15 +55,15 @@ const ViewAssign = () => {
         p: 4,
     };
 
-    const handleApprove = (assignId: number) => {
-        approveCandidate(assignId)
-        fetchData();
+    const handleApprove = async (assignId: number) => {
+        await axios.get(`/assign/approvedAssignEnterprise?id=${assignId}`).then((res) => {
+            if(res.data.status === "SUCCESS") {
+                fetchData();
+            }
+        })
     }
 
     const handleReject = (assignId: number, candidateId: number) => {
-        // const request = {
-        //     id: 
-        // }
         rejectCandidate(assignId, candidateId)
         fetchData();
     }
@@ -145,13 +142,13 @@ const ViewAssign = () => {
         },
     ];
 
-    const rows = candidates.map((candidate) => ({
+    const rows = candidates?.length > 0 ? candidates?.map((candidate) => ({
         id: candidate.candidateResponse.id,
         name: candidate.candidateResponse.name,
         gender: candidate.candidateResponse.gender,
         address: candidate.candidateResponse.address,
         assignId: candidate.assignId
-    }));
+    })) : [];
 
     return (
         <div style={{ height: 400, width: "100%" }}>

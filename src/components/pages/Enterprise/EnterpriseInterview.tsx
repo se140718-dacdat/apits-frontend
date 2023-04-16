@@ -26,6 +26,7 @@ const EnterpriseInterview = () => {
   const [interviewId, setInterviewId] = useState<number>();
   const [result, setResult] = useState<string>('APPROVE');
   const [description, setDescription] = useState<string>('');
+  const [salary, setSalary] = useState<string>('');
 
 
   const handleShowInterviewReport = () => setShowInterviewReport(true);
@@ -43,21 +44,30 @@ const EnterpriseInterview = () => {
   }
 
   const handleReport = async () => {
-    if(interviewId !== undefined) {
+    if (interviewId !== undefined) {
       const request: InterviewDetail = {
         interviewID: interviewId,
         result: result,
         description: description
       }
-      await axios.post("/interview-detail/createInterviewDetail", request).then((res) => {
-        if(res.data.status == "SUCCESS") {
-          updateInterviewDone(interviewId);
-          setDescription('');
-          setResult('APPROVE');
-          setInterviewId(undefined);
-          setMessage("Report successfuly!");
-          setMessageStatus("green");
-          handleCloseInterviewReport();
+      await axios.post("/interview-detail/createInterviewDetail", request).then(async (res) => {
+        if (res.data.status == "SUCCESS") {
+          await axios.put(`/updateInterviewToDone?interviewID=${interviewId}`).then((res) => {
+            if (res.data.status === "SUCCESS") {
+              setDescription('');
+              setResult('APPROVE');
+              setInterviewId(undefined);
+              setMessage("Report successfuly!");
+              setMessageStatus("green");
+              fetchData();
+              handleCloseInterviewReport();
+            } else {
+              setMessage("Report fail!");
+            }
+          });
+        }
+        else {
+          setMessage("Report fail!");
         }
       })
     }
@@ -160,13 +170,18 @@ const EnterpriseInterview = () => {
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue={result}
               name="radio-buttons-group"
-              onChange={(e)=>{setResult(e.target.value)}}
+              onChange={(e) => { setResult(e.target.value) }}
             >
               <FormControlLabel value="APPROVE" control={<Radio />} label="Approve" />
               <FormControlLabel value="REJECT" control={<Radio />} label="Reject" />
             </RadioGroup>
           </FormControl>
-          <textarea name="result-description" className="p0-14" id="" rows={5} style={{width: "100%"}} placeholder="Description" required onChange={(e)=>{setDescription(e.target.value)}}></textarea>
+          {
+            result === "APPROVE" ?
+              <input type="text" placeholder="Salary" className="salary" onChange={(e) => { setSalary(e.target.value) }} />
+              : null
+          }
+          <textarea name="result-description" className="p0-14" id="" rows={5} style={{ width: "100%" }} placeholder="Description" required onChange={(e) => { setDescription(e.target.value) }}></textarea>
         </Modal.Body>
         <Modal.Footer>
           <button className="btn" onClick={() => { handleReport() }}>Report</button>

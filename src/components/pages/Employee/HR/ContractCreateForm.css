@@ -81,6 +81,11 @@
     text-decoration: underline;
 }
 
+#ContractCreateForm .p {
+    text-justify: auto;
+}
+
+
 #ContractCreateForm .page-size {
     width: 1041px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -92,6 +97,7 @@
 #ContractCreateForm .page-size.page__5 {
     position: relative;
 }
+
 #ContractCreateForm .signature {
     display: flex;
     justify-content: space-between;
@@ -105,28 +111,35 @@
 #ContractCreateForm .input-w130 {
     width: 130px;
 }
+
 #ContractCreateForm .input-w200 {
     width: 200px;
 }
+
 #ContractCreateForm .input-w250 {
     width: 250px;
 }
+
 #ContractCreateForm .input-w300 {
     width: 300px;
 }
+
 #ContractCreateForm .input-w400 {
     width: 400px;
 }
+
 #ContractCreateForm .input-w30 {
     width: 30px;
 }
 
 #ContractCreateForm .input-text {
-    text-align: center;
+    padding-left: 12px;
     border: none;
     border-bottom: 1px solid var(--black-color);
     color: var(--primary-color);
     outline: none;
+    line-height: 1.5rem;
+    width: 35%;
 }
 
 #ContractCreateForm .space {
@@ -146,11 +159,58 @@
     display: flex;
     justify-content: center;
     padding-bottom: 2rem;
-    
+
 }
 
 #ContractCreateForm .btn-cancel {
     background-color: #f3f4f5 !important;
     color: #212529 !important;
     margin-right: 1.5rem;
+}
+
+#ContractCreateForm .input-cover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#ContractCreateForm .form-input {
+    display: flex;
+    position: relative;
+    width: 45%;
+    border-radius: 3px;
+    margin: 18px 0;
+    justify-content: space-between;
+}
+
+#ContractCreateForm .form-input input {
+    border: none;
+    margin-left: -1px;
+    width: 100%;
+    color: var(--primary-color);
+    padding-left: 8px;
+}
+
+#ContractCreateForm .form-input input:focus-visible {
+    outline: none;
+}
+
+#ContractCreateForm .input-label {
+    padding-right: 4px;
+}
+
+#ContractCreateForm .width {
+    width: 65% !important;
+}
+
+#ContractCreateForm .textarea {
+    color: var(--primary-color);
+}
+
+#ContractCreateForm .width80 {
+    width: 80% !important;
+}
+
+#ContractCreateForm .width100 {
+    width: 100% !important;
 }

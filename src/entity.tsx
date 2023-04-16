@@ -48,7 +48,7 @@ export interface CandidateResponse {
     status: string;
 }
 
-interface CandidateEntity {
+export interface CandidateEntity {
     id: number;
     email: string;
     name: string;
@@ -116,7 +116,7 @@ export interface PostResponse {
     benefits: string,
     experience: string,
     typeOfWork: string,
-    salaryDetail: string,
+    salaryFrom: string,
     salaryTo: string,
     description: string,
     requirement: string,

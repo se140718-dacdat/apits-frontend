@@ -22,7 +22,7 @@ const CandidateAssign = () => {
 
   
   async function fetchData () {
-    const response = await axios.put(`/candidate/findCandidatebyRRId/${id}`);
+    const response = await axios.get(`/candidate/findCandidatebyRRId/${id}`);
     setCandidates(response.data.data);
 }
 

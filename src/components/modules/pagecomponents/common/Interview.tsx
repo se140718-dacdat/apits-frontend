@@ -97,6 +97,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   }
 
   const createInterview = async (request: InterviewCreate) => {
+    console.log(request);
     try {
       await axios.post("/createInterview", request).then(async function (res) {
         setMessage(res.data.message);
@@ -306,7 +307,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     if (type === "HIRE") {
       return (
         <div className="participant-container">
-          <span className="participant-title">Professor:</span>
+          <span className="participant-title">Enterprise:</span>
           <div className="participant__name btn-item hover">
             <span>{participantB}</span>
           </div>
