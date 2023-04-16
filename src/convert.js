@@ -36,3 +36,12 @@ export const formatDateMonthYear = (dateString) => {
     }
     return `${day}${suffix} ${month}, ${year}`;
 };
+
+export const convertCurrencyToInt = (currency) => {
+    let arr = currency.split(".");
+    let num = "";
+    arr.forEach(e => {
+        num = num + e;
+    });
+    return parseInt(num);
+}

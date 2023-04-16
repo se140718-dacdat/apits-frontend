@@ -32,12 +32,13 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const [dateStart, setDateStart] = useState<string>('');
     const [dateEnd, setDateEnd] = useState<string>('');
     const [signature, setSignature] = useState<string>('');
-    const [dateSign, setDateSig] = useState<string>(formatDateMonthYear((new Date()).toString().slice(0, 16)));
+    const [dateSign, setDateSig] = useState<string>(moment((new Date()).toString()).format('YYYY-MM-DD'));
     const [isPreview, setIsPreview] = useState(false);
-    const [salary, setSalary] = useState<number>(0);
+    const [salary, setSalary] = useState<number>();
     const [missionEmployee, setMissionEmployee] = useState<string>('');
     const [benefits, setBenefits] = useState<string>('');
     const [candidate, setCandidate] = useState<CandidateEntity>();
+    const [requestLaborSupply, setRequestLaborSupply] = useState<ContractLaborSupply>();
 
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             nameEmployee: partyB,
             addressEmployee: addressB,
             missionEmployee: missionEmployee,
-            salary: salary,
+            salary: salary ? salary : 0,
             benefits: benefits,
             nameHiring: interviewDetail !== undefined ? interviewDetail?.interview.assign.recruitmentRequest.creator.name : "",
             signatureHiring: "Mr.A",
@@ -81,6 +82,9 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0
         }
         console.log(request);
+          await axios.post("/contract/createContractLaborSupply", requestLaborSupply).then((res) => {
+            console.log(res.data);
+        })
         await axios.post("/contract/createContractAgreement", request).then((res) => {
             console.log(res.data);
             setIsCreate(false);
@@ -103,13 +107,14 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             description: "",
             numOfEmployee: 1,
             createId: user?.id,
-            salary: salary,
+            salary: salary ? salary : 0,
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0
         }
-        console.log(request);
+        setRequestLaborSupply(request);
+        setContractType('EMPLOYMENT CONTRACT AGREEMENT');
+
         // await axios.post("/contract/createContractLaborSupply", request).then((res) => {
         //     console.log(res.data);
-        //     setContractType('EMPLOYMENT CONTRACT AGREEMENT');
         // })
     }
 
@@ -217,7 +222,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                             <label className="label-signature-name">Chức vụ:</label>Director<br />
                                             {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
                                             <div className="sign mt-24">
-                                                <FontAwesomeIcon icon={faCheck} style={{color: "green"}}/> Signed
+                                                <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
                                             </div>
                                         </p>
                                     </div>
@@ -232,7 +237,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                 </div>
                             </div>
                             <div className="btn-create">
-                                <button className="btn btn-cancel" onClick={() => { setIsCreate(false) }}>Cancel</button>
+                                <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                 <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
                             </div>
                         </div>
@@ -243,94 +248,91 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                             <div className="pages">
                                 <div className="page-size">
                                     <div className="national-crest">
-                                        <span>SOCIALIST REPUBLIC OF VIETNAM</span>
-                                        <span>Independence – Freedom – Happiness</span>
+                                        <span>Cộng Hòa Xã Hội Chủ Nghĩa Việt Nam</span>
+                                        <span>Độc lập – tự do – hạnh phúc</span>
                                         <div></div>
                                     </div>
                                     <div className="centered">
-                                        <h3>EMPLOYMENT CONTRACT AGREEMENT</h3>
+                                        <h3>HỢP ĐỒNG CUNG CẤP DỊCH VỤ TÌM</h3>
                                     </div>
-                                    <h5>PARTIES</h5>
-                                    <p>-	This Employment Contract Agreement (hereinafter referred to as the “Agreement”) is entered into on {isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />} (the “Effective Date”), by and between Apits, with an address of {isPreview ? '1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh' : <input type='text' value={'1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh'} className='input-w200 input-text' />} (hereinafter referred to as the “Employer”), and {isPreview ? partyB : <input type='text' className='input-w200 input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}, with an address of {isPreview ? addressB : <input type='text' className='input-w200 input-text' value={addressB} onChange={e => setAddressB(e.target.value)} />} (hereinafter referred to as the “Employee”) (collectively referred to as the “Parties”).</p>
-                                    <h5>DUTIES AND RESPONSIBILITIES</h5>
-                                    <p>-	During the employment period, the Employee shall have the responsibility to perform the following duties:<br />
+                                    <h5>Các Bên</h5>
+                                    <p>- Thỏa thuận Hợp đồng Lao động này (sau đây gọi là “Thỏa thuận”) được ký kết vào ngày 16 tháng 4 năm 2023 (“Ngày có hiệu lực”), giữa Apits có địa chỉ 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh (sau đây gọi là “Bên cung cấp dịch vụ”) và Lương Hồ Đắc Đạt, có địa chỉ tại TP.HCM (sau đây gọi là “Người lao động”) (gọi chung là “Các bên”) .</p>
+                                    <h5>Nhiệm Vụ Và Trách Nhiệm</h5>
+                                    <p>- Trong thời gian làm việc, Người lao động có trách nhiệm thực hiện các nhiệm vụ sau:<br />
                                         {isPreview ? missionEmployee : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} value={missionEmployee} onChange={(e) => { setMissionEmployee(e.target.value) }} />}  <br />
                                         <br />
-                                        -	The Parties agree that any responsibilities provided in this Agreement may not be assigned to any other party unless both parties agree to the assignment in writing
+                                        - Các Bên đồng ý rằng bất kỳ trách nhiệm nào được quy định trong Thỏa thuận này sẽ không được chuyển nhượng cho bất kỳ bên nào khác trừ khi cả hai bên đồng ý chuyển nhượng bằng văn bản
                                     </p>
-                                    <h5>PAY AND COMPENSATION</h5>
-                                    <p>-	The Parties hereby agree that the Employer will pay the Employee an annual salary of {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} />} payable semi-monthly and subject to regular deductions and withholdings as required by law.</p>
-                                    <p>-	Whereas the Parties also agree that annual salary may be increased annually by an amount as may be approved by the Employer and, upon such increase, the increased amount shall thereafter be deemed to be the annual salary for purposes of this Agreement.</p>
-                                    <h5>BENEFITS</h5>
-                                    <p>-	The Parties hereby agree that the Employee shall receive the benefits (Insurance, Holiday and Vacation) provided by the Employer as indicated below.<br />
+                                    <h5>Trả Lương Và Bồi Thường</h5>
+                                    <p>Các Bên theo đây đồng ý rằng Người sử dụng lao động sẽ trả cho Người lao động mức lương hàng năm là {isPreview ? <strong>{salary}</strong> : <input type='text' className='input-w130 input-text' value={salary} />} (VNĐ), phải trả một tháng một lần và chịu các khoản khấu trừ và giữ lại thường xuyên theo yêu cầu của pháp luật.</p>
+                                    <p>- Xét rằng các Bên cũng đồng ý rằng tiền lương hàng năm có thể được tăng lên hàng năm với số tiền có thể được Người sử dụng lao động chấp thuận và, khi tăng như vậy, số tiền tăng lên sau đó sẽ được coi là tiền lương hàng năm cho các mục đích của Thỏa thuận này.</p>
+                                    <h5>Quyền Lợi</h5>
+                                    <p>- Các Bên theo đây đồng ý rằng Người lao động sẽ nhận được các phúc lợi (Bảo hiểm, Ngày lễ và Kỳ nghỉ) do Người sử dụng lao động cung cấp như được nêu dưới đây.<br />
                                         {isPreview ? benefits : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
                                     </p>
-                                    <h5>WORKING HOURS AND LOCATION</h5>
-                                    <p>-	The Employee agrees that he/she will be working from Monday to Friday, with a 5 lunch break.<br />
-                                        -	In particular, the Employee agrees that he/she will work on average 40 hours per week.<br />
-                                        -	The Employee’s place of work shall be located in {addressB} or such other location as the Parties may agree upon from time to time.<br />
+                                    <h5>Giờ Làm Việc Và Địa Điểm</h5>
+                                    <p>- Người lao động đồng ý sẽ làm việc từ thứ 2 đến thứ 6, nghỉ trưa 5 tiếng.<br />
+                                        - Cụ thể, Người lao động đồng ý sẽ làm việc trung bình 40 giờ/tuần.<br />
+                                        - Địa điểm làm việc của Người lao động sẽ được đặt tại TP.HCM hoặc địa điểm khác mà các Bên có thể thỏa thuận tùy từng thời điểm.<br />
                                     </p>
-                                    <h5>TERMs OF AGREEMENT</h5>
-                                    <p>-	This Agreement shall be effective on the date of signing this Agreement.<br />
-                                        -	Upon the end of the term of the Agreement, this Agreement will not be automatically renewed for a new term.<br />
-                                    </p>
-
-                                    <h5>TERMINATION</h5>
-                                    <p>-	This Agreement may be terminated in case the following occurs:<br />
-                                        1.	Immediately in case one of the Parties breaches this Agreement.<br />
-                                        2.	At any given time by providing a written notice to the other party 7 days prior to terminating the Agreement.<br />
-                                        -	Upon terminating this Agreement, the Employee will be required to return all Employer’s materials, products or any other content at his/her earliest convenience, but not beyond 7 days.</p>
-                                    <h5>CONFIDENTIALITY </h5>
-                                    <p>-	All terms and conditions of this Agreement and any materials provided during the term of the Agreement must be kept confidential by the Employee, unless the disclosure is required pursuant to process of law. <br />
-                                        -	Disclosing or using this information for any purpose beyond the scope of this Agreement, or beyond the exceptions set forth above, is expressly forbidden without the prior consent of the Employer.
-                                    </p>
-                                    <h5>INTELLECTUAL PROPERTY</h5>
-                                    <p>-	Hereby, the Employee agrees that any intellectual property provided to him/her by the Employer will remain the sole property of the Employer including, but not limited to, copyrights, patents, trade secret rights, and other intellectual property rights associated with any ideas, concepts, techniques, inventions, processes, works of authorship, Confidential Information or trade secrets. </p>
-                                    <h5>EXCLUSIVITY</h5>
-                                    <p>-	The Parties agree that this Agreement is not an exclusive arrangement and that the Employer is entitled to enter into other similar agreements with other employees.<br />
+                                    <h5>Khoản của thỏa thuận</h5>
+                                    <p>- Hợp đồng này có hiệu lực kể từ ngày ký kết Hợp đồng này.<br />
+                                        - Khi kết thúc thời hạn của Thỏa thuận, Thỏa thuận này sẽ không được tự động gia hạn cho một thời hạn mới.<br />
                                     </p>
 
-                                    <p>-	However, the Employee is not entitled to enter into a similar agreement as long as he/she remains a party to this Agreement.</p>
-                                    <h5>LIMITATION OF LIABILITY</h5>
-                                    <p>-	In no event shall the Employer nor the Employee be individually liable for any damages for breach of duty by third parties, unless the Employer’s or Employee’s act or failure to act involves intentional misconduct, fraud, or a knowing violation of the law.</p>
-                                    <h5>SEVERABILITY</h5>
-                                    <p>-	In an event where any provision of this Agreement is found to be void and unenforceable by a court of competent jurisdiction, then the remaining provisions will remain to be enforced in accordance with the Parties’ intention.</p>
-                                    <h5>GOVERNING LAW</h5>
-                                    <p>-	This Agreement shall be governed by and construed in accordance with the laws of Viet Nam.</p>
-                                    <h5>ALTERNATIVE DISPUTE RESOLUTION</h5>
-                                    <p>-	Any dispute or difference whatsoever arising out of or in connection with this Agreement shall be submitted to Arbitration in accordance with, and subject to the laws of Viet Name.</p>
-                                    <h5>ATTORNEY FEES	</h5>
-                                    <p>-	In the event of any dispute between the parties concerning the terms and provisions of this Agreement, the party prevailing in such dispute shall be entitled to collect from the other party all costs incurred in such dispute, including reasonable attorneys’ fees.</p>
-                                    <h5>ENTIRE AGREEMENT</h5>
-
-                                    <p>-	This Agreement contains the entire agreement and understanding among the Parties hereto with respect to the subject matter hereof, and supersedes all prior agreements, understandings, inducements and conditions, express or implied, oral or written, of any nature whatsoever</p>
-                                    <p>with respect to the subject matter hereof. The express terms hereof control and supersede any course of performance and/or usage of the trade inconsistent with any of the terms hereof.</p>
-                                    <h5>AMENDMENTS</h5>
-                                    <p>-	The Parties agree that any amendments made to this Agreement must be in writing where they must be signed by both Parties to this Agreement. <br />
-                                        -	As such, any amendments made by the Parties will be applied to this Agreement.
+                                    <h5>Chấm Dứt Hợp Đồng</h5>
+                                    <p>- Thỏa thuận này có thể bị chấm dứt trong trường hợp sau đây xảy ra:<br />
+                                        1. Ngay lập tức trong trường hợp một trong các Bên vi phạm Hợp đồng này.<br />
+                                        2. Vào bất kỳ thời điểm nào bằng cách cung cấp thông báo bằng văn bản cho bên kia 7 ngày trước khi chấm dứt Thỏa thuận.<br />
+                                        - Khi chấm dứt Thỏa thuận này, Nhân viên sẽ được yêu cầu trả lại tất cả các tài liệu, sản phẩm hoặc bất kỳ nội dung nào khác của Chủ lao động một cách thuận tiện sớm nhất, nhưng không quá 7 ngày.</p>
+                                    <h5>Điều Khoản Bảo Mật</h5>
+                                    <p>- Tất cả các điều khoản và điều kiện của Thỏa thuận này và bất kỳ tài liệu nào được cung cấp trong thời hạn của Thỏa thuận phải được Người lao động giữ bí mật, trừ khi việc tiết lộ là bắt buộc theo quy trình của pháp luật.<br />
+                                        - Tiết lộ hoặc sử dụng thông tin này cho bất kỳ mục đích nào ngoài phạm vi của Thỏa thuận này, hoặc ngoài các trường hợp ngoại lệ được nêu ở trên, đều bị nghiêm cấm nếu không có sự đồng ý trước của Nhà tuyển dụng.
                                     </p>
-                                    <h5>SIGNATURE AND DATE</h5>
-                                    <p>-	The Parties hereby agree to the terms and conditions set forth in this Agreement and such is demonstrated throughout by their signatures below:</p>
+                                    <h5>Sở Hữu Trí Tuệ</h5>
+                                    <p>- Bằng văn bản này, Người lao động đồng ý rằng bất kỳ tài sản trí tuệ nào do Người sử dụng lao động cung cấp sẽ vẫn là tài sản duy nhất của Người sử dụng lao động bao gồm nhưng không giới hạn ở bản quyền, bằng sáng chế, quyền bí mật thương mại và các quyền sở hữu trí tuệ khác liên quan đến bất kỳ ý tưởng nào , khái niệm, kỹ thuật, phát minh, quy trình, tác phẩm của tác giả, Thông tin mật hoặc bí mật thương mại.</p>
+                                    <h5>Độc Quyền</h5>
+                                    <p>- Các Bên đồng ý rằng Thỏa thuận này không phải là một thỏa thuận độc quyền và Người sử dụng lao động có quyền ký kết các thỏa thuận tương tự khác với các nhân viên khác.<br />
+                                    </p>
+
+                                    <p>- Tuy nhiên, Người lao động không có quyền tham gia vào một thỏa thuận tương tự miễn là Người lao động vẫn là một bên của Thỏa thuận này.</p>
+                                    <h5>Trách Nhiệm Hữu Hạn</h5>
+                                    <p>- Trong mọi trường hợp, Chủ lao động và Nhân viên sẽ không chịu trách nhiệm cá nhân đối với bất kỳ thiệt hại nào do vi phạm nghĩa vụ của bên thứ ba, trừ khi hành động hoặc việc không hành động của Chủ lao động hoặc Nhân viên liên quan đến hành vi sai trái có chủ ý, gian lận hoặc vi phạm pháp luật có chủ ý.</p>
+                                    <h5>Khả Năng Nghiêm Trọng</h5>
+                                    <p>- Trong trường hợp bất kỳ điều khoản nào của Thỏa thuận này bị tòa án có thẩm quyền cho là vô hiệu và không thể thi hành, thì các điều khoản còn lại sẽ vẫn được thi hành theo ý định của các Bên.</p>
+                                    <h5>Toàn Bộ Thỏa Thuận</h5>
+                                    <p>- Thỏa thuận này bao gồm toàn bộ thỏa thuận và sự hiểu biết giữa các Bên theo đây liên quan đến chủ đề của thỏa thuận này và thay thế tất cả các thỏa thuận, sự hiểu biết, sự thuyết phục và điều kiện trước đó, rõ ràng hay ngụ ý, bằng lời nói hoặc bằng văn bản, dưới bất kỳ hình thức nào</p>
+                                    <h5>Điều khoản khác</h5>
+                                    <h6 className="ml-22">7.1. Bên A và bên B cam kết thực hiện các điều khoản và điều kiện của hợp đồng này một cách nghiêm túc và trung thực.</h6>
+                                    <h6 className="ml-22">7.2. Bất kỳ sự thay đổi hoặc bổ sung nào của hợp đồng này phải được thực hiện bằng văn bản và có sự đồng ý của cả hai bên.</h6>
+                                    <h6 className="ml-22">7.3. Hợp đồng này sẽ có hiệu lực kể từ ngày ký kết và có thời hạn đến khi đủ điều kiện chấm dứt theo quy định của hợp đồng.</h6>
+                                    <h6 className="ml-22">7.4. Bên A và bên B sẽ giải quyết các tranh chấp phát sinh liên quan đến hợp đồng này bằng đàm phán và giải quyết hòa bình. Trong trường hợp không giải quyết được bằng đàm phán, tranh chấp sẽ được đưa ra trọng tài tại Công ty APITS, 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh.</h6>
+
+                                    <p>Trong chứng nhận này, bên A và bên B đã xác nhận rằng họ đã đọc, hiểu và chấp nhận tất cả các điều khoản và điều kiện được ghi trong hợp đồng này. Hợp đồng này có giá trị pháp lý và có hiệu lực sau khi được ký và đóng dấu bởi hai bên.</p><br />
+
 
                                     <div className="signature">
                                         <div className="signature-left">
-                                            <h6>REPRESENTATIVE OF PARTY A</h6>
-                                            <p><label className="label-signature-name">Name:</label>Mr.A<br />
-                                                <label className="label-signature-name">Signature:</label>Mr.A<br />
-                                                <label className="label-signature-name">Date:</label>{moment(new Date()).format("DD-MM-YYYY")}
+                                            <h6>Đại diện của bên A</h6>
+                                            <p><label className="label-signature-name">Bên A:</label>Công ty APITS<br />
+                                                <label className="label-signature-name">Đại diện:</label>Mr.A<br />
+                                                <label className="label-signature-name">Chức vụ:</label>Director<br />
+                                                {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                <div className="sign mt-24">
+                                                    <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
+                                                </div>
                                             </p>
                                         </div>
                                         <div className="signature-right">
-                                            <h6>REPRESENTATIVE OF PARTY B</h6>
-                                            <p><label className="label-signature-name">Name:</label>{isPreview ? representativeB : <input type='text' className='input-w200 input-text' value={representativeB} />}<br />
-                                                <label className="label-signature-name">Signature:</label>{isPreview ? signature : <input type='text' className='input-w200 input-text' value={signature} onChange={e => setSignature(e.target.value)} />}<br />
-                                                <label className="label-signature-name">Date:</label>{isPreview ? dateSign : <input type='text' className='input-w200 input-text' value={dateSign} onChange={e => setDateSig(e.target.value)} />}
+                                            <h6>Đại diện của bên B</h6>
+                                            <p><label className="label-signature-name">Bên B:</label>{partyB}<br />
+                                                {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="btn-create">
-                                    <button className="btn btn-cancel" onClick={() => { setIsCreate(false) }}>Cancel</button>
+                                    <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                     {
                                         contractAgreement !== undefined ?
                                             <button className=" btn" onClick={() => { handleCreateAgreement() }}>Sign</button>
