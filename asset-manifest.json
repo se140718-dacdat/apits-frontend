@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.04bb4cc8.css",
-    "main.js": "/static/js/main.e9c8f232.js",
-    "static/media/primeicons.svg": "/static/media/primeicons.e1441b135b3ca9ad643c.svg",
-    "static/media/intro-img.png": "/static/media/intro-img.ff08ce8161eb01b7a14b.png",
-    "static/media/primeicons.eot": "/static/media/primeicons.d44157bdfa026dc877af.eot",
-    "static/media/primeicons.woff": "/static/media/primeicons.10d3152104f2208ac82a.woff",
-    "static/media/primeicons.ttf": "/static/media/primeicons.ea5358601d0a3fd6670b.ttf",
-    "static/media/primeicons.woff2": "/static/media/primeicons.78172950b335ccdb94e2.woff2",
-    "index.html": "/index.html",
-    "main.04bb4cc8.css.map": "/static/css/main.04bb4cc8.css.map",
-    "main.e9c8f232.js.map": "/static/js/main.e9c8f232.js.map"
+    "main.css": "/apits-frontend/static/css/main.cba543b6.css",
+    "main.js": "/apits-frontend/static/js/main.57f97689.js",
+    "static/media/primeicons.svg": "/apits-frontend/static/media/primeicons.e1441b135b3ca9ad643c.svg",
+    "static/media/intro-img.png": "/apits-frontend/static/media/intro-img.ff08ce8161eb01b7a14b.png",
+    "static/media/primeicons.eot": "/apits-frontend/static/media/primeicons.d44157bdfa026dc877af.eot",
+    "static/media/primeicons.woff": "/apits-frontend/static/media/primeicons.10d3152104f2208ac82a.woff",
+    "static/media/primeicons.ttf": "/apits-frontend/static/media/primeicons.ea5358601d0a3fd6670b.ttf",
+    "static/media/primeicons.woff2": "/apits-frontend/static/media/primeicons.78172950b335ccdb94e2.woff2",
+    "index.html": "/apits-frontend/index.html",
+    "main.cba543b6.css.map": "/apits-frontend/static/css/main.cba543b6.css.map",
+    "main.57f97689.js.map": "/apits-frontend/static/js/main.57f97689.js.map"
   },
   "entrypoints": [
-    "static/css/main.04bb4cc8.css",
-    "static/js/main.e9c8f232.js"
+    "static/css/main.cba543b6.css",
+    "static/js/main.57f97689.js"
   ]
 }
