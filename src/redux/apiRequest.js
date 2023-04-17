@@ -12,6 +12,7 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
             return res.data.message;
         } else {
             if (res.data.data) {
+                console.log(res)
                 if(res.data.data.role.name === "ADMIN") {
                     dispatch(loginSuccess(res.data.data));
                 } else {

@@ -268,7 +268,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         <div></div>
                                     </div>
                                     <div className="centered">
-                                        <h3>HỢP ĐỒNG CUNG CẤP DỊCH VỤ TÌM</h3>
+                                        <h3>HỢP ĐỒNG LAO ĐỘNG</h3>
                                     </div>
                                     <h5>Các Bên</h5>
                                     <p>- Thỏa thuận Hợp đồng Lao động này (sau đây gọi là “Thỏa thuận”) được ký kết vào ngày 16 tháng 4 năm 2023 (“Ngày có hiệu lực”), giữa Apits có địa chỉ 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh (sau đây gọi là “Bên cung cấp dịch vụ”) và Lương Hồ Đắc Đạt, có địa chỉ tại TP.HCM (sau đây gọi là “Người lao động”) (gọi chung là “Các bên”) .</p>

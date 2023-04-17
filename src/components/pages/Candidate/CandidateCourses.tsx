@@ -126,7 +126,7 @@ const CandidateCourse = () => {
 
         if (now > deadline) {
             deadlineStr = "Expired";
-        } else  {
+        } else {
             const diffTime = deadline.getTime() - now.getTime();
             const diffDays = Math.ceil(diffTime / (24 * 60 * 60 * 1000));
             deadlineStr = `${diffDays} day(s) left`;
@@ -267,7 +267,10 @@ const CandidateCourse = () => {
                                         <img src={skill.image} alt="" className="skill-icon" />
                                         <div className="course-description">
                                             <h3 className="course-name">{course.name}</h3>
-                                            <span className="level">{level.name}</span>
+                                            <div className='level'>
+                                                <span style={{marginRight: "12px"}}>{course.status}</span>
+                                                <span>{level.name}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 ))

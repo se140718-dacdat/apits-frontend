@@ -34,6 +34,8 @@ const EmployeeList = () => {
 
     useEffect(() => {
         handleFilter();
+        getPositions();
+        getSpecialties();
     }, [filter])
 
     async function fetchData() {
@@ -49,6 +51,20 @@ const EmployeeList = () => {
             setSpecialty(res.data.data[0]);
         })
     }
+    async function getPositions() {
+        await axios.get("/position/getAllPosition").then((res) => {
+            setPositions(res.data.data.responseList);
+            setPosition(res.data.data.responseList[0]);
+        })
+    }
+
+    async function getSpecialties() {
+        await axios.get("/specialty/getAll").then((res) => {
+            setSpecialties(res.data.data);
+            setSpecialty(res.data.data[0]);
+        })
+    }
+
 
     const handleCreate = async () => {
         const request = {
