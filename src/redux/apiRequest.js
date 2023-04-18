@@ -5,6 +5,7 @@ import { userFailed, userStart, userSuccess } from "./userSlice";
 
 //Authentication
 export const loginUser = async (user, dispatch, navigate, isRegister) => {
+    console.log(user);
     dispatch(loginStart());
     try {
         const res = await axios.post("/account/auth/login", user);
@@ -12,7 +13,6 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
             return res.data.message;
         } else {
             if (res.data.data) {
-                console.log(res)
                 if(res.data.data.role.name === "ADMIN") {
                     dispatch(loginSuccess(res.data.data));
                 } else {

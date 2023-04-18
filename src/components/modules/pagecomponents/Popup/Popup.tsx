@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import  { FC, FormEvent, useState, Dispatch, SetStateAction, useEffect } from 'react'
+import { FC, FormEvent, useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { authentication, firebaseNotificationConfig } from '../../../../firebase-config';
@@ -25,6 +25,7 @@ const Popup: FC<Props> = (props) => {
     const [name, setName] = useState<string>("");
     const [messageRegister, setMessageRegister] = useState<string>("");
     const [messageLogin, setMessageLogin] = useState<string>("");
+    const [notificationToken, setNotificationToken] = useState<string>("");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,17 +35,17 @@ const Popup: FC<Props> = (props) => {
         setMessageRegister("");
         Notification.requestPermission().then((permission) => {
             if (permission === "granted") {
-              const app = initializeApp(firebaseNotificationConfig);
-              const messaging = getMessaging(app);
-              getToken(messaging, {
-                vapidKey: "BKEIv2eA8FfmrUKN8kDCrB5ZmAwb_6K3OsutWog-nSRAUNXzVI-POuN7QqDaAsAAppQbJXA_tqe-J2M7TBenTYM",
-              }).then((currentToken) => {
-                if (currentToken) {
-                    console.log(currentToken);
-                }
-              });
+                const app = initializeApp(firebaseNotificationConfig);
+                const messaging = getMessaging(app);
+                getToken(messaging, {
+                    vapidKey: "BKEIv2eA8FfmrUKN8kDCrB5ZmAwb_6K3OsutWog-nSRAUNXzVI-POuN7QqDaAsAAppQbJXA_tqe-J2M7TBenTYM",
+                }).then((currentToken) => {
+                    if (currentToken) {
+                        setNotificationToken(currentToken);
+                    }
+                });
             }
-          });
+        });
     }, [props.popup])
 
     const loginHandler = async (e: FormEvent) => {
@@ -52,8 +53,10 @@ const Popup: FC<Props> = (props) => {
         try {
             const userLogin = {
                 email: username,
-                password: password
+                password: password,
+                notificationToken: notificationToken
             }
+            console.log(userLogin);
             if (await loginUser(userLogin, dispatch, navigate, false) == "Login Fail") {
                 setMessageLogin("The user or password that you've entered is incorrect.")
             }
