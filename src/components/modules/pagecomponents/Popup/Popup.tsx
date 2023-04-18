@@ -1,12 +1,14 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React, { FC, FormEvent, useState, Dispatch, SetStateAction, useEffect } from 'react'
-import { NavLink } from 'react-bootstrap';
+import  { FC, FormEvent, useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { authentication } from '../../../../firebase-config';
+import { authentication, firebaseNotificationConfig } from '../../../../firebase-config';
 import { Login } from '../../../../model';
 import { loginUser, loginUserByGoogle, registerCandidate, } from '../../../../redux/apiRequest';
 import "./Popup.css"
+
+import { getMessaging, getToken } from "firebase/messaging";
+import { initializeApp } from 'firebase/app';
 
 interface Props {
     display: string,
@@ -30,6 +32,19 @@ const Popup: FC<Props> = (props) => {
     useEffect(() => {
         setMessageLogin("");
         setMessageRegister("");
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+              const app = initializeApp(firebaseNotificationConfig);
+              const messaging = getMessaging(app);
+              getToken(messaging, {
+                vapidKey: "BKEIv2eA8FfmrUKN8kDCrB5ZmAwb_6K3OsutWog-nSRAUNXzVI-POuN7QqDaAsAAppQbJXA_tqe-J2M7TBenTYM",
+              }).then((currentToken) => {
+                if (currentToken) {
+                    console.log(currentToken);
+                }
+              });
+            }
+          });
     }, [props.popup])
 
     const loginHandler = async (e: FormEvent) => {

@@ -1,7 +1,8 @@
 {
   "projects": {
-    "default": "apits-app",
-    " ": "apits-32832"
+    "default": "apits-32832",
+    " ": "apits-32832",
+    "development": "apits-32832"
   },
   "targets": {},
   "etags": {}
