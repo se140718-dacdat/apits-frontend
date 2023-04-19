@@ -5,7 +5,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Dropdown, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/esm/Button';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -381,7 +381,7 @@ export const CandidateProfile: FC = () => {
                     </div>
                 </div>
                 <div className="right">
-                    {/* <div className="profile-input">
+                    <div className="profile-input">
                         <div className="profile-header flex-space-between">
                             <div className="profile-header-name">Specialty</div>
                             <Dropdown>
@@ -402,15 +402,15 @@ export const CandidateProfile: FC = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
-                        <div className="profile-body">
+                        {/* <div className="profile-body">
                             <div className="distance-title">Level Beginner</div>
                             {renderDistance("basic")}
                             <div className="distance-title">Level Advanced</div>
                             {renderDistance("advanced")}
                             <div className="distance-title">Level Intensive</div>
                             {renderDistance("intensive")}
-                        </div>
-                    </div> */}
+                        </div> */}
+                    </div>
                     <div className="profile-input">
                         <div className="profile-header">
                             <div className="profile-header-name">Verifications</div>

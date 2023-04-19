@@ -33,25 +33,29 @@ const Popup: FC<Props> = (props) => {
     useEffect(() => {
         setMessageLogin("");
         setMessageRegister("");
-        Notification.requestPermission().then((permission) => {
-            if (permission === "granted") {
-                const app = initializeApp(firebaseNotificationConfig);
-                const messaging = getMessaging(app);
-                getToken(messaging, {
-                    vapidKey: "BKEIv2eA8FfmrUKN8kDCrB5ZmAwb_6K3OsutWog-nSRAUNXzVI-POuN7QqDaAsAAppQbJXA_tqe-J2M7TBenTYM",
-                }).then((currentToken) => {
-                    if (currentToken) {
-                        setNotificationToken(currentToken);
-                    }
-                });
-            }
-        });
+        const requestPermission = () => {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    const app = initializeApp(firebaseNotificationConfig);
+                    const messaging = getMessaging(app);
+                    getToken(messaging, {
+                        vapidKey: "BKEIv2eA8FfmrUKN8kDCrB5ZmAwb_6K3OsutWog-nSRAUNXzVI-POuN7QqDaAsAAppQbJXA_tqe-J2M7TBenTYM",
+                    }).then((currentToken) => {
+                        if (currentToken) {
+                            setNotificationToken(currentToken);
+                        }
+                    });
+                }
+            });
+        }
+        requestPermission()
     }, [props.popup])
 
     const loginHandler = async (e: FormEvent) => {
+        console.log(notificationToken);
         e.preventDefault();
         try {
-            const userLogin = {
+            const userLogin : Login = {
                 email: username,
                 password: password,
                 notificationToken: notificationToken
@@ -86,7 +90,8 @@ const Popup: FC<Props> = (props) => {
         if (password == confirm) {
             const newUser: Login = {
                 email: username,
-                password: password
+                password: password,
+                notificationToken: notificationToken
             }
             registerCandidate(newUser, navigate, dispatch);
             setMessageRegister("");

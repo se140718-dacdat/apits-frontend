@@ -18,6 +18,7 @@ export enum Status {
 export interface Login {
     email: string;
     password: string;
+    notificationToken: string;
 }
 
 

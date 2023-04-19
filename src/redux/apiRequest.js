@@ -5,7 +5,6 @@ import { userFailed, userStart, userSuccess } from "./userSlice";
 
 //Authentication
 export const loginUser = async (user, dispatch, navigate, isRegister) => {
-    console.log(user);
     dispatch(loginStart());
     try {
         const res = await axios.post("/account/auth/login", user);
@@ -82,7 +81,6 @@ export const adminRegisterCandidate = async (newUser, navigate) => {
 
 export const registerCandidate = async (newUser, navigate, dispatch) => {
     try {
-        console.log(newUser)
         await axios.post("/account/auth/registerForCandidate", newUser)
         loginUser(newUser, dispatch, navigate, true);
     } catch (error) {

@@ -111,7 +111,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   }
 
   const createInterview = async (request: InterviewCreate) => {
-    console.log(request);
     try {
       await axios.post("/createInterview", request).then(async function (res) {
         setMessage(res.data.message);
@@ -119,6 +118,10 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
         handleCloseInterviewCreate();
         if (type === "TEST") {
           await axios.put(`/waiting-list/setStatusChecked?id=${testId}`);
+          fetchData();
+        }
+        if (type === "CHECK") {
+          await axios.put(`/status-candidate-course/updateStatusInterview?candidateId=${request.candidateId}&coursesId=${request.tmpId}`);
           fetchData();
         }
       })
