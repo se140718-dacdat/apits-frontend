@@ -186,7 +186,7 @@ const EnterpriseProfile: FC = () => {
                         </div>
                         <div className="edit-body">
                             <div>
-                                <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                <img src={user?.image} alt="" className="post-avt" />
                             </div>
                         </div>
                     </div>

@@ -12,9 +12,15 @@ const interviewType = [
     "TEST"
 ]
 
+const interviewStatus = [
+    "WAITING",
+    "CREATED"
+]
+
 const InterviewList = () => {
     const navigate = useNavigate();
     const [type, setType] = useState<string>(interviewType[0])
+    const [status, setStatus] = useState<string>(interviewStatus[0])
     const [id, setId] = useState<number>(0);
 
     return (
@@ -41,9 +47,23 @@ const InterviewList = () => {
                         }
                     </Dropdown.Menu>
                 </Dropdown>
+                <Dropdown className="filter-dropdown ml-8">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                        <span>{status}</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className='filter-menu'>
+                        {
+                            interviewStatus.map((status, index) => {
+                                return (
+                                    <Dropdown.Item className='filter-item' onClick={()=>{setStatus(status)}} key={index}>{status}</Dropdown.Item>
+                                )
+                            })
+                        }
+                    </Dropdown.Menu>
+                </Dropdown>
                 <button className='btn-search ml-8'>Search</button>
             </div>
-            <InterviewTable type={type} id={id} />
+            <InterviewTable type={type} status={status} />
         </div>
     )
 }

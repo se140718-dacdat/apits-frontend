@@ -39,6 +39,7 @@ const CandidateRegister = () => {
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
     const [selectSpecialties, setSelectSpecialties] = useState<SpecialtyEntity[]>([]);
+    const [userSpecialties, setUserSpecialties] = useState<SpecialtyEntity[]>([]);
     const [cvName, setCvName] = useState<string>(user?.cv)
 
     const handleSelect = (e: string) => {
@@ -50,7 +51,7 @@ const CandidateRegister = () => {
         console.log(cv)
         setProgress("100%");
         const registerModal = document.getElementById("CandidateRegister")!;
-        if(registerModal) {
+        if (registerModal) {
             (registerModal as HTMLElement).style.height = "auto";
         }
     });
@@ -64,7 +65,7 @@ const CandidateRegister = () => {
         const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
         const data = response?.data?.data?.specials;
         if (data) {
-            setSelectSpecialties(data);
+            setUserSpecialties(data);
         }
         return data;
     }
@@ -288,6 +289,13 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
+                                        userSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
+                                            <button key={key} className="btn-item item-plus">
+                                                <span>{specialty.name}</span>
+                                            </button>
+                                        )
+                                    }
+                                    {
                                         selectSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleRemoveSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faXmark} />
@@ -303,7 +311,7 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        specialties?.map((specialty: SpecialtyEntity, key: number) =>
+                                        specialties?.filter((e: SpecialtyEntity) => !userSpecialties.some(a => a.id === e.id)).map((specialty: SpecialtyEntity, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faPlus} />
                                                 <span>{specialty?.name}</span>

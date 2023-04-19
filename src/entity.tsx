@@ -498,6 +498,7 @@ export interface InterviewResponse {
     hostId: number;
     tempId: number
     status: string;
+    candidateName: string;
 }
 
 export interface InterviewDetail {

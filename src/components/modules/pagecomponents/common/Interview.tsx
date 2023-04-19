@@ -3,8 +3,8 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Interview } from "../../../../model";
 import { Button, TextField } from '@mui/material';
 import { useSelector } from "react-redux";
-import { ApprovedEntity, AssignResponse, CandidateCourseProcessing, Duration, InterviewCreate, NewUserInterview, Professor } from "../../../../entity";
-import { getAllAssignApproved, getAllEmployees, getAllNewCandidate, getCandidateCourseProcessing } from "../../../../redux/apiRequest";
+import { ApprovedEntity, AssignResponse, CandidateCourseProcessing, Duration, InterviewCreate, InterviewResponse, NewUserInterview, Professor } from "../../../../entity";
+import { getAllAssignApproved, getAllEmployees, getAllInterview, getAllNewCandidate, getCandidateCourseProcessing } from "../../../../redux/apiRequest";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import "./Interview.css";
@@ -21,7 +21,7 @@ import moment from "moment";
 
 interface Props {
   type: string;
-  id: number;
+  status: string;
 }
 
 const durations: Duration[] = [
@@ -47,16 +47,16 @@ const durations: Duration[] = [
   }
 ]
 
-const InterviewTable: React.FC<Props> = ({ type, id }) => {
+const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const now = new Date();
-  const account = useSelector((state: any) => state.auth.login.currentUser);
+  const formatString = 'YYYY-MM-DD HH:mm:ss';
+
   const user = useSelector((state: any) => state.user.user.user);
-  const navigate = useNavigate();
-  const [columns, setColumns] = useState<GridColDef[]>([]);
   const [assigns, setAssigns] = useState<ApprovedEntity[]>([]);
   const [newUsers, setNewUsers] = useState<NewUserInterview[]>([]);
   const [candidates, setCandidates] = useState<CandidateCourseProcessing[]>([]);
   const [showInterviewCreate, setShowInterviewCreate] = useState(false);
+  const [showInterviewEdit, setShowInterviewEdit] = useState(false);
   const [title, setTitle] = useState<string>('');
   const [date, setDate] = useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
   const [time, setTime] = useState('');
@@ -77,11 +77,19 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
   const [testId, setTestId] = useState<number>();
+  const [interviewAssign, setInterviewAssign] = useState<InterviewResponse[]>([]);
+  const [interviewCheck, setInterviewCheck] = useState<InterviewResponse[]>([]);
+  const [interviewTest, setInterviewTest] = useState<InterviewResponse[]>([]);
+  const [interviews, setInterviews] = useState<InterviewResponse[]>([]);
+  const [interview, setInterview] = useState<InterviewResponse>();
 
 
 
   const handleCloseInterviewCreate = () => setShowInterviewCreate(false);
   const handleShowInterviewCreate = () => { setShowInterviewCreate(true) };
+
+  const handleCloseInterviewEdit = () => setShowInterviewEdit(false);
+  const handleShowInterviewEdit = () => { setShowInterviewEdit(true) };
 
 
 
@@ -94,6 +102,12 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     setNewUsers(await getAllNewCandidate());
     setCandidates(await getCandidateCourseProcessing());
     setEmployees(await getAllEmployees());
+    setInterviews(await getAllInterview());
+    if (interviews.length > 0) {
+      setInterviewAssign(interviews.filter((e) => e.type === "HIRE"));
+      setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
+      setInterviewTest(interviews.filter((e) => e.type === "TEST"));
+    }
   }
 
   const createInterview = async (request: InterviewCreate) => {
@@ -103,7 +117,7 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
         setMessage(res.data.message);
         setMessageStatus("green");
         handleCloseInterviewCreate();
-        if(type === "TEST") {
+        if (type === "TEST") {
           await axios.put(`/waiting-list/setStatusChecked?id=${testId}`);
           fetchData();
         }
@@ -113,125 +127,305 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
     }
   }
 
+  const handleEditInterview = async () => {
+    const request = {
+      purpose: title,
+      date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
+      time: time,
+      linkMeeting: link,
+      duration: duration
+    }
+    console.log(request)
+    try {
+      await axios.put(`/updateInterviewById?id=${interview?.id}`, request).then(async function (res) {
+        setMessage(res.data.message);
+        setMessageStatus("green");
+        handleCloseInterviewEdit();
+        setDate(dayjs(now.toLocaleDateString()))
+        fetchData();
+      })
+    } catch (error) {
+      return error
+    }
+  }
+
   const tableRender = () => {
-    switch (type) {
-      case "HIRE":
-        const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
-          id: item.assignId,
-          title: item.recruitmentRequest.title,
-          candidateName: item.candidateResponse.name,
-          candidateId: item.candidateResponse.id,
-          enterpriseName: item.recruitmentRequest.creator.name,
-          enterpriseId: item.recruitmentRequest.creator.id,
-        })) : [];
+    if (status === "WAITING") {
+      switch (type) {
+        case "HIRE":
+          const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
+            id: item.assignId,
+            title: item.recruitmentRequest.title,
+            candidateName: item.candidateResponse.name,
+            candidateId: item.candidateResponse.id,
+            enterpriseName: item.recruitmentRequest.creator.name,
+            enterpriseId: item.recruitmentRequest.creator.id,
+          })) : [];
 
-        const columnsCandidate: GridColDef[] = [
-          { field: "id", headerName: "ID", flex: 0.2 },
-          { field: "title", headerName: "Title", flex: 0.8 },
-          { field: "candidateName", headerName: "Candidate", flex: 0.5 },
-          { field: "enterpriseName", headerName: "Enterprise", flex: 1.2 },
-          {
-            field: 'interview',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={() => {
-                setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.candidateId);
-                setParticipantB(params.row.enterpriseName);
-                setParticipantBId(params.row.enterpriseId);
-                setAssignId(params.row.id);
-                handleShowInterviewCreate()
-              }}>
-                Create
-              </Button>
-            ),
-          },
-        ];
-        return (<DataGrid rows={rowsCandidate}
-          columns={columnsCandidate}
-          autoPageSize
-          pagination />)
-      case "CHECK":
-        const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
-          id: item.id,
-          candidateId: item.candidate.id,
-          candidateName: item.candidate.name,
-          phone: item.candidate.phone,
-          courseName: item.course.name,
-          courseId: item.course.id
-        })) : [];
-
-        const columnsTest: GridColDef[] = [
-          { field: "id", headerName: "ID", flex: 0.2 },
-          { field: "candidateName", headerName: "Name", flex: 0.8 },
-          { field: "phone", headerName: "Phone", flex: 0.5 },
-          { field: "courseName", headerName: "Course", flex: 1.2 },
-          {
-            field: 'interview',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={() => {
-                setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.candidateId);
-                setCourse(params.row.courseName);
-                setCourseId(params.row.courseId)
-                handleShowInterviewCreate()
-              }}>
-                Create
-              </Button>
-            ),
-          },
-        ];
-        return (
-          <DataGrid rows={rowsTest}
-            columns={columnsTest}
+          const columnsCandidate: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "title", headerName: "Title", flex: 0.8 },
+            { field: "candidateName", headerName: "Candidate", flex: 0.5 },
+            { field: "enterpriseName", headerName: "Enterprise", flex: 1.2 },
+            {
+              field: 'interview',
+              headerName: '',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" onClick={() => {
+                  setParticipantA(params.row.candidateName);
+                  setParticipantAId(params.row.candidateId);
+                  setParticipantB(params.row.enterpriseName);
+                  setParticipantBId(params.row.enterpriseId);
+                  setAssignId(params.row.id);
+                  handleShowInterviewCreate()
+                }}>
+                  Create
+                </Button>
+              ),
+            },
+          ];
+          return (<DataGrid rows={rowsCandidate}
+            columns={columnsCandidate}
             autoPageSize
-            pagination />
-        )
-      default:
-        const rows = newUsers?.length > 0 ? newUsers?.map((item) => ({
-          id: item.id,
-          candidateId: item.candidate.id,
-          candidateName: item.candidate.name,
-          phone: item.candidate.phone,
-          specialtyName: item.specialty.name,
-          specialtyId: item.specialty.id
-        })) : [];
+            pagination />)
+        case "CHECK":
+          const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
+            id: item.id,
+            candidateId: item.candidate.id,
+            candidateName: item.candidate.name,
+            phone: item.candidate.phone,
+            courseName: item.course.name,
+            courseId: item.course.id
+          })) : [];
 
-        const columns: GridColDef[] = [
-          { field: "id", headerName: "ID", flex: 0.2 },
-          { field: "candidateName", headerName: "Name", flex: 0.8 },
-          { field: "phone", headerName: "Phone", flex: 0.5 },
-          { field: "specialtyName", headerName: "Specialty", flex: 1.2 },
-          {
-            field: 'interview',
-            headerName: 'Interview',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-              <Button variant="contained" color="primary" onClick={() => {
-                setSpecialtyId(params.row.specialtyId);
-                setParticipantA(params.row.candidateName);
-                setParticipantAId(params.row.candidateId);
-                setSpecialty(params.row.specialtyName);
-                setTestId(params.row.id);
-                handleShowInterviewCreate()
-              }}>
-                Create
-              </Button>
-            ),
-          },
-        ];
-        return (
-          <DataGrid rows={rows}
-            columns={columns}
+          const columnsTest: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "candidateName", headerName: "Name", flex: 0.8 },
+            { field: "phone", headerName: "Phone", flex: 0.5 },
+            { field: "courseName", headerName: "Course", flex: 1.2 },
+            {
+              field: 'interview',
+              headerName: '',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" onClick={() => {
+                  setParticipantA(params.row.candidateName);
+                  setParticipantAId(params.row.candidateId);
+                  setCourse(params.row.courseName);
+                  setCourseId(params.row.courseId)
+                  handleShowInterviewCreate()
+                }}>
+                  Create
+                </Button>
+              ),
+            },
+          ];
+          return (
+            <DataGrid rows={rowsTest}
+              columns={columnsTest}
+              autoPageSize
+              pagination />
+          )
+        default:
+          const rows = newUsers?.length > 0 ? newUsers?.map((item) => ({
+            id: item.id,
+            candidateId: item.candidate.id,
+            candidateName: item.candidate.name,
+            phone: item.candidate.phone,
+            specialtyName: item.specialty.name,
+            specialtyId: item.specialty.id
+          })) : [];
+
+          const columns: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "candidateName", headerName: "Name", flex: 0.8 },
+            { field: "phone", headerName: "Phone", flex: 0.5 },
+            { field: "specialtyName", headerName: "Specialty", flex: 1.2 },
+            {
+              field: 'interview',
+              headerName: 'Interview',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" onClick={() => {
+                  setSpecialtyId(params.row.specialtyId);
+                  setParticipantA(params.row.candidateName);
+                  setParticipantAId(params.row.candidateId);
+                  setSpecialty(params.row.specialtyName);
+                  setTestId(params.row.id);
+                  handleShowInterviewCreate()
+                }}>
+                  Create
+                </Button>
+              ),
+            },
+          ];
+          return (
+            <DataGrid rows={rows}
+              columns={columns}
+              autoPageSize
+              pagination />
+          )
+      }
+    } else {
+      switch (type) {
+        case "HIRE":
+          const rowsCandidate = interviewAssign?.length > 0 ? interviewAssign.map((item) => ({
+            id: item.id,
+            title: item.purpose,
+            link: item.linkMeeting,
+            candidateName: item.candidateName,
+            date: item.date,
+            time: item.time,
+            duration: item.duration,
+            interview: item
+          })) : [];
+          const columnsCandidate: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "title", headerName: "Title", flex: 0.8 },
+            {
+              field: 'link',
+              headerName: 'Link',
+              flex: 1.2,
+              renderCell: (params) => (
+                <a href={params.row.link}>{params.row.link}</a>
+              )
+            },
+            { field: "candidateName", headerName: "Candidate", flex: 1.2 },
+            { field: "date", headerName: "Date", flex: 0.5 },
+            { field: "time", headerName: "Time", flex: 0.5 },
+            { field: "duration", headerName: "Duration", flex: 0.5 },
+
+            {
+              field: 'interview',
+              headerName: '',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" style={{ backgroundColor: "var(--primary-color)" }} onClick={() => {
+                  setInterview(params.row.interview)
+                  setDate(dayjs(params.row.date))
+                  setLink(params.row.link)
+                  setTime(params.row.time)
+                  setTitle(params.row.title)
+                  handleShowInterviewEdit();
+                }}>
+                  Edit
+                </Button>
+              ),
+            },
+          ];
+          return (<DataGrid rows={rowsCandidate}
+            columns={columnsCandidate}
             autoPageSize
-            pagination />
-        )
+            pagination />)
+        case "CHECK":
+          const rowsTest = interviewCheck?.length > 0 ? interviewCheck?.map((item) => ({
+            id: item.id,
+            title: item.purpose,
+            link: item.linkMeeting,
+            candidateName: item.candidateName,
+            date: item.date,
+            time: item.time,
+            duration: item.duration,
+            interview: item
+          })) : [];
+
+          const columnsTest: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "title", headerName: "Title", flex: 0.8 },
+            {
+              field: 'link',
+              headerName: 'Link',
+              flex: 1.2,
+              renderCell: (params) => (
+                <a href={params.row.link}>{params.row.link}</a>
+              )
+            },
+            { field: "candidateName", headerName: "Candidate", flex: 1.2 },
+            { field: "date", headerName: "Date", flex: 0.5 },
+            { field: "time", headerName: "Time", flex: 0.5 },
+            { field: "duration", headerName: "Duration", flex: 0.5 },
+            {
+              field: 'interview',
+              headerName: '',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" style={{ backgroundColor: "var(--primary-color)" }} onClick={() => {
+                  setInterview(params.row.interview)
+                  setDate(dayjs(params.row.date))
+                  setLink(params.row.link)
+                  setTime(params.row.time)
+                  setTitle(params.row.title)
+                  handleShowInterviewEdit();
+                }}>
+                  Edit
+                </Button>
+              ),
+            },
+          ];
+          return (
+            <DataGrid rows={rowsTest}
+              columns={columnsTest}
+              autoPageSize
+              pagination />
+          )
+        default:
+          const rows = interviewTest?.length > 0 ? interviewTest?.map((item) => ({
+            id: item.id,
+            title: item.purpose,
+            link: item.linkMeeting,
+            candidateName: item.candidateName,
+            date: item.date,
+            time: item.time,
+            duration: item.duration,
+            interview: item
+          })) : [];
+
+          const columns: GridColDef[] = [
+            { field: "id", headerName: "ID", flex: 0.2 },
+            { field: "title", headerName: "Title", flex: 0.8 },
+            {
+              field: 'link',
+              headerName: 'Link',
+              flex: 1.2,
+              renderCell: (params) => (
+                <a href={params.row.link}>{params.row.link}</a>
+              )
+            },
+            { field: "candidateName", headerName: "Candidate", flex: 1.2 },
+            { field: "date", headerName: "Date", flex: 0.5 },
+            { field: "time", headerName: "Time", flex: 0.5 },
+            { field: "duration", headerName: "Duration", flex: 0.5 },
+            {
+              field: 'interview',
+              flex: 0.5,
+              width: 170,
+              renderCell: (params) => (
+                <Button variant="contained" color="primary" style={{ backgroundColor: "var(--primary-color)" }} onClick={() => {
+                  setInterview(params.row.interview)
+                  setDate(dayjs(params.row.date))
+                  setLink(params.row.link)
+                  setTime(params.row.time)
+                  setTitle(params.row.title)
+                  handleShowInterviewEdit();
+                }}>
+                  Edit
+                </Button>
+              ),
+            },
+          ];
+          return (
+            <DataGrid rows={rows}
+              columns={columns}
+              autoPageSize
+              pagination />
+          )
+      }
     }
   }
 
@@ -252,7 +446,6 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
             candidateId: participantAId,
             hostId: professor?.id
           }
-          console.log(request)
           createInterview(request);
         } else {
           console.log("ERROR")
@@ -478,6 +671,73 @@ const InterviewTable: React.FC<Props> = ({ type, id }) => {
           </ButtonBootsrap>
           <ButtonBootsrap variant="primary" onClick={handleCreateInterview}>
             Create
+          </ButtonBootsrap>
+        </Modal.Footer>
+      </Modal>
+      <Modal id="InterviewCreateModal" show={showInterviewEdit} onHide={handleCloseInterviewEdit}>
+        <Modal.Header closeButton>
+          <Modal.Title>Meeting form section</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="detail-container">
+            <h3>Detailed information</h3>
+            <div className="input-container">
+              <span className="input-title">Title:</span>
+              <input type="text" placeholder={interview?.purpose} value={title} onChange={(e) => { setTitle(e.target.value) }} />
+            </div>
+            <div className="input-container">
+              <span className="input-title">Interview Type:</span>
+              <span className="interview-type">
+                {
+                  type == "HIRE"
+                    ? "Interview with Enterprise"
+                    : type == "TEST"
+                      ? "Test specialty with Professor"
+                      : "Check course with Professor"
+                }
+              </span>
+            </div>
+            <div className="input-container">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Expected start time"
+                  value={date}
+                  onChange={(newValue) => {
+                    setDate(dayjs(newValue));
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
+            <div className="input-container">
+              <input type="time" value={time} onChange={(e) => { setTime(e.target.value) }} />
+            </div>
+            <div className="input-container">
+              <span className="input-title">Expected duration:</span>
+              <div className="gr-right form-input-select">
+                <select className="form-select select-duration" onChange={e => setDuration(parseInt(e.target.value))} defaultValue={interview?.duration}>
+                  {
+                    durations?.map((duration) => {
+                      return (
+                        <option value={duration.value}>{duration.name}</option>
+                      )
+                    })
+                  }
+                </select>
+              </div>
+            </div>
+            <div className="input-container">
+              <span className="input-title">Link interview:</span>
+              <input type="text" placeholder="Link meeting" value={link} onChange={(e) => { setLink(e.target.value) }} />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <ButtonBootsrap className='button-close' variant="secondary" onClick={handleCloseInterviewCreate}>
+            Close
+          </ButtonBootsrap>
+          <ButtonBootsrap variant="primary" onClick={handleEditInterview}>
+            Edit
           </ButtonBootsrap>
         </Modal.Footer>
       </Modal>

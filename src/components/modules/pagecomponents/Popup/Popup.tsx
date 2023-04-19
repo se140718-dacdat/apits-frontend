@@ -56,7 +56,6 @@ const Popup: FC<Props> = (props) => {
                 password: password,
                 notificationToken: notificationToken
             }
-            console.log(userLogin);
             if (await loginUser(userLogin, dispatch, navigate, false) == "Login Fail") {
                 setMessageLogin("The user or password that you've entered is incorrect.")
             }
@@ -72,10 +71,10 @@ const Popup: FC<Props> = (props) => {
         }
     }
 
-    const signInWithGoogle = () => {
+    const signInWithGoogle = (isRegister: boolean) => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(authentication, provider).then((result) => {
-            loginUserByGoogle(result, dispatch, navigate)
+            loginUserByGoogle(result, notificationToken, dispatch, navigate, isRegister)
             props.isDisplay('');
             props.isPopup(0);
         }).catch((error) => {
@@ -119,7 +118,7 @@ const Popup: FC<Props> = (props) => {
                             <span>OR</span>
                             <div className="distance"></div>
                         </div>
-                        <div className="btn-login-google btn" onClick={signInWithGoogle}>
+                        <div className="btn-login-google btn" onClick={() => signInWithGoogle(false)}>
                             <img src="images/google-icon.svg" alt="google icon" />
                             <div className="google">Log in with Google</div>
                         </div>
@@ -148,7 +147,7 @@ const Popup: FC<Props> = (props) => {
             //     )
             default:
                 return (
-                    <div className="popup-container" style={{ height: "30%" }}>
+                    <div className="popup-container" style={{ height: "40%" }}>
                         <i className="pi pi-times icon-close" onClick={() => {
                             props.isDisplay('');
                             props.isPopup(0);
@@ -162,6 +161,15 @@ const Popup: FC<Props> = (props) => {
                         <button className="btn-submit" onClick={registerHandler}>
                             Join APITS
                         </button>
+                        <div className="or">
+                            <div className="distance"></div>
+                            <span>OR</span>
+                            <div className="distance"></div>
+                        </div>
+                        <div className="btn-login-google btn" onClick={() => signInWithGoogle(true)}>
+                            <img src="images/google-icon.svg" alt="google icon" />
+                            <div className="google">Log in with Google</div>
+                        </div>
                     </div>
                 )
         }

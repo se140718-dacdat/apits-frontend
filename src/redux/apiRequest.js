@@ -17,7 +17,6 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
                     dispatch(loginSuccess(res.data.data));
                 } else {
                     if(res.data.data.information.status !== "DISABLE") {
-                        console.log(res.data.data)
                         dispatch(loginSuccess(res.data.data));
                         dispatch(userSuccess(res.data.data.information));
                         if (!isRegister && res.data.message !== "Login Fail") {
@@ -39,17 +38,19 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
     }
 };
 
-export const loginUserByGoogle = async (result, dispatch, navigate) => {
+export const loginUserByGoogle = async (result, notificationToken, dispatch, navigate, isRegister) => {
     dispatch(logoutStart());
+    console.log(result.user.accessToken);
     try {
-        console.log(result.user.accessToken);
         const res = await axios.post("/account/auth/loginGoogle", {
-            "token": result.user.accessToken
+            "token": result.user.accessToken,
+            "notificationToken": notificationToken
         });
         dispatch(loginSuccess(res.data.data));
         dispatch(userSuccess(res.data.data.candidate));
-        console.log(res.data.data)
-        navigate("/update-candidate");
+        if(isRegister) {
+            navigate("/update-candidate")
+        }
     } catch (err) {
         dispatch(loginFailed());
     }
@@ -421,6 +422,15 @@ export const updateInterviewCancel = async (id) => {
     try {
         const res = await axios.put(`/updateInterviewToCancel?interviewID=${id}`);
         return res.data.status;
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllInterview = async () => {
+    try {
+        const res = await axios.get("/getAllInterview");
+        return res.data.data.responseList;
     } catch (error) {
         return error
     }
