@@ -4,17 +4,18 @@ import { useEffect, useState } from 'react';
 import { Button, Dropdown, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import axios from '../../../api/axios';
-import { SpecialtyResponse } from '../../../entity';
+import { SpecialtyExpDetail, SpecialtyExpResponse, SpecialtyResponse } from '../../../entity';
 import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import "./CandidateCourse.css";
+import { ExperienceSpecialy } from '../../../entity';
 
 const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
 
-    const [specialties, setSpecialties] = useState<SpecialtyResponse[]>([]);
-    const [specialty, setSpecialty] = useState<SpecialtyEntity>();
-    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyResponse>();
+    const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
+    const [specialty, setSpecialty] = useState<SpecialtyExpDetail>();
+    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpResponse>();
     const [showCourse, setShowCourse] = useState(false);
     const [course, setCourse] = useState<CourseEntity>();
     const [skill, setSkill] = useState<SkillEntity>();
@@ -23,6 +24,10 @@ const CandidateCourse = () => {
     const [certificate, setCertificate] = useState<string>();
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
+    const [isPreview, setIsPreview] = useState<boolean>(false);
+    const [currentExp, setCurrentExp] = useState<ExperienceSpecialy>();
+    const [preExp, setPreExp] = useState<ExperienceSpecialy>();
+
 
 
     const handleCloseCertificate = () => setShowCertificate(false);
@@ -42,17 +47,18 @@ const CandidateCourse = () => {
     }, [])
 
     async function fetchData() {
-        const res = await axios.get(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = await res?.data.data.specials;
+        const res = await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`);
+        const data = await res?.data.data.specialties;
         setSpecialties(data);
         setSpecialtySelect(data[0]);
-        getSpecialtyDetail(data[0].id)
+        getSpecialtyDetail(data[0].specialtyId)
     }
 
     async function getSpecialtyDetail(id: number) {
-        const res = await axios.get(`/canspec/getASpecDetailByCandidateId?candidateId=${user?.id}&specialId=${id}`);
+        const res = await axios.get(`/canspec/getSESLCandidateDetail?candidateId=${user?.id}&specId=${id}`);
         const data = await res.data.data;
-        setSpecialty(data.specialty);
+        setSpecialty(data);
+        setCurrentExp(specialty?.experiences.find((e) => e.id === specialtySelect?.expId));
     }
 
 
@@ -64,14 +70,13 @@ const CandidateCourse = () => {
             courseId: course?.id,
             certificate: ""
         }
-        // startCourse(request);
         await axios.post('/status-candidate-course/create', request).then(function (res) {
             console.log(res.data.message)
             if (res.data.message == "SUCCESS") {
                 setMessage("Started!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
-                    getSpecialtyDetail(specialtySelect?.id)
+                    getSpecialtyDetail(specialtySelect?.specialtyId)
                 }
                 window.open(course?.link);
             }
@@ -90,12 +95,32 @@ const CandidateCourse = () => {
                 setMessage("Submit successfuly!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
-                    getSpecialtyDetail(specialtySelect?.id)
+                    getSpecialtyDetail(specialtySelect?.specialtyId)
                 }
             }
         })
         handleCloseCertificate();
         handleCloseCourse();
+    }
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case "STUDYING":
+                status = Status.Studying;
+                return status;
+            case "PROCESSING":
+                status = Status.Processing;
+                return status;
+            case "DONE":
+                status = Status.Done;
+                return status;
+            case "EXPIRED":
+                status = Status.Expired;
+                return status;
+            default:
+                status = Status.NotStarted;
+                return status;
+        }
     }
 
     const renderCourseDetail = () => {
@@ -138,7 +163,7 @@ const CandidateCourse = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <div className="skill-modal-title">
-                            <img src={skill?.image} alt="" />
+                            {/* <img src={skill?.image} alt="" /> */}
                             <span style={{ fontSize: "1.5rem" }}>{course?.name}</span>
                         </div>
                     </Modal.Title>
@@ -212,9 +237,6 @@ const CandidateCourse = () => {
 
     }
 
-
-
-
     return (
         <div id='CandidateCourse'>
             {
@@ -223,8 +245,9 @@ const CandidateCourse = () => {
                     :
                     null
             }
-            <h2>All Skills</h2>
             <div className="specialty-container">
+                <h2><strong>Win more work with Exams</strong></h2>
+                <h5 className='mb-24'>Prove your skills. Pass our Exams. Win more work.</h5>
                 <div className="filter">
                     <div className="filter-form-input">
                         <div className="filter-input-icon">
@@ -234,17 +257,17 @@ const CandidateCourse = () => {
                     </div>
                     <Dropdown className="filter-dropdown ml-8">
                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-                            <span>{specialtySelect?.name}</span>
+                            <span>{specialtySelect?.specialtyName}</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu className='filter-menu'>
                             {
                                 specialties?.map((specialty) => {
                                     return (
-                                        <div key={specialty.id}>
+                                        <div key={specialty.specialtyId}>
                                             <Dropdown.Item className='filter-item' onClick={() => {
                                                 setSpecialtySelect(specialty);
-                                                getSpecialtyDetail(specialty.id);
-                                            }}>{specialty.name}</Dropdown.Item>
+                                                getSpecialtyDetail(specialty.specialtyId);
+                                            }}>{specialty.specialtyName}</Dropdown.Item>
                                         </div>
                                     )
                                 })
@@ -253,31 +276,38 @@ const CandidateCourse = () => {
                     </Dropdown>
                     <button className='btn-search ml-8'>Search</button>
                 </div>
-                {specialty && specialty?.skills.map((skill) => (
-                    <div className="skill-container" key={skill.id}>
-                        <span className="skill-name">{skill.name}</span>
-                        <div className="courses">
-                            {skill.levels.map((level) => (
-                                level.courses.map((course) => (
-                                    <div
-                                        className="course"
-                                        key={course.id}
-                                        onClick={() => handleShowCourse(course, skill, level.id)}
-                                    >
-                                        <img src={skill.image} alt="" className="skill-icon" />
-                                        <div className="course-description">
-                                            <h3 className="course-name">{course.name}</h3>
-                                            <div className='level'>
-                                                <span style={{marginRight: "12px"}}>{course.status}</span>
-                                                <span>{level.name}</span>
-                                            </div>
-                                        </div>
+                <div className="experience-container">
+                    <span className="experience-name">You are at the <strong style={{color: "var(--primary-color)"}}>{currentExp?.name}</strong> level</span>
+                    {
+                        currentExp?.skills.map((skill) => {
+                            return (
+                                <div className="skill-container" key={skill.id}>
+                                    <span className="skill-name">{skill.name}</span>
+                                    <div className="courses">
+                                        {skill.levels.map((level) => (
+                                            level.courses.map((course) => (
+                                                <div
+                                                    className="course"
+                                                    key={course.id}
+                                                    onClick={() => handleShowCourse(course, skill, level.id)}
+                                                >
+                                                    <img src={skill.image} alt="" className="skill-icon" />
+                                                    <div className="course-description">
+                                                        <span className="course-name">{course.name}</span>
+                                                        <div className='level'>
+                                                            <span>{level.name}</span>
+                                                        </div>
+                                                        <span className='course-status' style={{ marginRight: "12px", color: getStatusColor(course.status) }}>{course.status}</span>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ))}
                                     </div>
-                                ))
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
             <Modal id="CandidateProfileModal" show={showCertificate} onHide={handleCloseCertificate}>
                 <Modal.Header closeButton>

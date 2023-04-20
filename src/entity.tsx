@@ -1,5 +1,5 @@
 import { List } from "reselect/es/types";
-import { CourseEntity, SpecialtyEntity } from "./model";
+import { CourseEntity, SkillEntity, SpecialtyEntity } from "./model";
 
 interface EnterpriseEntity {
     id: number;
@@ -467,9 +467,8 @@ export interface Professor {
 export interface InterviewCreate {
     purpose: string;
     date: string;
-    time: string;
+    slot: string;
     linkMeeting: string;
-    duration: number;
     type: string;
     managerId: number;
     description: string;
@@ -488,9 +487,8 @@ export interface InterviewResponse {
     id: number;
     purpose: string;
     date: string;
-    time: string;
+    slot: string;
     linkMeeting: string;
-    duration: number;
     type: string;
     managerId: number;
     description: string;
@@ -557,6 +555,7 @@ export interface ContractLaborSupply {
     createId: number;
     signerId: number;
     salary: number;
+    interviewDetailId: number;
 }
 
 export interface ContractAgreement {
@@ -574,6 +573,7 @@ export interface ContractAgreement {
     dateEmployeeSigned: string;
     createId: number;
     signerId: number;
+    interviewDetailId: number;
 }
 
 export interface ContractAgreementResponse {
@@ -611,4 +611,24 @@ export interface ContractLarborSupplyResponse {
     employeeId: number;
     status: string;
     salary: number;
+}
+
+
+export interface SpecialtyExpResponse {
+    specialtyId: number;
+    specialtyName: string;
+    expId: number;
+    expName: string;
+}
+
+export interface SpecialtyExpDetail {
+    id: number;
+    name: string;
+    experiences: ExperienceSpecialy[];
+}
+
+export interface ExperienceSpecialy {
+    id: number;
+    name: string;
+    skills: SkillEntity[]
 }

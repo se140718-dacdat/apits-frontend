@@ -88,7 +88,8 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             signatureEmployee: "",
             dateEmployeeSigned: "",
             createId: user?.id,
-            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0
+            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0,
+            interviewDetailId: interviewDetail !== undefined ? interviewDetail?.id : 0
         }
         console.log(request);
         await axios.post("/contract/createContractLaborSupply", requestLaborSupply).then((res) => {
@@ -118,7 +119,8 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             numOfEmployee: 1,
             createId: user?.id,
             salary: salary ? salary : 0,
-            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0
+            signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0,
+            interviewDetailId: interviewDetail !== undefined ? interviewDetail?.id : 0
         }
         setRequestLaborSupply(request);
         setContractType('EMPLOYMENT CONTRACT AGREEMENT');

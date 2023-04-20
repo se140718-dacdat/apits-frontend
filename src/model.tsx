@@ -1,5 +1,20 @@
 import { GridRowId } from "@mui/x-data-grid";
 
+export enum Slot {
+    Slot1 = "Slot 1: 7:00-8:30",
+    Slot2 = "Slot 2: 8:45-10:15",
+    Slot3 = "Slot 3: 10:30-12:00",
+    Slot4 = "Slot 4: 12:30-14:00",
+    Slot5 = "Slot 5: 14:15-15:45",
+    Slot6 = "Slot 6: 16:00-17:30",
+    Slot7 = "Slot 6: 17:45-19:15",
+    Slot8 = "Slot 6: 19:30-21:00",
+}
+
+export const slots: Slot[] = [
+    Slot.Slot1, Slot.Slot2, Slot.Slot3, Slot.Slot4, Slot.Slot5, Slot.Slot6, Slot.Slot7, Slot.Slot8
+]
+
 export enum Roles {
     Admin = 1,
     Candidate = 2,

@@ -98,8 +98,7 @@ const ProfessorInterview = () => {
       link: item.linkMeeting,
       title: item.purpose,
       date: item.date,
-      time: item.time,
-      duration: item.duration,
+      slot: item.slot,
       courseId: item.tempId
     })) : [];
 
@@ -115,8 +114,7 @@ const ProfessorInterview = () => {
         )
       },
       { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "time", headerName: "Time", flex: 0.5 },
-      { field: "duration", headerName: "Duration", flex: 0.5 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
       {
         field: 'fail',
         headerName: '',
@@ -161,8 +159,7 @@ const ProfessorInterview = () => {
       link: item.linkMeeting,
       title: item.purpose,
       date: item.date,
-      time: item.time,
-      duration: item.duration,
+      slot: item.slot,
       courseId: item.tempId,
       status: item.status
     })) : [];
@@ -179,8 +176,7 @@ const ProfessorInterview = () => {
         )
       },
       { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "time", headerName: "Time", flex: 0.5 },
-      { field: "duration", headerName: "Duration", flex: 0.5 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
       {
         field: 'result',
         headerName: '',
@@ -208,8 +204,7 @@ const ProfessorInterview = () => {
       link: item.linkMeeting,
       title: item.purpose,
       date: item.date,
-      time: item.time,
-      duration: item.duration,
+      slot: item.slot,
       specialtyId: item.tempId
     })) : [];
 
@@ -225,8 +220,7 @@ const ProfessorInterview = () => {
         )
       },
       { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "time", headerName: "Time", flex: 0.5 },
-      { field: "duration", headerName: "Duration", flex: 0.5 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
       {
         field: 'interview',
         headerName: '',
@@ -258,8 +252,7 @@ const ProfessorInterview = () => {
       link: item.linkMeeting,
       title: item.purpose,
       date: item.date,
-      time: item.time,
-      duration: item.duration,
+      slot: item.slot,
       specialtyId: item.tempId
     })) : [];
 
@@ -275,8 +268,7 @@ const ProfessorInterview = () => {
         )
       },
       { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "time", headerName: "Time", flex: 0.5 },
-      { field: "duration", headerName: "Duration", flex: 0.5 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
       {
         field: 'interview',
         headerName: '',

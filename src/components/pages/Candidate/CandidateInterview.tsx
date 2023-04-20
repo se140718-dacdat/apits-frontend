@@ -52,8 +52,7 @@ const CandidateInterview = () => {
             link: item.linkMeeting,
             title: item.purpose,
             date: item.date,
-            time: item.time,
-            duration: `${item.duration}p`,
+            slot: item.slot,
             courseId: item.tempId
         })) : [];
 
@@ -69,8 +68,7 @@ const CandidateInterview = () => {
                 )
             },
             { field: "date", headerName: "Date", flex: 0.8 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
         ];
         return (
             <DataGrid rows={rows}
@@ -87,8 +85,7 @@ const CandidateInterview = () => {
             link: item.linkMeeting,
             title: item.purpose,
             date: item.date,
-            time: item.time,
-            duration: `${item.duration}p`,
+            slot: item.slot,
             specialtyId: item.tempId
         })) : [];
 
@@ -104,8 +101,7 @@ const CandidateInterview = () => {
                 )
             },
             { field: "date", headerName: "Date", flex: 0.8 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
         ];
         return (
             <DataGrid rows={rows}
@@ -122,8 +118,7 @@ const CandidateInterview = () => {
             link: item.linkMeeting,
             title: item.purpose,
             date: item.date,
-            time: item.time,
-            duration: `${item.duration}p`,
+            slot: item.slot,
             specialtyId: item.tempId
         })) : [];
 
@@ -139,8 +134,7 @@ const CandidateInterview = () => {
                 )
             },
             { field: "date", headerName: "Date", flex: 0.8 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
         ];
         return (
             <DataGrid rows={rows}

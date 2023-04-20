@@ -9,26 +9,32 @@
 
 #CandidateCourse .skill-container {
     width: 100%;
+    margin-bottom: 24px;
 }
 
 #CandidateCourse .skill-name {
     display: block;
     width: 100%;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 8px 0;
+}
+
+#CandidateCourse .experience-name {
+    display: block;
+    width: 100%;
     font-size: 1.6rem;
-    font-weight: bold;
+    font-weight: 700;
     margin: 24px 0;
 }
 
-#CandidateCourse .courses {
-    display: flex;
-    flex-wrap: wrap;
+
+
+/* #CandidateCourse .courses {
 }
 
 #CandidateCourse .course-description {
-    display: flex;
     width: 100%;
-    justify-content: space-between;
-    align-items: center;
     margin-top: 4px;
 }
 
@@ -57,10 +63,40 @@
     font-size: 1.2rem;
 }
 
+
+/* #CandidateCourse .level {
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
+} */
+
+/* #CandidateCourse .level-cover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+} */
+
 #CandidateCourse .skill-icon {
     width: 40px;
     height: 40px;
     margin-right: 18px;
+}
+
+#CandidateCourse .course {
+    background-color: var(--white-color);
+    padding: 18px;
+    margin-right: 24px;
+    border-radius: 8px;
+}
+
+
+#CandidateCourse .courses * {
+    display: inline-block;
 }
 
 #CandidateCourse .level {
@@ -72,11 +108,23 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #75787d;
+    margin: 0 24px;
 }
 
-#CandidateCourse .level-cover {
-    display: flex;
-    flex-wrap: wrap;
-    width: 33.3333%;
-    justify-content: center;
+#CandidateCourse .course-status {
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+#CandidateCourse .course-name {
+    font-weight: 700;
+}
+
+#CandidateCourse .course:hover {
+    cursor: pointer;
+}
+
+#CandidateCourse .course:hover .course-name {
+    text-decoration: underline;
+    color: #139ff0;
 }

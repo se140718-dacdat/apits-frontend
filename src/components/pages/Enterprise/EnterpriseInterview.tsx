@@ -7,7 +7,6 @@ import { Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
 import { InterviewDetail, InterviewResponse } from "../../../entity";
-import { updateInterviewDone } from "../../../redux/apiRequest";
 import MessageBox from "../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 import "./EnterpriseInterview.css";
 
@@ -26,7 +25,6 @@ const EnterpriseInterview = () => {
   const [interviewId, setInterviewId] = useState<number>();
   const [result, setResult] = useState<string>('APPROVE');
   const [description, setDescription] = useState<string>('');
-  const [salary, setSalary] = useState<string>('');
 
 
   const handleShowInterviewReport = () => setShowInterviewReport(true);
@@ -81,8 +79,7 @@ const EnterpriseInterview = () => {
       link: item.linkMeeting,
       title: item.purpose,
       date: item.date,
-      time: item.time,
-      duration: item.duration,
+      slot: item.slot,
       assignId: item.tempId
     })) : [];
 
@@ -98,8 +95,7 @@ const EnterpriseInterview = () => {
         )
       },
       { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "time", headerName: "Time", flex: 0.5 },
-      { field: "duration", headerName: "Duration", flex: 0.5 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
       {
         field: 'interview',
         headerName: '',
@@ -176,11 +172,6 @@ const EnterpriseInterview = () => {
               <FormControlLabel value="REJECT" control={<Radio />} label="Reject" />
             </RadioGroup>
           </FormControl>
-          {
-            result === "APPROVE" ?
-              <input type="text" placeholder="Salary" className="salary" onChange={(e) => { setSalary(e.target.value) }} />
-              : null
-          }
           <textarea name="result-description" className="p0-14" id="" rows={5} style={{ width: "100%" }} placeholder="Description" required onChange={(e) => { setDescription(e.target.value) }}></textarea>
         </Modal.Body>
         <Modal.Footer>

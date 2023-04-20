@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Interview } from "../../../../model";
+import { Interview, Slot, slots } from "../../../../model";
 import { Button, TextField } from '@mui/material';
 import { useSelector } from "react-redux";
 import { ApprovedEntity, AssignResponse, CandidateCourseProcessing, Duration, InterviewCreate, InterviewResponse, NewUserInterview, Professor } from "../../../../entity";
@@ -24,29 +24,6 @@ interface Props {
   status: string;
 }
 
-const durations: Duration[] = [
-  {
-    name: "1h",
-    value: 60
-  },
-  {
-    name: "1h30",
-    value: 90
-  },
-  {
-    name: "2h",
-    value: 120
-  },
-  {
-    name: "2h30",
-    value: 150
-  },
-  {
-    name: "3h",
-    value: 180
-  }
-]
-
 const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const now = new Date();
   const formatString = 'YYYY-MM-DD HH:mm:ss';
@@ -59,9 +36,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [showInterviewEdit, setShowInterviewEdit] = useState(false);
   const [title, setTitle] = useState<string>('');
   const [date, setDate] = useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
-  const [time, setTime] = useState('');
   const [link, setLink] = useState<string>('');
-  const [duration, setDuration] = useState(durations[0].value);
+  const [slot, setSlot] = useState<string>(slots[0]);
   const [participantA, setParticipantA] = useState<string>('');
   const [participantB, setParticipantB] = useState<string>('');
   const [course, setCourse] = useState<string>('');
@@ -124,6 +100,10 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
           await axios.put(`/status-candidate-course/updateStatusInterview?candidateId=${request.candidateId}&coursesId=${request.tmpId}`);
           fetchData();
         }
+        if(type === "HIRE") {
+          await axios.put(`/assign/interviewStatusbyEmployee/{id}?id=${request.tmpId}&employeeId=${user?.id}`);
+          fetchData();
+        }
       })
     } catch (error) {
       return error
@@ -134,9 +114,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     const request = {
       purpose: title,
       date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-      time: time,
+      slot: slot,
       linkMeeting: link,
-      duration: duration
     }
     console.log(request)
     try {
@@ -282,8 +261,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             link: item.linkMeeting,
             candidateName: item.candidateName,
             date: item.date,
-            time: item.time,
-            duration: item.duration,
+            slot: item.slot,
             interview: item
           })) : [];
           const columnsCandidate: GridColDef[] = [
@@ -299,8 +277,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             },
             { field: "candidateName", headerName: "Candidate", flex: 1.2 },
             { field: "date", headerName: "Date", flex: 0.5 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
 
             {
               field: 'interview',
@@ -312,7 +289,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                   setInterview(params.row.interview)
                   setDate(dayjs(params.row.date))
                   setLink(params.row.link)
-                  setTime(params.row.time)
+                  setSlot(params.row.slot)
                   setTitle(params.row.title)
                   handleShowInterviewEdit();
                 }}>
@@ -332,8 +309,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             link: item.linkMeeting,
             candidateName: item.candidateName,
             date: item.date,
-            time: item.time,
-            duration: item.duration,
+            slot: item.slot,
             interview: item
           })) : [];
 
@@ -350,8 +326,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             },
             { field: "candidateName", headerName: "Candidate", flex: 1.2 },
             { field: "date", headerName: "Date", flex: 0.5 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
             {
               field: 'interview',
               headerName: '',
@@ -362,7 +337,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                   setInterview(params.row.interview)
                   setDate(dayjs(params.row.date))
                   setLink(params.row.link)
-                  setTime(params.row.time)
+                  setSlot(params.row.slot)
                   setTitle(params.row.title)
                   handleShowInterviewEdit();
                 }}>
@@ -384,8 +359,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             link: item.linkMeeting,
             candidateName: item.candidateName,
             date: item.date,
-            time: item.time,
-            duration: item.duration,
+            slot: item.slot,
             interview: item
           })) : [];
 
@@ -402,8 +376,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             },
             { field: "candidateName", headerName: "Candidate", flex: 1.2 },
             { field: "date", headerName: "Date", flex: 0.5 },
-            { field: "time", headerName: "Time", flex: 0.5 },
-            { field: "duration", headerName: "Duration", flex: 0.5 },
+            { field: "slot", headerName: "Slot", flex: 0.8 },
             {
               field: 'interview',
               flex: 0.5,
@@ -413,7 +386,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                   setInterview(params.row.interview)
                   setDate(dayjs(params.row.date))
                   setLink(params.row.link)
-                  setTime(params.row.time)
+                  setSlot(params.row.slot)
                   setTitle(params.row.title)
                   handleShowInterviewEdit();
                 }}>
@@ -439,17 +412,17 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
           const request: InterviewCreate = {
             purpose: title,
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            time: time,
+            slot: slot,
             description: "",
             linkMeeting: link,
-            duration: duration,
             type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: courseId,
             candidateId: participantAId,
             hostId: professor?.id
           }
-          createInterview(request);
+          console.log(request);
+          // createInterview(request);
         } else {
           console.log("ERROR")
         }
@@ -461,9 +434,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             purpose: title,
             description: "",
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            time: time,
+            slot: slot,
             linkMeeting: link,
-            duration: duration,
             type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: assignId,
@@ -482,9 +454,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             purpose: title,
             description: "",
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            time: time,
+            slot: slot,
             linkMeeting: link,
-            duration: duration,
             type: type.toUpperCase(),
             managerId: user?.id,
             tmpId: specialtyId,
@@ -592,7 +563,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             <div className="input-container">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Expected start time"
+                  label="Expected start date"
                   value={date}
                   onChange={(newValue) => {
                     setDate(newValue);
@@ -602,16 +573,13 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               </LocalizationProvider>
             </div>
             <div className="input-container">
-              <input type="time" onChange={(e) => { setTime(e.target.value) }} />
-            </div>
-            <div className="input-container">
-              <span className="input-title">Expected duration:</span>
+              <span className="input-title">Expected slot:</span>
               <div className="gr-right form-input-select">
-                <select className="form-select select-duration" onChange={e => setDuration(parseInt(e.target.value))}>
+                <select className="form-select select-duration" onChange={e => setSlot(e.target.value)}>
                   {
-                    durations?.map((duration) => {
+                    slots?.map((slot) => {
                       return (
-                        <option value={duration.value}>{duration.name}</option>
+                        <option value={slot}>{slot}</option>
                       )
                     })
                   }
@@ -703,7 +671,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             <div className="input-container">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  label="Expected start time"
+                  label="Expected start date"
                   value={date}
                   onChange={(newValue) => {
                     setDate(dayjs(newValue));
@@ -713,16 +681,13 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               </LocalizationProvider>
             </div>
             <div className="input-container">
-              <input type="time" value={time} onChange={(e) => { setTime(e.target.value) }} />
-            </div>
-            <div className="input-container">
-              <span className="input-title">Expected duration:</span>
+              <span className="input-title">Expected slot:</span>
               <div className="gr-right form-input-select">
-                <select className="form-select select-duration" onChange={e => setDuration(parseInt(e.target.value))} defaultValue={interview?.duration}>
+                <select className="form-select select-duration" onChange={e => setSlot(e.target.value)} defaultValue={interview?.slot}>
                   {
-                    durations?.map((duration) => {
+                    slots?.map((slos) => {
                       return (
-                        <option value={duration.value}>{duration.name}</option>
+                        <option value={slos}>{slos}</option>
                       )
                     })
                   }
