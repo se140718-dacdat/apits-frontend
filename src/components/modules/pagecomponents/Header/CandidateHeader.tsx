@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
+import Notification from '../Popup/Notification/Notification';
 
 
 interface Props {
@@ -46,9 +47,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                 <Nav.Link className='navlink hover-primary' href="/candidate-courses">Course</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/candidate-interview">Inteview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/candidate-contract">Contract</Nav.Link>
-                                {/* <Nav.Link className='navlink hover-primary' href="/candidate-notification">Notification</Nav.Link> */}
                                 <Nav.Link className='navlink hover-primary' href="/candidate-view-assign">Assign</Nav.Link>
-                                {/* <Nav.Link className='navlink hover-primary' href="/candidate-view-assign">TEST</Nav.Link> */}
                             </Nav>
                             <Nav className='nav-right'>
                                 <div className='navlink user-wrap' onClick={(e) => {
@@ -79,30 +78,7 @@ const CandidateHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <OverlayTrigger
-                                    trigger="click"
-                                    key={'bottom'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Popover id={`popover-positioned-bottom`} className='notification-popup-cover'>
-                                            <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
-                                            <Popover.Body>
-                                                <div className='notification-popup-item'>
-                                                    <strong>You have Assigned!</strong>
-                                                    <br></br>
-                                                    <span>We assign you to FPT Software Company</span>
-                                                </div>
-                                                <div className='notification-popup-item'>
-                                                    <strong>You have Assigned!</strong>
-                                                    <br></br>
-                                                    <span>We assign you to FPT Software Company</span>
-                                                </div>
-                                            </Popover.Body>
-                                        </Popover>
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
-                                </OverlayTrigger>
+                                <Notification/>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

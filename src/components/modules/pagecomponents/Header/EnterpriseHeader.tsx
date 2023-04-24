@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
+import Notification from '../Popup/Notification/Notification';
 
 
 interface Props {
@@ -82,7 +83,7 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                               
+                                <Notification />
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

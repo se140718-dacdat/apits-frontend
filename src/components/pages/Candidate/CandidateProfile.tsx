@@ -17,7 +17,7 @@ import "./CandidateProfile.css";
 
 
 export const CandidateProfile: FC = () => {
-    const user = useSelector((state: any) => state.user.user.user);
+    const user = useSelector((state: any) => state.user?.user?.user);
     const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
     const now = new Date();
     const navigate = useNavigate();
@@ -307,21 +307,21 @@ export const CandidateProfile: FC = () => {
                                 <div className="col-half">
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faPhone} className="icon m-0" />
-                                        <span>{user.phone}</span>
+                                        <span>{user?.phone}</span>
                                     </div>
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faCakeCandles} className="icon m-0" />
-                                        <span>{formatDateMonthYear(user.dob.slice(0, 10))}</span>
+                                        <span>{formatDateMonthYear(user?.dob.slice(0, 10))}</span>
                                     </div>
                                 </div>
                                 <div className="col-half m-0">
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faHouse} className="icon m-0" />
-                                        <span>{user.address}</span>
+                                        <span>{user?.address}</span>
                                     </div>
                                     <div className="work-status">
                                         <FontAwesomeIcon icon={faVenusMars} className="icon m-0" />
-                                        <span>{user.gender}</span>
+                                        <span>{user?.gender}</span>
                                     </div>
                                 </div>
                                 <div className="col-half">

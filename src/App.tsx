@@ -11,7 +11,6 @@ import AdminHeader from './components/modules/pagecomponents/Header/AdminHeader'
 import CandidateHeader from './components/modules/pagecomponents/Header/CandidateHeader';
 import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeHeader';
 import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
-import Notification from './components/modules/pagecomponents/common/Notification';
 import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
 import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
 import Request from './components/modules/pagecomponents/common/Request';
@@ -22,7 +21,6 @@ import EnterpriseList from './components/pages/Admin/EnterpriseList';
 import CandidateContract from './components/pages/Candidate/CandidateContract';
 import CandidateCourse from './components/pages/Candidate/CandidateCourses';
 import CandidateInterview from './components/pages/Candidate/CandidateInterview';
-import NotificationList from './components/pages/Candidate/CandidateNotificationList';
 import { CandidateProfile } from './components/pages/Candidate/CandidateProfile';
 import CandidateRegister from './components/pages/Candidate/CandidateRegister';
 import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssign';
@@ -90,11 +88,9 @@ const App: FC = () => {
         <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
         <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
-        <Route path='/notification' element={<Notification roleName={user?.role.name} />}></Route>;
         <Route path='/contract' element={<HRContract />}></Route>;
         <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
         <Route path='/enterprise-contract' element={<EnterpriseContract />}></Route>;
-        <Route path='/candidate-notification' element={<NotificationList roleName={user?.role?.name} />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
         <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
         <Route path='/candidate-interview' element={<CandidateInterview />}></Route>;

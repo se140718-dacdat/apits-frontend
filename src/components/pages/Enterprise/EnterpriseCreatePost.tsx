@@ -1,4 +1,4 @@
-import { faAddressBook, faChevronLeft, faClose, faEnvelope, faLocationDot, faMedal, faPerson, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faAddressBook, faChevronLeft, faClose, faCoins, faEnvelope, faLocationDot, faMedal, faPerson, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TextField from '@mui/material/TextField';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -8,11 +8,14 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { PostEntity, SkillRequire, SkillSelect } from "../../../entity";
+import { ExperienceSpecialy, LevelShow, PostEntity, SkillRequire, SkillSelect, SkillShow, SpecialtyExpDetail } from "../../../entity";
 import { LevelEntity, SkillEntity, SpecialtyEntity } from "../../../model";
 import { createPost } from "../../../redux/apiRequest";
 import "./EnterpriseCreatePost.css";
 import "./SkillItems.css";
+import axios from "../../../api/axios";
+import { currencyMask, currencyMaskString } from "../../../mask";
+import MessageBox from "../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 
 
 const EnterpriseCreatePost = () => {
@@ -21,33 +24,39 @@ const EnterpriseCreatePost = () => {
     const user = useSelector((state: any) => state.user.user.user);
 
 
-    const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
-    const [etpProcess, setEtpProcess] = useState("EnterpriseCreatePost");
+    const [etpProcess, setEtpProcess] = useState("specialty");
     const [exprid, setExprid] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [desired, setDesired] = useState<string>('');
-    const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
-    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyEntity>(specialtiesSystem[0]);
+    const [specialties, setSpecialties] = useState<SpecialtyExpDetail[]>([]);
+    const [specialty, setSpecialty] = useState<SpecialtyExpDetail>();
+    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpDetail>();
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [requirements, setRequiments] = useState<string>('');
     const [benefits, setBenefits] = useState<string>('');
     const [hiringTime, setHiringtime] = useState<string>('1 to 3 months');
     const [workForm, setWorkForm] = useState<string>('Full time (40 or more hrs/week)');
-    const [salary, setSalary] = useState<string>('Less than $70/hr');
+    const [salary, setSalary] = useState<string>("");
     const [skills, setSkills] = useState<SkillSelect[]>([]);
+    const [skillsShow, setSkillsShow] = useState<SkillShow[]>([]);
     const [quantity, setQuantity] = useState<number>(0);
+    const [experienceSelect, setExperienceSelect] = useState<ExperienceSpecialy>();
     const [experience, setExperience] = useState<string>('');
     const [workLocation, setWorkLocation] = useState<string>('');
     const [hrName, setHrName] = useState<string>('');
     const [hrPhone, setHrPhone] = useState<string>('');
     const [hrEmail, setHrEmail] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
+
 
 
     useEffect(() => {
+        fetchData();
     }, [skills])
 
 
-    const handleSelectSkill = (skill: SkillEntity, level: LevelEntity) => {
+    const handleSelectSkill = (skill: SkillShow, level: LevelShow) => {
         if (!skills.some(skillSelect => skillSelect.skillId === skill.id)) {
             const skillSelect: SkillSelect = {
                 skillId: skill.id,
@@ -56,6 +65,17 @@ const EnterpriseCreatePost = () => {
                 levelName: level.name
             }
             setSkills((prevSkills) => [...prevSkills, skillSelect]);
+        } else {
+            const index = skills.findIndex(skillSelect => skillSelect.skillId === skill.id);
+            if (index !== -1) {
+                const updatedSkills = [...skills];
+                updatedSkills[index] = {
+                    ...updatedSkills[index],
+                    levelId: level.id,
+                    levelName: level.name
+                };
+                setSkills(updatedSkills);
+            }
         }
     }
 
@@ -64,6 +84,25 @@ const EnterpriseCreatePost = () => {
             setSkills((prevSkill) => prevSkill.filter((e) => e !== skill))
         }
     }
+    const fetchData = async () => {
+        await axios.get("/special-skill/getListSESL").then((res) => {
+            const data = res.data.data;
+            setSpecialties(data);
+            setSpecialty(data[0]);
+        })
+    }
+
+    const getSkills = async () => {
+        await axios.get(`/special-skill/getSkillLevelBySpecialId?specialId=${specialty?.id}`).then((res) => {
+            const data = res.data.data;
+            setSkillsShow(data);
+        })
+    }
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSalary(e.target.value);
+    }
 
 
 
@@ -71,49 +110,51 @@ const EnterpriseCreatePost = () => {
         const skillList: SkillRequire[] = skills.map(({ skillId, levelId }) => ({
             skillId,
             levelId,
-          }));
-        const newPost: PostEntity = {
-            expiryDate: `${exprid?.format("YYYY-MM-DD")}`,
-            title: title,
-            name: "",
-            quantity: quantity,
-            benefits: benefits,
-            experience: experience,
-            typeOfWork: workForm,
-            salaryFrom: salary,
-            salaryTo: "",
-            description: description,
-            requirement: requirements,
-            workLocation: workLocation,
-            hrName: hrName,
-            hrEmail: hrEmail,
-            hrPhone: hrPhone,
-            enterpriseId: user?.id,
-            skillIds: skillList,
-            specialty: specialtySelect.name,
+        }));
+        if (specialtySelect !== undefined) {
+            const newPost: PostEntity = {
+                expiryDate: `${exprid?.format("YYYY-MM-DD")}`,
+                title: title,
+                name: "",
+                quantity: quantity,
+                benefits: benefits,
+                experience: experienceSelect !== undefined ? experienceSelect?.name : "",
+                typeOfWork: workForm,
+                salaryFrom: salary,
+                salaryTo: "",
+                description: description,
+                requirement: requirements,
+                workLocation: workLocation,
+                hrName: hrName,
+                hrEmail: hrEmail,
+                hrPhone: hrPhone,
+                enterpriseId: user?.id,
+                skillIds: skillList,
+                specialty: specialtySelect !== undefined ? specialtySelect?.id : 0,
+            }
+            console.log(newPost)
+            createPost(newPost, navigate);
+        } else {
+            setMessage("Create post error")
+            setMessageStatus("red")
         }
-        console.log(newPost)
-        createPost(newPost, navigate);
     }
     const handleRegisProcess = () => {
         switch (etpProcess) {
-            case 'EnterpriseCreatePost':
+            case 'specialty':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>What type of expertise are you hiring for?</h3>
+                            <h3>What type of specialty are you hiring for?</h3>
                             {
-                                specialtiesSystem.map((item: SpecialtyEntity, index: number) => {
+                                specialties?.map((item, index: number) => {
                                     return (
-                                        <div className="radio" key={index}>
+                                        <div className="radio hover-primary" key={index} onClick={() => { setSpecialtySelect(item) }}>
                                             <input type="radio"
                                                 value={item.name}
-                                                checked={item.name === specialtySelect.name}
-                                                onChange={() => {
-                                                    setSpecialtySelect(item);
-                                                }}
+                                                checked={item.name === specialtySelect?.name}
                                             />
-                                            <label className="radio-content">
+                                            <label className="radio-content hover">
                                                 <span className="radio-header">{item.name}</span>
                                                 {/* <span className="radio-description">{item.description}</span> */}
                                             </label>
@@ -122,7 +163,7 @@ const EnterpriseCreatePost = () => {
                                 })
                             }
                             <div className="bot-button">
-                                <button className="btn con-btn" onClick={() => { setEtpProcess('EnterpriseCreatePost1') }}>Get Started</button>
+                                <button className="btn con-btn" onClick={() => { setEtpProcess('salary') }}>Get Started</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -130,128 +171,34 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost1':
+            case 'salary':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
-                            <h3>Tell us about your recruitment</h3>
-                            <div className="input-tab">
-                                <input type="text" className="input-text input-style" placeholder="Title" value={title} style={{ paddingLeft: "16px", width: "100%" }} onChange={(e) => { setTitle(e.target.value) }} />
-                            </div>
-                            <div className="input-tab">
-                                <textarea className="input-text input-style" placeholder="Job description" value={description} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setDescription(e.target.value) }} />
-                            </div>
-                            <div className="bot-button btn-res1">
-                                <div className="btn-back">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => { setEtpProcess('EnterpriseCreatePost') }}>Back</a>
-                                </div>
-                                <button className="btn con-btn" onClick={() => { setEtpProcess('EnterpriseCreatePost2') }}>Next</button>
-                            </div>
-                        </div>
-                        <div className="content-right">
-                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                        </div>
-                    </div>
-                );
-            case 'EnterpriseCreatePost2':
-                return (
-                    <div id="EnterpriseCreatePost">
-                        <div className="content-left">
-                            <h3>Tell us more about your recruitment</h3>
-                            <div className="input-tab">
-                                <textarea className="input-text input-style" placeholder="Candidate requirements" value={requirements} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setRequiments(e.target.value) }} />
-                            </div>
-                            <div className="input-tab">
-                                <textarea className="input-text input-style" placeholder="Benefits" value={benefits} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setBenefits(e.target.value) }} />
-                            </div>
-                            <div className="bot-button btn-res1">
-                                <div className="btn-back">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => { setEtpProcess('EnterpriseCreatePost1') }}>Back</a>
-                                </div>
-                                <button className="btn con-btn" onClick={() => { setEtpProcess('EnterpriseCreatePost3') }}>Next</button>
-                            </div>
-                        </div>
-                        <div className="content-right">
-                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                        </div>
-                    </div>
+                            <h3>What level of specialty would you like your candidate to reach in <strong color="var(--primary-color)">{specialtySelect?.name}</strong>?</h3>
+                            {
+                                specialtySelect?.experiences.map((experience) => {
+                                    const skills: SkillEntity[] = [];
+                                    experience.skills.map(skill => {
+                                        if (skills.some((e) => e.id === skill.id)) {
+                                        }
+                                    })
+                                    return (
+                                        <div className="radio">
+                                            <input type="radio"
+                                                value={experience.name}
+                                                checked={experienceSelect?.name === experience.name}
+                                                onChange={(e) => setExperienceSelect(experience)}
+                                            />
+                                            <label className="radio-content">
+                                                <span className="radio-header">{experience.name}</span>
+                                            </label>
+                                        </div>
+                                    )
+                                })
+                            }
 
-                );
-            case 'EnterpriseCreatePost3':
-                return (
-                    <div id="EnterpriseCreatePost">
-                        <div className="content-left">
-                            <h3>How long do you need the {specialtySelect.name}?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='1 to 3 months'
-                                    checked={hiringTime === '1 to 3 months'}
-                                    onChange={(e) => setHiringtime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">1 to 3 months</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="3 to 6 months"
-                                    checked={hiringTime === "3 to 6 months"}
-                                    onChange={(e) => setHiringtime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">3 to 6 months</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="7 to 9 months"
-                                    checked={hiringTime === "7 to 9 months"}
-                                    onChange={(e) => setHiringtime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">7 to 9 months</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="10 to 12 months"
-                                    checked={hiringTime === "10 to 12 months"}
-                                    onChange={(e) => setHiringtime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">10 to 12 months</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="I will decide later"
-                                    checked={hiringTime === "I will decide later"}
-                                    onChange={(e) => setHiringtime(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">I will decide later</span>
-                                </label>
-                            </div>
-                            <div className="bot-button btn-res1">
-                                <div className="btn-back">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost2')}>Back</a>
-                                </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost4')}>Next</button>
-                            </div>
-                        </div>
-                        <div className="content-right">
-                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                        </div>
-                    </div>
-                );
-            case 'EnterpriseCreatePost4':
-                return (
-                    <div id="EnterpriseCreatePost">
-                        <div className="content-left">
-                            <h3>What level of time commitment will you require from the developer?</h3>
+                            <h3>What level of time commitment will you require from the candidate?</h3>
                             <div className="radio">
                                 <input type="radio"
                                     value='Full time (40 or more hrs/week)'
@@ -272,12 +219,22 @@ const EnterpriseCreatePost = () => {
                                     <span className="radio-header">Part time (Less than 40 hrs/week)</span>
                                 </label>
                             </div>
+                            <h3>What is your budget for this role?</h3>
+                            <div className="input-tab salary">
+                                <div className="input-icon">
+                                    <FontAwesomeIcon icon={faCoins} />
+                                </div>
+                                <input type="text" className="input-text input-style" placeholder="Salary budget" value={salary} onChange={(e) => {
+                                    handleChange(currencyMask(e));
+                                }} />
+                                <span>(VNĐ)</span>
+                            </div>
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost3')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('specialty')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost5')}>Next</button>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('title')}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -285,7 +242,59 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost5':
+            case 'title':
+                return (
+                    <div id="EnterpriseCreatePost">
+                        <div className="content-left">
+                            <h3>Tell us about your recruitment</h3>
+                            <div className="input-tab">
+                                <input type="text" className="input-text input-style" placeholder="Title" value={title} style={{ paddingLeft: "16px", width: "100%" }} onChange={(e) => { setTitle(e.target.value) }} />
+                            </div>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Job description" value={description} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setDescription(e.target.value) }} />
+                            </div>
+                            <div className="bot-button btn-res1">
+                                <div className="btn-back">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                    <a href="#" onClick={() => { setEtpProcess('salary') }}>Back</a>
+                                </div>
+                                <button className="btn con-btn" onClick={() => { setEtpProcess('recruitment') }}>Next</button>
+                            </div>
+                        </div>
+                        <div className="content-right">
+                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
+                        </div>
+                    </div>
+                );
+            case 'recruitment':
+                return (
+                    <div id="EnterpriseCreatePost">
+                        <div className="content-left">
+                            <h3>Tell us more about your recruitment</h3>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Candidate requirements" value={requirements} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setRequiments(e.target.value) }} />
+                            </div>
+                            <div className="input-tab">
+                                <textarea className="input-text input-style" placeholder="Benefits" value={benefits} style={{ paddingLeft: "16px", width: "100%", height: "150px" }} onChange={(e) => { setBenefits(e.target.value) }} />
+                            </div>
+                            <div className="bot-button btn-res1">
+                                <div className="btn-back">
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                    <a href="#" onClick={() => { setEtpProcess('title') }}>Back</a>
+                                </div>
+                                <button className="btn con-btn" onClick={() => {
+                                    getSkills();
+                                    setEtpProcess('skills')
+                                }}>Next</button>
+                            </div>
+                        </div>
+                        <div className="content-right">
+                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
+                        </div>
+                    </div>
+
+                );
+            case 'skills':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
@@ -310,12 +319,12 @@ const EnterpriseCreatePost = () => {
                             <div className="skills">
                                 <span>Popular skills for</span>
                                 <select className="select-skills" onChange={(e) => {
-                                    const selectedSpecialty = specialtiesSystem.find((specialty: SpecialtyEntity) => specialty.name === e.target.value);
+                                    const selectedSpecialty = specialties?.find((specialty) => specialty.name === e.target.value);
                                     if (selectedSpecialty) {
                                         setSpecialty(selectedSpecialty);
                                     }
                                 }}>
-                                    {specialtiesSystem.map((specialty: SpecialtyEntity, index: number) => (
+                                    {specialties?.map((specialty, index: number) => (
                                         <option key={index}>{specialty.name}</option>
                                     ))}
                                 </select>
@@ -323,7 +332,8 @@ const EnterpriseCreatePost = () => {
                             <div className="skill-items">
                                 <div className="btn-items">
                                     {
-                                        specialty.skills.map((skill, index) => {
+                                        skillsShow.map((skill, index) => {
+
                                             return (
                                                 <div style={{ display: "inline-block" }} key={index}>
                                                     {/* <button key={index} className="btn-item item-plus" onClick={() => handleSelectSkill(skill)}>
@@ -353,9 +363,9 @@ const EnterpriseCreatePost = () => {
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost4')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('recruitment')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost6')}>Next</button>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('information')}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -363,7 +373,7 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost6':
+            case 'information':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
@@ -401,9 +411,9 @@ const EnterpriseCreatePost = () => {
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost5')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('skills')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost7')}>Next</button>
+                                <button className="btn con-btn" onClick={() => setEtpProcess('hr')}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -411,65 +421,7 @@ const EnterpriseCreatePost = () => {
                         </div>
                     </div>
                 );
-            case 'EnterpriseCreatePost7':
-                return (
-                    <div id="EnterpriseCreatePost">
-                        <div className="content-left">
-                            <h3>What is your budget for this role?</h3>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='Less than $70/hr'
-                                    checked={salary === 'Less than $70/hr'}
-                                    onChange={(e) => setSalary(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">Less than $70/hr</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='$70 - $90/hr'
-                                    checked={salary === '$70 - $90/hr'}
-                                    onChange={(e) => setSalary(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">$70 - $90/hr</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value='$91 - $110/hr'
-                                    checked={salary === '$91 - $110/hr'}
-                                    onChange={(e) => setSalary(e.target.value)}
-                                />
-                                <label className="radio-content" >
-                                    <span className="radio-header">$91 - $110/hr</span>
-                                </label>
-                            </div>
-                            <div className="radio">
-                                <input type="radio"
-                                    value="I will decide later"
-                                    checked={salary === "I will decide later"}
-                                    onChange={(e) => setSalary(e.target.value)}
-                                />
-                                <label className="radio-content">
-                                    <span className="radio-header">I will decide later</span>
-                                </label>
-                            </div>
-                            <div className="bot-button btn-res1">
-                                <div className="btn-back">
-                                    <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost6')}>Back</a>
-                                </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('EnterpriseCreatePost8')}>Next</button>
-                            </div>
-                        </div>
-                        <div className="content-right">
-                            <img src="https://weisseradlerng.com/images/It-consulting2.png?fbclid=IwAR1xFcrUNJmC6K1qNd-RTaTSScB6r-PKvQB3elqxfVTCSiXGp4YxZVLx6ys" alt="" className="intro-image" />
-                        </div>
-                    </div>
-                );
-            case 'EnterpriseCreatePost8':
+            case 'hr':
                 return (
                     <div id="EnterpriseCreatePost">
                         <div className="content-left">
@@ -498,7 +450,7 @@ const EnterpriseCreatePost = () => {
                             <div className="bot-button btn-res1">
                                 <div className="btn-back">
                                     <FontAwesomeIcon icon={faChevronLeft} />
-                                    <a href="#" onClick={() => setEtpProcess('EnterpriseCreatePost7')}>Back</a>
+                                    <a href="#" onClick={() => setEtpProcess('information')}>Back</a>
                                 </div>
                                 <button className="btn con-btn" onClick={() => { handleClick() }}>Finish</button>
                             </div>
@@ -511,7 +463,15 @@ const EnterpriseCreatePost = () => {
         }
     }
     return (
-        <Fragment>{handleRegisProcess()}</Fragment>
+        <Fragment>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
+            {handleRegisProcess()}
+            </Fragment>
     )
 
 }

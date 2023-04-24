@@ -52,7 +52,6 @@ const Popup: FC<Props> = (props) => {
     }, [props.popup])
 
     const loginHandler = async (e: FormEvent) => {
-        console.log(notificationToken);
         e.preventDefault();
         try {
             const userLogin : Login = {
@@ -129,27 +128,6 @@ const Popup: FC<Props> = (props) => {
                         </div>
                     </form>
                 )
-            // case 3:
-            //     return (
-            //         <div className="popup-container" style={{ height: "40%" }}>
-            //             <i className="pi pi-times icon-close" onClick={() => {
-            //                 props.isDisplay('');
-            //                 props.isPopup(0);
-            //             }}></i>
-            //             <div className="logo"><img className='logo' src="/images/ApitsLogo.png" alt="logo" /></div>
-            //             <h4>Sign Up</h4>
-            //             <input type="text" className='input' placeholder='Email' onChange={(e) => { setUsername(e.target.value) }} />
-            //             <input type="password" className='input' placeholder='Password' onChange={(e) => { setPassword(e.target.value) }} autoComplete="on" />
-            //             <input type="password" className='input' placeholder='Confirm Password' onChange={(e) => { setConfirm(e.target.value) }} autoComplete="on" />
-            //             <input type="text" className='input' placeholder='Company Name' onChange={(e) => { setName(e.target.value) }} autoComplete="on" />
-            //             <input type="text" className='input' placeholder='Company Address' onChange={(e) => { setAddress(e.target.value) }} autoComplete="on" />
-            //             <input type="text" className='input' placeholder='Phone' onChange={(e) => { setPhone(e.target.value) }} autoComplete="on" />
-            //             <p style={{ color: "red" }}>{messageRegister}</p>
-            //             <button className="btn-submit" onClick={registerHandler}>
-            //                 Join APITS
-            //             </button>
-            //         </div>
-            //     )
             default:
                 return (
                     <div className="popup-container" style={{ height: "40%" }}>

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
+import Notification from '../Popup/Notification/Notification';
 
 interface Props {
     setUser: Dispatch<SetStateAction<User | null>>;
@@ -38,7 +39,6 @@ const EmployeeHeader: FC<Props> = (props) => {
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/interview">Interview</Nav.Link>
-                        {/* <Nav.Link className='navlink hover-primary' href="/specialty">Specialty</Nav.Link> */}
                         <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
                     </Nav>
                 )
@@ -100,30 +100,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                <OverlayTrigger
-                                    trigger="click"
-                                    key={'bottom'}
-                                    placement={'bottom'}
-                                    overlay={
-                                        <Popover id={`popover-positioned-bottom`} className='notification-popup-cover'>
-                                            <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
-                                            <Popover.Body>
-                                                <div className='notification-popup-item'>
-                                                    <strong>You have Assigned!</strong>
-                                                    <br></br>
-                                                    <span>We assign you to FPT Software Company</span>
-                                                </div>
-                                                <div className='notification-popup-item'>
-                                                    <strong>You have Assigned!</strong>
-                                                    <br></br>
-                                                    <span>We assign you to FPT Software Company</span>
-                                                </div>
-                                            </Popover.Body>
-                                        </Popover>
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
-                                </OverlayTrigger>
+                                <Notification />
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
