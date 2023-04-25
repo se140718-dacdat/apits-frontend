@@ -33,9 +33,6 @@ const CandidateAssign = () => {
   const handleAssign = async () => {
     if (selectedRowIds.length > 0) {
       const request: Assign = {
-        status: "ACTIVE",
-        experience: "",
-        screeningStatus: "ASSIGNED",
         assignerId: user?.id,
         candidateIds: selectedRowIds,
         recruitmentRequestId: Number(id)

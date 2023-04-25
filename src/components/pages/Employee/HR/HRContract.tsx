@@ -63,7 +63,7 @@ const HRContract = () => {
             interviewDetail: item,
             candidate: item.interview.assign.candidate.name,
             enterprise: item.interview.assign.recruitmentRequest.creator.name,
-            position: item.interview.assign.recruitmentRequest.specialty,
+            position: `${item.interview.assign.recruitmentRequest.specialty.name} ${item.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
             candidatePhone: item.interview.assign.candidate.phone,
             enterprisePhone: item.interview.assign.recruitmentRequest.creator.phone,
         })) : [];

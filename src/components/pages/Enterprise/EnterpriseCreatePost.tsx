@@ -34,7 +34,6 @@ const EnterpriseCreatePost = () => {
     const [description, setDescription] = useState<string>('');
     const [requirements, setRequiments] = useState<string>('');
     const [benefits, setBenefits] = useState<string>('');
-    const [hiringTime, setHiringtime] = useState<string>('1 to 3 months');
     const [workForm, setWorkForm] = useState<string>('Full time (40 or more hrs/week)');
     const [salary, setSalary] = useState<string>("");
     const [skills, setSkills] = useState<SkillSelect[]>([]);
@@ -49,11 +48,13 @@ const EnterpriseCreatePost = () => {
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
 
-
-
     useEffect(() => {
         fetchData();
-    }, [skills])
+    }, [])
+
+    useEffect(() => {
+        getSkills();
+    }, [specialty])
 
 
     const handleSelectSkill = (skill: SkillShow, level: LevelShow) => {
@@ -88,7 +89,8 @@ const EnterpriseCreatePost = () => {
         await axios.get("/special-skill/getListSESL").then((res) => {
             const data = res.data.data;
             setSpecialties(data);
-            setSpecialty(data[0]);
+            setSpecialtySelect(data[0]);
+            setExperienceSelect(data[0].experiences[0])
         })
     }
 
@@ -118,7 +120,7 @@ const EnterpriseCreatePost = () => {
                 name: "",
                 quantity: quantity,
                 benefits: benefits,
-                experience: experienceSelect !== undefined ? experienceSelect?.name : "",
+                experience: experience,
                 typeOfWork: workForm,
                 salaryFrom: salary,
                 salaryTo: "",
@@ -130,7 +132,8 @@ const EnterpriseCreatePost = () => {
                 hrPhone: hrPhone,
                 enterpriseId: user?.id,
                 skillIds: skillList,
-                specialty: specialtySelect !== undefined ? specialtySelect?.id : 0,
+                specialtyId: specialtySelect !== undefined ? specialtySelect?.id : 0,
+                experienceId: experienceSelect !== undefined ? experienceSelect?.id : 0,
             }
             console.log(newPost)
             createPost(newPost, navigate);
@@ -156,7 +159,6 @@ const EnterpriseCreatePost = () => {
                                             />
                                             <label className="radio-content hover">
                                                 <span className="radio-header">{item.name}</span>
-                                                {/* <span className="radio-description">{item.description}</span> */}
                                             </label>
                                         </div>
                                     )
@@ -178,13 +180,8 @@ const EnterpriseCreatePost = () => {
                             <h3>What level of specialty would you like your candidate to reach in <strong color="var(--primary-color)">{specialtySelect?.name}</strong>?</h3>
                             {
                                 specialtySelect?.experiences.map((experience) => {
-                                    const skills: SkillEntity[] = [];
-                                    experience.skills.map(skill => {
-                                        if (skills.some((e) => e.id === skill.id)) {
-                                        }
-                                    })
                                     return (
-                                        <div className="radio">
+                                        <div className="radio" key={experience.id}>
                                             <input type="radio"
                                                 value={experience.name}
                                                 checked={experienceSelect?.name === experience.name}
@@ -234,7 +231,8 @@ const EnterpriseCreatePost = () => {
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                     <a href="#" onClick={() => setEtpProcess('specialty')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => setEtpProcess('title')}>Next</button>
+                                <button className="btn con-btn" onClick={() => (salary === "") ? setMessage("Salary is empty") : setEtpProcess("title") }>Next</button>
+                                {/* setEtpProcess('title'); */}
                             </div>
                         </div>
                         <div className="content-right">
@@ -336,10 +334,6 @@ const EnterpriseCreatePost = () => {
 
                                             return (
                                                 <div style={{ display: "inline-block" }} key={index}>
-                                                    {/* <button key={index} className="btn-item item-plus" onClick={() => handleSelectSkill(skill)}>
-                                                        <FontAwesomeIcon icon={faPlus} />
-                                                        <span>{skill.name}</span>
-                                                    </button> */}
                                                     <Dropdown>
                                                         <Dropdown.Toggle variant="success" className="btn-item item-plus" id="dropdown-basic">
                                                             {skill.name}
@@ -471,7 +465,7 @@ const EnterpriseCreatePost = () => {
                     null
             }
             {handleRegisProcess()}
-            </Fragment>
+        </Fragment>
     )
 
 }

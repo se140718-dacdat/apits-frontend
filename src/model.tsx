@@ -283,9 +283,6 @@ export interface Position {
 }
 
 export interface Assign {
-    status: string;
-    experience: string;
-    screeningStatus: string;
     recruitmentRequestId: number,
     assignerId: number,
     candidateIds: GridRowId[]

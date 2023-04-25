@@ -13,7 +13,7 @@ import CandidateAssign from './CandidateAssign';
 import { useSelector } from 'react-redux';
 import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import { useParams } from 'react-router-dom';
-import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getCandidatesConfirmed, getPostByPostId } from '../../../../redux/apiRequest';
+import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getCandidatesConfirmed, getExperience, getPostByPostId } from '../../../../redux/apiRequest';
 import { CandidateConfirmed, CandidateForAssign, CandidateResponse, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import MessageBox from '../Popup/MessageBox/MessageBox';
@@ -24,11 +24,11 @@ const RecruitmentPostDetail = () => {
     const account = useSelector((state: any) => state.auth.login.currentUser);
     const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
 
-    const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
+    // const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
-
-
+    const [intern, setIntern] = useState<string>("");
+    const [specialty, setSpecialty] = useState<string>("");
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -49,10 +49,11 @@ const RecruitmentPostDetail = () => {
         fetchData();
     }, [])
 
+
     const fetchData = async () => {
         setPost(await getPostByPostId(id));
+        console.log(post)
     }
-
 
     return (
         <div id='RecruitmentPostDetail'>
@@ -83,9 +84,9 @@ const RecruitmentPostDetail = () => {
                                             </div>)
                                             :
                                             null
-                                            // <div className="btn-assign">
-                                            //     <button onClick={handleOpen}>Apply Now!</button>
-                                            // </div>
+                                    // <div className="btn-assign">
+                                    //     <button onClick={handleOpen}>Apply Now!</button>
+                                    // </div>
                                 }
                             </div>
                             <div className="post-content">
@@ -145,10 +146,11 @@ const RecruitmentPostDetail = () => {
                                     <h3>Job description</h3>
                                     <div className="general-item">
                                         <ul>
-                                            <li>Thiết kế và phát triển các website WordPress</li>
-                                            <li>Thiết kế Landing page</li>
-                                            <li>Phát triển các tính năng cho themes</li>
-                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                            {
+                                                post?.description.split("\n").map((str) =>
+                                                    <li>{str}</li>
+                                                )
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -156,10 +158,11 @@ const RecruitmentPostDetail = () => {
                                     <h3>Candidate requirements</h3>
                                     <div className="general-item">
                                         <ul>
-                                            <li>Thiết kế và phát triển các website WordPress</li>
-                                            <li>Thiết kế Landing page</li>
-                                            <li>Phát triển các tính năng cho themes</li>
-                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                            {
+                                                post?.requirement.split("\n").map((str) =>
+                                                    <li>{str}</li>
+                                                )
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -167,10 +170,11 @@ const RecruitmentPostDetail = () => {
                                     <h3>Benefits</h3>
                                     <div className="general-item">
                                         <ul>
-                                            <li>Thiết kế và phát triển các website WordPress</li>
-                                            <li>Thiết kế Landing page</li>
-                                            <li>Phát triển các tính năng cho themes</li>
-                                            <li>Tham gia vào quy trình phát triển sản phẩm, đảm bảo chất lượng và tiến độ.</li>
+                                            {
+                                                post?.benefits.split("\n").map((str) =>
+                                                    <li>{str}</li>
+                                                )
+                                            }
                                         </ul>
                                     </div>
                                 </div>
@@ -196,7 +200,7 @@ const RecruitmentPostDetail = () => {
                                 <p className='item-name'>Specialty</p>
                                 <div className="item-list">
                                     <div className="item">
-                                        {post?.specialty}
+                                        {post?.specialty.name} <strong>{post?.experienceSpecialty.name}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +261,7 @@ const RecruitmentPostDetail = () => {
                                     <p className='item-name'>Specialty:</p>
                                     <div className="modal-list">
                                         <div className="item">
-                                            {post?.specialty}
+                                            {post?.specialty.name}
                                         </div>
                                     </div>
                                 </div>
@@ -280,7 +284,7 @@ const RecruitmentPostDetail = () => {
                                 <div className="assign-container">
                                     <h2>Suitable candidates</h2>
                                     <div className="candidates-container">
-                                        <div className="filter">
+                                        {/* <div className="filter">
                                             <div className="filter-form-input">
                                                 <div className="filter-input-icon">
                                                     <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
@@ -306,7 +310,7 @@ const RecruitmentPostDetail = () => {
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                             <button className='btn-search ml-8'>Search</button>
-                                        </div>
+                                        </div> */}
                                         <div style={{ height: 500, width: '100%' }}>
                                             {
                                                 <CandidateAssign />
@@ -329,7 +333,7 @@ const RecruitmentPostDetail = () => {
                                     <div className="assign-container">
                                         <h2>Candidates</h2>
                                         <div className="candidates-container">
-                                            <div className="filter">
+                                            {/* <div className="filter">
                                                 <div className="filter-form-input">
                                                     <div className="filter-input-icon">
                                                         <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
@@ -355,7 +359,7 @@ const RecruitmentPostDetail = () => {
                                                     </Dropdown.Menu>
                                                 </Dropdown>
                                                 <button className='btn-search ml-8'>Search</button>
-                                            </div>
+                                            </div> */}
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {
                                                     <ViewAssign />

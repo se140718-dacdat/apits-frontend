@@ -14,7 +14,6 @@ const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
 
     const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
-    const [specialty, setSpecialty] = useState<SpecialtyExpDetail>();
     const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpResponse>();
     const [showCourse, setShowCourse] = useState(false);
     const [course, setCourse] = useState<CourseEntity>();
@@ -46,19 +45,25 @@ const CandidateCourse = () => {
         fetchData();
     }, [])
 
+    useEffect(() => {
+        if (specialtySelect !== undefined) {
+            getSpecialtyDetail();
+        }
+    }, [specialtySelect])
+
     async function fetchData() {
-        const res = await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`);
-        const data = await res?.data.data.specialties;
-        setSpecialties(data);
-        setSpecialtySelect(data[0]);
-        getSpecialtyDetail(data[0].specialtyId)
+        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`).then(async (res) => {
+            const data = await res?.data.data.specialties;
+            setSpecialties(data);
+            setSpecialtySelect(data[0]);
+        });
     }
 
-    async function getSpecialtyDetail(id: number) {
-        const res = await axios.get(`/canspec/getSESLCandidateDetail?candidateId=${user?.id}&specId=${id}`);
-        const data = await res.data.data;
-        setSpecialty(data);
-        setCurrentExp(specialty?.experiences.find((e) => e.id === specialtySelect?.expId));
+    async function getSpecialtyDetail() {
+        await axios.get(`/canspec/getSESLCandidateDetail?candidateId=${user?.id}&specId=${specialtySelect?.specialtyId}`).then(async (res) => {
+            const data = await res.data.data;
+            setCurrentExp(data?.experiences.find((e: SpecialtyExpDetail) => e.id === specialtySelect?.expId));
+        });
     }
 
 
@@ -76,7 +81,7 @@ const CandidateCourse = () => {
                 setMessage("Started!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
-                    getSpecialtyDetail(specialtySelect?.specialtyId)
+                    getSpecialtyDetail();
                 }
                 window.open(course?.link);
             }
@@ -95,7 +100,7 @@ const CandidateCourse = () => {
                 setMessage("Submit successfuly!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
-                    getSpecialtyDetail(specialtySelect?.specialtyId)
+                    getSpecialtyDetail();
                 }
             }
         })
@@ -266,7 +271,7 @@ const CandidateCourse = () => {
                                         <div key={specialty.specialtyId}>
                                             <Dropdown.Item className='filter-item' onClick={() => {
                                                 setSpecialtySelect(specialty);
-                                                getSpecialtyDetail(specialty.specialtyId);
+                                                getSpecialtyDetail();
                                             }}>{specialty.specialtyName}</Dropdown.Item>
                                         </div>
                                     )
@@ -277,35 +282,41 @@ const CandidateCourse = () => {
                     <button className='btn-search ml-8'>Search</button>
                 </div>
                 <div className="experience-container">
-                    <span className="experience-name">You are at the <strong style={{color: "var(--primary-color)"}}>{currentExp?.name}</strong> level</span>
+                    <span className="experience-name">You are at the <strong style={{ color: "var(--primary-color)" }}>{currentExp?.name}</strong> level</span>
                     {
-                        currentExp?.skills.map((skill) => {
+                        currentExp !== undefined ? currentExp?.skills?.map((skill) => {
+                            console.log("skill", skill);
                             return (
                                 <div className="skill-container" key={skill.id}>
                                     <span className="skill-name">{skill.name}</span>
                                     <div className="courses">
                                         {skill.levels.map((level) => (
-                                            level.courses.map((course) => (
-                                                <div
-                                                    className="course"
-                                                    key={course.id}
-                                                    onClick={() => handleShowCourse(course, skill, level.id)}
-                                                >
-                                                    <img src={skill.image} alt="" className="skill-icon" />
-                                                    <div className="course-description">
-                                                        <span className="course-name">{course.name}</span>
-                                                        <div className='level'>
-                                                            <span>{level.name}</span>
+                                            level.courses?.map((course) => {
+                                                return (
+                                                    <div
+                                                        className="course"
+                                                        key={course.id}
+                                                        onClick={() => handleShowCourse(course, skill, level.id)}
+                                                    >
+                                                        <img src={skill.image} alt="" className="skill-icon" />
+                                                        <div className="course-description">
+                                                            <span className="course-name">{course.name}</span>
+                                                            <div className='level'>
+                                                                <span>{level.name}</span>
+                                                            </div>
+                                                            <span className='course-status' style={{ marginRight: "12px", color: getStatusColor(course.status) }}>{course.status}</span>
                                                         </div>
-                                                        <span className='course-status' style={{ marginRight: "12px", color: getStatusColor(course.status) }}>{course.status}</span>
                                                     </div>
-                                                </div>
-                                            ))
-                                        ))}
+                                                )
+                                            })
+                                        )
+                                        )
+                                        }
                                     </div>
                                 </div>
                             )
                         })
+                            : null
                     }
                 </div>
             </div>

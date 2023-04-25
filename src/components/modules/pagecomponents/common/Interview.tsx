@@ -421,8 +421,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             candidateId: participantAId,
             hostId: professor?.id
           }
-          console.log(request);
-          // createInterview(request);
+          createInterview(request);
         } else {
           console.log("ERROR")
         }

@@ -210,6 +210,16 @@ export const getSpecialtiesByCandidateId = async (id) => {
     }
 }
 
+// Experience
+export const getExperience = async (id) => {
+    try {
+        const res = await axios.get(`/findById?id=${id}`)
+        return res.data.data.name
+    } catch (error) {
+        return error
+    }
+}
+
 //Course
 
 export const getCandidateCourses = async (id) => {
@@ -323,6 +333,7 @@ export const getAllPost = async () => {
 //Assign
 
 export const assignCandidates = async (params) => {
+    console.log(params)
     try {
         const res = await axios.post("/assign/create", params)
         console.log(res.status);

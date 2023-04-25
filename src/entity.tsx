@@ -92,7 +92,8 @@ export interface PostEntity {
     hrEmail: string,
     enterpriseId: number,
     skillIds: SkillRequire[],
-    specialty: number;
+    specialtyId: number;
+    experienceId: number;
 }
 
 export interface SkillRequire {
@@ -139,7 +140,8 @@ export interface PostResponse {
     hrEmail: string,
     enterpriseId: number,
     skills: SkillSelect[],
-    specialty: string,
+    specialty: SpecialtyOnly,
+    experienceSpecialty: Experience,
     createAt: string,
     creator: CreatorEntity
 }
