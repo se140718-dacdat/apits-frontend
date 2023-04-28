@@ -18,6 +18,7 @@ import { CandidateConfirmed, CandidateForAssign, CandidateResponse, PostResponse
 import { getDaysLeft } from '../../../../handle';
 import MessageBox from '../Popup/MessageBox/MessageBox';
 import axios from '../../../../api/axios';
+import { currencyMaskString } from '../../../../mask';
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
@@ -47,12 +48,12 @@ const RecruitmentPostDetail = () => {
 
     useEffect(() => {
         fetchData();
+        console.log(post)
     }, [])
 
 
     const fetchData = async () => {
         setPost(await getPostByPostId(id));
-        console.log(post)
     }
 
     return (
@@ -84,9 +85,6 @@ const RecruitmentPostDetail = () => {
                                             </div>)
                                             :
                                             null
-                                    // <div className="btn-assign">
-                                    //     <button onClick={handleOpen}>Apply Now!</button>
-                                    // </div>
                                 }
                             </div>
                             <div className="post-content">
@@ -99,7 +97,7 @@ const RecruitmentPostDetail = () => {
                                             <div>
                                                 <strong>Salary</strong>
                                                 <br />
-                                                <span>{post?.salaryFrom}</span>
+                                                <span>{post?.salaryDetail && currencyMaskString(post?.salaryDetail)}</span>
                                             </div>
                                         </div>
                                         <div className="general-item">
@@ -262,6 +260,14 @@ const RecruitmentPostDetail = () => {
                                     <div className="modal-list">
                                         <div className="item">
                                             {post?.specialty.name}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal-item">
+                                    <p className='item-name'>Experience:</p>
+                                    <div className="modal-list">
+                                        <div className="item">
+                                            {post?.experienceSpecialty.name}
                                         </div>
                                     </div>
                                 </div>

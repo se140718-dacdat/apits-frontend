@@ -356,7 +356,7 @@ export const getAllAssign = async () => {
 export const confirmAssign = async (id, candidateId) => {
     try {
         const res = await axios.put(`/assign/approvedByCandidate/{id}?id=${id}&candidateId=${candidateId}`)
-        console.log(res);
+        return res.data.status;
     } catch (err) {
         return err
     }

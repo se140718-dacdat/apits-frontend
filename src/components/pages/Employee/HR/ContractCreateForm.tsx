@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import axios from "../../../../api/axios";
 import { CandidateEntity, ContractAgreement, ContractAgreementResponse, ContractLaborSupply, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
 import "./ContractCreateForm.css";
+import { currencyMask, currencyMaskString, currencyToNumber } from "../../../../mask";
+import MessageBox from "../../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 
 interface Props {
     interviewDetail: interviewDetailResponse | undefined;
@@ -19,10 +21,12 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const now = new Date();
 
     const getSalary = () => {
-        if(contractLaborSupply) {
+        if (contractLaborSupply) {
             return contractLaborSupply.salary
-        } else if(contractAgreement) {
+        } else if (contractAgreement) {
             return contractAgreement.salary
+        } else if (interviewDetail !== undefined) {
+            return interviewDetail?.interview.assign.recruitmentRequest.salaryDetail
         } else {
             return 0
         }
@@ -41,13 +45,14 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
     const [dateStart, setDateStart] = useState<string>('');
     const [dateEnd, setDateEnd] = useState<string>('');
     const [signature, setSignature] = useState<string>('');
-    const [dateSign, setDateSig] = useState<string>(moment((new Date()).toString()).format('YYYY-MM-DD'));
     const [isPreview, setIsPreview] = useState(false);
     const [salary, setSalary] = useState<number>(getSalary());
     const [missionEmployee, setMissionEmployee] = useState<string>(contractAgreement ? contractAgreement.missionEmployee : '');
     const [benefits, setBenefits] = useState<string>(contractAgreement ? contractAgreement.benefits : '');
     const [candidate, setCandidate] = useState<CandidateEntity>();
     const [requestLaborSupply, setRequestLaborSupply] = useState<ContractLaborSupply>();
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
 
 
     useEffect(() => {
@@ -56,6 +61,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
     const handleContractType = () => {
         if (interviewDetail !== undefined) {
+            setBenefits(interviewDetail.interview.assign.recruitmentRequest.benefits)
             switch (contractType) {
                 case 'CONTRACT OF LABOR SUPPLY':
                     setPartyB(interviewDetail?.interview.assign.recruitmentRequest.creator.name);
@@ -75,7 +81,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
     const handleCreateAgreement = async () => {
         const request: ContractAgreement = {
-            dateSigned: dateSign,
+            dateSigned: now,
             address: addressB,
             description: "",
             nameEmployee: partyB,
@@ -91,15 +97,21 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.candidate.id : 0,
             interviewDetailId: interviewDetail !== undefined ? interviewDetail?.id : 0
         }
-        console.log(request);
+        let check = true
         await axios.post("/contract/createContractLaborSupply", requestLaborSupply).then((res) => {
-            console.log(res.data);
+            if (res.status !== 200) {
+                check = false
+            }
         })
-        await axios.post("/contract/createContractAgreement", request).then((res) => {
-            console.log(res.data);
-            setIsCreate(false);
+        await axios.post("/contract/createContractAgreement", request).then(async (res) => {
+            if (res.status == 200 && check) {
+                await axios.put(`/interview-detail/changeStatusDoneByInterviewId?id=${interviewDetail?.interview.id}`).then((res) => {
+                    if (res.data.status == "SUCCESS") {
+                        setIsCreate(false);
+                    }
+                })
+            }
         })
-        await axios.put(`/interview-detail/changeStatusDoneByInterviewId?id=${interviewDetail?.interview.id}`)
     }
 
     const handleCreateLarborSupply = async () => {
@@ -120,20 +132,59 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
             createId: user?.id,
             salary: salary ? salary : 0,
             signerId: interviewDetail !== undefined ? interviewDetail.interview.assign.recruitmentRequest.creator.id : 0,
-            interviewDetailId: interviewDetail !== undefined ? interviewDetail?.id : 0
+            interviewDetailId: interviewDetail !== undefined ? interviewDetail?.id : 0,
+            dateSigned: now
         }
         setRequestLaborSupply(request);
         setContractType('EMPLOYMENT CONTRACT AGREEMENT');
+    }
 
-        // await axios.post("/contract/createContractLaborSupply", request).then((res) => {
-        //     console.log(res.data);
-        // })
+    const handleSignLaborSupply = async () => {
+        if (contractLaborSupply !== undefined) {
+            await axios.put(`/contract/updateStatusSignedLaborSupplyContract?id=${contractLaborSupply?.id}`).then((res) => {
+                const data = res.data;
+                if (data.status === "SUCCESS") {
+                    setMessage(data.message);
+                    setMessageStatus("green");
+                } else {
+                    setMessage("Sign contract fail, please try again!");
+                    setMessageStatus("red");
+                }
+            })
+        } else {
+            setMessage("Contract not exist");
+            setMessageStatus("red");
+        }
+    }
+
+    const handleSignAgreement = async () => {
+        if (contractAgreement !== undefined) {
+            await axios.put(`/contract/updateStatusSignedAgreementContract?id=${contractAgreement?.id}`).then((res) => {
+                const data = res.data;
+                if (data.status === "SUCCESS") {
+                    setMessage(data.message);
+                    setMessageStatus("green");
+                } else {
+                    setMessage("Sign contract fail, please try again!");
+                    setMessageStatus("red");
+                }
+            })
+        } else {
+            setMessage("Contract not exist");
+            setMessageStatus("red");
+        }
     }
 
 
 
     return (
         <div id="ContractCreateForm">
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             {
                 interviewDetail !== undefined ?
                     <div className="contract__type">
@@ -161,12 +212,12 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                 <div className="centered">
                                     <h3>HỢP ĐỒNG CUNG CẤP NHÂN SỰ</h3>
                                 </div>
-                                <h5>Đơn vị cung cấp dịch vụ: APITS</h5>
+                                <h5>Đơn vị cung cấp dịch vụ: <strong style={{ textDecoration: "none" }}>APITS</strong></h5>
                                 <span>Địa chỉ: 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh</span><br />
                                 <span>Số điện thoại: +84 948.678.678</span><br />
                                 <span>Email: apits@apits.com.vn </span><br />
 
-                                <h5>Đơn vị sử dụng dịch vụ:{isPreview ? ` ${partyB}` : <input type='text' className='input-text' value={partyB} onChange={(e) => setPartyB(e.target.value)} />}</h5>
+                                <h5>Đơn vị sử dụng dịch vụ: <strong style={{ textDecoration: "none" }}>{partyB}</strong></h5>
                                 <p>Địa chỉ: {addressB}</p>
                                 <p>Số điện thoại: {phoneB}</p>
                                 <p>Email: {interviewDetail?.interview.assign.recruitmentRequest.creator.email}</p>
@@ -189,7 +240,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
                                 <h5>3. Giá cả và phương thức thanh toán</h5>
                                 <p>Bên B sẽ thanh toán cho Bên A số tiền cung cấp dịch vụ được thỏa thuận trong hợp đồng sau khi nhận được và chấp nhận dịch vụ. Phương thức thanh toán được thống nhất là chuyển khoản ngân hàng đến tài khoản ngân hàng của Bên A theo thông tin sau:</p>
-                                <p>Bên A và B đã thống nhất về mức phí dịch vụ dựa trên kinh nghiệm của ứng viên được cung cấp. Theo đó, với ứng viên có kinh nghiệm <strong>Fresher</strong>, mức phí dịch vụ là <strong>5%</strong> của mức lương cơ bản mà doanh nghiệp đã đề ra sau khi đã phỏng vấn với ứng viên là {isPreview ? salary : <input type='text' className='input-w130 input-text' value={salary} onChange={e => setSalary(parseInt(e.target.value))} />}(VNĐ). Bên B sẽ thanh toán mức phí dịch vụ được thỏa thuận cho Bên A sau khi nhận được và chấp nhận dịch vụ.</p>
+                                <p>Bên A và B đã thống nhất về mức phí dịch vụ dựa trên kinh nghiệm của ứng viên được cung cấp. Theo đó, với ứng viên có kinh nghiệm <strong>Fresher</strong>, mức phí dịch vụ là <strong>5%</strong> của mức lương cơ bản mà doanh nghiệp đã đề xuất là <strong>{currencyMaskString(salary)} (VNĐ)</strong>. Bên B sẽ thanh toán mức phí dịch vụ được thỏa thuận cho Bên A sau khi nhận được và chấp nhận dịch vụ.</p>
 
                                 <h5>4. Bảo mật thông tin</h5>
                                 <p>Bên A cam kết giữ bí mật thông tin</p>
@@ -240,10 +291,23 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                     </div>
                                     <div className="signature-right">
                                         <h6>Đại diện của bên B</h6>
-                                        <p><label className="label-signature-name">Bên B:</label>Công ty {partyB}<br />
-                                            <label className="label-signature-name">Đại diện:</label><input type="text" className="input-text" /><br />
-                                            <label className="label-signature-name">Chức vụ:</label><input type="text" className="input-text" /><br />
-                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                        <p>
+                                            {
+                                                (contractLaborSupply !== undefined)
+                                                    ?
+                                                    <div>
+                                                        <label className="label-signature-name">Bên B:</label>Công ty {contractLaborSupply.name}<br />
+                                                        <label className="label-signature-name">Đại diện:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text" /><br />
+                                                        <label className="label-signature-name">Chức vụ:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text" /><br />
+                                                        {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                    </div>
+                                                    :
+                                                    <div>
+                                                        <label className="label-signature-name">Bên B:</label>Công ty {partyB}<br />
+                                                        {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                    </div>
+
+                                            }
                                         </p>
                                     </div>
                                 </div>
@@ -252,7 +316,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                 <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                 {
                                     contractLaborSupply !== undefined ?
-                                        <button className=" btn" onClick={() => {}}>Sign</button>
+                                        <button className=" btn" onClick={() => { handleSignLaborSupply() }}>Sign</button>
                                         :
                                         <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
                                 }
@@ -273,19 +337,27 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         <h3>HỢP ĐỒNG LAO ĐỘNG</h3>
                                     </div>
                                     <h5>Các Bên</h5>
-                                    <p>- Thỏa thuận Hợp đồng Lao động này (sau đây gọi là “Thỏa thuận”) được ký kết vào ngày 16 tháng 4 năm 2023 (“Ngày có hiệu lực”), giữa Apits có địa chỉ 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh (sau đây gọi là “Bên cung cấp dịch vụ”) và Lương Hồ Đắc Đạt, có địa chỉ tại TP.HCM (sau đây gọi là “Người lao động”) (gọi chung là “Các bên”) .</p>
+                                    <p>- Thỏa thuận Hợp đồng Lao động này (sau đây gọi là “Thỏa thuận”) được ký kết vào ngày 16 tháng 4 năm 2023 (“Ngày có hiệu lực”), giữa <strong>Apits</strong> có địa chỉ 1412, Đường Cầu Vồng 3, Phường Long Thạnh Mỹ, Quận 9, Hồ Chí Minh (sau đây gọi là “Bên cung cấp dịch vụ”) và <strong>{interviewDetail?.interview.assign.candidate.name}</strong>, có địa chỉ tại TP.HCM (sau đây gọi là “Người lao động”) (gọi chung là “Các bên”) .</p>
                                     <h5>Nhiệm Vụ Và Trách Nhiệm</h5>
                                     <p>- Trong thời gian làm việc, Người lao động có trách nhiệm thực hiện các nhiệm vụ sau:<br />
-                                        {isPreview ? missionEmployee : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} value={missionEmployee} onChange={(e) => { setMissionEmployee(e.target.value) }} />}  <br />
+                                        {isPreview ?
+                                            missionEmployee.split("\n").map((str) =>
+                                                <li>{str}</li>
+                                            )
+                                            : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} value={missionEmployee} onChange={(e) => { setMissionEmployee(e.target.value) }} />}
                                         <br />
                                         - Các Bên đồng ý rằng bất kỳ trách nhiệm nào được quy định trong Thỏa thuận này sẽ không được chuyển nhượng cho bất kỳ bên nào khác trừ khi cả hai bên đồng ý chuyển nhượng bằng văn bản
                                     </p>
                                     <h5>Trả Lương Và Bồi Thường</h5>
-                                    <p>Các Bên theo đây đồng ý rằng Người sử dụng lao động sẽ trả cho Người lao động mức lương hàng năm là {isPreview ? <strong>{salary}</strong> : <input type='text' className='input-w130 input-text' value={salary} />} (VNĐ), phải trả một tháng một lần và chịu các khoản khấu trừ và giữ lại thường xuyên theo yêu cầu của pháp luật.</p>
-                                    <p>- Xét rằng các Bên cũng đồng ý rằng tiền lương hàng năm có thể được tăng lên hàng năm với số tiền có thể được Người sử dụng lao động chấp thuận và, khi tăng như vậy, số tiền tăng lên sau đó sẽ được coi là tiền lương hàng năm cho các mục đích của Thỏa thuận này.</p>
+                                    <p>Các Bên theo đây đồng ý rằng Người sử dụng lao động sẽ trả cho Người lao động mức lương cơ bản là <strong>{currencyMaskString(salary)} (VNĐ)</strong>, phải trả một tháng một lần và chịu các khoản khấu trừ và giữ lại thường xuyên theo yêu cầu của pháp luật.</p>
+                                    <p>- Xét rằng các Bên cũng đồng ý rằng tiền lương cơ bản có thể được tăng lên hàng năm với số tiền có thể được Người sử dụng lao động chấp thuận và khi tăng như vậy, số tiền tăng lên sau đó sẽ được coi là tiền lương hàng năm cho các mục đích của Thỏa thuận này.</p>
                                     <h5>Quyền Lợi</h5>
                                     <p>- Các Bên theo đây đồng ý rằng Người lao động sẽ nhận được các phúc lợi (Bảo hiểm, Ngày lễ và Kỳ nghỉ) do Người sử dụng lao động cung cấp như được nêu dưới đây.<br />
-                                        {isPreview ? benefits : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
+                                        {isPreview ?
+                                            benefits.split("\n").map((str) =>
+                                                <li>{str}</li>
+                                            )
+                                            : <textarea rows={5} className='p0-14 textarea' style={{ width: "100%" }} value={benefits} onChange={(e) => { setBenefits(e.target.value) }} />}<br />
                                     </p>
                                     <h5>Giờ Làm Việc Và Địa Điểm</h5>
                                     <p>- Người lao động đồng ý sẽ làm việc từ thứ 2 đến thứ 6, nghỉ trưa 5 tiếng.<br />
@@ -342,8 +414,20 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         </div>
                                         <div className="signature-right">
                                             <h6>Đại diện của bên B</h6>
-                                            <p><label className="label-signature-name">Bên B:</label>{partyB}<br />
-                                                {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                            <p>
+                                                {
+                                                    (contractAgreement !== undefined)
+                                                        ?
+                                                        <div>
+                                                            <label className="label-signature-name">Bên B:</label>{contractAgreement.nameEmployee}<br />
+                                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                        </div>
+                                                        :
+                                                        <div>
+                                                            <label className="label-signature-name">Bên B:</label>{partyB}<br />
+                                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                        </div>
+                                                }
                                             </p>
                                         </div>
                                     </div>
@@ -352,7 +436,7 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                     <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                     {
                                         contractAgreement !== undefined ?
-                                            <button className=" btn" onClick={() => { }}>Sign</button>
+                                            <button className=" btn" onClick={() => { handleSignAgreement() }}>Sign</button>
                                             :
                                             <button className=" btn" onClick={() => { handleCreateAgreement() }}>Create</button>
 

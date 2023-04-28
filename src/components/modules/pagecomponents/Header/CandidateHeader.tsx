@@ -7,10 +7,11 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../../../../model';
+import { NotificationEntity, User } from '../../../../model';
 import { logoutUser } from '../../../../redux/apiRequest';
 import "./UserHeader.css";
 import Notification from '../Popup/Notification/Notification';
+import axios from '../../../../api/axios';
 
 
 interface Props {
@@ -21,7 +22,7 @@ const CandidateHeader: FC<Props> = (props) => {
     const user = useSelector((state: any) => state.user.user.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const token = user?.token;
+    const [notifications, setNotifications] = useState<NotificationEntity[]>([]);
     const logoutHandler = () => {
         logoutUser(dispatch, navigate)
     }
@@ -30,7 +31,16 @@ const CandidateHeader: FC<Props> = (props) => {
         window.onclick = () => {
             setShow("display-none");
         }
+        fetchData();
     }, [])
+
+    const fetchData = async () => {
+        await axios.get(`/getAllNotificationByCandidate?candidateId=${user?.id}`).then((res) => {
+            if(res.data.status === "SUCCESS") {
+                setNotifications(res.data.data.listNotifications);
+            }
+        })
+    }
 
 
     return (

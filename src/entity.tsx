@@ -82,11 +82,10 @@ export interface PostEntity {
     benefits: string,
     experience: string,
     typeOfWork: string,
-    salaryFrom: string,
-    salaryTo: string,
     description: string,
     requirement: string,
     workLocation: string,
+    salaryDetail: number,
     hrName: string,
     hrPhone: string,
     hrEmail: string,
@@ -130,8 +129,7 @@ export interface PostResponse {
     benefits: string,
     experience: string,
     typeOfWork: string,
-    salaryFrom: string,
-    salaryTo: string,
+    salaryDetail: number,
     description: string,
     requirement: string,
     workLocation: string,
@@ -571,10 +569,11 @@ export interface ContractLaborSupply {
     signerId: number;
     salary: number;
     interviewDetailId: number;
+    dateSigned: Date;
 }
 
 export interface ContractAgreement {
-    dateSigned: string;
+    dateSigned: Date;
     address: string;
     description: string;
     nameEmployee: string;
@@ -593,7 +592,7 @@ export interface ContractAgreement {
 
 export interface ContractAgreementResponse {
     id: number;
-    dateSigned: string;
+    dateSigned: Date;
     address: string;
     nameEmployee: string;
     addressEmployee: string;
@@ -626,6 +625,7 @@ export interface ContractLarborSupplyResponse {
     employeeId: number;
     status: string;
     salary: number;
+    dateSigned: Date;
 }
 
 

@@ -7,34 +7,46 @@ import axios from '../../../api/axios';
 import { AssignResponse, CandidateAssignRow } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
 import { confirmAssign } from '../../../redux/apiRequest';
+import { Status } from "../../../model"
 import "./CandidateViewAssign.css";
+import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 
 const CandidateViewAssign = () => {
   const user = useSelector((state: any) => state.user.user.user);
 
   const [assigns, setAssigns] = useState<AssignResponse[]>([]);
+  const [message, setMessage] = useState<string>('');
+  const [messageStatus, setMessageStatus] = useState('');
 
   useEffect(() => {
     fetchData();
   }, [])
 
   const fetchData = async (): Promise<AssignResponse[]> => {
-    const response = await axios.get<{ data: AssignResponse[]}>(`/assign/getListAssignByCandidateId?candidateId=${user?.id}`);
+    const response = await axios.get<{ data: AssignResponse[] }>(`/assign/getListAssignByCandidateId?candidateId=${user?.id}`);
     const data = response?.data?.data;
     setAssigns(data);
     return data;
   }
 
 
-  const handleConfirmAssign = (id: number) => {
-    confirmAssign(id, user?.id);
-    fetchData();
+  const handleConfirmAssign = async (id: number) => {
+    await axios.put(`/assign/approvedByCandidate/{id}?id=${id}&candidateId=${user?.id}`).then((res) => {
+      if (res.data.status === "SUCCESS") {
+        fetchData();
+        setMessage(res.data.message);
+        setMessageStatus("green");
+      } else {
+        setMessage("Confirm fail! Please try again");
+        setMessageStatus("red");
+      }
+    })
   }
 
   const rows: CandidateAssignRow[] = assigns?.map((assign) => ({
     id: assign?.id.toString(),
     recruitment: assign?.recruitmentRequest.title,
-    specialty: assign?.recruitmentRequest.specialty,
+    specialty: `${assign?.recruitmentRequest.specialty} ${assign?.recruitmentRequest.specialty}`,
     salaryFrom: assign?.recruitmentRequest.salaryFrom,
     typeOfWork: assign?.recruitmentRequest.typeOfWork,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
@@ -64,11 +76,11 @@ const CandidateViewAssign = () => {
       flex: 0.8,
       width: 170,
       renderCell: (params) => (
-        (params.row.status !== "CONFIRM") ? 
-        <Button variant="contained" color="success" onClick={()=>{handleConfirmAssign(params.row.id)}}>
-          Confirm
-        </Button>
-        : <div>Confirmed</div>
+        (params.row.status !== "CONFIRM") ?
+          <Button variant="contained" color="success" onClick={() => { handleConfirmAssign(params.row.id) }}>
+            Confirm
+          </Button>
+          : <div style={{ color: `${Status.Done}`, fontWeight: "700" }}>Confirmed</div>
       ),
     }
   ]
@@ -77,6 +89,12 @@ const CandidateViewAssign = () => {
 
   return (
     <div id='CandidateViewAssign'>
+      {
+        message != '' ?
+          <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+          :
+          null
+      }
       <h2>List job for you</h2>
       <div style={{ height: 500, width: '100%' }}>
         <DataGrid
@@ -84,7 +102,6 @@ const CandidateViewAssign = () => {
           columns={columns}
           autoPageSize
           pagination
-          checkboxSelection
         />
       </div>
     </div>

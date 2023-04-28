@@ -188,12 +188,16 @@ export interface Interview {
     type: number;
 }
 
-export interface NotificationCandidate {
-    id: string;
-    type: string;
+export interface NotificationEntity {
+    id: number;
     title: string;
+    content: string;
+    tempId: number;
+    notificationType: string;
+    createTime: string;
+}
 
-}export interface CourseEntity {
+export interface CourseEntity {
     id: number;
     link: string;
     name: string;
@@ -230,18 +234,6 @@ export interface CandidateSpecialty {
     specialty: SpecialtyEntity;
 }
 
-
-
-export interface Notification {
-    id: string;
-    title: string;
-    date: string;
-    time: string;
-    WorkForm: string;
-    Salary: string;
-    Company: string;
-    type: number;
-}
 
 export interface Distance {
     image: string;
@@ -293,4 +285,17 @@ export interface PositionResponse {
     name: string;
     status: string;
     numberUsePosition: number;
+}
+
+export interface CandidateSkill {
+    id: number,
+    name: string,
+    image: string,
+    level: CandidateLevelSkill
+}
+
+export interface CandidateLevelSkill {
+    id: number;
+    name: string;
+    status: string;
 }

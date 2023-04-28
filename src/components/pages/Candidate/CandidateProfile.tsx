@@ -11,8 +11,8 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { formatDateMonthYear, getCVName } from '../../../convert';
-import { CandidateCourse, CandidateCourses, CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
-import { startCourse, submitCertificate } from '../../../redux/apiRequest';
+import { SpecialtyExpResponse } from '../../../entity';
+import { CandidateCourses, CandidateSkill, SkillEntity, SpecialtyEntity } from '../../../model';
 import "./CandidateProfile.css";
 
 
@@ -24,233 +24,33 @@ export const CandidateProfile: FC = () => {
 
     const [showExperience, setShowExperience] = useState(false);
     const [showCertificate, setShowCertificate] = useState(false);
-    const [showSubmitCertificate, setShowSubmitCertificate] = useState(false);
-    const [showCourse, setShowCourse] = useState(false);
-    const [specialties, setSpecialties] = useState<SpecialtyEntity[]>([]);
-    const [specialty, setSpecialty] = useState<SpecialtyEntity>();
-    const [course, setCourse] = useState<CourseEntity>();
-    const [skill, setSkill] = useState<SkillEntity>();
+    const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
+    const [specialty, setSpecialty] = useState<SpecialtyExpResponse>();
+    const [skills, setSkills] = useState<CandidateSkill[]>([]);
     const [from, setFrom] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [to, setTo] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [issuedTime, setIssuedTime] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
-    const [candidateCourses, setCandidateCourses] = useState<CandidateCourses>();
-    const [levelId, setLevelId] = useState<number>();
-    const [statusId, setStatusId] = useState<number>();
-    const [certificate, setCertificate] = useState<string>();
 
 
     useEffect(() => {
         fetchData();
-        fetchData1();
-        console.log(candidateCourses)
-    }, [course, certificate])
+    }, [])
 
-    const fetchData = async (): Promise<SpecialtyEntity[]> => {
-        const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = response?.data?.data?.specials;
-        if (data) {
-            const intersection = specialtiesSystem.filter((element1: SpecialtyEntity) => {
-                const element2 = data.find((element: any) => element.id === element1.id);
-                return element2 != null;
-            });
-            setSpecialty(intersection[0]);
-            setSpecialties(intersection);
-        }
-        return data;
-    }
+    useEffect(() => {
+        getSkills();
+    }, [specialty])
 
-    const fetchData1 = async (): Promise<CandidateCourses> => {
-        const response = await axios.get<{ data: CandidateCourses }>(`/status-candidate-course/getListCourseByCandidateId?id=${user?.id}`);
-        const data = response?.data?.data;
-        setCandidateCourses(data);
-        return data;
-    }
-    const handleStartCourse = () => {
-        const request = {
-            candidateId: user?.id,
-            skillId: skill?.id,
-            levelId: levelId,
-            courseId: course?.id,
-            certificate: ""
-        }
-        console.log(request);
-        startCourse(request);
-        window.open(course?.link)
-    }
-
-    const handleSubmitCertificate = () => {
-        const request = {
-            id: statusId,
-            certificate: certificate
-        }
-        submitCertificate(request);
-        handleCloseSubmitCertificate();
-    }
-
-    const renderCourseBtnHandle = (deadlineStr: string) => {
-        const tmp = candidateCourses?.courses.find((item: CandidateCourse) => item.id === course?.id)
-        if (tmp) {
-            switch (tmp?.status) {
-                case "STUDYING":
-                    return (deadlineStr === "Expired") ?
-                        (
-                            <Button variant="primary" onClick={() => {
-                                handleCloseCourse();
-                            }}>
-                                Reset Deadline
-                            </Button>
-                        )
-                        : (
-                            <Button variant="primary" onClick={() => {
-                                setStatusId(tmp?.sccId);
-                                console.log(statusId)
-                                handleShowSubmitCertificate1();
-                            }}>
-                                Submit Certificate
-                            </Button>
-                        )
-                case "PROCESSING":
-                    return (
-                        <Button variant="primary" onClick={() => {
-                            handleCloseCourse();
-                        }}>
-                            View Interview
-                        </Button>
-                    )
-                case "DONE":
-                    return (
-                        <Button variant="primary" onClick={() => {
-                            handleCloseCourse();
-                        }}>
-                            View Interview
-                        </Button>
-                    )
-                default:
-                    <Button variant="primary" onClick={() => {
-                        handleStartCourse();
-                        handleCloseCourse();
-                    }}>
-                        Start
-                    </Button>
-            }
-        } else {
-            return (
-                <Button variant="primary" onClick={() => {
-                    handleStartCourse();
-                    handleCloseCourse();
-                }}>
-                    Start
-                </Button>
-            )
-        }
-    }
-
-    const renderCourseDetail = () => {
-        const tmp = candidateCourses?.courses.find((item: CandidateCourse) => item.id === course?.id);
-
-        let status = "";
-        let deadlineStr = "";
-
-        if (tmp) {
-            const startAt = new Date(tmp.startAt);
-            const deadline = new Date(startAt.getTime() + 30 * 24 * 60 * 60 * 1000);
-            const now = new Date();
-
-            switch (tmp.status) {
-                case "STUDYING":
-                    status = Status.Studying;
-                    break;
-                case "PROCESSING":
-                    status = Status.Processing;
-                    break;
-                case "DONE":
-                    status = Status.Done;
-                    break;
-                case "EXPIRED":
-                    status = Status.Expired;
-                    break;
-                default:
-                    status = Status.NotStarted;
-                    break;
-            }
-
-            if (now > deadline) {
-                deadlineStr = "Expired";
-            } else {
-                const diffTime = deadline.getTime() - now.getTime();
-                const diffDays = Math.ceil(diffTime / (24 * 60 * 60 * 1000));
-                deadlineStr = `${diffDays} day(s) left`;
-            }
-        } else {
-            status = Status.NotStarted;
-        }
-
-        return (
-            <Modal id="CandidateSkillModal" show={showCourse} onHide={handleCloseCourse}>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        <div className="skill-modal-title">
-                            <img src={skill?.image} alt="" />
-                            <span style={{ fontSize: "1.5rem" }}>{course?.name}</span>
-                        </div>
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="skill-content">
-                        <div className="course-row course-heading">
-                            <div className="col1">Link</div>
-                            <div className="col2">Status</div>
-                            {deadlineStr && <div className="col3">Deadline</div>}
-                        </div>
-                        <div className="course-row course-data">
-                            <div className="col1">{course?.link}</div>
-                            <div className="col2" style={{ fontWeight: "bold", color: status }}>{tmp ? tmp.status : "Not started"}</div>
-                            {deadlineStr && <div className="col3">{deadlineStr}</div>}
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className='button-close' variant="secondary" onClick={handleCloseCourse}>
-                        Close
-                    </Button>
-                    {renderCourseBtnHandle(deadlineStr)}
-                </Modal.Footer>
-            </Modal>
-        );
-    };
-
-
-    const renderDistance = (levelName: string) => {
-        const advancedSkills = specialty?.skills
-            .flatMap((skill) => {
-                const advancedLevels = skill.levels.filter((level) => level.name === levelName);
-                if (advancedLevels?.length > 0) {
-                    return {
-                        ...skill,
-                        levels: advancedLevels
-                    };
-                }
-                return null;
-            })
-            .filter((skill) => skill !== null);
-
-        const courseItems = advancedSkills?.flatMap((skill) => {
-            return skill?.levels[0].courses.map((course) => (
-                <div className="item" key={course.id}>
-                    <div className="hover-primary">
-                        <img src={skill.image} alt="" className='item-icon' />
-                        <span className='item-name' onClick={(e) => {
-                            handleShowCourse(course, skill, skill.levels[0].id);
-                        }}>{course?.name}</span>
-                    </div>
-                    <span className='item-verify' onClick={() => {
-                        handleShowSubmitCertificate(course, skill, skill.levels[0].id);
-                    }}>Submit certificate</span>
-                </div>
-            ));
+    async function fetchData() {
+        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`).then(async (res) => {
+            const data = await res?.data.data.specialties;
+            setSpecialties(data);
+            setSpecialty(data[0]);
         });
+    }
 
-        return <div className='course-list'>{courseItems}</div>;
+    async function getSkills() {
+        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${user?.id}&specialtyId=${specialty?.specialtyId}`);
+        setSkills(response.data.data);
     }
 
     const handleCloseExperience = () => setShowExperience(false);
@@ -259,27 +59,7 @@ export const CandidateProfile: FC = () => {
     const handleCloseCertificate = () => setShowCertificate(false);
     const handleShowCertificate = () => setShowCertificate(true);
 
-    const handleCloseSubmitCertificate = () => setShowSubmitCertificate(false);
-    const handleShowSubmitCertificate = (course: CourseEntity, skill: SkillEntity, levelId: number) => {
-        setCourse(course);
-        setLevelId(levelId);
-        setSkill(skill);
-        setShowSubmitCertificate(true)
-    };
-
-    const handleShowSubmitCertificate1 = () => {
-        setShowSubmitCertificate(true)
-    };
-
-    const handleCloseCourse = () => setShowCourse(false);
-    const handleShowCourse = (course: CourseEntity, skill: SkillEntity, levelId: number) => {
-        setCourse(course);
-        setSkill(skill);
-        setLevelId(levelId);
-        setShowCourse(true)
-    };
-
-    const handleSelect = (e: SpecialtyEntity) => {
+    const handleSelect = (e: SpecialtyExpResponse) => {
         setSpecialty(e);
     }
 
@@ -386,15 +166,15 @@ export const CandidateProfile: FC = () => {
                             <div className="profile-header-name">Specialty</div>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    <span className="category-name">{`${specialty?.name}`}</span>
+                                    <span className="category-name">{specialty?.specialtyName}   <strong>{specialty?.expName}</strong></span>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
                                     {
-                                        specialties.map((specialty: SpecialtyEntity, index) => {
+                                        specialties.map((specialty, index) => {
                                             return (
                                                 <div key={index}>
-                                                    <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.name}</Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.specialtyName}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.expName}</strong></Dropdown.Item>
                                                 </div>
                                             )
                                         })
@@ -402,18 +182,23 @@ export const CandidateProfile: FC = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
-                        {/* <div className="profile-body">
-                            <div className="distance-title">Level Beginner</div>
-                            {renderDistance("basic")}
-                            <div className="distance-title">Level Advanced</div>
-                            {renderDistance("advanced")}
-                            <div className="distance-title">Level Intensive</div>
-                            {renderDistance("intensive")}
-                        </div> */}
+                        <div className="profile-body verification">
+                            {
+                                skills?.map((skill) => {
+                                    return (
+                                        <div className="item" key={skill.id}>
+                                            <img src={skill.image} alt="" className='item-icon' />
+                                            <strong className='item-name'>{skill.name}</strong>
+                                            <span className='item-level'>{skill.level.name}</span>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                     <div className="profile-input">
                         <div className="profile-header">
-                            <div className="profile-header-name">Verifications</div>
+                            <div className="profile-header-name">Description</div>
                         </div>
                         <div className="profile-body verification">
                             <div className="item">
@@ -511,26 +296,6 @@ export const CandidateProfile: FC = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Modal id="CandidateProfileModal" show={showSubmitCertificate} onHide={handleCloseSubmitCertificate}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Submit Certificate</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="input">
-                        <span><img src={skill?.image} alt="" style={{ width: "32px", height: "32px" }} /> {course?.name}</span>
-                        <input className='input-profile' type="text" placeholder='Certificate Link' onChange={(e)=>{setCertificate(e.target.value)}}/>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className='button-close' variant="secondary" onClick={handleCloseSubmitCertificate}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleSubmitCertificate}>
-                        Submit
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            {renderCourseDetail()}
         </div>
     )
 }

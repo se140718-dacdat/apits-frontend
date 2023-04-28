@@ -191,22 +191,29 @@
     color: #5DC26A;
 }
 
-#CandidateProfile .item-verify,
+#CandidateProfile .item-level,
 #CandidateProfile .icon-check {
     margin-left: auto;
     order: 2;
 }
 
-#CandidateProfile .item-verify {
-    color: #007fed;
+#CandidateProfile .item-level {
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
 }
 
-#CandidateProfile .item-verify:hover {
+#CandidateProfile .item-level:hover {
     text-decoration: none !important;
 }
 
 
-#CandidateProfile .item-verify:hover {
+#CandidateProfile .item-level:hover {
     cursor: pointer;
     text-decoration: underline;
 }

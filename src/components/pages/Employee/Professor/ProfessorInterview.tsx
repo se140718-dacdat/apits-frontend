@@ -69,13 +69,16 @@ const ProfessorInterview = () => {
   }
 
 
-  const handlePassCourse = async (candidateId: number, courseId: number) => {
+  const handlePassCourse = async (candidateId: number, courseId: number, id: number) => {
     await axios.put(`/status-candidate-course/updateStatusDone?candidateId=${candidateId}&coursesId=${courseId}`).then(async function (res) {
       if (res.data.message == "SUCCESS") {
+        await axios.put(`/updateInterviewToDone?interviewID=${id}`).then((res) => {
+          if (res.data.status === "SUCCESS") {
+            fetchCheckInterview();
+          }
+        })
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
-        updateInterviewDone(interviewId);
-        fetchCheckInterview();
       }
     })
   }
@@ -136,8 +139,7 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "green" }} onClick={() => {
-            setInterviewId(params.row.id)
-            handlePassCourse(params.row.candidateId, params.row.courseId)
+            handlePassCourse(params.row.candidateId, params.row.courseId, params.row.id)
           }}>
             Pass
           </Button>

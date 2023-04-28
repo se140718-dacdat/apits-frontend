@@ -5,7 +5,7 @@ import { Button, TextField } from '@mui/material';
 import { useSelector } from "react-redux";
 import { ApprovedEntity, AssignResponse, CandidateCourseProcessing, Duration, InterviewCreate, InterviewResponse, NewUserInterview, Professor } from "../../../../entity";
 import { getAllAssignApproved, getAllEmployees, getAllInterview, getAllNewCandidate, getCandidateCourseProcessing } from "../../../../redux/apiRequest";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import "./Interview.css";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -26,7 +26,6 @@ interface Props {
 
 const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const now = new Date();
-  const formatString = 'YYYY-MM-DD HH:mm:ss';
 
   const user = useSelector((state: any) => state.user.user.user);
   const [assigns, setAssigns] = useState<ApprovedEntity[]>([]);
@@ -58,6 +57,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [interviewTest, setInterviewTest] = useState<InterviewResponse[]>([]);
   const [interviews, setInterviews] = useState<InterviewResponse[]>([]);
   const [interview, setInterview] = useState<InterviewResponse>();
+  const [slotExist, setSlotExist] = useState<string[]>([]);
 
 
 
@@ -86,6 +86,16 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     }
   }
 
+  const getSlot = async (id: number) => {
+    console.log(moment(date?.toString()).format('YYYY-MM-DD'));
+    if (type !== "HIRE") {
+      await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
+        setSlotExist(res.data.data);
+        console.log(res.data.data)
+      })
+    }
+  }
+
   const createInterview = async (request: InterviewCreate) => {
     try {
       await axios.post("/createInterview", request).then(async function (res) {
@@ -100,7 +110,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
           await axios.put(`/status-candidate-course/updateStatusInterview?candidateId=${request.candidateId}&coursesId=${request.tmpId}`);
           fetchData();
         }
-        if(type === "HIRE") {
+        if (type === "HIRE") {
           await axios.put(`/assign/interviewStatusbyEmployee/{id}?id=${request.tmpId}&employeeId=${user?.id}`);
           fetchData();
         }
@@ -576,11 +586,13 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               <div className="gr-right form-input-select">
                 <select className="form-select select-duration" onChange={e => setSlot(e.target.value)}>
                   {
-                    slots?.map((slot) => {
-                      return (
-                        <option value={slot}>{slot}</option>
-                      )
-                    })
+                    slots?.map((slot) =>
+                      (slotExist.includes(slot))
+                      ?
+                      <option disabled value={slot}>{slot}</option>
+                      :
+                      <option value={slot}>{slot}</option>
+                    )
                   }
 
                 </select>
@@ -619,6 +631,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                             <div className="search-name-interviewer" key={key}
                               onClick={() => {
                                 setProfessor(employee);
+                                getSlot(employee.id);
                                 setIsPopupInterviewer(false);
                               }}>
                               <span>{employee.name}</span>
@@ -684,11 +697,13 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               <div className="gr-right form-input-select">
                 <select className="form-select select-duration" onChange={e => setSlot(e.target.value)} defaultValue={interview?.slot}>
                   {
-                    slots?.map((slos) => {
-                      return (
-                        <option value={slos}>{slos}</option>
-                      )
-                    })
+                    slots?.map((slos) =>
+                      (slotExist.includes(slos))
+                        ?
+                        <option disabled value={slos}>{slos}</option>
+                        :
+                        null
+                    )
                   }
                 </select>
               </div>

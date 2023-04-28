@@ -7,6 +7,7 @@ import "./RecruitmentPost.css";
 import { getAllPost } from '../../../../redux/apiRequest';
 import { Post, PostEntity, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
+import { currencyMaskString } from '../../../../mask';
 
 const RecruitmentPost = () => {
     const navigate = useNavigate();
@@ -89,7 +90,7 @@ const RecruitmentPost = () => {
                                     <div className="post-description">
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faCoins} className="icon primary-color mr-8" />
-                                            {post.salaryFrom}
+                                            {currencyMaskString(post.salaryDetail)}
                                         </div>
                                         <div className="description-item">
                                             <FontAwesomeIcon icon={faBusinessTime} className="icon primary-color mr-8" />

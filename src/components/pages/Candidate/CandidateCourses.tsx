@@ -9,9 +9,11 @@ import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../mod
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import "./CandidateCourse.css";
 import { ExperienceSpecialy } from '../../../entity';
+import { useNavigate } from 'react-router-dom';
 
 const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
+    const navigate = useNavigate();
 
     const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
     const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpResponse>();
@@ -168,7 +170,7 @@ const CandidateCourse = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         <div className="skill-modal-title">
-                            {/* <img src={skill?.image} alt="" /> */}
+                            <img src={skill?.image} alt="" />
                             <span style={{ fontSize: "1.5rem" }}>{course?.name}</span>
                         </div>
                     </Modal.Title>
@@ -220,6 +222,7 @@ const CandidateCourse = () => {
             case "PROCESSING":
                 return (
                     <Button variant="primary" onClick={() => {
+                        navigate("/candidate-interview");
                         handleCloseCourse();
                     }}>
                         View Interview

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
 import { InterviewResponse } from "../../../entity";
 import "./CandidateInterview.css";
+import { useParams } from "react-router-dom";
 
 const interviewType = [
     "CHECK",
@@ -16,6 +17,8 @@ const interviewType = [
 
 const CandidateInterview = () => {
     const user = useSelector((state: any) => state.user.user.user);
+    const { id } = useParams();
+
 
     const [type, setType] = useState<string>(interviewType[0])
     const [interviewChecks, setInterviewChecks] = useState<InterviewResponse[]>([]);
@@ -30,6 +33,7 @@ const CandidateInterview = () => {
 
     useEffect(() => {
         fetchData();
+        console.log(id)
     }, [])
 
     async function fetchData() {
