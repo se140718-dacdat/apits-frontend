@@ -13,7 +13,6 @@ import EmployeeHeader from './components/modules/pagecomponents/Header/EmployeeH
 import EnterpriseHeader from './components/modules/pagecomponents/Header/EnterpriseHeader';
 import RecruitmentPost from './components/modules/pagecomponents/common/RecruitmentPost';
 import RecruitmentPostDetail from './components/modules/pagecomponents/common/RecruitmentPostDetail';
-import Request from './components/modules/pagecomponents/common/Request';
 import Footer from './components/modules/pagecomponents/footer/Footer';
 import CandidateList from './components/pages/Admin/CandidateList';
 import EmployeeList from './components/pages/Admin/EmployeeList';
@@ -35,16 +34,12 @@ import EnterpriseCreatePost from './components/pages/Enterprise/EnterpriseCreate
 import EnterpriseInterview from './components/pages/Enterprise/EnterpriseInterview';
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
-import { getSpecialtiesDetail } from './redux/apiRequest';
 import EnterpriseContract from './components/pages/Enterprise/EnterpriseContract';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    getSpecialtiesDetail(dispatch);
   }, [])
 
   return (
@@ -86,7 +81,6 @@ const App: FC = () => {
         <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
-        <Route path='/request' element={<Request />}></Route>;
         <Route path='/interview' element={<InterviewList />}></Route>;
         <Route path='/contract' element={<HRContract />}></Route>;
         <Route path='/candidate-contract' element={<CandidateContract />}></Route>;

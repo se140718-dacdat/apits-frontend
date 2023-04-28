@@ -18,7 +18,6 @@ import "./CandidateProfile.css";
 
 export const CandidateProfile: FC = () => {
     const user = useSelector((state: any) => state.user?.user?.user);
-    const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
     const now = new Date();
     const navigate = useNavigate();
 

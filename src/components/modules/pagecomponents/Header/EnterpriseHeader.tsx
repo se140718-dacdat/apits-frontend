@@ -44,7 +44,6 @@ const EnterpriseHeader: FC<Props> = (props) => {
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Post</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/request">Request</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-interview">Interview</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-contract">Contract</Nav.Link>
                             </Nav>

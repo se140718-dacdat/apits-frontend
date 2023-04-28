@@ -626,6 +626,7 @@ export interface ContractLarborSupplyResponse {
     status: string;
     salary: number;
     dateSigned: Date;
+    dateEnterpriseSigned: Date;
 }
 
 

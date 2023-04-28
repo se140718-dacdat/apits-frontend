@@ -23,9 +23,6 @@ import { currencyMaskString } from '../../../../mask';
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
     const account = useSelector((state: any) => state.auth.login.currentUser);
-    const specialtiesSystem = useSelector((state: any) => state.specialty.specialties.specialty);
-
-    // const [specialty, setSpecialty] = useState<SpecialtyEntity>(specialtiesSystem[0]);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
     const [intern, setIntern] = useState<string>("");

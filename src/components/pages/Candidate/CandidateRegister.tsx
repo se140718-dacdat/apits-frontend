@@ -13,16 +13,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
 import { CandidateUpdate, SpecialtyEntity, genderList } from '../../../model';
-import { updateCandidate } from '../../../redux/apiRequest';
+import { getSpecialtiesDetail, updateCandidate } from '../../../redux/apiRequest';
 import "./CandidateRegister.css";
 
 
 const storage = getStorage();
 
 const CandidateRegister = () => {
-    const account = useSelector((state: any) => state.auth.login.currentUser);
     const user = useSelector((state: any) => state.user.user.user);
-    const specialties = useSelector((state: any) => state.specialty.specialties.specialty);
     const form50 = document.getElementById("form-50%") as HTMLElement
     const now = new Date();
 
@@ -33,14 +31,14 @@ const CandidateRegister = () => {
     const [phone, setPhone] = useState<string>(user?.phone || "Phone");
     const [address, setAddress] = useState<string>(user?.address || "Address");
     const [cv, setCv] = useState<string>("");
-    const [payment, setPayment] = useState<string>(user?.payment || "VNPay number");
     const [description, setDescription] = useState<string>(user?.description || "Description");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
     const [selectSpecialties, setSelectSpecialties] = useState<SpecialtyEntity[]>([]);
     const [userSpecialties, setUserSpecialties] = useState<SpecialtyEntity[]>([]);
-    const [cvName, setCvName] = useState<string>(user?.cv)
+    const [cvName, setCvName] = useState<string>(user?.cv);
+    const [specialties, setSpecialties] = useState<SpecialtyEntity[]>([]);
 
     const handleSelect = (e: string) => {
         setGender(e);
@@ -59,6 +57,7 @@ const CandidateRegister = () => {
     useEffect(() => {
         user?.cv && setCvName(getCVName(user?.cv));
         fetchData();
+        fetchData1();
     }, [cv])
 
     const fetchData = async (): Promise<SpecialtyEntity[]> => {
@@ -68,6 +67,10 @@ const CandidateRegister = () => {
             setUserSpecialties(data);
         }
         return data;
+    }
+
+    async function fetchData1 () {
+        setSpecialties(await getSpecialtiesDetail());
     }
 
     const handleChangeProgress = (progess: string, height: string) => {
@@ -125,7 +128,7 @@ const CandidateRegister = () => {
             phone: phone,
             image: avatar,
             gender: gender,
-            payment: payment,
+            payment: "",
             dob: birth ? moment(birth.toString()).format('YYYY-MM-DD') : '',
             address: address,
             cv: cv,
