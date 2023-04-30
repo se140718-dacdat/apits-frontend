@@ -32,10 +32,10 @@ interface Certificate {
 export interface CandidateResponse {
     address: string;
     candidateCode: string;
-    createAt: string;
+    createAt: Date;
     cv: string;
     description: string;
-    dob: string;
+    dob: Date;
     email: string;
     experience: string;
     gender: string;

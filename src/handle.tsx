@@ -3,3 +3,7 @@ export const getDaysLeft = (createAt: string, expired: string) => {
   const days = Math.floor(timeDiff / (1000 * 3600 * 24));
   return days;
 }
+
+export const openNewTab = (url: string) => {
+  window.open(url, '_blank');
+}

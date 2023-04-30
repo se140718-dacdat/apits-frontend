@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { formatDateMonthYear, getCVName } from '../../../convert';
 import { SpecialtyExpResponse } from '../../../entity';
-import { CandidateCourses, CandidateSkill, SkillEntity, SpecialtyEntity } from '../../../model';
+import { CandidateSkill } from '../../../model';
 import "./CandidateProfile.css";
 
 
