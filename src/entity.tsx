@@ -166,7 +166,7 @@ export interface CandidateAssignRow {
     id: string;
     recruitment: string;
     specialty: string;
-    salaryFrom: string;
+    salaryDetail: string;
     typeOfWork: string;
     deadline: string;
     recruitmentId: number;
@@ -255,8 +255,7 @@ interface PostAssign {
     expiryDate: string,
     experience: string,
     typeOfWork: string,
-    salaryFrom: string,
-    salaryTo: string,
+    salaryDetail: number,
     name: string,
     description: string,
     requirement: string,
@@ -603,6 +602,7 @@ export interface ContractAgreementResponse {
     signatureHiring: string;
     signatureEmployee: string;
     dateEmployeeSigned: string;
+    dateCandidateSigned: Date;
     employeeId: number;
     status: string;
 }

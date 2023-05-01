@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { AssignResponse, CandidateAssignRow } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
-import { confirmAssign } from '../../../redux/apiRequest';
-import { Status } from "../../../model"
-import "./CandidateViewAssign.css";
+import { currencyMaskString } from '../../../mask';
+import { Status } from "../../../model";
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import "./CandidateViewAssign.css";
 
 const CandidateViewAssign = () => {
   const user = useSelector((state: any) => state.user.user.user);
@@ -47,7 +47,7 @@ const CandidateViewAssign = () => {
     id: assign?.id.toString(),
     recruitment: assign?.recruitmentRequest.title,
     specialty: `${assign?.recruitmentRequest.specialty} ${assign?.recruitmentRequest.specialty}`,
-    salaryFrom: assign?.recruitmentRequest.salaryFrom,
+    salaryDetail: currencyMaskString(assign?.recruitmentRequest.salaryDetail),
     typeOfWork: assign?.recruitmentRequest.typeOfWork,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
     recruitmentId: assign.recruitmentRequest.id,
@@ -66,8 +66,8 @@ const CandidateViewAssign = () => {
         </Link>
       ),
     },
-    { field: "specialty", headerName: "Specialty", flex: 1.2 },
-    { field: "salaryFrom", headerName: "Salary", flex: 1.2 },
+    { field: "specialty", headerName: "Position", flex: 1.2 },
+    { field: "salaryDetail", headerName: "Salary", flex: 1.2 },
     { field: "typeOfWork", headerName: "Work Form", flex: 1.2 },
     { field: "deadline", headerName: "Deadline", flex: 1.2 },
     {

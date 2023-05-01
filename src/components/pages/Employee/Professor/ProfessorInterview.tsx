@@ -65,7 +65,7 @@ const ProfessorInterview = () => {
     const response = await axios.get(`/getInterviewOfProfessorTypeCheck?professorId=${user?.id}`);
     const dataRes = await response?.data.data;
     setInterviewChecksPending(dataRes.filter((e: InterviewResponse) => e.status === "PENDING"));
-    setInterviewChecksDone(dataRes.filter((e: InterviewResponse) => e.status === "DONE"));
+    setInterviewChecksDone(dataRes.filter((e: InterviewResponse) => e.status !== "PENDING"));
   }
 
 
@@ -83,9 +83,18 @@ const ProfessorInterview = () => {
     })
   }
 
-  const handleFailCourse = async () => {
-    updateInterviewCancel(interviewId)
-    fetchCheckInterview();
+  const handleFailCourse = async (candidateId: number, courseId: number, id: number) => {
+    await axios.put(`/status-candidate-course/updateStatusStudying?candidateId=${candidateId}&coursesId=${courseId}`).then(async function (res) {
+      if (res.data.message == "SUCCESS") {
+        await axios.put(`/updateInterviewToCancel?interviewID=${id}`).then((res) => {
+          if (res.data.status === "SUCCESS") {
+            fetchCheckInterview();
+          }
+        })
+        setMessage("Evaluate successfuly!");
+        setMessageStatus("green");
+      }
+    })
   }
 
   async function getSpecialtyDetail(candidateId: number, specialtyId: number) {
@@ -126,7 +135,7 @@ const ProfessorInterview = () => {
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "red" }} onClick={() => {
             setInterviewId(params.row.id)
-            handleFailCourse();
+            handleFailCourse(params.row.candidateId, params.row.courseId, params.row.id);
           }}>
             Fail
           </Button>

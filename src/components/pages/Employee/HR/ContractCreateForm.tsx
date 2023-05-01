@@ -23,13 +23,19 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
     const getSalary = () => {
         if (contractLaborSupply) {
-            if (`${contractLaborSupply.dateEnterpriseSigned}` !== "") {
+            console.log(contractLaborSupply)
+            if (`${contractLaborSupply.dateEnterpriseSigned}` !== null) {
                 sign = new Date(contractLaborSupply.dateEnterpriseSigned);
             } else {
                 sign = now;
             }
             return contractLaborSupply.salary
         } else if (contractAgreement) {
+            if (`${contractAgreement.dateCandidateSigned}` !== null) {
+                sign = new Date(contractAgreement.dateCandidateSigned);
+            } else {
+                sign = now;
+            }
             return contractAgreement.salary
         } else if (interviewDetail !== undefined) {
             return interviewDetail?.interview.assign.recruitmentRequest.salaryDetail
@@ -147,16 +153,21 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
 
     const handleSignLaborSupply = async () => {
         if (contractLaborSupply !== undefined) {
-            await axios.put(`/contract/updateStatusSignedLaborSupplyContract?id=${contractLaborSupply?.id}`).then((res) => {
-                const data = res.data;
-                if (data.status === "SUCCESS") {
-                    setMessage(data.message);
-                    setMessageStatus("green");
-                } else {
-                    setMessage("Sign contract fail, please try again!");
-                    setMessageStatus("red");
-                }
-            })
+            if (representativeB !== "" && positionB !== "") {
+                await axios.put(`/contract/updateStatusSignedLaborSupplyContract?id=${contractLaborSupply?.id}`).then((res) => {
+                    const data = res.data;
+                    if (data.status === "SUCCESS") {
+                        setMessage(data.message);
+                        setMessageStatus("green");
+                    } else {
+                        setMessage("Sign contract fail, please try again!");
+                        setMessageStatus("red");
+                    }
+                })
+            } else {
+                setMessage("Please fill in all the information");
+                setMessageStatus("red");
+            }
         } else {
             setMessage("Contract not exist");
             setMessageStatus("red");
@@ -291,14 +302,14 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                             <label className="label-signature-name">Chức vụ:</label>Director<br />
                                             {
                                                 (contractLaborSupply !== undefined)
-                                                ?
-                                                <div>
-                                                    {`Ngày ${(new Date(contractLaborSupply.dateSigned)).getDate()}, tháng ${(new Date(contractLaborSupply.dateSigned)).getMonth()}, năm ${(new Date(contractLaborSupply.dateSigned)).getFullYear()}`}
-                                                </div>
-                                                :
-                                                <div>
-                                                    {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
-                                                </div>
+                                                    ?
+                                                    <div>
+                                                        {`Ngày ${(new Date(contractLaborSupply.dateSigned)).getDate()}, tháng ${(new Date(contractLaborSupply.dateSigned)).getMonth()}, năm ${(new Date(contractLaborSupply.dateSigned)).getFullYear()}`}
+                                                    </div>
+                                                    :
+                                                    <div>
+                                                        {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                    </div>
                                             }
                                             <div className="sign mt-24">
                                                 <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
@@ -309,38 +320,33 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                         <h6>Đại diện của bên B</h6>
                                         <p>
                                             {
-                                                (contractLaborSupply !== undefined)
+                                                (contractLaborSupply === undefined)
                                                     ?
                                                     <div>
-                                                        <label className="label-signature-name">Bên B:</label>Công ty {contractLaborSupply.name}<br />
-                                                        <label className="label-signature-name">Đại diện:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text" /><br />
-                                                        <label className="label-signature-name">Chức vụ:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text" /><br />
-                                                        {
-                                                            (`${contractLaborSupply.dateEnterpriseSigned}` !== "")
-                                                                ?
-                                                                (
-                                                                    <div>{`Ngày ${sign.getDate()}, tháng ${sign.getMonth()}, năm ${sign.getFullYear()}`}</div>
-                                                                )
-                                                                :
-                                                                (<div>{`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}</div>)
-
-                                                        }
-                                                        {
-                                                            (sign !== now)
-                                                                ?
-                                                                <div className="sign mt-24">
-                                                                    <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
-                                                                </div>
-                                                                : null
-                                                        }
-                                                    </div>
-                                                    :
-                                                    <div>
-                                                        <label className="label-signature-name">Bên B:</label>Công ty {partyB}<br />
+                                                        <label className="label-signature-name">Bên B:</label>{partyB}<br />
+                                                        <label className="label-signature-name">Đại diện:</label><br />
+                                                        <label className="label-signature-name">Chức vụ:</label><br />
                                                         {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
                                                     </div>
-
-                                            }
+                                                    : contractLaborSupply.dateEnterpriseSigned === null
+                                                        ?
+                                                        <div>
+                                                            <label className="label-signature-name">Bên B:</label>{contractLaborSupply.name}<br />
+                                                            <label className="label-signature-name">Đại diện:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text"  onChange={(e) =>{setRepresentativeB(e.target.value)}}/><br />
+                                                            <label className="label-signature-name">Chức vụ:</label><input style={{ paddingLeft: "0" }} type="text" className="input-text"  onChange={(e) =>{setPositionB(e.target.value)}}/><br />
+                                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                        </div>
+                                                        :
+                                                        <div>
+                                                            <label className="label-signature-name">Bên B:</label>{contractLaborSupply.name}<br />
+                                                            <label className="label-signature-name">Đại diện:</label>{contractLaborSupply.representative}<br />
+                                                            <label className="label-signature-name">Chức vụ:</label>{contractLaborSupply.position}<br />
+                                                            {`Ngày ${sign.getDate()}, tháng ${sign.getMonth()}, năm ${sign.getFullYear()}`}
+                                                            <div className="sign mt-24">
+                                                                <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
+                                                            </div>
+                                                        </div>
+                                           }
                                         </p>
                                     </div>
                                 </div>
@@ -348,10 +354,13 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                             <div className="btn-create">
                                 <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                 {
-                                    contractLaborSupply !== undefined ?
-                                        <button className=" btn" onClick={() => { handleSignLaborSupply() }}>Sign</button>
-                                        :
+                                    contractLaborSupply === undefined ?
                                         <button className=" btn" onClick={() => { handleCreateLarborSupply() }}>Create</button>
+                                        : contractLaborSupply.dateEnterpriseSigned === null ?
+                                            <button className=" btn" onClick={() => { handleSignLaborSupply() }}>Sign</button>
+                                            :
+                                            null
+
                                 }
                             </div>
                         </div>
@@ -440,16 +449,16 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                                 <label className="label-signature-name">Đại diện:</label>Mr.A<br />
                                                 <label className="label-signature-name">Chức vụ:</label>Director<br />
                                                 {
-                                                (contractAgreement !== undefined)
-                                                ?
-                                                <div>
-                                                    {`Ngày ${(new Date(contractAgreement.dateSigned)).getDate()}, tháng ${(new Date(contractAgreement.dateSigned)).getMonth()}, năm ${(new Date(contractAgreement.dateSigned)).getFullYear()}`}
-                                                </div>
-                                                :
-                                                <div>
-                                                    {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
-                                                </div>
-                                            }
+                                                    (contractAgreement !== undefined)
+                                                        ?
+                                                        <div>
+                                                            {`Ngày ${(new Date(contractAgreement.dateSigned)).getDate()}, tháng ${(new Date(contractAgreement.dateSigned)).getMonth()}, năm ${(new Date(contractAgreement.dateSigned)).getFullYear()}`}
+                                                        </div>
+                                                        :
+                                                        <div>
+                                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                        </div>
+                                                }
                                                 <div className="sign mt-24">
                                                     <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
                                                 </div>
@@ -459,17 +468,26 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                             <h6>Đại diện của bên B</h6>
                                             <p>
                                                 {
-                                                    (contractAgreement !== undefined)
+                                                    (contractAgreement === undefined)
                                                         ?
-                                                        <div>
-                                                            <label className="label-signature-name">Bên B:</label>{contractAgreement.nameEmployee}<br />
-                                                            {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
-                                                        </div>
-                                                        :
                                                         <div>
                                                             <label className="label-signature-name">Bên B:</label>{partyB}<br />
                                                             {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
                                                         </div>
+                                                        : contractAgreement.dateCandidateSigned === null
+                                                            ?
+                                                            <div>
+                                                                <label className="label-signature-name">Bên B:</label>{contractAgreement.nameEmployee}<br />
+                                                                {`Ngày ${now.getDate()}, tháng ${now.getMonth()}, năm ${now.getFullYear()}`}
+                                                            </div>
+                                                            :
+                                                            <div>
+                                                                <label className="label-signature-name">Bên B:</label>{contractAgreement.nameEmployee}<br />
+                                                                {`Ngày ${sign.getDate()}, tháng ${sign.getMonth()}, năm ${sign.getFullYear()}`}
+                                                                <div className="sign mt-24">
+                                                                    <FontAwesomeIcon icon={faCheck} style={{ color: "green" }} /> Signed
+                                                                </div>
+                                                            </div>
                                                 }
                                             </p>
                                         </div>
@@ -478,10 +496,12 @@ const ContractCreateForm: React.FC<Props> = ({ interviewDetail, contractAgreemen
                                 <div className="btn-create">
                                     <button className="btn btn-cancel" onClick={() => { setIsCreate(false); setRequestLaborSupply(undefined) }}>Cancel</button>
                                     {
-                                        contractAgreement !== undefined ?
-                                            <button className=" btn" onClick={() => { handleSignAgreement() }}>Sign</button>
-                                            :
+                                        contractAgreement === undefined ?
                                             <button className=" btn" onClick={() => { handleCreateAgreement() }}>Create</button>
+                                            : contractAgreement.dateCandidateSigned === null ?
+                                                <button className=" btn" onClick={() => { handleSignAgreement() }}>Sign</button>
+                                                :
+                                                null
 
                                     }
                                 </div>

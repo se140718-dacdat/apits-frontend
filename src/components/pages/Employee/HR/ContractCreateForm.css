@@ -108,6 +108,15 @@
     width: 50%;
 }
 
+#ContractCreateForm .signature-right {
+    position: relative;
+}
+
+#ContractCreateForm .signature-right .sign {
+    position: absolute;
+    bottom: 0;
+}
+
 #ContractCreateForm .input-w130 {
     width: 130px;
 }

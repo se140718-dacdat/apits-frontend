@@ -57,8 +57,6 @@ const Notification = () => {
         }
     }
 
-
-
     return (
         <OverlayTrigger
             trigger="click"

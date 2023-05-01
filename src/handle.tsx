@@ -7,3 +7,16 @@ export const getDaysLeft = (createAt: string, expired: string) => {
 export const openNewTab = (url: string) => {
   window.open(url, '_blank');
 }
+
+export const getCommissionPercent = (experience: string) => {
+  switch (experience) {
+    case "Intern":
+      return "5%"
+    case "Fresher":
+      return "8%"
+    case "Middle":
+      return "10%"
+    default:
+      return "15%"
+  }
+}
