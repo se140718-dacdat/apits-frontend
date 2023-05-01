@@ -9,6 +9,7 @@ import axios from '../../../api/axios';
 import { PostResponse } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
 import "./EnterpriseProfile.css";
+import { Paging } from '../../modules/pagecomponents/common/Paging';
 
 const storage = getStorage();
 
@@ -24,20 +25,22 @@ const EnterpriseProfile: FC = () => {
     const [address, setAddress] = useState<string>(user?.address || "Company address");
     const [introduction, setIntroduction] = useState<string>(user?.introduction || "Introduction");
     const [posts, setPosts] = useState<PostResponse[]>();
+    const [pageTotal, setPageTotal] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(0);
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [currentPage])
 
     const navigate = useNavigate();
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
 
     const fetchData = async (): Promise<PostResponse[]> => {
-        const response = await axios.get<{ data: { responseList: PostResponse[] } }>(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=0&pageSize=20`);
+        const response = await axios.get<{ data: { responseList: PostResponse[], totalPage: number } }>(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=${currentPage}&pageSize=5`);
         const data = response?.data?.data?.responseList;
+        setPageTotal(response?.data.data.totalPage - 1);
         setPosts(data);
-        console.log(posts)
         return data;
     }
 
@@ -168,6 +171,7 @@ const EnterpriseProfile: FC = () => {
                             })
                         }
                     </div>
+                    <Paging currentPage={currentPage} pageTotal={pageTotal} setCurrentPage={setCurrentPage}/>
                 </div>
             </div>
             <Modal id="EnterpriseProfileModal" show={showUpdate} onHide={handleCloseUpdate}>

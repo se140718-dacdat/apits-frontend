@@ -162,7 +162,7 @@
 	text-align: center;
 	line-height: 35px;
 
-	margin-right: 3px;
+	margin-right: 8px;
 	margin-bottom: 5px;
 }
 
@@ -171,8 +171,9 @@
 #Footer.footer-distributed .footer-icons a .icon-git,
 #Footer.footer-distributed .footer-icons a .icon-in {
 	height: 35px;
-	background-color: #fff;
+	background-color: rgb(32, 34, 38);
 }
+
 /* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 880px) {

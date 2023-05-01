@@ -264,8 +264,9 @@ interface PostAssign {
     hrPhone: string,
     hrEmail: string,
     status: string
-    specialty: string,
+    specialty: SpecialtyOnly,
     creator: CreatorEntity,
+    experienceSpecialty: Experience,
 }
 
 
@@ -355,13 +356,13 @@ interface Certificate {
     issuedTime: Date
 }
 
-interface Experience {
-    id: number,
-    name: string,
-    description: string,
-    from: Date,
-    to: Date
-}
+// interface Experience {
+//     id: number,
+//     name: string,
+//     description: string,
+//     from: Date,
+//     to: Date
+// }
 
 
 // const specialty1: Specialty = {

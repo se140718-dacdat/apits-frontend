@@ -230,6 +230,7 @@ a {
     float: right;
     color: var(--primary-color);
 }
+
 .see-all:hover {
     cursor: pointer;
     color: var(--primary-color);
@@ -242,7 +243,7 @@ a {
     justify-content: space-between;
 }
 
-.col-haft > * {
+.col-haft>* {
     width: 45%;
 }
 
@@ -250,7 +251,7 @@ a {
     padding: 12px;
 }
 
-.issued-time > * {
+.issued-time>* {
     width: 100%;
 }
 
@@ -302,7 +303,7 @@ a {
 }
 
 
-.btn-admin-disable, 
+.btn-admin-disable,
 .btn-admin-active {
     width: 100px;
     border: none;
@@ -322,4 +323,24 @@ a {
 
 .ml-22 {
     margin-left: 22px;
+}
+
+
+.paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paging .page-link {
+    color: var(--primary-color);
+    font-weight: bold;
+    border-radius: 0;
+    margin: 0 5px;
+}
+
+.paging .page-item.active .page-link {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-color: var(--primary-color);
 }

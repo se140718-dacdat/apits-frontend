@@ -1,27 +1,35 @@
 import { faBusinessTime, faClock, faCoins, faLocation, faLocationDot, faMagnifyingGlass, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "./RecruitmentPost.css";
 import { getAllPost } from '../../../../redux/apiRequest';
 import { Post, PostEntity, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import { currencyMaskString } from '../../../../mask';
+import axios from '../../../../api/axios';
+import { Paging } from './Paging';
 
 const RecruitmentPost = () => {
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState<PostResponse[]>([]);
+    const [pageTotal, setPageTotal] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(0);
 
     useEffect(() => {
         fetchData();
-        console.log(posts)
-    }, [])
+    }, [currentPage])
 
     const fetchData = async () => {
-        setPosts(await getAllPost());
-        console.log(posts)
+        await axios.get(`/recruitmentRequest/getAll?pageNo=${currentPage}&pageSize=10`).then((res) => {
+            const data = res.data
+            if (data.status === "SUCCESS") {
+                setPosts(data.data.responseList);
+                setPageTotal(data.data.totalPage - 1);
+            }
+        })
     }
 
     return (
@@ -65,9 +73,9 @@ const RecruitmentPost = () => {
                     {
                         posts && posts?.length > 0 && posts?.map((post: PostResponse, index) => {
                             return (
-                                <div className="post" onClick={() => { 
-                                    navigate(`/post-detail/${post.id}`) 
-                                    }} key={index}>
+                                <div className="post" onClick={() => {
+                                    navigate(`/post-detail/${post.id}`)
+                                }} key={index}>
                                     <div className="avt-post-cover inline-block">
                                         <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
                                     </div>
@@ -111,6 +119,7 @@ const RecruitmentPost = () => {
                     }
                 </div>
             </div>
+            <Paging currentPage={currentPage} pageTotal={pageTotal} setCurrentPage={setCurrentPage} />
         </div>
 
     )

@@ -46,7 +46,7 @@
 
 #RecruitmentPost .post-detail {
     margin: 0 24px;
-    width: 60%;
+    width: 70%;
 }
 
 #RecruitmentPost .avt-post-cover {
@@ -89,6 +89,7 @@
 }
 
 #RecruitmentPost .post-description {
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;

@@ -26,6 +26,7 @@ const CandidateViewAssign = () => {
     const response = await axios.get<{ data: AssignResponse[] }>(`/assign/getListAssignByCandidateId?candidateId=${user?.id}`);
     const data = response?.data?.data;
     setAssigns(data);
+    console.log(data);
     return data;
   }
 
@@ -46,7 +47,8 @@ const CandidateViewAssign = () => {
   const rows: CandidateAssignRow[] = assigns?.map((assign) => ({
     id: assign?.id.toString(),
     recruitment: assign?.recruitmentRequest.title,
-    specialty: `${assign?.recruitmentRequest.specialty} ${assign?.recruitmentRequest.specialty}`,
+    specialty: assign?.recruitmentRequest.specialty.name,
+    experience: assign?.recruitmentRequest.experienceSpecialty.name,
     salaryDetail: currencyMaskString(assign?.recruitmentRequest.salaryDetail),
     typeOfWork: assign?.recruitmentRequest.typeOfWork,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
@@ -66,7 +68,12 @@ const CandidateViewAssign = () => {
         </Link>
       ),
     },
-    { field: "specialty", headerName: "Position", flex: 1.2 },
+    {
+      field: "specialty", headerName: "Position", flex: 1.2,
+      renderCell: (params) => (
+        <div>{params.row.specialty} <strong>{params.row.experience}</strong></div>
+      )
+    },
     { field: "salaryDetail", headerName: "Salary", flex: 1.2 },
     { field: "typeOfWork", headerName: "Work Form", flex: 1.2 },
     { field: "deadline", headerName: "Deadline", flex: 1.2 },

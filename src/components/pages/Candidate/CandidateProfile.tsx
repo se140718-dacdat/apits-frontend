@@ -18,6 +18,7 @@ import "./CandidateProfile.css";
 
 export const CandidateProfile: FC = () => {
     const user = useSelector((state: any) => state.user?.user?.user);
+    const account = useSelector((state: any) => state.auth.login.currentUser);
     const now = new Date();
     const navigate = useNavigate();
 
@@ -72,7 +73,7 @@ export const CandidateProfile: FC = () => {
                             <img src={user?.image} className='avatar' alt="" />
                             <div className="join">
                                 <FontAwesomeIcon icon={faRightToBracket} className="icon" />
-                                {user?.createAt && formatDateMonthYear(user?.createAt.slice(0, 10))}
+                                {account?.createAt && formatDateMonthYear(account?.createAt.slice(0, 10))}
                             </div>
                         </div>
                         <div className="col-right">
