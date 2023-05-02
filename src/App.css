@@ -213,8 +213,9 @@ a {
 
 .notification-popup-item:hover {
     cursor: pointer !important;
-    background-color: rgba(242, 114, 41, 0.8);
+    background-color: #F5F6F7;
     border-radius: 5px;
+    position: relative;
 }
 
 .notification-popup-item {
@@ -343,4 +344,21 @@ a {
     background-color: var(--primary-color);
     color: var(--white-color);
     border-color: var(--primary-color);
+}
+
+.css-106c1u2-MuiBadge-badge {
+    background-color: var(--primary-color) !important;
+}
+
+.css-11pbyhm-MuiSvgIcon-root {
+    color: var(--black-color) !important;
+}
+
+.notification-body {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.opacity-5 {
+    opacity: 0.5;
 }

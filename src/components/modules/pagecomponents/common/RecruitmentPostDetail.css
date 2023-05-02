@@ -201,6 +201,13 @@
     width: 80% !important;
     overflow-y: scroll !important;
     max-height: 80% !important;
+    background-color: #F0F0F0 !important;
+}
+
+.candidate-detail-modal {
+    width: 60% !important;
+    max-height: 80% !important;
+    background-color: #F0F0F0 !important;
 }
 
 #RecruitmentPostDetail .description-item {

@@ -52,7 +52,6 @@ const EnterpriseHeader: FC<Props> = (props) => {
                                     <FontAwesomeIcon icon={faAdd} className="icon" />
                                     New Post
                                 </button>
-                                <FontAwesomeIcon icon={faBell} className="navlink align-self hover-primary icon" />
                                 <div className='navlink user-wrap' onClick={(e) => {
                                     e.stopPropagation();
                                     (show == "") ?

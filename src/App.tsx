@@ -35,7 +35,6 @@ import EnterpriseInterview from './components/pages/Enterprise/EnterpriseIntervi
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
 import EnterpriseContract from './components/pages/Enterprise/EnterpriseContract';
-import ViewCandidateDetail from './components/modules/pagecomponents/common/ViewCandidateDetail';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -90,7 +89,6 @@ const App: FC = () => {
         <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
         <Route path='/candidate-interview' element={<CandidateInterview />}></Route>;
         <Route path='/enterprise-interview' element={<EnterpriseInterview />}></Route>;
-        <Route path='/candidate-detail/:id' element={<ViewCandidateDetail />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />

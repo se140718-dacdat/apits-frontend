@@ -1,7 +1,7 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faAddressBook, faBusinessTime, faCoins, faDotCircle, faEnvelope, faLocationDot, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -19,6 +19,8 @@ import { getDaysLeft } from '../../../../handle';
 import MessageBox from '../Popup/MessageBox/MessageBox';
 import axios from '../../../../api/axios';
 import { currencyMaskString } from '../../../../mask';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import CandidateDetail from './candidateDetail/CandidateDetail';
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
@@ -365,7 +367,7 @@ const RecruitmentPostDetail = () => {
                                             </div> */}
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {
-                                                    <ViewAssign />
+                                                    <ViewAssign specialtyId={post?.specialty.id} />
                                                 }
                                             </div>
                                         </div>

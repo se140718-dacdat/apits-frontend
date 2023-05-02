@@ -1,0 +1,60 @@
+
+
+/* #CandidateDetail  */
+
+#CandidateDetail {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#CandidateDetail .avt {
+    width: 20%;
+}
+
+#CandidateDetail .avt img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+
+#CandidateDetail .information {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    flex-wrap: wrap;
+}
+
+#CandidateDetail .name {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+#CandidateDetail .description {
+    font-size: 0.9rem;
+}
+
+
+#CandidateDetail .specialty {
+    width: 20%;
+}
+
+#CandidateDetail .skill-icon {
+    width: 20%;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+#CandidateDetail .skills img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+#CandidateDetail .skills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}

@@ -195,6 +195,7 @@ export interface NotificationEntity {
     tempId: number;
     notificationType: string;
     createTime: string;
+    read: boolean;
 }
 
 export interface CourseEntity {

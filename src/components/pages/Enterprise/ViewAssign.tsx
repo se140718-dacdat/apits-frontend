@@ -1,45 +1,32 @@
-import { faCakeCandles, faHouse, faPhone, faRightToBracket, faVenusMars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
+import { useEffect, useState, FC } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
 import { ConfirmedEntity } from "../../../entity";
-import { approveCandidate, rejectCandidate } from "../../../redux/apiRequest";
+import { rejectCandidate } from "../../../redux/apiRequest";
+import CandidateDetail from "../../modules/pagecomponents/common/candidateDetail/CandidateDetail";
 import "./ViewAssign.css";
-import { CandidateProfile } from "../Candidate/CandidateProfile";
-import { openNewTab } from "../../../handle";
 
+interface Props {
+    specialtyId: number | undefined;
+}
 
-const ViewAssign = () => {
+const ViewAssign:FC<Props> = ({specialtyId}) => {
     const { id } = useParams();
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
 
     const [candidates, setCandidates] = useState<ConfirmedEntity[]>([]);
-
-    const handleLinkClick = (id: number) => {
-        openNewTab(`/candidate-detail/${id}`);
-      };
+    const [candidate, setCandidate] = useState<ConfirmedEntity>();
 
     useEffect(() => {
         fetchData();
     }, [])
 
-    // const [selectedSpecialties, setSelectedSpecialties] = useState<{
-    //     [id: number]: string;
-    // }>(
-    //     candidates.reduce(
-    //         (acc, candidate) => ({
-    //             ...acc,
-    //             [candidate.id]: candidate.specialties[0].name,
-    //         }),
-    //         {}
-    //     )
-    // );
-
-
-    async function fetchData () {
+    async function fetchData() {
         const response = await axios.get(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
         setCandidates(response.data.data);
     }
@@ -50,7 +37,7 @@ const ViewAssign = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '80%',
+        width: '50%',
         height: 'auto',
         bgcolor: 'background.paper',
         border: '2px solid #000',
@@ -60,7 +47,7 @@ const ViewAssign = () => {
 
     const handleApprove = async (assignId: number) => {
         await axios.get(`/assign/approvedAssignEnterprise?id=${assignId}`).then((res) => {
-            if(res.data.status === "SUCCESS") {
+            if (res.data.status === "SUCCESS") {
                 fetchData();
             }
         })
@@ -82,7 +69,7 @@ const ViewAssign = () => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-                <Button variant="contained" color="error" onClick={()=>{handleReject(params.row.assignId, params.row.id)}}>
+                <Button variant="contained" color="error" onClick={() => { handleReject(params.row.assignId, params.row.id) }}>
                     Reject
                 </Button>
             ),
@@ -93,7 +80,7 @@ const ViewAssign = () => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-                <Button variant="contained" color="success" onClick={()=>{handleApprove(params.row.assignId)}}>
+                <Button variant="contained" color="success" onClick={() => { handleApprove(params.row.assignId) }}>
                     Approve
                 </Button>
             ),
@@ -105,9 +92,11 @@ const ViewAssign = () => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-                <Button variant="contained" color="primary" onClick={()=> {
-                    handleLinkClick(params.row.id);
-                }}>
+                <Button variant="contained" color="primary" onClick={()=>{
+                    setCandidate(params.row.candidate);
+                    handleOpen();
+                }
+                }>
                     Detail
                 </Button>
             ),
@@ -119,16 +108,31 @@ const ViewAssign = () => {
         name: candidate.candidateResponse.name,
         gender: candidate.candidateResponse.gender,
         address: candidate.candidateResponse.address,
-        assignId: candidate.assignId
+        assignId: candidate.assignId,
+        candidate: candidate
     })) : [];
 
     return (
-        <div style={{ height: 400, width: "100%" }}>
-            <DataGrid rows={rows}
-                columns={columns}
-                autoPageSize
-                pagination
-                checkboxSelection />
+        <div>
+            <div style={{ height: 400, width: "100%" }}>
+                <DataGrid rows={rows}
+                    columns={columns}
+                    autoPageSize
+                    pagination
+                    checkboxSelection />
+            </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='candidate-detail-modal'>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <CandidateDetail candidate={candidate} specialtyId={specialtyId}/>
+                    </Typography>
+                </Box>
+            </Modal>
         </div>
     );
 };

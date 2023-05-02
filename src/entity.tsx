@@ -212,6 +212,7 @@ export interface CandidateConfirmed {
     payment: string;
     status: string;
     createAt: string;
+    description: string;
 }
 
 
