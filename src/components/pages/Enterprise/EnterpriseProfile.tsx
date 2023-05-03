@@ -10,6 +10,8 @@ import { PostResponse } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
 import "./EnterpriseProfile.css";
 import { Paging } from '../../modules/pagecomponents/common/Paging';
+import { updateEnterprise } from '../../../redux/apiRequest';
+import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 
 const storage = getStorage();
 
@@ -17,8 +19,7 @@ const EnterpriseProfile: FC = () => {
     const user = useSelector((state: any) => state.user.user.user);
     const [showUpdate, setShowUpdate] = useState(false);
     const [avatar, setAvatar] = useState<string>(user?.image || "/images/avt-blank.png");
-    const [cover, setCover] = useState<string>(user?.image || "/images/avt-blank.png");
-    const [name, setName] = useState<string>(user?.name || "Company name");
+    const [phone, setPhone] = useState<string>(user?.name || "Company phone");
     const [email, setEmail] = useState<string>(user?.email || "Email");
     const [scale, setScale] = useState<string>(user?.scale || "Scale");
     const [website, setWebsite] = useState<string>(user?.website || "Website");
@@ -27,6 +28,8 @@ const EnterpriseProfile: FC = () => {
     const [posts, setPosts] = useState<PostResponse[]>();
     const [pageTotal, setPageTotal] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(0);
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -44,21 +47,27 @@ const EnterpriseProfile: FC = () => {
         return data;
     }
 
-    const handleEdit = () => {
-        const updateEnterprise = {
-            name: name,
-            email: email,
+    const handleEdit = async () => {
+        const request = {
+            address: address,
+            phone: phone,
             scale: scale,
             website: website,
-            address: address,
+            image: avatar,
             introduction: introduction,
-            avatar: avatar,
-            cover: cover
         }
-        console.log(updateEnterprise)
+        console.log(request);
+        if (await updateEnterprise(user?.id, request) === "SUCCESS") {
+            handleCloseUpdate();
+            setMessage("Update successful!");
+            setMessageStatus("green");
+        } else {
+            setMessage("Update fail!");
+            setMessageStatus("red");
+        }
     }
 
-    const convertFile = async (files: FileList | null, type: string) => {
+    const convertFile = async (files: FileList | null) => {
         if (files) {
             const fileRef = files[0];
             const fileType = fileRef.type;
@@ -73,11 +82,8 @@ const EnterpriseProfile: FC = () => {
                 const downloadURL = await getDownloadURL(snapshot.ref);
 
                 // Set the state to the download URL
-                (type == "avater") ?
-                    setAvatar(downloadURL)
-                    :
-                    setCover(downloadURL)
-                    ;
+                setAvatar(downloadURL);
+                console.log(downloadURL)
             } catch (error) {
                 console.error(error);
             }
@@ -86,12 +92,18 @@ const EnterpriseProfile: FC = () => {
 
     return (
         <div id='EnterpriseProfile'>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             <div className="profile-container">
                 <div className="profile-header">
-                    <img src="https://static.topcv.vn/company_covers/cong-ty-co-phan-tga-c3d802c3b6c9f22302425aa2424a87f3-63ec41af5f944.jpg" className='banner' alt="" />
+                    <img src="/images/company-banner.jpg" className='banner' alt="" />
                     <div className="overview">
                         <div className="avt-cover">
-                            <img src={user?.image} className='avt-enterprise' alt="" />
+                            <img src={avatar} className='avt-enterprise' alt="" />
                         </div>
                         <div className="information">
                             <div className="information-left">
@@ -131,7 +143,7 @@ const EnterpriseProfile: FC = () => {
                                 return (
                                     <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
                                         <div className="avt-post-cover inline-block">
-                                            <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                            <img src={post.creator.image} alt="" className="post-avt" />
                                         </div>
                                         <div className="post-detail inline-block">
                                             <div className="post-name">{post.title}</div>
@@ -171,7 +183,7 @@ const EnterpriseProfile: FC = () => {
                             })
                         }
                     </div>
-                    <Paging currentPage={currentPage} pageTotal={pageTotal} setCurrentPage={setCurrentPage}/>
+                    <Paging currentPage={currentPage} pageTotal={pageTotal} setCurrentPage={setCurrentPage} />
                 </div>
             </div>
             <Modal id="EnterpriseProfileModal" show={showUpdate} onHide={handleCloseUpdate}>
@@ -182,47 +194,23 @@ const EnterpriseProfile: FC = () => {
                     <div className="edit-container">
                         <div className="edit-title">
                             <span className='fontsize-125rem bold'>Profile picture</span>
-                            <span className='weight400 fontsize-10625rem link' onClick={(e) => {
+                            <div className='weight400 fontsize-10625rem link' onClick={(e) => {
                                 document.getElementById("img-file-avatar")?.click();
                             }}>Edit
-                                <input type="file" id="img-file-avatar" accept='.jpg, .png' style={{ display: "none" }} onChange={(e) => { convertFile(e.target.files, "avatar") }} />
-                            </span>
+                                <input type="file" id="img-file-avatar" accept='.jpg, .png' style={{ display: "none" }} onChange={(e) => { convertFile(e.target.files) }} />
+                            </div>
                         </div>
                         <div className="edit-body">
                             <div>
-                                <img src={user?.image} alt="" className="post-avt" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="edit-container">
-                        <div className="edit-title">
-                            <span className='fontsize-125rem bold'>Cover photo</span>
-                            <span className='weight400 fontsize-10625rem link' onClick={(e) => {
-                                document.getElementById("img-file-cover")?.click();
-                            }}>Edit
-                                <input type="file" id="img-file-cover" accept='.jpg, .png' style={{ display: "none" }} onChange={(e) => { convertFile(e.target.files, "cover") }} />
-                            </span>
-                        </div>
-                        <div className="edit-body">
-                            <div className='cover-photo'>
-                                <img src="https://static.topcv.vn/company_covers/cong-ty-co-phan-tga-c3d802c3b6c9f22302425aa2424a87f3-63ec41af5f944.jpg" alt="" className="post-avt" />
+                                <img src={avatar} alt="" className="post-avt" />
                             </div>
                         </div>
                     </div>
                     <div className="edit-container">
                         <div className="edit-title">
                             <span className='fontsize-125rem bold'>Customize your intro</span>
-                            <span className='weight400 fontsize-10625rem link'>Edit</span>
                         </div>
                         <div className="edit-body">
-                            <FloatingLabel className='edit-input' label="Company name">
-                                <Form.Control type="text" value={name}
-                                    placeholder={name}
-                                    onChange={(e) => {
-                                        setName(e.target.value);
-                                    }}
-                                    required />
-                            </FloatingLabel>
                             <FloatingLabel className='edit-input' label="Website">
                                 <Form.Control type="text" value={website}
                                     placeholder={website}
@@ -231,11 +219,11 @@ const EnterpriseProfile: FC = () => {
                                     }}
                                     required />
                             </FloatingLabel>
-                            <FloatingLabel className='edit-input' label="Email">
-                                <Form.Control type="text" value={email}
-                                    placeholder={email}
+                            <FloatingLabel className='edit-input' label="Company phone">
+                                <Form.Control type="text" value={phone}
+                                    placeholder={phone}
                                     onChange={(e) => {
-                                        setEmail(e.target.value);
+                                        setPhone(e.target.value);
                                     }}
                                     required />
                             </FloatingLabel>
@@ -275,7 +263,6 @@ const EnterpriseProfile: FC = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        handleCloseUpdate();
                         handleEdit();
                     }
                     }>

@@ -44,7 +44,7 @@ const CandidateViewAssign = () => {
     })
   }
 
-  const rows: CandidateAssignRow[] = assigns?.map((assign) => ({
+  const rows: CandidateAssignRow[] = assigns?.length > 0 ? assigns?.map((assign) => ({
     id: assign?.id.toString(),
     recruitment: assign?.recruitmentRequest.title,
     specialty: assign?.recruitmentRequest.specialty.name,
@@ -54,7 +54,7 @@ const CandidateViewAssign = () => {
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
     recruitmentId: assign.recruitmentRequest.id,
     status: assign.status
-  }));
+  })) : [];
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.5 },

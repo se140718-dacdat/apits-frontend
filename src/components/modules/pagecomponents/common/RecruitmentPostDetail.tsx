@@ -1,30 +1,25 @@
-import { faClock } from '@fortawesome/free-regular-svg-icons'
-import { faAddressBook, faBusinessTime, faCoins, faDotCircle, faEnvelope, faLocationDot, faMagnifyingGlass, faMarsAndVenus, faMedal, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faAddressBook, faBusinessTime, faCoins, faEnvelope, faMedal, faPerson, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import "./RecruitmentPostDetail.css";
-import { Dropdown } from 'react-bootstrap';
-import "./Filter.css";
-import { Candidate, Category, SkillEntity, SpecialtyEntity, dataEngineer, developer } from '../../../../model';
-import CandidateAssign from './CandidateAssign';
+import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import { useParams } from 'react-router-dom';
-import { getAllSkill, getCandidateByListSkill, getCandidateBySpecialtyId, getCandidatesConfirmed, getExperience, getPostByPostId } from '../../../../redux/apiRequest';
-import { CandidateConfirmed, CandidateForAssign, CandidateResponse, PostResponse } from '../../../../entity';
+import { PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
-import MessageBox from '../Popup/MessageBox/MessageBox';
-import axios from '../../../../api/axios';
 import { currencyMaskString } from '../../../../mask';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import CandidateDetail from './candidateDetail/CandidateDetail';
+import { getPostByPostId } from '../../../../redux/apiRequest';
+import ViewAssign from '../../../pages/Enterprise/ViewAssign';
+import CandidateAssign from './CandidateAssign';
+import "./Filter.css";
+import "./RecruitmentPostDetail.css";
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
     const account = useSelector((state: any) => state.auth.login.currentUser);
+    const user = useSelector((state: any) => state.user.user.user);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
     const [intern, setIntern] = useState<string>("");
@@ -63,7 +58,7 @@ const RecruitmentPostDetail = () => {
                         <div className="card">
                             <div className="post-header">
                                 <div className="avt-post-cover inline-block">
-                                    <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                    <img src={post?.creator.image} alt="" className="post-avt" />
                                 </div>
                                 <div className="post-header-content">
                                     <h1 className="post-name">{post?.title}</h1>
@@ -78,7 +73,7 @@ const RecruitmentPostDetail = () => {
                                         (<div className="btn-assign">
                                             <button onClick={handleOpen}>Assign Candidate</button>
                                         </div>)
-                                        : (account?.role.name === "ENTERPRISE") ?
+                                        : (account?.role.name === "ENTERPRISE" && user?.id === post?.creator.id) ?
                                             (<div className="btn-assign">
                                                 <button onClick={handleOpen}>Assigned List</button>
                                             </div>)

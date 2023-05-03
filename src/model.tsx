@@ -300,3 +300,18 @@ export interface CandidateLevelSkill {
     name: string;
     status: string;
 }
+
+export interface PersonalExperience {
+    id: number;
+    name: string;
+    from: Date;
+    to: Date;
+    detail: string;
+}
+
+export interface PersonalCertificate {
+    id: number;
+    name: string;
+    link: string;
+    date: Date;
+}

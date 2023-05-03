@@ -71,7 +71,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
 
   useEffect(() => {
     fetchData();
-  }, [])
+    console.log(interviews)
+  }, [type, status])
 
   const fetchData = async () => {
     setAssigns(await getAllAssignApproved());
@@ -79,11 +80,9 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     setCandidates(await getCandidateCourseProcessing());
     setEmployees(await getAllEmployees());
     setInterviews(await getAllInterview());
-    if (interviews.length > 0) {
-      setInterviewAssign(interviews.filter((e) => e.type === "HIRE"));
-      setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
-      setInterviewTest(interviews.filter((e) => e.type === "TEST"));
-    }
+    setInterviewAssign(interviews.filter((e) => e.type === "HIRE"));
+    setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
+    setInterviewTest(interviews.filter((e) => e.type === "TEST"));
   }
 
   const getSlot = async (id: number) => {
@@ -588,10 +587,10 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                   {
                     slots?.map((slot) =>
                       (slotExist.includes(slot))
-                      ?
-                      <option disabled value={slot}>{slot}</option>
-                      :
-                      <option value={slot}>{slot}</option>
+                        ?
+                        <option disabled value={slot}>{slot}</option>
+                        :
+                        <option value={slot}>{slot}</option>
                     )
                   }
 

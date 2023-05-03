@@ -134,8 +134,6 @@ const CandidateRegister = () => {
             cv: cv,
             description: description
         }
-        console.log(newUser);
-        console.log(selectSpecialties);
         updateCandidate(user?.id, navigate, newUser, dispatch, selectSpecialties);
     }
 

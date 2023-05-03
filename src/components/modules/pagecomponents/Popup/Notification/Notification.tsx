@@ -100,8 +100,8 @@ const Notification = () => {
                                                 :
                                                 arr.map((str, index) => {
                                                     return (
-                                                        <div>
-                                                            <span key={index}>{str}</span>
+                                                        <div key={index}>
+                                                            <span>{str}</span>
                                                             <br></br>
                                                         </div>
                                                     )
@@ -115,7 +115,7 @@ const Notification = () => {
                 </Popover>
             }
         >
-            <Badge badgeContent={notifications.length} className="navlink align-self" color="primary">
+            <Badge badgeContent={notifications.filter((e) => e.read === false).length} className="navlink align-self" color="primary">
                 <NotificationsIcon className='hover-primary icon' color="action" />
             </Badge>
         </OverlayTrigger>

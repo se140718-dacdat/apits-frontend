@@ -129,7 +129,7 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
             >
                 <Box sx={style} className='candidate-detail-modal'>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <CandidateDetail candidate={candidate} specialtyId={specialtyId}/>
+                        <CandidateDetail candidate={candidate?.candidateResponse} specialtyId={specialtyId}/>
                     </Typography>
                 </Box>
             </Modal>

@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect } from 'react'
 import './CandidateDetail.css';
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { ConfirmedEntity, SpecialtyExpResponse } from '../../../../../entity';
+import { CandidateConfirmed, ConfirmedEntity, SpecialtyExpResponse } from '../../../../../entity';
 import axios from '../../../../../api/axios';
 import { CandidateSkill } from '../../../../../model';
 
 interface Props {
-    candidate: ConfirmedEntity | undefined;
+    candidate: CandidateConfirmed | undefined;
     specialtyId: number | undefined;
 }
 
@@ -26,7 +26,7 @@ const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
     }, [specialty])
 
     async function fetchData() {
-        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${candidate?.candidateResponse.id}`).then(async (res) => {
+        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${candidate?.id}`).then(async (res) => {
             const data = await res?.data.data.specialties;
             setSpecialties(data);
             setSpecialty(data.find((e: SpecialtyExpResponse) => e.specialtyId === specialtyId));
@@ -34,7 +34,7 @@ const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
     }
 
     async function getSkills() {
-        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${candidate?.candidateResponse.id}&specialtyId=${specialty?.specialtyId}`);
+        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${candidate?.id}&specialtyId=${specialty?.specialtyId}`);
         setSkills(response.data.data);
     }
 
@@ -42,14 +42,12 @@ const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
     return (
         <div id='CandidateDetail'>
             <div className="avt">
-                <img src={candidate?.candidateResponse.image} alt="" />
+                <img src={candidate?.image} alt="" />
             </div>
             <div className="information">
-                <h3 className='name'>{candidate?.candidateResponse.name}</h3>
-                <span className="description">     Recent college graduate with a degree in Software Engineering seeking an entry-level
-                    position to launch a career in FPT Software. Looking to apply academic knowledge and
-                    relevant experience to contribute to the growth and success of an organization.</span>
-                <span className="address">From: {candidate?.candidateResponse.address}</span>
+                <h3 className='name'>{candidate?.name}</h3>
+                <span className="description" style={{marginBottom: "24px"}}>{candidate?.description}</span>
+                <span className="address"><strong>From: </strong>{candidate?.address}</span>
             </div>
             <div className="specialty">
                 <FormControl sx={{ m: 1, minWidth: 200, marginBottom: "20px" }} size="small">

@@ -62,14 +62,14 @@ const CandidateList = () => {
         }
     }
 
-    const rows = candidates.map((candidate) => ({
+    const rows = candidates?.length > 0 ? candidates.map((candidate) => ({
         id: candidate.id,
         name: candidate.name,
         email: candidate.email,
         phone: candidate.phone,
         createAt: candidate.createAt,
         status: candidate.status
-    }));
+    })) : [];
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", flex: 0.2 },

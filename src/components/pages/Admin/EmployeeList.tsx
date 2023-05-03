@@ -126,14 +126,14 @@ const EmployeeList = () => {
         }
     }
 
-    const rows = employees.map((employee) => ({
+    const rows = employees?.length > 0 ? employees.map((employee) => ({
         id: employee.id,
         name: employee.name,
         phone: employee.phone,
         createAt: employee.dob,
         status: employee.status,
         position: employee.position.name
-    }));
+    })) : [];
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", flex: 0.2 },

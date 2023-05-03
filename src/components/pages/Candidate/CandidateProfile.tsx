@@ -201,16 +201,7 @@ export const CandidateProfile: FC = () => {
                             <div className="profile-header-name">Description</div>
                         </div>
                         <div className="profile-body verification">
-                            <div className="item">
-                                <FontAwesomeIcon icon={faUser} className="item-icon" />
-                                <span className="item-name">identity verified</span>
-                                <span className='item-verify' onClick={() => { navigate('/update-candidate') }}>Verify</span>
-                            </div>
-                            <div className="item">
-                                <FontAwesomeIcon icon={faEnvelope} className="item-icon" />
-                                <span className="item-name">email verified</span>
-                                <FontAwesomeIcon icon={faCheck} className="item-icon icon-check" />
-                            </div>
+                            <span>{user?.description}</span>
                         </div>
                     </div>
                 </div>

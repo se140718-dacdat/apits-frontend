@@ -35,6 +35,7 @@ import EnterpriseInterview from './components/pages/Enterprise/EnterpriseIntervi
 import EnterpriseProfile from './components/pages/Enterprise/EnterpriseProfile';
 import EnterpriseRegister from './components/pages/Enterprise/EnterpriseRegister';
 import EnterpriseContract from './components/pages/Enterprise/EnterpriseContract';
+import ViewCandidateDetail from './components/modules/pagecomponents/common/ViewCandidateDetail';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -70,7 +71,7 @@ const App: FC = () => {
         <Route path='/candidates-management' element={<CandidateList />}></Route>;
         <Route path='/employee-management' element={<EmployeeList />}></Route>;
         <Route path='/enterprises-management' element={<EnterpriseList />}></Route>;
-
+        <Route path='/candidate-detail/:id' element={<ViewCandidateDetail />}></Route>;
         <Route path='/enterprise-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/employee-recruitment' element={<RecruitmentPost />}></Route>;
         <Route path='/update-candidate' element={<CandidateRegister />}></Route>;

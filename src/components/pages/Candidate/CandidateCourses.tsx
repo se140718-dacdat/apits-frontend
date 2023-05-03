@@ -25,9 +25,7 @@ const CandidateCourse = () => {
     const [certificate, setCertificate] = useState<string>();
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
-    const [isPreview, setIsPreview] = useState<boolean>(false);
     const [currentExp, setCurrentExp] = useState<ExperienceSpecialy>();
-    const [preExp, setPreExp] = useState<ExperienceSpecialy>();
 
 
 
@@ -269,9 +267,9 @@ const CandidateCourse = () => {
                         </Dropdown.Toggle>
                         <Dropdown.Menu className='filter-menu'>
                             {
-                                specialties?.map((specialty) => {
+                                specialties?.map((specialty, index) => {
                                     return (
-                                        <div key={specialty.specialtyId}>
+                                        <div key={index}>
                                             <Dropdown.Item className='filter-item' onClick={() => {
                                                 setSpecialtySelect(specialty);
                                                 getSpecialtyDetail();
@@ -288,7 +286,6 @@ const CandidateCourse = () => {
                     <span className="experience-name">You are at the <strong style={{ color: "var(--primary-color)" }}>{currentExp?.name}</strong> level</span>
                     {
                         currentExp !== undefined ? currentExp?.skills?.map((skill) => {
-                            console.log("skill", skill);
                             return (
                                 <div className="skill-container" key={skill.id}>
                                     <span className="skill-name">{skill.name}</span>

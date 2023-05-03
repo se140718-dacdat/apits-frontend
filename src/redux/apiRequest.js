@@ -291,6 +291,14 @@ export const getAllEnterprise = async () => {
     }
 }
 
+export const updateEnterprise = async (id, request) => {
+    try {
+        const res = await axios.put(`/enterprise/update?id=${id}`, request)
+        return res.data.status;
+    } catch (error) {
+        return error
+    }
+}
 //Post
 
 export const createPost = async (params, navigate) => {

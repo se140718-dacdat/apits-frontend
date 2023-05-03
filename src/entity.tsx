@@ -172,21 +172,6 @@ export interface CandidateAssignRow {
     recruitmentId: number;
 }
 
-export interface CandidateForAssign {
-    id: number
-    name: string;
-    email: string;
-    image: string;
-    phone: string;
-    gender: string;
-    dob: string;
-    address: string;
-    cv: string;
-    payment: string;
-    skills: SkillResponse[];
-    status: string;
-    createAt: string;
-}
 
 export interface ConfirmedEntity {
     assignId: number;
@@ -650,3 +635,16 @@ export interface ExperienceSpecialy {
     name: string;
     skills: SkillEntity[]
 }
+
+// export interface Contract {
+//     id: number;
+//     interviewDetailId: number;
+//     candidateId: number;
+//     enterpriseId: number;
+//     dateCreate: Date;
+//     candidateSign: Date;
+//     enterpriseSign: Date;
+//     completeDate: Date;
+//     salary: number;
+//     status: string;
+// }

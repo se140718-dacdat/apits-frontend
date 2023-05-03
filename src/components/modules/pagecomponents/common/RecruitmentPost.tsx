@@ -77,7 +77,7 @@ const RecruitmentPost = () => {
                                     navigate(`/post-detail/${post.id}`)
                                 }} key={index}>
                                     <div className="avt-post-cover inline-block">
-                                        <img src="https://cdn.topcv.vn/140/company_logos/cong-ty-co-phan-tga-63ec6766228b6.jpg" alt="" className="post-avt" />
+                                        <img src={post?.creator.image} alt="" className="post-avt" />
                                     </div>
                                     <div className="post-detail inline-block">
                                         <div className="post-name">{post.title}</div>

@@ -65,14 +65,14 @@ const EnterpriseList = () => {
         }
     }
 
-    const rows = enterprises.map((enterprise) => ({
+    const rows = enterprises?.length > 0 ? enterprises.map((enterprise) => ({
         id: enterprise.id,
         name: enterprise.name,
         email: enterprise.email,
         phone: enterprise.phone,
         createAt: enterprise.createAt,
         status: enterprise.status,
-    }));
+    })) : [];
 
     const columns: GridColDef[] = [
         { field: "id", headerName: "ID", flex: 0.2 },
