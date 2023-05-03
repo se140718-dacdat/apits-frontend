@@ -90,7 +90,10 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     if (type !== "HIRE") {
       await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
         setSlotExist(res.data.data);
-        console.log(res.data.data)
+      })
+    } else {
+      await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
+        setSlotExist(res.data.data);
       })
     }
   }
@@ -437,7 +440,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
         break;
 
       case "HIRE":
-        if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined) {
+        if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined && professor !== undefined) {
           const request: InterviewCreate = {
             purpose: title,
             description: "",
@@ -445,7 +448,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             slot: slot,
             linkMeeting: link,
             type: type.toUpperCase(),
-            managerId: user?.id,
+            managerId: professor?.id,
             tmpId: assignId,
             candidateId: participantAId,
             hostId: participantBId
@@ -481,10 +484,31 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const handleCheckType = () => {
     if (type === "HIRE") {
       return (
-        <div className="participant-container">
-          <span className="participant-title">Enterprise:</span>
-          <div className="participant__name btn-item hover">
-            <span>{participantB}</span>
+        <div>
+          <div className="participant-container">
+            <span className="participant-title">Enterprise:</span>
+            <div className="participant__name btn-item hover">
+              <span>{participantB}</span>
+            </div>
+          </div>
+          <div className="participant-container">
+            <span className="participant-title">Professor:</span>
+            {
+              professor !== undefined
+                ? (
+                  <div className="participant__name btn-item hover" onClick={() => setProfessor(undefined)}>
+                    <span>{professor.name}</span>
+                    <FontAwesomeIcon className="icon" icon={faClose} />
+                  </div>
+                )
+                : (
+                  <FontAwesomeIcon
+                    className="participant__icon--plus hover"
+                    icon={faPlusCircle}
+                    onClick={() => setIsPopupInterviewer(true)}
+                  />
+                )
+            }
           </div>
         </div>
       )
@@ -712,6 +736,40 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               <input type="text" placeholder="Link meeting" value={link} onChange={(e) => { setLink(e.target.value) }} />
             </div>
           </div>
+          {
+            isPopupInterviewer
+              ? (
+                <div id="PopupInterviewer">
+                  <div className="layer" onClick={() => setIsPopupInterviewer(false)}></div>
+                  <div className="interviewer-container">
+                    <div className="header">
+                      <label className="filter-interview-title">Search Professor</label>
+                      <FontAwesomeIcon className="filter-interview-close" onClick={() => setIsPopupInterviewer(false)} icon={faXmark}></FontAwesomeIcon>
+                    </div>
+                    <div className="interviewer-search input-pos">
+                      <input type="text" className="input-search input input-border" placeholder="Enter professor name" />
+                      <div className="search-name">
+                        {
+                          employees?.map((employee, key) =>
+                            <div className="search-name-interviewer" key={key}
+                              onClick={() => {
+                                setProfessor(employee);
+                                getSlot(employee.id);
+                                setIsPopupInterviewer(false);
+                              }}>
+                              <span>{employee.name}</span>
+                              <FontAwesomeIcon icon={faArrowRight} className="search-icon" />
+                            </div>
+                          )
+                        }
+                      </div>
+                      <FontAwesomeIcon icon={faMagnifyingGlass} className="icon-search" />
+                    </div>
+                  </div>
+                </div>
+              )
+              : <></>
+          }
         </Modal.Body>
         <Modal.Footer>
           <ButtonBootsrap className='button-close' variant="secondary" onClick={handleCloseInterviewCreate}>

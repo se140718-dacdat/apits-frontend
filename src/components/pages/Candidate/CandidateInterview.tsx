@@ -24,11 +24,6 @@ const CandidateInterview = () => {
     const [interviewChecks, setInterviewChecks] = useState<InterviewResponse[]>([]);
     const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
     const [interviewHires, setInterviewHires] = useState<InterviewResponse[]>([]);
-    const [showInterviewReport, setShowInterviewReport] = useState(false);
-
-
-    const handleCloseInterviewReport = () => setShowInterviewReport(false);
-    const handleShowInterviewReport = () => { setShowInterviewReport(true) };
 
 
     useEffect(() => {
@@ -50,7 +45,7 @@ const CandidateInterview = () => {
 
     const tableRenderCheck = () => {
 
-        const rows = interviewChecks?.length > 0 ? interviewChecks?.map((item) => ({
+        const rows = interviewChecks?.length > 0 ? interviewChecks?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
             candidateId: item.candidateId,
             link: item.linkMeeting,
@@ -83,7 +78,7 @@ const CandidateInterview = () => {
     }
 
     const tableRenderTest = () => {
-        const rows = interviewTests?.length > 0 ? interviewTests?.map((item) => ({
+        const rows = interviewTests?.length > 0 ? interviewTests?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
             candidateId: item.candidateId,
             link: item.linkMeeting,
@@ -116,7 +111,7 @@ const CandidateInterview = () => {
     }
 
     const tableRenderHire = () => {
-        const rows = interviewHires?.length > 0 ? interviewHires?.map((item) => ({
+        const rows = interviewHires?.length > 0 ? interviewHires?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
             candidateId: item.candidateId,
             link: item.linkMeeting,
@@ -184,16 +179,6 @@ const CandidateInterview = () => {
                             : tableRenderHire()
                 }
             </div>
-            <Modal id="InterviewCreateModal" show={showInterviewReport} onHide={handleCloseInterviewReport}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Interview Report</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-
-                </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
-            </Modal>
         </div>
     )
 }
