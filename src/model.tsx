@@ -304,8 +304,8 @@ export interface CandidateLevelSkill {
 export interface PersonalExperience {
     id: number;
     name: string;
-    from: Date;
-    to: Date;
+    startFrom: Date;
+    endTo: Date;
     detail: string;
 }
 

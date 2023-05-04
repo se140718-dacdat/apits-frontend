@@ -107,7 +107,7 @@ const ContractCreatePage: FC<Props> = ({ interviewDetail, setIsCreate }) => {
                             <span>Số điện thoại: +84 948.678.678</span><br />
                             <span>Email: apits@apits.com.vn </span><br />
 
-                            <h5>Bên tìm kiếm nhân sự (bên B): <strong style={{ textDecoration: "none" }}>{interviewDetail?.interview.assign.recruitmentRequest.name}</strong></h5>
+                            <h5>Bên tìm kiếm nhân sự (bên B): <strong style={{ textDecoration: "none" }}>{interviewDetail?.interview.assign.recruitmentRequest.creator.name}</strong></h5>
                             <p>Địa chỉ: {interviewDetail?.interview.assign.recruitmentRequest.workLocation}</p>
                             <p>Số điện thoại: {interviewDetail?.interview.assign.recruitmentRequest.hrPhone}</p>
                             <p>Email: {interviewDetail?.interview.assign.recruitmentRequest.creator.email}</p>

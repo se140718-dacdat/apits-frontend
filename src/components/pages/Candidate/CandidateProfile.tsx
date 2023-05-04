@@ -12,8 +12,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { formatDateMonthYear, getCVName } from '../../../convert';
 import { SpecialtyExpResponse } from '../../../entity';
-import { CandidateSkill } from '../../../model';
+import { CandidateSkill, PersonalExperience } from '../../../model';
 import "./CandidateProfile.css";
+import moment from 'moment';
+import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import { openNewTab } from '../../../handle';
 
 
 export const CandidateProfile: FC = () => {
@@ -31,6 +34,16 @@ export const CandidateProfile: FC = () => {
     const [to, setTo] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [issuedTime, setIssuedTime] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
 
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
+    const [experienceName, setExperienceName] = useState<string>("");
+    const [experienceDetail, setExperienceDetail] = useState<string>("");
+
+
+
+    const [experiences, setExperiences] = useState<PersonalExperience[]>([]);
+
+
 
     useEffect(() => {
         fetchData();
@@ -46,7 +59,16 @@ export const CandidateProfile: FC = () => {
             setSpecialties(data);
             setSpecialty(data[0]);
         });
+        await axios.get(`/candidate/getAllPersonalExperience?candidateId=${user?.id}`).then(async (res) => {
+            const data = await res?.data.data;
+            console.log(data)
+            setExperiences(data);
+        })
     }
+
+    const handleLinkClick = (url: string) => {
+        openNewTab(url);
+    };
 
     async function getSkills() {
         const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${user?.id}&specialtyId=${specialty?.specialtyId}`);
@@ -56,15 +78,38 @@ export const CandidateProfile: FC = () => {
     const handleCloseExperience = () => setShowExperience(false);
     const handleShowExperience = () => setShowExperience(true);
 
-    const handleCloseCertificate = () => setShowCertificate(false);
-    const handleShowCertificate = () => setShowCertificate(true);
-
     const handleSelect = (e: SpecialtyExpResponse) => {
         setSpecialty(e);
     }
 
+    const handleAddExperience = async () => {
+        const request = {
+            candidateId: user?.id,
+            name: experienceName,
+            startFrom: moment(from?.toString()).format('YYYY-MM-DD'),
+            endTo: moment(to?.toString()).format('YYYY-MM-DD'),
+            detail: experienceDetail
+        }
+        await axios.post("/candidate/createPersonalExperience", request).then((res) => {
+            if (res.data.status === "SUCCESS") {
+                setMessage("Add experience successfully!");
+                setMessageStatus("green")
+            } else {
+                setMessage("Add experience fail!");
+                setMessageStatus("red")
+            }
+        })
+    }
+
+
     return (
         <div id='CandidateProfile' className='clearfix'>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             <img src="images/banner.jpg" className='banner' alt="" />
             <div className="profile-container">
                 <div className="left">
@@ -121,42 +166,20 @@ export const CandidateProfile: FC = () => {
                             </Button>
                         </div>
                         <div className="profile-body">
-                            <div className="profile-body-description">
-                                <h6>FPT Software Intern  //  Jan 2022 - April 2022</h6>
-                                <ul>
-                                    <li>Collaborated with cross-functional teams to complete projects related to medical</li>
-                                    <li>Participated in team meetings and contributed to group brainstorming sessions</li>
-                                    <li>Completed feature and fix bug for application functional</li>
-                                </ul>
-                            </div>
-                            <div className="profile-body-description">
-                                <h6>FPT Software Intern  //  Jan 2022 - April 2022</h6>
-                                <ul>
-                                    <li>Collaborated with cross-functional teams to complete projects related to medical</li>
-                                    <li>Participated in team meetings and contributed to group brainstorming sessions</li>
-                                    <li>Completed feature and fix bug for application functional</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="profile-input">
-                        <div className="profile-header">
-                            <div className="profile-header-name">Certification</div>
-                            <Button variant="primary" onClick={handleShowCertificate}>
-                                Add Certificate
-                            </Button>
-                        </div>
-                        <div className="profile-body">
-                            <div className="profile-body-description">
-                                <h6>March 28, 2020</h6>
-                                <div className='certificate-link'>Basic of Web Developement & Coding (Coursera)
-                                </div>
-                            </div>
-                            <div className="profile-body-description">
-                                <h6>March 11, 2023</h6>
-                                <div className='certificate-link'>Building mordern java application (Coursera)
-                                </div>
-                            </div>
+                            {
+                                experiences?.map((experience) => {
+                                    return (
+                                        <div className="profile-body-description">
+                                            <h6>{experience.name}  //  {formatDateMonthYear(experience.startFrom)} - {formatDateMonthYear(experience.endTo)}</h6>
+                                            <ul>
+                                                {experience.detail.split("\n").map((str) =>
+                                                    <li>{str}</li>
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
@@ -213,7 +236,7 @@ export const CandidateProfile: FC = () => {
                 <Modal.Body>
                     <div className="input">
                         <span>Experience Name</span>
-                        <input className='input-profile' type="text" />
+                        <input className='input-profile' type="text" onChange={(e) => { setExperienceName(e.target.value) }} />
                     </div>
                     <div className="col-haft" style={{ padding: "12px" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -239,51 +262,18 @@ export const CandidateProfile: FC = () => {
                     </div>
                     <div className="input">
                         <span>Experience Detail</span>
-                        <textarea className='input-profile' />
+                        <textarea className='input-profile' onChange={(e) => { setExperienceDetail(e.target.value) }} />
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className='button-close' variant="secondary" onClick={handleCloseExperience}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseExperience}>
+                    <Button variant="primary" onClick={() => {
+                        handleCloseExperience();
+                        handleAddExperience();
+                    }}>
                         Add Experience
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            <Modal id="CandidateProfileModal" show={showCertificate} onHide={handleCloseCertificate}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add Certificates</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="input">
-                        <span>Certificate Name</span>
-                        <input className='input-profile' type="text" />
-                    </div>
-                    <div className="input">
-                        <span>Certificate Link</span>
-                        <input className='input-profile' />
-                    </div>
-                    <div className="issued-time">
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                label="Issued Time"
-                                value={issuedTime}
-                                onChange={(newValue) => {
-                                    setIssuedTime(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className='button-close' variant="secondary" onClick={handleCloseCertificate}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCloseCertificate}>
-                        Add Certificate
                     </Button>
                 </Modal.Footer>
             </Modal>
