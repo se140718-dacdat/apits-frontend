@@ -3,40 +3,53 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
-import { ContractAgreementResponse } from "../../../entity";
-import ContractCreateForm from "../Employee/HR/ContractCreateForm";
+import { Contract } from "../../../entity";
+import ContractView from "../../modules/pagecomponents/common/ContractView";
 import "./CandidateContract.css";
+import moment from "moment";
 
 
 const CandidateContract = () => {
     const user = useSelector((state: any) => state.user.user.user);
-    const [contracts, setContracts] = useState<ContractAgreementResponse[]>([]);
-    const [contract, setContract] = useState<ContractAgreementResponse>();
-    const [isCreate, setIsCreate] = useState<boolean>(false);
+    const [contracts, setContracts] = useState<Contract[]>([]);
+    const [contract, setContract] = useState<Contract>();
+    const [isView, setIsView] = useState<boolean>(false);
 
     useEffect(() => {
         fetchData();
     }, []);
 
     async function fetchData() {
-        const res = await axios.get(`/contract/getContractAgreementByCandidate?id=${user?.id}`);
+        const res = await axios.get(`/contract/getContractByCandidateId?candidateId=${user?.id}`);
         const data = await res?.data.data;
         setContracts(data);
+        console.log(data)
     }
 
-    const handleShowCreate = () => { setIsCreate(true) };
+    const handleShowCreate = () => { setIsView(true) };
 
 
     const tableRenderHire = () => {
         const rows = contracts?.length > 0 ? contracts?.map((item) => ({
             id: item.id,
             contract: item,
-            nameHiring: item.nameHiring,
+            position: `${item.interviewDetail.interview.assign.recruitmentRequest.specialty.name} ${item.interviewDetail.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
+            enterprise: item.interviewDetail.interview.assign.recruitmentRequest.creator.name,
+            dateSign: item.candidateSignDate
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "nameHiring", headerName: "Company", flex: 1.2 },
+            { field: "position", headerName: "Position", flex: 1.2 },
+            { field: "enterprise", headerName: "Enterprise", flex: 0.8 },
+            {
+                field: "dateSign", headerName: "Sign", flex: 0.8,
+                renderCell: (params) => (
+                    (params.row.dateSign)
+                    ? moment(params.row.dateSign.toString()).format('YYYY-MM-DD')
+                    : "Not Yet"
+                ),
+            },
             {
                 field: 'interview',
                 headerName: '',
@@ -75,10 +88,10 @@ const CandidateContract = () => {
     return (
         <div id='CandidateContract'>
             {
-                isCreate ? 
-                <ContractCreateForm interviewDetail={undefined} contractAgreement={contract} contractLaborSupply={undefined} setIsCreate={setIsCreate} />
-                : 
-                renderInterviewDetailList()
+                isView && contract ?
+                    <ContractView contractId={contract.id} setIsView={setIsView} />
+                    :
+                    renderInterviewDetailList()
             }
         </div>
     )

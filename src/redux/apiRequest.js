@@ -452,3 +452,15 @@ export const getAllInterview = async () => {
         return error
     }
 }
+
+// Contract
+
+export const getAllContract = async () => {
+    try {
+        const res = await axios.get("/contract/getAllContract");
+        console.log(res)
+        return res.data.data.responseList;
+    } catch (error) {
+        return error
+    }
+}

@@ -20,7 +20,7 @@ export const currencyMaskString = (num: Number) => {
 };
 
 export const currencyToNumber = (currency: string) => {
-    return parseInt(currency.replace(/\./g, ""), currency.length)
+    return parseInt(currency.replace(/\./g, ""))
 }
 
 

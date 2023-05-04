@@ -636,15 +636,27 @@ export interface ExperienceSpecialy {
     skills: SkillEntity[]
 }
 
-// export interface Contract {
-//     id: number;
-//     interviewDetailId: number;
-//     candidateId: number;
-//     enterpriseId: number;
-//     dateCreate: Date;
-//     candidateSign: Date;
-//     enterpriseSign: Date;
-//     completeDate: Date;
-//     salary: number;
-//     status: string;
-// }
+export interface Contract {
+    id: number;
+    dateCreated: Date;
+    candidateSignDate: Date;
+    enterpriseSignDate: Date;
+    completePaymentDate: Date;
+    salary: number;
+    creatorId: number;
+    enterpriseId: number;
+    candidateId: number;
+    interviewDetail: interviewDetailResponse;
+    status: string;
+    commissionFee: number;
+}
+
+export interface ContractCreate {
+    dateCreated: Date,
+    salary: number,
+    createId: number,
+    enterpriseId: number,
+    candidateId: number,
+    interviewDetailId: number,
+    commissionFee: number
+}

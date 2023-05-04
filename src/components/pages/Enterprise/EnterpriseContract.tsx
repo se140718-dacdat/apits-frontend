@@ -1,46 +1,64 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { ButtonGroup, Dropdown, Modal, ToggleButton } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import "./EnterpriseContract.css";
-import { ContractLarborSupplyResponse } from "../../../entity";
 import axios from "../../../api/axios";
-import ContractCreateForm from "../Employee/HR/ContractCreateForm";
+import { Contract } from "../../../entity";
+import ContractView from "../../modules/pagecomponents/common/ContractView";
+import "./EnterpriseContract.css";
+import moment from "moment";
 
 
 const EnterpriseContract = () => {
     const user = useSelector((state: any) => state.user.user.user);
-    const [contracts, setContracts] = useState<ContractLarborSupplyResponse[]>([]);
-    const [contract, setContract] = useState<ContractLarborSupplyResponse>();
-    const [isCreate, setIsCreate] = useState<boolean>(false);
+    const [contracts, setContracts] = useState<Contract[]>([]);
+    const [contract, setContract] = useState<Contract>();
+    const [isView, setIsView] = useState<boolean>(false);
+
 
     useEffect(() => {
         fetchData();
     }, []);
 
     async function fetchData() {
-        const res = await axios.get(`/contract/getContractLaborSupplyByEnterprise?id=${user?.id}`);
+        const res = await axios.get(`/contract/getContractByEnterpriseId?enterpriseId=${user?.id}`);
         const data = await res?.data.data;
         setContracts(data);
-        console.log(data)
     }
 
-    const handleShowCreate = () => { setIsCreate(true) };
+    const handleShowCreate = () => { setIsView(true) };
 
 
     const tableRenderHire = () => {
         const rows = contracts?.length > 0 ? contracts?.map((item) => ({
             id: item.id,
             contract: item,
-            name: item.name,
+            position: `${item.interviewDetail.interview.assign.recruitmentRequest.specialty.name} ${item.interviewDetail.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
+            candidate: item.interviewDetail.interview.assign.candidate.name,
+            paid: item.completePaymentDate,
+            dateSign: item.enterpriseSignDate
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "name", headerName: "Name", flex: 1.2 },
+            { field: "position", headerName: "Position", flex: 1.2 },
+            { field: "candidate", headerName: "Candidate", flex: 0.8 },
+            {
+                field: "dateSign", headerName: "Sign", flex: 0.8,
+                renderCell: (params) => (
+                    (params.row.dateSign)
+                    ? moment(params.row.dateSign.toString()).format('YYYY-MM-DD')
+                    : "Not Yet"
+                ),
+            },
+            {
+                field: "paid", headerName: "Payment", flex: 0.8,
+                renderCell: (params) => (
+                    (params.row.dateSign)
+                    ? "Paid"
+                    : "Not Yet"
+                ),
+            },
             {
                 field: 'interview',
                 headerName: '',
@@ -79,8 +97,8 @@ const EnterpriseContract = () => {
     return (
         <div id='EnterpriseContract'>
             {
-                isCreate ?
-                    <ContractCreateForm interviewDetail={undefined} contractAgreement={undefined} contractLaborSupply={contract} setIsCreate={setIsCreate} />
+                isView && contract ?
+                    <ContractView contractId={contract.id} setIsView={setIsView}/>
                     :
                     renderInterviewDetailList()
             }

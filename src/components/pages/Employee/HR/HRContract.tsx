@@ -6,65 +6,66 @@ import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "../../../../api/axios";
-import { ContractAgreementResponse, ContractLarborSupplyResponse, interviewDetailResponse } from "../../../../entity";
-import ContractCreateForm from "./ContractCreateForm";
+import { Contract, interviewDetailResponse } from "../../../../entity";
+import ContractView from "../../../modules/pagecomponents/common/ContractView";
+import ContractCreatePage from "./ContractCreate";
 import "./HRContract.css";
 
 const types = [
     "CREATE",
-    "CANDIDATE",
-    "ENTERPRISE"
+    "PROCESSING",
+    "DONE"
 ]
 
 
 const HRContract = () => {
     const user = useSelector((state: any) => state.user.user.user);
+    const [contracts, setContracts] = useState<Contract[]>([]);
+    const [contract, setContract] = useState<Contract>();
     const [interviewsDetail, setInterviewsDetail] = useState<interviewDetailResponse[]>([]);
-    const [entepriseContracts, setEnterpriseContracts] = useState<ContractLarborSupplyResponse[]>([]);
-    const [entepriseContract, setEnterpriseContract] = useState<ContractLarborSupplyResponse>();
-    const [candidateContracts, setCandidateContracts] = useState<ContractAgreementResponse[]>([]);
-    const [candidateContract, setCandidateContract] = useState<ContractAgreementResponse>();
     const [interviewDetail, setInterviewDetail] = useState<interviewDetailResponse>();
     const [isCreate, setIsCreate] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isView, setIsView] = useState<boolean>(false);
     const [type, setType] = useState<string>(types[0]);
 
 
     useEffect(() => {
         fetchData();
-        fetchDataEnterpriseContract();
-        fetchDataCandidateContract();
-    }, [type, isCreate]);
+        console.log(contracts.filter((e) => e.status === "PROCESSING"))
+    }, [type, isCreate, isLoading]);
 
     async function fetchData() {
+        await axios.get("/contract/getAllContract").then((res) => {
+            const data = res.data;
+            if (data.status == "SUCCESS") {
+                setContracts(data.data.responseList);
+            }
+        })
         const res = await axios.get("/interview-detail/getAllInterviewDetail");
         const data = await res?.data.data;
         setInterviewsDetail(data.responseList.filter((e: interviewDetailResponse) => e.status !== "DONE"));
-    }
-
-    async function fetchDataEnterpriseContract() {
-        const res = await axios.get(`/contract/getContractLaborSupplyByEmployee?id=${user?.id}`);
-        const data = await res?.data.data;
-        setEnterpriseContracts(data);
-    }
-
-    async function fetchDataCandidateContract() {
-        const res = await axios.get(`/contract/getContractAgreementByEmployee?id=${user?.id}`);
-        const data = await res?.data.data;
-        setCandidateContracts(data);
+        setIsLoading(false)
     }
 
     const handleShowCreate = () => { setIsCreate(true) };
+    const handleShowView = () => { setIsView(true) };
 
+    const handlePaid = async (id: number) => {
+        await axios.put(`/contract/updateStatusDone?id=${id}`).then((res) => {
+            if(res.data.status === "SUCCESS") {
+                setIsLoading(true);
+            }
+        })
+    }
 
     const tableRenderCreate = () => {
-        console.log(interviewsDetail);
         const rows = interviewsDetail?.length > 0 ? interviewsDetail?.map((item) => ({
             id: item.id,
             interviewDetail: item,
             candidate: item.interview.assign.candidate.name,
             enterprise: item.interview.assign.recruitmentRequest.creator.name,
-            // position: `${item.interview.assign.recruitmentRequest.specialty.name} ${item.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
-            position: "`${item.interview.assign.recruitmentRequest.specialty.name} ${item.interview.assign.recruitmentRequest.experienceSpecialty.name}`",
+            position: `${item.interview.assign.recruitmentRequest.specialty.name} ${item.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
             candidatePhone: item.interview.assign.candidate.phone,
             enterprisePhone: item.interview.assign.recruitmentRequest.creator.phone,
         })) : [];
@@ -99,30 +100,51 @@ const HRContract = () => {
         )
     }
 
-    const tableRenderCandidate = () => {
-        const rows = candidateContracts?.length > 0 ? candidateContracts?.map((item) => ({
+    const tableRenderProcessing = () => {
+        const rows = contracts?.length > 0 ? contracts?.filter((e) => e.status === "PROCESSING").map((item) => ({
+            contract: item,
             id: item.id,
-            contract: item.id,
-            name: item.signatureEmployee
+            position: `${item.interviewDetail.interview.assign.recruitmentRequest.specialty.name} ${item.interviewDetail.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
+            candidate: item.interviewDetail.interview.assign.candidate.name,
+            candidatePhone: item.interviewDetail.interview.assign.candidate.phone,
+            enterprise: item.interviewDetail.interview.assign.recruitmentRequest.creator.name,
+            enterprisePhone: item.interviewDetail.interview.assign.recruitmentRequest.hrPhone
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "name", headerName: "Name", flex: 1.2 },
+            { field: "position", headerName: "Position", flex: 1.2 },
+            { field: "candidate", headerName: "Candidate", flex: 0.8 },
+            { field: "candidatePhone", headerName: "Candidate Phone", flex: 0.5 },
+            { field: "enterprise", headerName: "Enterprise", flex: 0.8 },
+            { field: "enterprisePhone", headerName: "Enterprise Phone", flex: 0.5 },
             {
-                field: 'interview',
+                field: 'detail',
                 headerName: '',
                 flex: 0.5,
                 width: 170,
                 renderCell: (params) => (
                     <Button variant="contained" color="warning" onClick={() => {
-                        handleShowCreate();
-                        setCandidateContract(params.row.interviewDetail)
+                        handleShowView();
+                        setContract(params.row.contract)
                     }}>
                         Detail
                     </Button>
                 ),
             },
+            {
+                field: 'paid',
+                headerName: '',
+                flex: 0.5,
+                width: 170,
+                renderCell: (params) => (
+                    <Button variant="contained" color="success" onClick={() => {
+                        handlePaid(params.row.id);
+                    }}>
+                        Paid
+                    </Button>
+                ),
+            }
         ];
         return (
             <DataGrid rows={rows}
@@ -132,25 +154,33 @@ const HRContract = () => {
         )
     }
 
-    const tableRenderEnterprsie = () => {
-        const rows = entepriseContracts?.length > 0 ? entepriseContracts?.map((item) => ({
-            id: item.id,
+    const tableRenderDone = () => {
+        const rows = contracts?.length > 0 ? contracts.filter((e) => e.status === "DONE")?.map((item) => ({
             contract: item,
-            name: item.name
+            id: item.id,
+            position: `${item.interviewDetail.interview.assign.recruitmentRequest.specialty.name} ${item.interviewDetail.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
+            candidate: item.interviewDetail.interview.assign.candidate.name,
+            candidatePhone: item.interviewDetail.interview.assign.candidate.phone,
+            enterprise: item.interviewDetail.interview.assign.recruitmentRequest.creator.name,
+            enterprisePhone: item.interviewDetail.interview.assign.recruitmentRequest.hrPhone
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "name", headerName: "name", flex: 1.2 },
+            { field: "position", headerName: "Position", flex: 1.2 },
+            { field: "candidate", headerName: "Candidate", flex: 0.8 },
+            { field: "candidatePhone", headerName: "Candidate Phone", flex: 0.5 },
+            { field: "enterprise", headerName: "Enterprise", flex: 0.8 },
+            { field: "enterprisePhone", headerName: "Enterprise Phone", flex: 0.5 },
             {
-                field: 'interview',
+                field: 'Detail',
                 headerName: '',
                 flex: 0.5,
                 width: 170,
                 renderCell: (params) => (
                     <Button variant="contained" color="warning" onClick={() => {
-                        handleShowCreate();
-                        setEnterpriseContract(params.row.interviewDetail)
+                        handleShowView();
+                        setContract(params.row.contract)
                     }}>
                         Detail
                     </Button>
@@ -197,8 +227,8 @@ const HRContract = () => {
                         type === types[0]
                             ? tableRenderCreate()
                             : type === types[1]
-                                ? tableRenderCandidate()
-                                : tableRenderEnterprsie()
+                                ? tableRenderProcessing()
+                                : tableRenderDone()
                     }
                 </div>
             </div>
@@ -210,9 +240,11 @@ const HRContract = () => {
         <div id='HRContract'>
             {
                 isCreate ?
-                    <ContractCreateForm interviewDetail={interviewDetail} contractAgreement={candidateContract} contractLaborSupply={entepriseContract} setIsCreate={setIsCreate} />
-                    :
-                    renderInterviewDetailList()
+                    <ContractCreatePage interviewDetail={interviewDetail} setIsCreate={setIsCreate} />
+                    : isView && contract ?
+                        <ContractView contractId={contract?.id} setIsView={setIsView} />
+                        :
+                        renderInterviewDetailList()
             }
         </div>
     )
