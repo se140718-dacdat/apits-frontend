@@ -19,7 +19,7 @@ const EnterpriseProfile: FC = () => {
     const user = useSelector((state: any) => state.user.user.user);
     const [showUpdate, setShowUpdate] = useState(false);
     const [avatar, setAvatar] = useState<string>(user?.image || "/images/avt-blank.png");
-    const [phone, setPhone] = useState<string>(user?.name || "Company phone");
+    const [phone, setPhone] = useState<string>(user?.phone || "Company phone");
     const [email, setEmail] = useState<string>(user?.email || "Email");
     const [scale, setScale] = useState<string>(user?.scale || "Scale");
     const [website, setWebsite] = useState<string>(user?.website || "Website");
