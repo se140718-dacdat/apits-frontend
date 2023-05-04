@@ -264,7 +264,7 @@ export const getAllEmployee = async () => {
 export const getAllEmployees = async () => {
     try {
         const res = await axios.get("/employee/getAllEmployees")
-        return res.data.data.responseList;
+        return res.data.data.responseList.filter((e) => e.position.name === "PROFESSOR");
     } catch (error) {
         return error
     }
@@ -303,8 +303,11 @@ export const updateEnterprise = async (id, request) => {
 
 export const createPost = async (params, navigate) => {
     try {
-        const res = await axios.post('/recruitmentRequest/create', params)
-        navigate("/enterprise-recruitment");
+        const res = await axios.post('/recruitmentRequest/create', params).then((res) => {
+            if(res.data.status === "SUCCESS") {
+                navigate(`/post-detail/${res.data.data.id}`);
+            }
+        })
         return res
     } catch (error) {
         return error

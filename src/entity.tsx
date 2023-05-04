@@ -654,7 +654,7 @@ export interface Contract {
 export interface ContractCreate {
     dateCreated: Date,
     salary: number,
-    createId: number,
+    creatorId: number,
     enterpriseId: number,
     candidateId: number,
     interviewDetailId: number,

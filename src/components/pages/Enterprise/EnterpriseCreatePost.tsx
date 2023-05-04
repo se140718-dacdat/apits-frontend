@@ -297,11 +297,6 @@ const EnterpriseCreatePost = () => {
                         <div className="content-left">
                             <h3>What skills would you like to see in your new hire?</h3>
                             <div className="input-block">
-                                <input type="text" placeholder="Desired areas of expertise (e.g., JavaScript, Ruby, etc.)"
-                                    className="input-text"
-                                    value={desired}
-                                    onChange={(e) => setDesired(e.target.value)}
-                                />
                                 <div className="skill-selected">
                                     {
                                         skills.map((skill: SkillSelect, key: number) =>

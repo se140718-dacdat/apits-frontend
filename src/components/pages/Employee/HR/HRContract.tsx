@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Popover } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "../../../../api/axios";
 import { Contract, interviewDetailResponse } from "../../../../entity";
@@ -51,9 +51,19 @@ const HRContract = () => {
     const handleShowCreate = () => { setIsCreate(true) };
     const handleShowView = () => { setIsView(true) };
 
+    const popover = (description: string) => {
+        return (
+            <Popover id="popover-basic">
+                <Popover.Header as="h3">Description</Popover.Header>
+                <Popover.Body>
+                    {description}
+                </Popover.Body>
+            </Popover>)
+    }
+
     const handlePaid = async (id: number) => {
         await axios.put(`/contract/updateStatusDone?id=${id}`).then((res) => {
-            if(res.data.status === "SUCCESS") {
+            if (res.data.status === "SUCCESS") {
                 setIsLoading(true);
             }
         })
@@ -68,15 +78,24 @@ const HRContract = () => {
             position: `${item.interview.assign.recruitmentRequest.specialty.name} ${item.interview.assign.recruitmentRequest.experienceSpecialty.name}`,
             candidatePhone: item.interview.assign.candidate.phone,
             enterprisePhone: item.interview.assign.recruitmentRequest.creator.phone,
+            description: item.description,
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "position", headerName: "Position", flex: 0.5 },
+            { field: "position", headerName: "Position", flex: 0.8 },
             { field: "candidate", headerName: "Candidate", flex: 0.8 },
             { field: "candidatePhone", headerName: "Candidate Phone", flex: 0.5 },
-            { field: "enterprise", headerName: "Enterprise", flex: 0.8 },
+            { field: "enterprise", headerName: "Enterprise", flex: 0.5 },
             { field: "enterprisePhone", headerName: "Enterprise Phone", flex: 0.5 },
+            {
+                field: "description", headerName: "Description", flex: 0.5,
+                renderCell: (params) => (
+                    <OverlayTrigger trigger="click" placement="bottom" overlay={popover(params.row.description)}>
+                        <Button variant={"contained"}>Description</Button>
+                    </OverlayTrigger>
+                ),
+            },
             {
                 field: 'interview',
                 headerName: '',

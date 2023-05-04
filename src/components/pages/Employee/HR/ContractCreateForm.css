@@ -29,10 +29,22 @@
     background-color: var(--white-color);
 }
 
-#ContractpreviewForm .contract__type .btn-preview:hover {
+#ContractpreviewForm .contract__type .btn-preview:hover,
+.btn-description {
     background-color: rgba(255, 158, 93, 0.466);
     color: var(--white-color);
     transition: 0.2s;
+}
+
+.btn-description {
+    outline: none;
+    border: none;
+    position: absolute;
+    right: 12%;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    color: var(--primary-color);
+    background-color: var(--white-color);
 }
 
 #ContractCreateForm .contract__type select {

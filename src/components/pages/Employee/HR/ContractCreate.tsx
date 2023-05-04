@@ -7,10 +7,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import axios from '../../../../api/axios';
 import { getCommissionPercent } from '../../../../handle';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface Props {
     interviewDetail: interviewDetailResponse | undefined;
-    setIsCreate: Dispatch<SetStateAction<boolean>>
+    setIsCreate: Dispatch<SetStateAction<boolean>>;
 }
 
 const ContractCreatePage: FC<Props> = ({ interviewDetail, setIsCreate }) => {
@@ -39,16 +40,18 @@ const ContractCreatePage: FC<Props> = ({ interviewDetail, setIsCreate }) => {
             const request: ContractCreate = {
                 dateCreated: now,
                 salary: salary ? currencyToNumber(salary) : 0,
-                createId: user?.id,
+                creatorId: user?.id,
                 enterpriseId: interviewDetail?.interview.assign.recruitmentRequest.creator.id,
                 candidateId: interviewDetail.interview.assign.candidate.id,
                 interviewDetailId: interviewDetail.id,
                 commissionFee: parseInt(getCommissionPercent(interviewDetail?.interview.assign.recruitmentRequest.experienceSpecialty.name).split("%")[0])
             }
+            console.log(request);
             await axios.post("/contract/createContract", request).then(async (res) => {
                 console.log(res)
                 if (res.data.status == 200) {
                     await axios.put(`/interview-detail/changeStatusDoneByInterviewId?id=${interviewDetail?.interview.id}`).then((res) => {
+                        console.log(res)
                         if (res.data.status == "SUCCESS") {
                             setIsCreate(false);
                         }
@@ -67,8 +70,23 @@ const ContractCreatePage: FC<Props> = ({ interviewDetail, setIsCreate }) => {
                     null
             }
             <div className="contract__type">
-                <label className="">Contract type:</label>
+                <label className="">Contract type: </label>
                 <div>CONTRACT OF LABOR SUPPLY</div>
+                <OverlayTrigger
+                    trigger="click"
+                    key={interviewDetail?.description}
+                    placement='bottom'
+                    overlay={
+                        <Popover id="popover-contained">
+                            <Popover.Header as="h3">Description</Popover.Header>
+                            <Popover.Body>
+                                {interviewDetail?.description}
+                            </Popover.Body>
+                        </Popover>
+                    }
+                >
+                    <Button className='btn-description'>Description</Button>
+                </OverlayTrigger>
                 <button className="btn-preview" onClick={() => setIsPreview(!isPreview)}>{isPreview ? 'Edit' : 'Review'}</button>
             </div>
             {

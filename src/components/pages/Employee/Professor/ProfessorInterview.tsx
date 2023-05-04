@@ -17,7 +17,8 @@ const interviewType = [
   "CHECK",
   "TEST",
   "CHECK DONE",
-  "TEST DONE"
+  "TEST DONE",
+  "HIRE"
 ]
 
 const ProfessorInterview = () => {
@@ -26,6 +27,7 @@ const ProfessorInterview = () => {
   const [type, setType] = useState<string>(interviewType[0])
   const [interviewChecksPending, setInterviewChecksPending] = useState<InterviewResponse[]>([]);
   const [interviewChecksDone, setInterviewChecksDone] = useState<InterviewResponse[]>([]);
+  const [interviewHire, setInterviewHire] = useState<InterviewResponse[]>([]);
   const [interviewTestsPending, setInterviewTestsPending] = useState<InterviewResponse[]>([]);
   const [interviewTestsDone, setInterviewTestsDone] = useState<InterviewResponse[]>([]);
   const [showInterviewReport, setShowInterviewReport] = useState(false);
@@ -52,6 +54,7 @@ const ProfessorInterview = () => {
   useEffect(() => {
     fetchTestInterview();
     fetchCheckInterview();
+    fetchHireInterview();
   }, [candidate, type])
 
   async function fetchTestInterview() {
@@ -67,6 +70,14 @@ const ProfessorInterview = () => {
     setInterviewChecksPending(dataRes.filter((e: InterviewResponse) => e.status === "PENDING"));
     setInterviewChecksDone(dataRes.filter((e: InterviewResponse) => e.status !== "PENDING"));
   }
+
+  async function fetchHireInterview () {
+    const response = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
+    const dataRes = await response?.data.data;
+    setInterviewHire(dataRes);
+    console.log(dataRes)
+  }
+
 
 
   const handlePassCourse = async (candidateId: number, courseId: number, id: number) => {
@@ -304,6 +315,39 @@ const ProfessorInterview = () => {
     )
   }
 
+  const tableRenderHire = () => {
+    const rows = interviewHire?.length > 0 ? interviewHire?.map((item) => ({
+      id: item.id,
+      candidateId: item.candidateId,
+      link: item.linkMeeting,
+      title: item.purpose,
+      date: item.date,
+      slot: item.slot,
+      status: item.status
+    })) : [];
+
+    const columns: GridColDef[] = [
+      { field: "id", headerName: "ID", flex: 0.2 },
+      { field: "title", headerName: "Title", flex: 1.2 },
+      {
+        field: 'link',
+        headerName: 'Link',
+        flex: 1.2,
+        renderCell: (params) => (
+          <a href={params.row.link}>{params.row.link}</a>
+        )
+      },
+      { field: "date", headerName: "Date", flex: 0.8 },
+      { field: "slot", headerName: "Slot", flex: 0.8 },
+    ];
+    return (
+      <DataGrid rows={rows}
+        columns={columns}
+        autoPageSize
+        pagination />
+    )
+  }
+
   const handleReport = () => {
     setReportStatus(true);
     checkedCourses.map((courseId) => {
@@ -367,7 +411,10 @@ const ProfessorInterview = () => {
               ? tableRenderTest()
               : (type === interviewType[2])
                 ? tableRenderCheckDone()
-                : tableRenderTestDone()
+                : (type === interviewType[3])
+                  ?
+                  tableRenderTestDone()
+                  : tableRenderHire()
         }
       </div>
       <Modal id="InterviewCreateModal" show={showInterviewReport} onHide={handleCloseInterviewReport}>

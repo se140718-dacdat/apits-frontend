@@ -75,7 +75,7 @@ const ViewCandidateDetail = () => {
                                         </div>
                                         <div className="work-status">
                                             <FontAwesomeIcon icon={faCakeCandles} className="icon m-0" />
-                                            <span>{formatDateMonthYear(`${candidate?.dob}`.slice(0, 10))}</span>
+                                            <span>{candidate?.dob && formatDateMonthYear(`${candidate?.dob}`.slice(0, 10))}</span>
                                         </div>
                                     </div>
                                     <div className="col-half m-0">
