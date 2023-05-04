@@ -49,7 +49,7 @@ const ContractCreatePage: FC<Props> = ({ interviewDetail, setIsCreate }) => {
             console.log(request);
             await axios.post("/contract/createContract", request).then(async (res) => {
                 console.log(res)
-                if (res.data.status == 200) {
+                if (res.data.message == "SUCCESS") {
                     await axios.put(`/interview-detail/changeStatusDoneByInterviewId?id=${interviewDetail?.interview.id}`).then((res) => {
                         console.log(res)
                         if (res.data.status == "SUCCESS") {
