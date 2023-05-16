@@ -150,9 +150,10 @@ export const getListCandidateAssign = async (params) => {
 export const addSpecialtiesCandidate = async (id, specialties) => {
     try {
         specialties.forEach(async specialty => {
-            const res = await axios.post("/canspec/create", {
+            console.log(specialty.id)
+            const res = await axios.post("/candidate-level/create", {
                 candidateId: id,
-                specialId: specialty.id
+                specialtyId: specialty.id
             })
             console.log(res)
         });
@@ -194,7 +195,7 @@ export const getSpecialties = async () => {
 
 export const getSpecialtiesDetail = async () => {
     try {
-        const res = await axios.get("/special-skill/getAllSpecDetails")
+        const res = await axios.get("/specialty/getAll")
         return res.data.data;
     } catch (error) {
         return error

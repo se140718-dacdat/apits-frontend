@@ -77,14 +77,14 @@ const EmployeeList = () => {
         await axios.post("/account/createEmployee", request).then(async (res) => {
             const message = res.data.message;
             if (message === "Create employee successfully") {
-                const id = res.data.data.employee.id;
+                // const id = res.data.data.employee.id;
                 fetchData();
                 handleCloseCreate();
                 setMessage(message);
                 setMessageStatus("green");
-                if(request.positionName === "PROFESSOR") {
-                    await axios.get(`/employee-specialty/create?employeeId=${id}&specialtyId=${specialty?.id}`);
-                }
+                // if(request.positionName === "PROFESSOR") {
+                //     await axios.get(`/employee-specialty/create?employeeId=${id}&specialtyId=${specialty?.id}`);
+                // }
             }
         })
     }
@@ -244,7 +244,7 @@ const EmployeeList = () => {
                                 }
                             </Dropdown.Menu>
                         </Dropdown>
-                        {
+                        {/* {
                             position?.name === "PROFESSOR"
                                 ? <Dropdown className='mt-24'>
                                     <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
@@ -261,7 +261,7 @@ const EmployeeList = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                                 : null
-                        }
+                        } */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

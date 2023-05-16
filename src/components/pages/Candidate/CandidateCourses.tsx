@@ -4,28 +4,29 @@ import { useEffect, useState } from 'react';
 import { Button, Dropdown, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import axios from '../../../api/axios';
-import { SpecialtyExpDetail, SpecialtyExpResponse, SpecialtyResponse } from '../../../entity';
+import { SpecialtyExpDetail, SpecialtyResponse } from '../../../entity';
 import { CourseEntity, SkillEntity, SpecialtyEntity, Status } from '../../../model';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import "./CandidateCourse.css";
 import { ExperienceSpecialy } from '../../../entity';
 import { useNavigate } from 'react-router-dom';
+import { CandidateCurrentSpecialty, Course, Experience, Skill } from '../../../Models';
 
 const CandidateCourse = () => {
     const user = useSelector((state: any) => state.user.user.user);
     const navigate = useNavigate();
 
-    const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
-    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpResponse>();
+    const [specialties, setSpecialties] = useState<CandidateCurrentSpecialty[]>([]);
+    const [specialtySelect, setSpecialtySelect] = useState<CandidateCurrentSpecialty>();
     const [showCourse, setShowCourse] = useState(false);
-    const [course, setCourse] = useState<CourseEntity>();
-    const [skill, setSkill] = useState<SkillEntity>();
+    const [course, setCourse] = useState<Course>();
+    const [skill, setSkill] = useState<Skill>();
     const [levelId, setLevelId] = useState<number>();
     const [showCertificate, setShowCertificate] = useState(false);
     const [certificate, setCertificate] = useState<string>();
     const [message, setMessage] = useState<string>('');
     const [messageStatus, setMessageStatus] = useState('');
-    const [currentExp, setCurrentExp] = useState<ExperienceSpecialy>();
+    const [currentExp, setCurrentExp] = useState<Experience>();
 
 
 
@@ -33,8 +34,7 @@ const CandidateCourse = () => {
     const handleShowCertificate = () => { setShowCertificate(true) };
 
     const handleCloseCourse = () => setShowCourse(false);
-    const handleShowCourse = (course: CourseEntity, skill: SkillEntity, levelId: number) => {
-        setLevelId(levelId);
+    const handleShowCourse = (course: Course, skill: Skill) => {
         setCourse(course);
         setSkill(skill);
         setShowCourse(true)
@@ -52,17 +52,18 @@ const CandidateCourse = () => {
     }, [specialtySelect])
 
     async function fetchData() {
-        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`).then(async (res) => {
-            const data = await res?.data.data.specialties;
+        await axios.get(`/candidate-level/getListCurrentExpCandidate?candidateId=${user?.id}`).then(async (res) => {
+            console.log(res)
+            const data = await res?.data.data;
             setSpecialties(data);
             setSpecialtySelect(data[0]);
         });
     }
 
     async function getSpecialtyDetail() {
-        await axios.get(`/canspec/getSESLCandidateDetail?candidateId=${user?.id}&specId=${specialtySelect?.specialtyId}`).then(async (res) => {
+        await axios.get(`/specialization/getDetailCandidateSpecialization?candidateId=${user?.id}&specialtyId=${specialtySelect?.id}`).then(async (res) => {
             const data = await res.data.data;
-            setCurrentExp(data?.experiences.find((e: SpecialtyExpDetail) => e.id === specialtySelect?.expId));
+            setCurrentExp(data?.experiences.find((e: Experience) => e.name === specialtySelect?.experience));
         });
     }
 
@@ -70,14 +71,12 @@ const CandidateCourse = () => {
     const handleStartCourse = async () => {
         const request = {
             candidateId: user?.id,
-            skillId: skill?.id,
-            levelId: levelId,
             courseId: course?.id,
             certificate: ""
         }
-        await axios.post('/status-candidate-course/create', request).then(function (res) {
-            console.log(res.data.message)
-            if (res.data.message == "SUCCESS") {
+        await axios.post('/candidate-course/create', request).then(function (res) {
+            console.log(res)
+            if (res.data.status == "SUCCESS") {
                 setMessage("Started!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
@@ -94,7 +93,7 @@ const CandidateCourse = () => {
             courseId: course?.id,
             certificate: certificate
         }
-        await axios.put('/status-candidate-course/updateCertificate', request).then(function (res) {
+        await axios.put('/candidate-course/update', request).then(function (res) {
             console.log(res.data.message)
             if (res.data.message == "SUCCESS") {
                 setMessage("Submit successfuly!");
@@ -132,8 +131,8 @@ const CandidateCourse = () => {
         let status = "";
         let deadlineStr = "";
 
-        const startAt = new Date(`${course?.startAt}`);
-        const deadline = new Date(startAt.getTime() + 30 * 24 * 60 * 60 * 1000);
+        // const startAt = new Date(`${course?.startAt}`);
+        // const deadline = new Date(startAt.getTime() + 30 * 24 * 60 * 60 * 1000);
         const now = new Date();
 
         switch (course?.status) {
@@ -154,13 +153,13 @@ const CandidateCourse = () => {
                 break;
         }
 
-        if (now > deadline) {
-            deadlineStr = "Expired";
-        } else {
-            const diffTime = deadline.getTime() - now.getTime();
-            const diffDays = Math.ceil(diffTime / (24 * 60 * 60 * 1000));
-            deadlineStr = `${diffDays} day(s) left`;
-        }
+        // if (now > deadline) {
+        //     deadlineStr = "Expired";
+        // } else {
+        //     const diffTime = deadline.getTime() - now.getTime();
+        //     const diffDays = Math.ceil(diffTime / (24 * 60 * 60 * 1000));
+        //     deadlineStr = `${diffDays} day(s) left`;
+        // }
 
 
         return (
@@ -178,12 +177,12 @@ const CandidateCourse = () => {
                         <div className="course-row course-heading">
                             <div className="col1">Link</div>
                             <div className="col2">Status</div>
-                            {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">Deadline</div>}
+                            {/* {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">Deadline</div>} */}
                         </div>
                         <div className="course-row course-data">
                             <div className="col1 hover"><a href={course?.link}>{course?.link}</a></div>
                             <div className="col2" style={{ fontWeight: "bold", color: status }}>{course?.status}</div>
-                            {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">{deadlineStr}</div>}
+                            {/* {deadlineStr && course?.startAt.toString() !== "NOT YET" && <div className="col3">{deadlineStr}</div>} */}
                         </div>
                     </div>
                 </Modal.Body>
@@ -263,7 +262,7 @@ const CandidateCourse = () => {
                     </div>
                     <Dropdown className="filter-dropdown ml-8">
                         <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-                            <span>{specialtySelect?.specialtyName}</span>
+                            <span>{specialtySelect?.name}</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu className='filter-menu'>
                             {
@@ -273,7 +272,7 @@ const CandidateCourse = () => {
                                             <Dropdown.Item className='filter-item' onClick={() => {
                                                 setSpecialtySelect(specialty);
                                                 getSpecialtyDetail();
-                                            }}>{specialty.specialtyName}</Dropdown.Item>
+                                            }}>{specialty.name}</Dropdown.Item>
                                         </div>
                                     )
                                 })
@@ -296,13 +295,13 @@ const CandidateCourse = () => {
                                                     <div
                                                         className="course"
                                                         key={course.id}
-                                                        onClick={() => handleShowCourse(course, skill, level.id)}
+                                                        onClick={() => handleShowCourse(course, skill)}
                                                     >
                                                         <img src={skill.image} alt="" className="skill-icon" />
                                                         <div className="course-description">
                                                             <span className="course-name">{course.name}</span>
                                                             <div className='level'>
-                                                                <span>{level.name}</span>
+                                                                <span>Level {level.level}</span>
                                                             </div>
                                                             <span className='course-status' style={{ marginRight: "12px", color: getStatusColor(course.status) }}>{course.status}</span>
                                                         </div>

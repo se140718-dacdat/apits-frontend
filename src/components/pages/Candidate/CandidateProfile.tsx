@@ -11,12 +11,12 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { formatDateMonthYear, getCVName } from '../../../convert';
-import { SpecialtyExpResponse } from '../../../entity';
 import { CandidateSkill, PersonalExperience } from '../../../model';
 import "./CandidateProfile.css";
 import moment from 'moment';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import { openNewTab } from '../../../handle';
+import { CandidateCurrentSpecialty } from '../../../Models';
 
 
 export const CandidateProfile: FC = () => {
@@ -27,8 +27,8 @@ export const CandidateProfile: FC = () => {
 
     const [showExperience, setShowExperience] = useState(false);
     const [showCertificate, setShowCertificate] = useState(false);
-    const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
-    const [specialty, setSpecialty] = useState<SpecialtyExpResponse>();
+    const [specialties, setSpecialties] = useState<CandidateCurrentSpecialty[]>([]);
+    const [specialty, setSpecialty] = useState<CandidateCurrentSpecialty>();
     const [skills, setSkills] = useState<CandidateSkill[]>([]);
     const [from, setFrom] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [to, setTo] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
@@ -49,14 +49,15 @@ export const CandidateProfile: FC = () => {
         fetchData();
     }, [])
 
-    useEffect(() => {
-        getSkills();
-    }, [specialty])
+    // useEffect(() => {
+    //     getSkills();
+    // }, [specialty])
 
     async function fetchData() {
-        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${user?.id}`).then(async (res) => {
-            const data = await res?.data.data.specialties;
+        await axios.get(`/candidate-level/getListCurrentExpCandidate?candidateId=${user?.id}`).then(async (res) => {
+            const data = await res?.data.data;
             setSpecialties(data);
+            console.log(data)
             setSpecialty(data[0]);
         });
         await axios.get(`/candidate/getAllPersonalExperience?candidateId=${user?.id}`).then(async (res) => {
@@ -70,15 +71,15 @@ export const CandidateProfile: FC = () => {
         openNewTab(url);
     };
 
-    async function getSkills() {
-        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${user?.id}&specialtyId=${specialty?.specialtyId}`);
-        setSkills(response.data.data);
-    }
+    // async function getSkills() {
+    //     const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${user?.id}&specialtyId=${specialty?.specialtyId}`);
+    //     setSkills(response.data.data);
+    // }
 
     const handleCloseExperience = () => setShowExperience(false);
     const handleShowExperience = () => setShowExperience(true);
 
-    const handleSelect = (e: SpecialtyExpResponse) => {
+    const handleSelect = (e: CandidateCurrentSpecialty) => {
         setSpecialty(e);
     }
 
@@ -186,10 +187,9 @@ export const CandidateProfile: FC = () => {
                 <div className="right">
                     <div className="profile-input">
                         <div className="profile-header flex-space-between">
-                            <div className="profile-header-name">Specialty</div>
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    <span className="category-name">{specialty?.specialtyName}   <strong>{specialty?.expName}</strong></span>
+                                    <span className="category-name">{specialty?.name}   <strong>{specialty?.experience}</strong></span>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
@@ -197,16 +197,17 @@ export const CandidateProfile: FC = () => {
                                         specialties.map((specialty, index) => {
                                             return (
                                                 <div key={index}>
-                                                    <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.specialtyName}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.expName}</strong></Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.name}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.experience}</strong></Dropdown.Item>
                                                 </div>
                                             )
                                         })
                                     }
                                 </Dropdown.Menu>
                             </Dropdown>
+                            <div className="profile-header-name">{specialty?.status}</div>
                         </div>
                         <div className="profile-body verification">
-                            {
+                            {/* {
                                 skills?.map((skill) => {
                                     return (
                                         <div className="item" key={skill.id}>
@@ -216,7 +217,7 @@ export const CandidateProfile: FC = () => {
                                         </div>
                                     )
                                 })
-                            }
+                            } */}
                         </div>
                     </div>
                     <div className="profile-input">

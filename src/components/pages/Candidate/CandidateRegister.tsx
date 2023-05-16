@@ -12,9 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
-import { CandidateUpdate, SpecialtyEntity, genderList } from '../../../model';
-import { getSpecialtiesDetail, updateCandidate } from '../../../redux/apiRequest';
+import { CandidateUpdate, genderList } from '../../../model';
+import { getSpecialties, getSpecialtiesDetail, updateCandidate } from '../../../redux/apiRequest';
 import "./CandidateRegister.css";
+import { Specialty } from '../../../Models';
 
 
 const storage = getStorage();
@@ -35,10 +36,10 @@ const CandidateRegister = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [progress, setProgress] = useState<string>("50%");
-    const [selectSpecialties, setSelectSpecialties] = useState<SpecialtyEntity[]>([]);
-    const [userSpecialties, setUserSpecialties] = useState<SpecialtyEntity[]>([]);
+    const [selectSpecialties, setSelectSpecialties] = useState<Specialty[]>([]);
+    const [userSpecialties, setUserSpecialties] = useState<Specialty[]>([]);
     const [cvName, setCvName] = useState<string>(user?.cv);
-    const [specialties, setSpecialties] = useState<SpecialtyEntity[]>([]);
+    const [specialties, setSpecialties] = useState<Specialty[]>([]);
 
     const handleSelect = (e: string) => {
         setGender(e);
@@ -60,9 +61,9 @@ const CandidateRegister = () => {
         fetchData1();
     }, [cv])
 
-    const fetchData = async (): Promise<SpecialtyEntity[]> => {
-        const response = await axios.get<{ data: { specials: SpecialtyEntity[] } }>(`/canspec/getListSpecsWithCan/${user?.id}`);
-        const data = response?.data?.data?.specials;
+    const fetchData = async (): Promise<Specialty[]> => {
+        const response = await axios.get<{ data: Specialty[] }>(`/candidate-level/getListSpecialtyByCandidate?candidateId=${user?.id}`);
+        const data = response?.data?.data;
         if (data) {
             setUserSpecialties(data);
         }
@@ -80,13 +81,13 @@ const CandidateRegister = () => {
 
     }
 
-    const handleAddSpecialty = (specialty: SpecialtyEntity) => {
+    const handleAddSpecialty = (specialty: Specialty) => {
         if (!selectSpecialties.some((s) => s.id === specialty.id)) {
             setSelectSpecialties((prevSpecialties) => [...prevSpecialties, specialty]);
         }
     }
 
-    const handleRemoveSpecialty = (specialty: SpecialtyEntity) => {
+    const handleRemoveSpecialty = (specialty: Specialty) => {
         if (selectSpecialties.includes(specialty)) {
             setSelectSpecialties((prevSpecialties) => prevSpecialties.filter((e) => e.id !== specialty.id));
             console.log(selectSpecialties)
@@ -290,14 +291,14 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        userSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
+                                        userSpecialties?.map((specialty: Specialty, key: number) =>
                                             <button key={key} className="btn-item item-plus">
                                                 <span>{specialty.name}</span>
                                             </button>
                                         )
                                     }
                                     {
-                                        selectSpecialties?.map((specialty: SpecialtyEntity, key: number) =>
+                                        selectSpecialties?.map((specialty: Specialty, key: number) =>
                                             <button key={key} className="btn-item item-plus" onClick={() => handleRemoveSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faXmark} />
                                                 <span>{specialty.name}</span>
@@ -312,8 +313,8 @@ const CandidateRegister = () => {
                             <div className="skill-items" style={{ marginLeft: "-10px" }}>
                                 <div className="btn-items">
                                     {
-                                        specialties?.filter((e: SpecialtyEntity) => !userSpecialties.some(a => a.id === e.id)).map((specialty: SpecialtyEntity, key: number) =>
-                                            <button key={key} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
+                                        specialties?.filter((e) => !userSpecialties.some(a => a.id === e.id)).map((specialty) =>
+                                            <button key={specialty.id} className="btn-item item-plus" onClick={() => handleAddSpecialty(specialty)}>
                                                 <FontAwesomeIcon icon={faPlus} />
                                                 <span>{specialty?.name}</span>
                                             </button>
