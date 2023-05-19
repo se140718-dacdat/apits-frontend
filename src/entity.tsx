@@ -89,22 +89,23 @@ export interface PostEntity {
     hrName: string,
     hrPhone: string,
     hrEmail: string,
+    skillId: 0,
+    levelId: 0,
     enterpriseId: number,
-    skillIds: SkillRequire[],
+    skillLevelRequests: SkillRequire[],
     specialtyId: number;
     experienceId: number;
 }
 
 export interface SkillRequire {
     skillId: number,
-    levelId: number
+    levelName: number
 }
 
 export interface SkillSelect {
     skillId: number;
     skillName: string;
-    levelId: number;
-    levelName: string;
+    levelName: number;
 }
 
 export interface SkillShow {

@@ -10,12 +10,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExperienceSpecialy, LevelShow, PostEntity, SkillRequire, SkillSelect, SkillShow, SpecialtyExpDetail } from "../../../entity";
 import { LevelEntity, SkillEntity, SpecialtyEntity } from "../../../model";
-import { createPost } from "../../../redux/apiRequest";
+import { createPost, getAllSpecialtyExperience, getAllSpecialtyWithoutExperience } from "../../../redux/apiRequest";
 import "./EnterpriseCreatePost.css";
 import "./SkillItems.css";
 import axios from "../../../api/axios";
 import { currencyMask, currencyMaskString } from "../../../mask";
 import MessageBox from "../../modules/pagecomponents/Popup/MessageBox/MessageBox";
+import { ExperienceOnly, Level, Skill, SpecialtyExperience, SpecialtyWithoutExperience } from "../../../Models";
 
 
 const EnterpriseCreatePost = () => {
@@ -26,10 +27,10 @@ const EnterpriseCreatePost = () => {
 
     const [etpProcess, setEtpProcess] = useState("specialty");
     const [exprid, setExprid] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
-    const [desired, setDesired] = useState<string>('');
-    const [specialties, setSpecialties] = useState<SpecialtyExpDetail[]>([]);
-    const [specialty, setSpecialty] = useState<SpecialtyExpDetail>();
-    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExpDetail>();
+    const [specialties, setSpecialties] = useState<SpecialtyExperience[]>([]);
+    const [specialtiesChoose, setSpecialtiesChoose] = useState<SpecialtyWithoutExperience>();
+    const [specialty, setSpecialty] = useState<SpecialtyExperience>();
+    const [specialtySelect, setSpecialtySelect] = useState<SpecialtyExperience>();
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [requirements, setRequiments] = useState<string>('');
@@ -39,7 +40,7 @@ const EnterpriseCreatePost = () => {
     const [skills, setSkills] = useState<SkillSelect[]>([]);
     const [skillsShow, setSkillsShow] = useState<SkillShow[]>([]);
     const [quantity, setQuantity] = useState<number>(0);
-    const [experienceSelect, setExperienceSelect] = useState<ExperienceSpecialy>();
+    const [experienceSelect, setExperienceSelect] = useState<ExperienceOnly>();
     const [experience, setExperience] = useState<string>('');
     const [workLocation, setWorkLocation] = useState<string>('');
     const [hrName, setHrName] = useState<string>('');
@@ -53,17 +54,16 @@ const EnterpriseCreatePost = () => {
     }, [])
 
     useEffect(() => {
-        getSkills();
+        getSpecialtyChoose();
     }, [specialty])
 
 
-    const handleSelectSkill = (skill: SkillShow, level: LevelShow) => {
+    const handleSelectSkill = (skill: Skill, level: Level) => {
         if (!skills.some(skillSelect => skillSelect.skillId === skill.id)) {
             const skillSelect: SkillSelect = {
                 skillId: skill.id,
                 skillName: skill.name,
-                levelId: level.id,
-                levelName: level.name
+                levelName: level.level
             }
             setSkills((prevSkills) => [...prevSkills, skillSelect]);
         } else {
@@ -72,8 +72,7 @@ const EnterpriseCreatePost = () => {
                 const updatedSkills = [...skills];
                 updatedSkills[index] = {
                     ...updatedSkills[index],
-                    levelId: level.id,
-                    levelName: level.name
+                    levelName: level.level
                 };
                 setSkills(updatedSkills);
             }
@@ -86,19 +85,11 @@ const EnterpriseCreatePost = () => {
         }
     }
     const fetchData = async () => {
-        await axios.get("/special-skill/getListSESL").then((res) => {
-            const data = res.data.data;
-            setSpecialties(data);
-            setSpecialtySelect(data[0]);
-            setExperienceSelect(data[0].experiences[0])
-        })
+        setSpecialties(await getAllSpecialtyExperience())
     }
 
-    const getSkills = async () => {
-        await axios.get(`/special-skill/getSkillLevelBySpecialId?specialId=${specialty?.id}`).then((res) => {
-            const data = res.data.data;
-            setSkillsShow(data);
-        })
+    const getSpecialtyChoose = async () => {
+        setSpecialtiesChoose(await getAllSpecialtyWithoutExperience(specialty?.id));
     }
 
 
@@ -109,9 +100,9 @@ const EnterpriseCreatePost = () => {
 
 
     const handleClick = () => {
-        const skillList: SkillRequire[] = skills.map(({ skillId, levelId }) => ({
+        const skillList: SkillRequire[] = skills.map(({ skillId, levelName }) => ({
             skillId,
-            levelId,
+            levelName,
         }));
         if (specialtySelect !== undefined) {
             const newPost: PostEntity = {
@@ -130,7 +121,9 @@ const EnterpriseCreatePost = () => {
                 hrEmail: hrEmail,
                 hrPhone: hrPhone,
                 enterpriseId: user?.id,
-                skillIds: skillList,
+                skillId: 0,
+                levelId: 0,
+                skillLevelRequests: skillList,
                 specialtyId: specialtySelect !== undefined ? specialtySelect?.id : 0,
                 experienceId: experienceSelect !== undefined ? experienceSelect?.id : 0,
             }
@@ -164,7 +157,9 @@ const EnterpriseCreatePost = () => {
                                 })
                             }
                             <div className="bot-button">
-                                <button className="btn con-btn" onClick={() => { setEtpProcess('salary') }}>Get Started</button>
+                                <button className="btn con-btn" onClick={() => { setEtpProcess('salary');
+                                setSpecialty(specialties[1])
+                            }}>Get Started</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -230,8 +225,7 @@ const EnterpriseCreatePost = () => {
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                     <a href="#" onClick={() => setEtpProcess('specialty')}>Back</a>
                                 </div>
-                                <button className="btn con-btn" onClick={() => (salary === "") ? setMessage("Salary is empty") : setEtpProcess("title") }>Next</button>
-                                {/* setEtpProcess('title'); */}
+                                <button className="btn con-btn" onClick={() => (salary === "") ? setMessage("Salary is empty") : setEtpProcess("title")}>Next</button>
                             </div>
                         </div>
                         <div className="content-right">
@@ -280,7 +274,7 @@ const EnterpriseCreatePost = () => {
                                     <a href="#" onClick={() => { setEtpProcess('title') }}>Back</a>
                                 </div>
                                 <button className="btn con-btn" onClick={() => {
-                                    getSkills();
+                                    getSpecialtyChoose();
                                     setEtpProcess('skills')
                                 }}>Next</button>
                             </div>
@@ -301,7 +295,7 @@ const EnterpriseCreatePost = () => {
                                     {
                                         skills.map((skill: SkillSelect, key: number) =>
                                             <button key={key} className="btn-item item-minus" onClick={() => handleRemoveSkill(skill)}>
-                                                <span>{skill.skillName}</span>
+                                                <span>{skill.skillName} level {skill.levelName}</span>
                                                 <FontAwesomeIcon icon={faClose} />
                                             </button>
                                         )
@@ -324,7 +318,7 @@ const EnterpriseCreatePost = () => {
                             <div className="skill-items">
                                 <div className="btn-items">
                                     {
-                                        skillsShow.map((skill, index) => {
+                                        specialtiesChoose !== null && specialtiesChoose?.skills.map((skill, index) => {
 
                                             return (
                                                 <div style={{ display: "inline-block" }} key={index}>
@@ -336,7 +330,7 @@ const EnterpriseCreatePost = () => {
                                                             {
                                                                 skill.levels.map((level, index) => {
                                                                     return (
-                                                                        <Dropdown.Item onClick={() => handleSelectSkill(skill, level)} key={index}>{level.name}</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => handleSelectSkill(skill, level)} key={index}>{level.level}</Dropdown.Item>
                                                                     )
                                                                 })
                                                             }

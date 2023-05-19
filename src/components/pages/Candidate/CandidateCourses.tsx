@@ -93,9 +93,9 @@ const CandidateCourse = () => {
             courseId: course?.id,
             certificate: certificate
         }
-        await axios.put('/candidate-course/update', request).then(function (res) {
-            console.log(res.data.message)
-            if (res.data.message == "SUCCESS") {
+        await axios.put('/candidate-course/updateCertificate', request).then(function (res) {
+            console.log(res)
+            if (res.data.status == "SUCCESS") {
                 setMessage("Submit successfuly!");
                 setMessageStatus("green");
                 if (specialtySelect !== undefined) {
@@ -120,6 +120,9 @@ const CandidateCourse = () => {
                 return status;
             case "EXPIRED":
                 status = Status.Expired;
+                return status;
+            case "INTERVIEW":
+                status = Status.Studying;
                 return status;
             default:
                 status = Status.NotStarted;
@@ -147,6 +150,9 @@ const CandidateCourse = () => {
                 break;
             case "EXPIRED":
                 status = Status.Expired;
+                break;
+            case "INTERVIEW":
+                status = Status.Studying;
                 break;
             default:
                 status = Status.NotStarted;
@@ -217,6 +223,7 @@ const CandidateCourse = () => {
                         </Button>
                     )
             case "PROCESSING":
+            case "INTERVIEW":
                 return (
                     <Button variant="primary" onClick={() => {
                         navigate("/candidate-interview");

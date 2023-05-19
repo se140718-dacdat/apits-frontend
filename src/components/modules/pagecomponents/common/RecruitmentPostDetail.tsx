@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import { currencyMaskString } from '../../../../mask';
 import { getPostByPostId } from '../../../../redux/apiRequest';
@@ -15,6 +14,7 @@ import ViewAssign from '../../../pages/Enterprise/ViewAssign';
 import CandidateAssign from './CandidateAssign';
 import "./Filter.css";
 import "./RecruitmentPostDetail.css";
+import { PostResponse } from '../../../../Models';
 
 const RecruitmentPostDetail = () => {
     const { id } = useParams();
@@ -192,7 +192,7 @@ const RecruitmentPostDetail = () => {
                                 <p className='item-name'>Specialty</p>
                                 <div className="item-list">
                                     <div className="item">
-                                        {post?.specialty.name} <strong>{post?.experienceSpecialty.name}</strong>
+                                        {post?.specialtyExperience.specialty.name} <strong>{post?.specialtyExperience.experience.name}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@ const RecruitmentPostDetail = () => {
                                     <p className='item-name'>Specialty:</p>
                                     <div className="modal-list">
                                         <div className="item">
-                                            {post?.specialty.name}
+                                            {post?.specialtyExperience.specialty.name}
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@ const RecruitmentPostDetail = () => {
                                     <p className='item-name'>Experience:</p>
                                     <div className="modal-list">
                                         <div className="item">
-                                            {post?.experienceSpecialty.name}
+                                            {post?.specialtyExperience.experience.name}
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@ const RecruitmentPostDetail = () => {
                                             </div> */}
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {
-                                                    <ViewAssign specialtyId={post?.specialty.id} />
+                                                    <ViewAssign specialtyId={post?.specialtyExperience.specialty.id} />
                                                 }
                                             </div>
                                         </div>

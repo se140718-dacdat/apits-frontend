@@ -17,6 +17,7 @@ import { Button as ButtonBootsrap } from 'react-bootstrap';
 import MessageBox from "../Popup/MessageBox/MessageBox";
 import axios from "../../../../api/axios";
 import moment from "moment";
+import { CourseProcessing, InterviewCheck, InterviewTest, Waiting } from "../../../../Models";
 
 
 interface Props {
@@ -29,8 +30,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
 
   const user = useSelector((state: any) => state.user.user.user);
   const [assigns, setAssigns] = useState<ApprovedEntity[]>([]);
-  const [newUsers, setNewUsers] = useState<NewUserInterview[]>([]);
-  const [candidates, setCandidates] = useState<CandidateCourseProcessing[]>([]);
+  const [newUsers, setNewUsers] = useState<Waiting[]>([]);
+  const [candidates, setCandidates] = useState<CourseProcessing[]>([]);
   const [showInterviewCreate, setShowInterviewCreate] = useState(false);
   const [showInterviewEdit, setShowInterviewEdit] = useState(false);
   const [title, setTitle] = useState<string>('');
@@ -39,12 +40,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [slot, setSlot] = useState<string>(slots[0]);
   const [participantA, setParticipantA] = useState<string>('');
   const [participantB, setParticipantB] = useState<string>('');
-  const [course, setCourse] = useState<string>('');
-  const [participantAId, setParticipantAId] = useState<number>();
-  const [participantBId, setParticipantBId] = useState<number>();
-  const [courseId, setCourseId] = useState<number>();
-  const [specialtyId, setSpecialtyId] = useState<number>();
-  const [specialty, setSpecialty] = useState<string>();
   const [assignId, setAssignId] = useState<number>();
   const [isPopupInterviewer, setIsPopupInterviewer] = useState(false);
   const [employees, setEmployees] = useState<Professor[]>([]);
@@ -58,6 +53,9 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [interviews, setInterviews] = useState<InterviewResponse[]>([]);
   const [interview, setInterview] = useState<InterviewResponse>();
   const [slotExist, setSlotExist] = useState<string[]>([]);
+  const [evaluateTest, setEvaluateTest] = useState<Waiting>();
+  const [courseProcessing, setCourseProcessing] = useState<CourseProcessing>();
+
 
 
 
@@ -71,7 +69,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
 
   useEffect(() => {
     fetchData();
-    console.log(interviews)
+    console.log(newUsers)
   }, [type, status])
 
   const fetchData = async () => {
@@ -98,7 +96,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     }
   }
 
-  const createInterview = async (request: InterviewCreate) => {
+  const createInterview = async (request: any) => {
     try {
       await axios.post("/createInterview", request).then(async function (res) {
         setMessage(res.data.message);
@@ -129,7 +127,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
       slot: slot,
       linkMeeting: link,
     }
-    console.log(request)
     try {
       await axios.put(`/updateInterviewById?id=${interview?.id}`, request).then(async function (res) {
         setMessage(res.data.message);
@@ -169,9 +166,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
                   setParticipantA(params.row.candidateName);
-                  setParticipantAId(params.row.candidateId);
                   setParticipantB(params.row.enterpriseName);
-                  setParticipantBId(params.row.enterpriseId);
                   setAssignId(params.row.id);
                   handleShowInterviewCreate()
                 }}>
@@ -186,12 +181,11 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             pagination />)
         case "CHECK":
           const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
+            item: item,
             id: item.id,
-            candidateId: item.candidate.id,
             candidateName: item.candidate.name,
             phone: item.candidate.phone,
             courseName: item.course.name,
-            courseId: item.course.id
           })) : [];
 
           const columnsTest: GridColDef[] = [
@@ -206,10 +200,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               width: 170,
               renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
-                  setParticipantA(params.row.candidateName);
-                  setParticipantAId(params.row.candidateId);
-                  setCourse(params.row.courseName);
-                  setCourseId(params.row.courseId)
+                  setCourseProcessing(params.row.item)
                   handleShowInterviewCreate()
                 }}>
                   Create
@@ -225,12 +216,11 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
           )
         default:
           const rows = newUsers?.length > 0 ? newUsers?.map((item) => ({
+            item: item,
             id: item.id,
-            candidateId: item.candidate.id,
             candidateName: item.candidate.name,
             phone: item.candidate.phone,
             specialtyName: item.specialty.name,
-            specialtyId: item.specialty.id
           })) : [];
 
           const columns: GridColDef[] = [
@@ -245,11 +235,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               width: 170,
               renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
-                  setSpecialtyId(params.row.specialtyId);
-                  setParticipantA(params.row.candidateName);
-                  setParticipantAId(params.row.candidateId);
-                  setSpecialty(params.row.specialtyName);
-                  setTestId(params.row.id);
+                  setEvaluateTest(params.row.item);
                   handleShowInterviewCreate()
                 }}>
                   Create
@@ -417,60 +403,70 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
     }
   }
 
+  const handleCreateCheckInterview = async () => {
+    if (courseProcessing !== undefined && professor !== undefined) {
+      const request: InterviewCheck = {
+        title: title,
+        linkMeeting: link,
+        date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
+        slot: slot,
+        candidateId: courseProcessing.candidate.id,
+        courseId: courseProcessing.course.id,
+        professorId: professor.id
+      }
+      try {
+        await axios.post("/createCheckEvaluationSession", request).then(async function (res) {
+          setMessage(res.data.message);
+          setMessageStatus("green");
+          handleCloseInterviewCreate();
+          await axios.put(`/candidate-course/setStatusByInterview?id=${courseProcessing.id}`);
+          fetchData();
+        })
+      } catch (error) {
+        return error
+      }
+    }
+  }
+
+  const handleCreateTestInterview = async () => {
+    if (evaluateTest !== undefined && professor !== undefined) {
+      const request: InterviewTest = {
+        title: title,
+        linkMeeting: link,
+        date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
+        slot: slot,
+        candidateId: evaluateTest.candidate.id,
+        specialtyId: evaluateTest.specialty.id,
+        professorId: professor.id
+      }
+      try {
+        await axios.post("/createCheckEvaluationSession", request).then(async function (res) {
+          setMessage(res.data.message);
+          setMessageStatus("green");
+          handleCloseInterviewCreate();
+          // await axios.put(`/candidate-course/setStatusByInterview?id=${courseProcessing.id}`);
+          fetchData();
+        })
+      } catch (error) {
+        return error
+      }
+    }
+  }
+
   const handleCreateInterview = () => {
     switch (type) {
       case "CHECK":
-        if (courseId !== undefined && participantAId !== undefined && professor !== undefined) {
-          const request: InterviewCreate = {
-            purpose: title,
-            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            slot: slot,
-            description: "",
-            linkMeeting: link,
-            type: type.toUpperCase(),
-            managerId: user?.id,
-            tmpId: courseId,
-            candidateId: participantAId,
-            hostId: professor?.id
-          }
-          createInterview(request);
-        } else {
-          console.log("ERROR")
-        }
+        handleCreateCheckInterview();
         break;
-
-      case "HIRE":
-        if (assignId !== undefined && participantAId !== undefined && participantBId !== undefined && professor !== undefined) {
-          const request: InterviewCreate = {
-            purpose: title,
-            description: "",
-            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            slot: slot,
-            linkMeeting: link,
-            type: type.toUpperCase(),
-            managerId: professor?.id,
-            tmpId: assignId,
-            candidateId: participantAId,
-            hostId: participantBId
-          }
-          createInterview(request);
-        } else {
-          console.log("ERROR")
-        }
-        break;
-
       default:
-        if (specialtyId !== undefined && participantAId !== undefined && professor !== undefined) {
-          const request: InterviewCreate = {
+        if (evaluateTest !== undefined && professor !== undefined) {
+          const request = {
             purpose: title,
             description: "",
             date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            slot: slot,
             linkMeeting: link,
             type: type.toUpperCase(),
             managerId: user?.id,
-            tmpId: specialtyId,
-            candidateId: participantAId,
             hostId: professor?.id
           }
           createInterview(request);
@@ -563,11 +559,9 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               <span className="input-title">Interview Type:</span>
               <span className="interview-type">
                 {
-                  type == "HIRE"
-                    ? "Interview with Enterprise"
-                    : type == "TEST"
-                      ? "Test specialty with Professor"
-                      : "Check course with Professor"
+                  type === "TEST"
+                    ? "Test specialty with Professor"
+                    : "Check course with Professor"
                 }
               </span>
             </div>
@@ -577,7 +571,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                   <div className="input-container">
                     <span className="input-title">Course:</span>
                     <span className="interview-type">
-                      {course}
+                      {courseProcessing?.course.name}
                     </span>
                   </div>
                 )
@@ -586,7 +580,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                     <div className="input-container">
                       <span className="input-title">Specialty:</span>
                       <span className="interview-type">
-                        {specialty}
+                        {evaluateTest?.specialty.name}
                       </span>
                     </div>
                   )
@@ -632,7 +626,14 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             <div className="participant-container">
               <span className="participant-title">Candidate:</span>
               <div className="participant__name btn-item" onClick={() => setProfessor(undefined)}>
-                <span>{participantA}</span>
+                {
+                  (type === "CHECK")
+                  ?
+                  (<span>{courseProcessing?.candidate.name}</span>)
+                  :
+                  (<span>{evaluateTest?.candidate.name}</span>)
+                }
+                
               </div>
             </div>
           </div>

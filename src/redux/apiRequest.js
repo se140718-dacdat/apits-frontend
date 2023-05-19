@@ -8,14 +8,14 @@ export const loginUser = async (user, dispatch, navigate, isRegister) => {
     dispatch(loginStart());
     try {
         const res = await axios.post("/account/auth/login", user);
-        if(res.data.message == "Login Fail") {
+        if (res.data.message == "Login Fail") {
             return res.data.message;
         } else {
             if (res.data.data) {
-                if(res.data.data.role.name === "ADMIN") {
+                if (res.data.data.role.name === "ADMIN") {
                     dispatch(loginSuccess(res.data.data));
                 } else {
-                    if(res.data.data.information.status !== "DISABLE") {
+                    if (res.data.data.information.status !== "DISABLE") {
                         dispatch(loginSuccess(res.data.data));
                         dispatch(userSuccess(res.data.data.information));
                         if (!isRegister && res.data.message !== "Login Fail") {
@@ -47,7 +47,7 @@ export const loginUserByGoogle = async (result, notificationToken, dispatch, nav
         });
         dispatch(loginSuccess(res.data.data));
         dispatch(userSuccess(res.data.data.candidate));
-        if(isRegister) {
+        if (isRegister) {
             navigate("/update-candidate")
         }
     } catch (err) {
@@ -164,7 +164,7 @@ export const addSpecialtiesCandidate = async (id, specialties) => {
 
 export const getCandidateCourseProcessing = async () => {
     try {
-        const res = await axios.get(`/status-candidate-course/getListSCCByStatusPROCESSING`)
+        const res = await axios.get(`/candidate-course/getListCandidateCourseByStatusPROCESSING`)
         return res.data.data
     } catch (error) {
         return error
@@ -182,6 +182,24 @@ export const getAllSkill = async () => {
 }
 
 //Specialty
+
+export const getAllSpecialtyExperience = async () => {
+    try {
+        const res = await axios.get("/specialty-experience/getAllDetailSpecialty")
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
+export const getAllSpecialtyWithoutExperience = async (id) => {
+    try {
+        const res = await axios.get(`/specialization/getDetailSpecializationWithoutExperience?specialtyId=${id}`)
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
 
 export const getSpecialties = async () => {
     try {
@@ -305,7 +323,7 @@ export const updateEnterprise = async (id, request) => {
 export const createPost = async (params, navigate) => {
     try {
         const res = await axios.post('/recruitmentRequest/create', params).then((res) => {
-            if(res.data.status === "SUCCESS") {
+            if (res.data.status === "SUCCESS") {
                 navigate(`/post-detail/${res.data.data.id}`);
             }
         })
@@ -421,7 +439,7 @@ export const getAllAssignApproved = async () => {
 
 export const getAllNewCandidate = async () => {
     try {
-        const res = await axios.get("/waiting-list/getAllStatusByUnCheck");
+        const res = await axios.get("/waiting-list/getAll");
         return res.data.data;
     } catch (error) {
         return error

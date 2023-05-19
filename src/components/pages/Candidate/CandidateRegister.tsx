@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { getCVName } from '../../../convert';
 import { CandidateUpdate, genderList } from '../../../model';
-import { getSpecialties, getSpecialtiesDetail, updateCandidate } from '../../../redux/apiRequest';
+import { getSpecialtiesDetail, updateCandidate } from '../../../redux/apiRequest';
 import "./CandidateRegister.css";
 import { Specialty } from '../../../Models';
 
