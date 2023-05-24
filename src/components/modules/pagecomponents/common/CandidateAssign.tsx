@@ -18,13 +18,12 @@ const CandidateAssign = () => {
   const [candidates, setCandidates] = useState<CandidateConfirmed[]>([]);
 
   useEffect(() => {
-    fetchData()
-      ;
+    fetchData();
   }, [])
 
 
   async function fetchData() {
-    const response = await axios.get(`/candidate/findCandidatebyRRId/${id}`);
+    const response = await axios.get(`/recruitmentRequest/getListSuitableCandidates?recruitmentRequestId=${id}`);
     setCandidates(response.data.data);
   }
   const handleLinkClick = (id: number) => {

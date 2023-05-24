@@ -7,14 +7,21 @@ import { ConfirmedEntity } from "../../../entity";
 import { rejectCandidate } from "../../../redux/apiRequest";
 import CandidateDetail from "../../modules/pagecomponents/common/candidateDetail/CandidateDetail";
 import "./ViewAssign.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown } from 'react-bootstrap';
 
-interface Props {
-    specialtyId: number | undefined;
-}
+const AssignStatus = [
+    "Confirmed",
+    "Evaluating",
+    "Approve",
+    "Reject"
+]
 
-const ViewAssign:FC<Props> = ({specialtyId}) => {
+const ViewAssign = () => {
     const { id } = useParams();
     const [open, setOpen] = useState(false);
+    const [select, setSelect] = useState<string>(AssignStatus[0]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -27,7 +34,7 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
     }, [])
 
     async function fetchData() {
-        const response = await axios.get(`/assign/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
+        const response = await axios.get(`/apply/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
         setCandidates(response.data.data);
     }
 
@@ -46,7 +53,7 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
     };
 
     const handleApprove = async (assignId: number) => {
-        await axios.get(`/assign/approvedAssignEnterprise?id=${assignId}`).then((res) => {
+        await axios.put(`/apply/approvedByEnterprise?id=${assignId}`).then((res) => {
             if (res.data.status === "SUCCESS") {
                 fetchData();
             }
@@ -92,7 +99,7 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
             flex: 0.5,
             width: 170,
             renderCell: (params) => (
-                <Button variant="contained" color="primary" onClick={()=>{
+                <Button variant="contained" color="primary" onClick={() => {
                     setCandidate(params.row.candidate);
                     handleOpen();
                 }
@@ -114,6 +121,33 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
 
     return (
         <div>
+            <div className="filter">
+                <div className="filter-form-input">
+                    <div className="filter-input-icon">
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
+                    </div>
+                    <input type="text" placeholder='Enter search keywords' />
+                </div>
+                <Dropdown className="filter-dropdown ml-8">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
+                        <span>{select}</span>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className='filter-menu'>
+                        {
+                            AssignStatus.map((status: string, index) => {
+                                return (
+                                    <div key={index}>
+                                        <Dropdown.Item className='filter-item' onClick={() => {
+                                            setSelect(status);
+                                        }}>{status}</Dropdown.Item>
+                                    </div>
+                                )
+                            })
+                        }
+                    </Dropdown.Menu>
+                </Dropdown>
+                <button className='btn-search ml-8'>Search</button>
+            </div>
             <div style={{ height: 400, width: "100%" }}>
                 <DataGrid rows={rows}
                     columns={columns}
@@ -129,7 +163,7 @@ const ViewAssign:FC<Props> = ({specialtyId}) => {
             >
                 <Box sx={style} className='candidate-detail-modal'>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <CandidateDetail candidate={candidate?.candidateResponse} specialtyId={specialtyId}/>
+                        <CandidateDetail candidate={candidate?.candidateResponse} />
                     </Typography>
                 </Box>
             </Modal>

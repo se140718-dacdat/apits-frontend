@@ -6,12 +6,12 @@ import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
-import { PostResponse } from '../../../entity';
 import { getDaysLeft } from '../../../handle';
 import "./EnterpriseProfile.css";
 import { Paging } from '../../modules/pagecomponents/common/Paging';
 import { updateEnterprise } from '../../../redux/apiRequest';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import { PostResponse } from '../../../Models';
 
 const storage = getStorage();
 
@@ -39,12 +39,22 @@ const EnterpriseProfile: FC = () => {
     const handleCloseUpdate = () => setShowUpdate(false);
     const handleShowUpdate = () => setShowUpdate(true);
 
-    const fetchData = async (): Promise<PostResponse[]> => {
-        const response = await axios.get<{ data: { responseList: PostResponse[], totalPage: number } }>(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=${currentPage}&pageSize=5`);
-        const data = response?.data?.data?.responseList;
-        setPageTotal(response?.data.data.totalPage - 1);
-        setPosts(data);
-        return data;
+    // const fetchData = async (): Promise<PostResponse[]> => {
+    //     const response = await axios.get<{ data: { responseList: PostResponse[], totalPage: number } }>(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=${currentPage}&pageSize=5`);
+    //     const data = response?.data?.data?.responseList;
+    //     setPageTotal(response?.data.data.totalPage - 1);
+    //     setPosts(data);
+    //     return data;
+    // }
+
+    const fetchData = async () => {
+        await axios.get(`/recruitmentRequest/getByCreator?id=${user?.id}&pageNo=${currentPage}&pageSize=10`).then((res) => {
+            const data = res.data
+            if (data.status === "SUCCESS") {
+                setPosts(data.data.responseList);
+                setPageTotal(data.data.totalPage - 1);
+            }
+        })
     }
 
     const handleEdit = async () => {
@@ -139,7 +149,7 @@ const EnterpriseProfile: FC = () => {
                     <h4>Recruitment Posts</h4>
                     <div className="post-list">
                         {
-                            posts?.map((post: PostResponse, index) => {
+                            posts && posts?.map((post: PostResponse, index) => {
                                 return (
                                     <div className="post" onClick={() => { navigate(`/post-detail/${post.id}`) }} key={index}>
                                         <div className="avt-post-cover inline-block">
@@ -151,7 +161,7 @@ const EnterpriseProfile: FC = () => {
                                         </div>
                                         <div className="skills">
                                             {
-                                                post?.skills.map((skill, index) => {
+                                                post?.skillLevels.map((skill, index) => {
                                                     return (
                                                         <div className="skill" key={index}>
                                                             {skill.skillName}

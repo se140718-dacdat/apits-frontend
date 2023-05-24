@@ -4,7 +4,7 @@ import { Interview, Slot, slots } from "../../../../model";
 import { Button, TextField } from '@mui/material';
 import { useSelector } from "react-redux";
 import { ApprovedEntity, AssignResponse, CandidateCourseProcessing, Duration, InterviewCreate, InterviewResponse, NewUserInterview, Professor } from "../../../../entity";
-import { getAllAssignApproved, getAllEmployees, getAllInterview, getAllNewCandidate, getCandidateCourseProcessing } from "../../../../redux/apiRequest";
+import { getAllAssignApproved, getAllEmployees, getAllInterview, getAllNewCandidateUnCheck, getCandidateCourseProcessing } from "../../../../redux/apiRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import "./Interview.css";
@@ -29,7 +29,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const now = new Date();
 
   const user = useSelector((state: any) => state.user.user.user);
-  const [assigns, setAssigns] = useState<ApprovedEntity[]>([]);
   const [newUsers, setNewUsers] = useState<Waiting[]>([]);
   const [candidates, setCandidates] = useState<CourseProcessing[]>([]);
   const [showInterviewCreate, setShowInterviewCreate] = useState(false);
@@ -38,16 +37,12 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [date, setDate] = useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
   const [link, setLink] = useState<string>('');
   const [slot, setSlot] = useState<string>(slots[0]);
-  const [participantA, setParticipantA] = useState<string>('');
-  const [participantB, setParticipantB] = useState<string>('');
-  const [assignId, setAssignId] = useState<number>();
   const [isPopupInterviewer, setIsPopupInterviewer] = useState(false);
   const [employees, setEmployees] = useState<Professor[]>([]);
   const [professor, setProfessor] = useState<Professor>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
   const [testId, setTestId] = useState<number>();
-  const [interviewAssign, setInterviewAssign] = useState<InterviewResponse[]>([]);
   const [interviewCheck, setInterviewCheck] = useState<InterviewResponse[]>([]);
   const [interviewTest, setInterviewTest] = useState<InterviewResponse[]>([]);
   const [interviews, setInterviews] = useState<InterviewResponse[]>([]);
@@ -73,52 +68,20 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   }, [type, status])
 
   const fetchData = async () => {
-    setAssigns(await getAllAssignApproved());
-    setNewUsers(await getAllNewCandidate());
+    setNewUsers(await getAllNewCandidateUnCheck());
     setCandidates(await getCandidateCourseProcessing());
     setEmployees(await getAllEmployees());
-    setInterviews(await getAllInterview());
-    setInterviewAssign(interviews.filter((e) => e.type === "HIRE"));
-    setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
-    setInterviewTest(interviews.filter((e) => e.type === "TEST"));
+    // setInterviews(await getAllInterview());
+    // setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
+    // setInterviewTest(interviews.filter((e) => e.type === "TEST"));
   }
 
   const getSlot = async (id: number) => {
-    console.log(moment(date?.toString()).format('YYYY-MM-DD'));
-    if (type !== "HIRE") {
-      await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
-        setSlotExist(res.data.data);
-      })
-    } else {
-      await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
-        setSlotExist(res.data.data);
-      })
-    }
+    await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
+      setSlotExist(res.data.data);
+    })
   }
 
-  const createInterview = async (request: any) => {
-    try {
-      await axios.post("/createInterview", request).then(async function (res) {
-        setMessage(res.data.message);
-        setMessageStatus("green");
-        handleCloseInterviewCreate();
-        if (type === "TEST") {
-          await axios.put(`/waiting-list/setStatusChecked?id=${testId}`);
-          fetchData();
-        }
-        if (type === "CHECK") {
-          await axios.put(`/status-candidate-course/updateStatusInterview?candidateId=${request.candidateId}&coursesId=${request.tmpId}`);
-          fetchData();
-        }
-        if (type === "HIRE") {
-          await axios.put(`/assign/interviewStatusbyEmployee/{id}?id=${request.tmpId}&employeeId=${user?.id}`);
-          fetchData();
-        }
-      })
-    } catch (error) {
-      return error
-    }
-  }
 
   const handleEditInterview = async () => {
     const request = {
@@ -143,42 +106,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const tableRender = () => {
     if (status === "WAITING") {
       switch (type) {
-        case "HIRE":
-          const rowsCandidate = assigns?.length > 0 ? assigns.map((item) => ({
-            id: item.assignId,
-            title: item.recruitmentRequest.title,
-            candidateName: item.candidateResponse.name,
-            candidateId: item.candidateResponse.id,
-            enterpriseName: item.recruitmentRequest.creator.name,
-            enterpriseId: item.recruitmentRequest.creator.id,
-          })) : [];
-
-          const columnsCandidate: GridColDef[] = [
-            { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "title", headerName: "Title", flex: 0.8 },
-            { field: "candidateName", headerName: "Candidate", flex: 0.5 },
-            { field: "enterpriseName", headerName: "Enterprise", flex: 1.2 },
-            {
-              field: 'interview',
-              headerName: '',
-              flex: 0.5,
-              width: 170,
-              renderCell: (params) => (
-                <Button variant="contained" color="primary" onClick={() => {
-                  setParticipantA(params.row.candidateName);
-                  setParticipantB(params.row.enterpriseName);
-                  setAssignId(params.row.id);
-                  handleShowInterviewCreate()
-                }}>
-                  Create
-                </Button>
-              ),
-            },
-          ];
-          return (<DataGrid rows={rowsCandidate}
-            columns={columnsCandidate}
-            autoPageSize
-            pagination />)
         case "CHECK":
           const rowsTest = candidates?.length > 0 ? candidates?.map((item) => ({
             item: item,
@@ -252,54 +179,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
       }
     } else {
       switch (type) {
-        case "HIRE":
-          const rowsCandidate = interviewAssign?.length > 0 ? interviewAssign.map((item) => ({
-            id: item.id,
-            title: item.purpose,
-            link: item.linkMeeting,
-            candidateName: item.candidateName,
-            date: item.date,
-            slot: item.slot,
-            interview: item
-          })) : [];
-          const columnsCandidate: GridColDef[] = [
-            { field: "id", headerName: "ID", flex: 0.2 },
-            { field: "title", headerName: "Title", flex: 0.8 },
-            {
-              field: 'link',
-              headerName: 'Link',
-              flex: 1.2,
-              renderCell: (params) => (
-                <a href={params.row.link}>{params.row.link}</a>
-              )
-            },
-            { field: "candidateName", headerName: "Candidate", flex: 1.2 },
-            { field: "date", headerName: "Date", flex: 0.5 },
-            { field: "slot", headerName: "Slot", flex: 0.8 },
-
-            {
-              field: 'interview',
-              headerName: '',
-              flex: 0.5,
-              width: 170,
-              renderCell: (params) => (
-                <Button variant="contained" color="primary" style={{ backgroundColor: "var(--primary-color)" }} onClick={() => {
-                  setInterview(params.row.interview)
-                  setDate(dayjs(params.row.date))
-                  setLink(params.row.link)
-                  setSlot(params.row.slot)
-                  setTitle(params.row.title)
-                  handleShowInterviewEdit();
-                }}>
-                  Edit
-                </Button>
-              ),
-            },
-          ];
-          return (<DataGrid rows={rowsCandidate}
-            columns={columnsCandidate}
-            autoPageSize
-            pagination />)
         case "CHECK":
           const rowsTest = interviewCheck?.length > 0 ? interviewCheck?.map((item) => ({
             id: item.id,
@@ -419,7 +298,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
           setMessage(res.data.message);
           setMessageStatus("green");
           handleCloseInterviewCreate();
-          await axios.put(`/candidate-course/setStatusByInterview?id=${courseProcessing.id}`);
+          await axios.put(`/candidate-course/setStatusByInterview?candidateId=${courseProcessing.candidate.id}&courseId=${courseProcessing.course.id}`);
           fetchData();
         })
       } catch (error) {
@@ -440,11 +319,11 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
         professorId: professor.id
       }
       try {
-        await axios.post("/createCheckEvaluationSession", request).then(async function (res) {
+        await axios.post("/createTestEvaluationSession", request).then(async function (res) {
           setMessage(res.data.message);
           setMessageStatus("green");
           handleCloseInterviewCreate();
-          // await axios.put(`/candidate-course/setStatusByInterview?id=${courseProcessing.id}`);
+          await axios.put(`/waiting-list/setStatusChecked?id=${evaluateTest?.id}`);
           fetchData();
         })
       } catch (error) {
@@ -458,79 +337,38 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
       case "CHECK":
         handleCreateCheckInterview();
         break;
+      case "TEST":
+        handleCreateTestInterview();
+        break;
       default:
-        if (evaluateTest !== undefined && professor !== undefined) {
-          const request = {
-            purpose: title,
-            description: "",
-            date: `${moment(date?.toString()).format('YYYY-MM-DD')}`,
-            linkMeeting: link,
-            type: type.toUpperCase(),
-            managerId: user?.id,
-            hostId: professor?.id
-          }
-          createInterview(request);
-        } else {
-          console.log("ERROR")
-        }
+        setMessage("Error")
+        setMessageStatus("red")
         break;
     }
   }
 
   const handleCheckType = () => {
-    if (type === "HIRE") {
-      return (
-        <div>
-          <div className="participant-container">
-            <span className="participant-title">Enterprise:</span>
-            <div className="participant__name btn-item hover">
-              <span>{participantB}</span>
-            </div>
-          </div>
-          <div className="participant-container">
-            <span className="participant-title">Professor:</span>
-            {
-              professor !== undefined
-                ? (
-                  <div className="participant__name btn-item hover" onClick={() => setProfessor(undefined)}>
-                    <span>{professor.name}</span>
-                    <FontAwesomeIcon className="icon" icon={faClose} />
-                  </div>
-                )
-                : (
-                  <FontAwesomeIcon
-                    className="participant__icon--plus hover"
-                    icon={faPlusCircle}
-                    onClick={() => setIsPopupInterviewer(true)}
-                  />
-                )
-            }
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className="participant-container">
-          <span className="participant-title">Professor:</span>
-          {
-            professor !== undefined
-              ? (
-                <div className="participant__name btn-item hover" onClick={() => setProfessor(undefined)}>
-                  <span>{professor.name}</span>
-                  <FontAwesomeIcon className="icon" icon={faClose} />
-                </div>
-              )
-              : (
-                <FontAwesomeIcon
-                  className="participant__icon--plus hover"
-                  icon={faPlusCircle}
-                  onClick={() => setIsPopupInterviewer(true)}
-                />
-              )
-          }
-        </div>
-      )
-    }
+    return (
+      <div className="participant-container">
+        <span className="participant-title">Professor:</span>
+        {
+          professor !== undefined
+            ? (
+              <div className="participant__name btn-item hover" onClick={() => setProfessor(undefined)}>
+                <span>{professor.name}</span>
+                <FontAwesomeIcon className="icon" icon={faClose} />
+              </div>
+            )
+            : (
+              <FontAwesomeIcon
+                className="participant__icon--plus hover"
+                icon={faPlusCircle}
+                onClick={() => setIsPopupInterviewer(true)}
+              />
+            )
+        }
+      </div>
+    )
   }
 
   return (
@@ -628,12 +466,12 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               <div className="participant__name btn-item" onClick={() => setProfessor(undefined)}>
                 {
                   (type === "CHECK")
-                  ?
-                  (<span>{courseProcessing?.candidate.name}</span>)
-                  :
-                  (<span>{evaluateTest?.candidate.name}</span>)
+                    ?
+                    (<span>{courseProcessing?.candidate.name}</span>)
+                    :
+                    (<span>{evaluateTest?.candidate.name}</span>)
                 }
-                
+
               </div>
             </div>
           </div>

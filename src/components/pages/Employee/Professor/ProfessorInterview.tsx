@@ -11,23 +11,25 @@ import MessageBox from "../../../modules/pagecomponents/Popup/MessageBox/Message
 import "./ProfessorInterview.css";
 import { CandidateSpecialty, SpecialtyEntity } from "../../../../model";
 import { updateInterviewCancel, updateInterviewDone } from "../../../../redux/apiRequest";
+import { InterviewCheckResponse } from "../../../../Models";
+import ProfessorReport from "./ProfessorReport";
+import { useNavigate } from "react-router-dom";
 
 
 const interviewType = [
   "CHECK",
   "TEST",
   "CHECK DONE",
-  "TEST DONE",
-  "HIRE"
+  "TEST DONE"
 ]
 
 const ProfessorInterview = () => {
   const user = useSelector((state: any) => state.user.user.user);
+  const navigate = useNavigate();
 
   const [type, setType] = useState<string>(interviewType[0])
-  const [interviewChecksPending, setInterviewChecksPending] = useState<InterviewResponse[]>([]);
+  const [interviewChecksPending, setInterviewChecksPending] = useState<InterviewCheckResponse[]>([]);
   const [interviewChecksDone, setInterviewChecksDone] = useState<InterviewResponse[]>([]);
-  const [interviewHire, setInterviewHire] = useState<InterviewResponse[]>([]);
   const [interviewTestsPending, setInterviewTestsPending] = useState<InterviewResponse[]>([]);
   const [interviewTestsDone, setInterviewTestsDone] = useState<InterviewResponse[]>([]);
   const [showInterviewReport, setShowInterviewReport] = useState(false);
@@ -38,6 +40,7 @@ const ProfessorInterview = () => {
   const [reportStatus, setReportStatus] = useState<boolean>(true);
   const [interviewId, setInterviewId] = useState<number>();
 
+
   const handleCheckboxChange = (event: any) => {
     const courseId = event.target.id;
     if (event.target.checked) {
@@ -47,66 +50,53 @@ const ProfessorInterview = () => {
     }
   }
   const handleCloseInterviewReport = () => setShowInterviewReport(false);
-  const handleShowInterviewReport = () => { setShowInterviewReport(true) };
+  const handleShowInterviewReport = (interviewTest: InterviewResponse) => {
+    navigate("/evaluation", { state: { interviewTest: interviewTest } })
+    // setShowInterviewReport(true) 
+  };
 
 
 
   useEffect(() => {
     fetchTestInterview();
     fetchCheckInterview();
-    fetchHireInterview();
   }, [candidate, type])
 
   async function fetchTestInterview() {
-    const res = await axios.get(`/getInterviewOfProfessorTypeTest?professorId=${user?.id}`);
+    const res = await axios.get(`/getEvaluationSessionByProfessor?professorId=${user?.id}`);
     const data = await res?.data.data;
-    setInterviewTestsPending(data.filter((e: InterviewResponse) => e.status === "PENDING"));
-    setInterviewTestsDone(data.filter((e: InterviewResponse) => e.status === "DONE"));
+    setInterviewTestsPending(data.filter((e: InterviewResponse) => e.status === "PENDING" && e.type === "TEST"));
+    setInterviewTestsDone(data.filter((e: InterviewResponse) => e.status === "DONE" && e.type === "TEST"));
   }
 
   async function fetchCheckInterview() {
-    const response = await axios.get(`/getInterviewOfProfessorTypeCheck?professorId=${user?.id}`);
+    const response = await axios.get(`/getEvaluationSessionByProfessor?professorId=${user?.id}`);
     const dataRes = await response?.data.data;
-    setInterviewChecksPending(dataRes.filter((e: InterviewResponse) => e.status === "PENDING"));
-    setInterviewChecksDone(dataRes.filter((e: InterviewResponse) => e.status !== "PENDING"));
-  }
-
-  async function fetchHireInterview () {
-    const response = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
-    const dataRes = await response?.data.data;
-    setInterviewHire(dataRes);
-    console.log(dataRes)
+    setInterviewChecksPending(dataRes.filter((e: InterviewCheckResponse) => e.status === "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
+    setInterviewChecksDone(dataRes.filter((e: InterviewCheckResponse) => e.status !== "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
   }
 
 
-
-  const handlePassCourse = async (candidateId: number, courseId: number, id: number) => {
-    await axios.put(`/status-candidate-course/updateStatusDone?candidateId=${candidateId}&coursesId=${courseId}`).then(async function (res) {
-      if (res.data.message == "SUCCESS") {
-        await axios.put(`/updateInterviewToDone?interviewID=${id}`).then((res) => {
-          if (res.data.status === "SUCCESS") {
-            fetchCheckInterview();
-          }
-        })
+  const handlePassCourse = async (evaluationSessionId: number) => {
+    await axios.put(`/updatePassEvaluationSession?evaluationSessionId=${evaluationSessionId}`).then(async function (res) {
+      if (res.data.status == "SUCCESS") {
+        fetchCheckInterview();
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
       }
     })
   }
 
-  const handleFailCourse = async (candidateId: number, courseId: number, id: number) => {
-    await axios.put(`/status-candidate-course/updateStatusStudying?candidateId=${candidateId}&coursesId=${courseId}`).then(async function (res) {
-      if (res.data.message == "SUCCESS") {
-        await axios.put(`/updateInterviewToCancel?interviewID=${id}`).then((res) => {
-          if (res.data.status === "SUCCESS") {
-            fetchCheckInterview();
-          }
-        })
+  const handleFailCourse = async (evaluationSessionId: number) => {
+    await axios.put(`/updateNotPassEvaluationSession?evaluationSessionId=${evaluationSessionId}`).then(async function (res) {
+      if (res.data.status == "SUCCESS") {
+        fetchCheckInterview();
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
       }
     })
   }
+
 
   async function getSpecialtyDetail(candidateId: number, specialtyId: number) {
     const res = await axios.get(`/canspec/getASpecDetailByCandidateId?candidateId=${candidateId}&specialId=${specialtyId}`);
@@ -115,18 +105,22 @@ const ProfessorInterview = () => {
   }
 
   const tableRenderCheck = () => {
+    console.log(interviewChecksPending)
     const rows = interviewChecksPending?.length > 0 ? interviewChecksPending?.map((item) => ({
       id: item.id,
-      candidateId: item.candidateId,
+      candidate: item.candidateCourse.candidate,
+      candidateName: item.candidateCourse.candidate.name,
       link: item.linkMeeting,
-      title: item.purpose,
+      title: item.title,
       date: item.date,
       slot: item.slot,
-      courseId: item.tempId
+      course: item.candidateCourse.course,
+      candidateCourse: item.candidateCourse
     })) : [];
 
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
+      { field: "candidateName", headerName: "ID", flex: 1.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
       {
         field: 'link',
@@ -146,7 +140,7 @@ const ProfessorInterview = () => {
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "red" }} onClick={() => {
             setInterviewId(params.row.id)
-            handleFailCourse(params.row.candidateId, params.row.courseId, params.row.id);
+            handleFailCourse(params.row.id);
           }}>
             Fail
           </Button>
@@ -159,7 +153,7 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" style={{ backgroundColor: "green" }} onClick={() => {
-            handlePassCourse(params.row.candidateId, params.row.courseId, params.row.id)
+            handlePassCourse(params.row.id)
           }}>
             Pass
           </Button>
@@ -221,6 +215,7 @@ const ProfessorInterview = () => {
 
   const tableRenderTest = () => {
     const rows = interviewTestsPending?.length > 0 ? interviewTestsPending?.map((item) => ({
+      item: item,
       id: item.id,
       candidateId: item.candidateId,
       link: item.linkMeeting,
@@ -252,7 +247,7 @@ const ProfessorInterview = () => {
           <Button variant="contained" color="warning" onClick={() => {
             getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
             setInterviewId(params.row.id)
-            handleShowInterviewReport();
+            handleShowInterviewReport(params.row.item);
           }}>
             Report
           </Button>
@@ -298,47 +293,13 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" color="warning" onClick={() => {
-            console.log(params.row.specialtyId)
             getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
-            handleShowInterviewReport();
+            // handleShowInterviewReport();
           }}>
             Detail
           </Button>
         ),
       },
-    ];
-    return (
-      <DataGrid rows={rows}
-        columns={columns}
-        autoPageSize
-        pagination />
-    )
-  }
-
-  const tableRenderHire = () => {
-    const rows = interviewHire?.length > 0 ? interviewHire?.map((item) => ({
-      id: item.id,
-      candidateId: item.candidateId,
-      link: item.linkMeeting,
-      title: item.purpose,
-      date: item.date,
-      slot: item.slot,
-      status: item.status
-    })) : [];
-
-    const columns: GridColDef[] = [
-      { field: "id", headerName: "ID", flex: 0.2 },
-      { field: "title", headerName: "Title", flex: 1.2 },
-      {
-        field: 'link',
-        headerName: 'Link',
-        flex: 1.2,
-        renderCell: (params) => (
-          <a href={params.row.link}>{params.row.link}</a>
-        )
-      },
-      { field: "date", headerName: "Date", flex: 0.8 },
-      { field: "slot", headerName: "Slot", flex: 0.8 },
     ];
     return (
       <DataGrid rows={rows}
@@ -411,10 +372,7 @@ const ProfessorInterview = () => {
               ? tableRenderTest()
               : (type === interviewType[2])
                 ? tableRenderCheckDone()
-                : (type === interviewType[3])
-                  ?
-                  tableRenderTestDone()
-                  : tableRenderHire()
+                : tableRenderTestDone()
         }
       </div>
       <Modal id="InterviewCreateModal" show={showInterviewReport} onHide={handleCloseInterviewReport}>

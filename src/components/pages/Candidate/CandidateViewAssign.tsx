@@ -23,16 +23,15 @@ const CandidateViewAssign = () => {
   }, [])
 
   const fetchData = async (): Promise<AssignResponse[]> => {
-    const response = await axios.get<{ data: AssignResponse[] }>(`/assign/getListAssignByCandidateId?candidateId=${user?.id}`);
+    const response = await axios.get<{ data: AssignResponse[] }>(`/apply/getListAssignByCandidateId?candidateId=${user?.id}`);
     const data = response?.data?.data;
     setAssigns(data);
-    console.log(data);
     return data;
   }
 
 
   const handleConfirmAssign = async (id: number) => {
-    await axios.put(`/assign/approvedByCandidate/{id}?id=${id}&candidateId=${user?.id}`).then((res) => {
+    await axios.put(`/apply/approvedByCandidate/{id}?id=${id}&candidateId=${user?.id}`).then((res) => {
       if (res.data.status === "SUCCESS") {
         fetchData();
         setMessage(res.data.message);
@@ -47,10 +46,10 @@ const CandidateViewAssign = () => {
   const rows: CandidateAssignRow[] = assigns?.length > 0 ? assigns?.map((assign) => ({
     id: assign?.id.toString(),
     recruitment: assign?.recruitmentRequest.title,
-    specialty: assign?.recruitmentRequest.specialty.name,
-    experience: assign?.recruitmentRequest.experienceSpecialty.name,
+    // specialty: assign?.recruitmentRequest.specialty.name,
+    // experience: assign?.recruitmentRequest.experienceSpecialty.name,
     salaryDetail: currencyMaskString(assign?.recruitmentRequest.salaryDetail),
-    typeOfWork: assign?.recruitmentRequest.typeOfWork,
+    enterpriseName: assign?.recruitmentRequest.creator.name,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
     recruitmentId: assign.recruitmentRequest.id,
     status: assign.status
@@ -68,14 +67,14 @@ const CandidateViewAssign = () => {
         </Link>
       ),
     },
-    {
-      field: "specialty", headerName: "Position", flex: 1.2,
-      renderCell: (params) => (
-        <div>{params.row.specialty} <strong>{params.row.experience}</strong></div>
-      )
-    },
+    // {
+    //   field: "specialty", headerName: "Position", flex: 1.2,
+    //   renderCell: (params) => (
+    //     <div>{params.row.specialty} <strong>{params.row.experience}</strong></div>
+    //   )
+    // },
+    { field: "enterpriseName", headerName: "Company", flex: 1.2 },
     { field: "salaryDetail", headerName: "Salary", flex: 1.2 },
-    { field: "typeOfWork", headerName: "Work Form", flex: 1.2 },
     { field: "deadline", headerName: "Deadline", flex: 1.2 },
     {
       field: 'confirm',

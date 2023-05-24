@@ -166,9 +166,9 @@ export interface AssignResponse {
 export interface CandidateAssignRow {
     id: string;
     recruitment: string;
-    specialty: string;
+    // specialty: string;
     salaryDetail: string;
-    typeOfWork: string;
+    enterpriseName: string;
     deadline: string;
     recruitmentId: number;
 }
@@ -234,26 +234,24 @@ export interface Post {
 }
 
 interface PostAssign {
-    id: number,
-    title: string,
     benefits: string,
-    quantity: number,
     createAt: string,
-    expiryDate: string,
-    experience: string,
-    typeOfWork: string,
-    salaryDetail: number,
-    name: string,
+    creator: CreatorEntity,
     description: string,
-    requirement: string,
-    workLocation: string,
+    experience: string,
+    expiryDate: string,
     hrName: string,
     hrPhone: string,
     hrEmail: string,
+    id: number,
+    name: string,
+    quantity: number,
+    requirement: string,
+    salaryDetail: number,
     status: string
-    specialty: SpecialtyOnly,
-    creator: CreatorEntity,
-    experienceSpecialty: Experience,
+    title: string,
+    typeOfWork: string,
+    workLocation: string
 }
 
 
@@ -619,10 +617,10 @@ export interface ContractLarborSupplyResponse {
 
 
 export interface SpecialtyExpResponse {
-    specialtyId: number;
-    specialtyName: string;
-    expId: number;
-    expName: string;
+    id: number;
+    name: string;
+    experience: number;
+    status: string;
 }
 
 export interface SpecialtyExpDetail {

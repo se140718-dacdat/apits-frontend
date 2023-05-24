@@ -363,10 +363,8 @@ export const getAllPost = async () => {
 //Assign
 
 export const assignCandidates = async (params) => {
-    console.log(params)
     try {
-        const res = await axios.post("/assign/create", params)
-        console.log(res.status);
+        const res = await axios.post("/apply/create", params)
         return res.status
     } catch (error) {
         return error
@@ -437,9 +435,9 @@ export const getAllAssignApproved = async () => {
 
 //New Candidate
 
-export const getAllNewCandidate = async () => {
+export const getAllNewCandidateUnCheck = async () => {
     try {
-        const res = await axios.get("/waiting-list/getAll");
+        const res = await axios.get("/waiting-list/getAllStatusByUnCheck");
         return res.data.data;
     } catch (error) {
         return error

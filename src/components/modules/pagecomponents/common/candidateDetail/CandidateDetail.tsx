@@ -4,17 +4,17 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@m
 import { CandidateConfirmed, ConfirmedEntity, SpecialtyExpResponse } from '../../../../../entity';
 import axios from '../../../../../api/axios';
 import { CandidateSkill } from '../../../../../model';
+import { CandidateSkillDetail } from '../../../../../Models';
 
 interface Props {
     candidate: CandidateConfirmed | undefined;
-    specialtyId: number | undefined;
 }
 
 
-const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
+const CandidateDetail: FC<Props> = ({ candidate }) => {
     const [specialties, setSpecialties] = useState<SpecialtyExpResponse[]>([]);
     const [specialty, setSpecialty] = useState<SpecialtyExpResponse>();
-    const [skills, setSkills] = useState<CandidateSkill[]>([]);
+    const [skills, setSkills] = useState<CandidateSkillDetail>();
 
 
     useEffect(() => {
@@ -26,15 +26,16 @@ const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
     }, [specialty])
 
     async function fetchData() {
-        await axios.get(`/canspec/getSESLCandidateSpecialExp?candidateId=${candidate?.id}`).then(async (res) => {
-            const data = await res?.data.data.specialties;
+        await axios.get(`/candidate-level/getListCurrentExpCandidate?candidateId=${candidate?.id}`).then(async (res) => {
+            const data = await res?.data.data;
             setSpecialties(data);
-            setSpecialty(data.find((e: SpecialtyExpResponse) => e.specialtyId === specialtyId));
+            setSpecialty(data[0]);
+            console.log(data)
         });
     }
 
     async function getSkills() {
-        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${candidate?.id}&specialtyId=${specialty?.specialtyId}`);
+        const response = await axios.get(`/getCandidateSpecialtyWithExpSkillLevel?candidateId=${candidate?.id}&specialtyId=${specialty?.id}`);
         setSkills(response.data.data);
     }
 
@@ -51,29 +52,29 @@ const CandidateDetail: FC<Props> = ({ candidate, specialtyId }) => {
             </div>
             <div className="specialty">
                 <FormControl sx={{ m: 1, minWidth: 200, marginBottom: "20px" }} size="small">
-                    <InputLabel id="demo-select-small-label">{specialty?.specialtyName}</InputLabel>
+                    <InputLabel id="demo-select-small-label">{specialty?.name}</InputLabel>
                     <Select
                         labelId="demo-select-small-label"
                         id="demo-select-small"
                         value={specialty}
                         label="Specialty"
                         onChange={(event) => {
-                            setSpecialty(specialties.find((e) => e.specialtyName === event.target.value));
+                            setSpecialty(specialties.find((e) => e.name === event.target.value));
                         }}
                     >
                         {
                             specialties.map((specialty) => {
                                 return (
-                                    <MenuItem value={specialty.specialtyName}>{specialty.specialtyName}</MenuItem>
+                                    <MenuItem value={specialty.name}>{specialty.name}</MenuItem>
                                 )
                             })
                         }
                     </Select>
                 </FormControl>
-                <span style={{ margin: "8px" }}>Experience: <strong style={{ color: "var(--primary-color)" }}>{specialty?.expName}</strong></span>
+                <span style={{ margin: "8px" }}>Experience: <strong style={{ color: "var(--primary-color)" }}>{specialty?.experience}</strong></span>
                 <div style={{ margin: "8px" }} className="skills">
                     {
-                        skills.map((skill) => {
+                        skills?.skills.map((skill) => {
                             return (
                                 <div className="skill-icon" style={{ marginTop: "8px" }} key={skill.id}>
                                     <img src={skill.image} alt="" />

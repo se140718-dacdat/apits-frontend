@@ -8,6 +8,7 @@ import axios from "../../../api/axios";
 import { InterviewResponse } from "../../../entity";
 import "./CandidateInterview.css";
 import { useParams } from "react-router-dom";
+import { InterviewCheckResponse } from "../../../Models";
 
 const interviewType = [
     "CHECK",
@@ -21,7 +22,7 @@ const CandidateInterview = () => {
 
 
     const [type, setType] = useState<string>(interviewType[0])
-    const [interviewChecks, setInterviewChecks] = useState<InterviewResponse[]>([]);
+    const [interviewChecks, setInterviewChecks] = useState<InterviewCheckResponse[]>([]);
     const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
     const [interviewHires, setInterviewHires] = useState<InterviewResponse[]>([]);
 
@@ -32,27 +33,27 @@ const CandidateInterview = () => {
     }, [])
 
     async function fetchData() {
+        const response = await axios.get(`/getEvaluationSessionByCandidate?candidateId=${user?.id}`);
+        const dataRes = await response?.data.data;
+        setInterviewChecks(dataRes);
         const res = await axios.get(`/getInterviewOfCandidateTypeTest?candidateId=${user?.id}`);
         const data = await res?.data.data;
         setInterviewTests(data);
-        const response = await axios.get(`/getInterviewOfCandidateTypeCheck?candidateId=${user?.id}`);
-        const dataRes = await response?.data.data;
-        setInterviewChecks(dataRes);
         const response1 = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
         const dataRes1 = await response1?.data.data;
         setInterviewHires(dataRes1);
     }
 
     const tableRenderCheck = () => {
-
+        console.log(interviewChecks)
         const rows = interviewChecks?.length > 0 ? interviewChecks?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
-            candidateId: item.candidateId,
+            candidate: item.candidateCourse.candidate,
             link: item.linkMeeting,
-            title: item.purpose,
+            title: item.title,
             date: item.date,
             slot: item.slot,
-            courseId: item.tempId
+            courseId: item.candidateCourse.course
         })) : [];
 
         const columns: GridColDef[] = [

@@ -200,10 +200,10 @@ const RecruitmentPostDetail = () => {
                                 <p className='item-name'>Skills</p>
                                 <div className="item-list">
                                     {
-                                        post?.skills && post?.skills.length > 0 && post?.skills.map((skill, index) => {
+                                        post?.skillLevels && post?.skillLevels.length > 0 && post?.skillLevels.map((skill) => {
                                             return (
-                                                <div className="item" key={index}>
-                                                    {skill.skillName}
+                                                <div className="item" key={skill.skillLevelId}>
+                                                    {skill.skillName} Level {skill.level}
                                                 </div>
                                             )
                                         })
@@ -269,10 +269,10 @@ const RecruitmentPostDetail = () => {
                                     <p className='item-name'>Skills:</p>
                                     <div className="modal-list">
                                         {
-                                            post?.skills.map((skill, index) => {
+                                            post?.skillLevels.map((skill) => {
                                                 return (
-                                                    <div className="item" key={index}>
-                                                        {skill.skillName}
+                                                    <div className="item" key={skill.skillLevelId}>
+                                                        {skill.skillName} Level {skill.level}
                                                     </div>
                                                 )
                                             })
@@ -333,36 +333,9 @@ const RecruitmentPostDetail = () => {
                                     <div className="assign-container">
                                         <h2>Candidates</h2>
                                         <div className="candidates-container">
-                                            {/* <div className="filter">
-                                                <div className="filter-form-input">
-                                                    <div className="filter-input-icon">
-                                                        <FontAwesomeIcon icon={faMagnifyingGlass} className="icon" />
-                                                    </div>
-                                                    <input type="text" placeholder='Enter search keywords' />
-                                                </div>
-                                                <Dropdown className="filter-dropdown ml-8">
-                                                    <Dropdown.Toggle variant="success" id="dropdown-basic" className='filter-selected'>
-                                                        <span>{specialty.name}</span>
-                                                    </Dropdown.Toggle>
-                                                    <Dropdown.Menu className='filter-menu'>
-                                                        {
-                                                            specialtiesSystem.map((specialty: SpecialtyEntity) => {
-                                                                return (
-                                                                    <div key={specialty.id}>
-                                                                        <Dropdown.Item className='filter-item' onClick={() => {
-                                                                            setSpecialty(specialty);
-                                                                        }}>{specialty.name}</Dropdown.Item>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
-                                                <button className='btn-search ml-8'>Search</button>
-                                            </div> */}
                                             <div style={{ height: 500, width: '100%' }}>
                                                 {
-                                                    <ViewAssign specialtyId={post?.specialtyExperience.specialty.id} />
+                                                    <ViewAssign />
                                                 }
                                             </div>
                                         </div>

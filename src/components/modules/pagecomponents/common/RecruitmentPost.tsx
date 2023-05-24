@@ -4,12 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { Dropdown, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "./RecruitmentPost.css";
-import { getAllPost } from '../../../../redux/apiRequest';
-import { Post, PostEntity, PostResponse } from '../../../../entity';
 import { getDaysLeft } from '../../../../handle';
 import { currencyMaskString } from '../../../../mask';
 import axios from '../../../../api/axios';
 import { Paging } from './Paging';
+import { PostResponse } from '../../../../Models';
 
 const RecruitmentPost = () => {
     const navigate = useNavigate();
@@ -86,10 +85,10 @@ const RecruitmentPost = () => {
 
                                     <div className="skills">
                                         {
-                                            post?.skills.map((skill, index) => {
+                                            post?.skillLevels.map((skill) => {
                                                 return (
-                                                    <div className="skill" key={index}>
-                                                        {skill.skillName}
+                                                    <div className="skill" key={skill.skillLevelId}>
+                                                        {skill?.skillName} Level {skill?.level}
                                                     </div>
                                                 )
                                             })

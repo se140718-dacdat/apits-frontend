@@ -6,7 +6,7 @@ interface Props {
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>
 }
-
+    
 export const Paging: FC<Props> = ({pageTotal, currentPage, setCurrentPage}) => {
 
     const items = [];

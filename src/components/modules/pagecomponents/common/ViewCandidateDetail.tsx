@@ -42,7 +42,7 @@ const ViewCandidateDetail = () => {
     }
 
     async function getSkills() {
-        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${id}&specialtyId=${specialty?.specialtyId}`);
+        const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${id}&specialtyId=${specialty?.id}`);
         setSkills(response.data.data);
     }
 
@@ -144,7 +144,7 @@ const ViewCandidateDetail = () => {
                                 <div className="profile-header-name">Specialty</div>
                                 <Dropdown>
                                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                        <span className="category-name">{specialty?.specialtyName}   <strong>{specialty?.expName}</strong></span>
+                                        <span className="category-name">{specialty?.name}   <strong>{specialty?.experience}</strong></span>
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
@@ -152,7 +152,7 @@ const ViewCandidateDetail = () => {
                                             specialties.map((specialty, index) => {
                                                 return (
                                                     <div key={index}>
-                                                        <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.specialtyName}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.expName}</strong></Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.name}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.experience}</strong></Dropdown.Item>
                                                     </div>
                                                 )
                                             })

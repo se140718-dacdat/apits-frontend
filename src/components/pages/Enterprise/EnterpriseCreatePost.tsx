@@ -38,7 +38,6 @@ const EnterpriseCreatePost = () => {
     const [workForm, setWorkForm] = useState<string>('Full time (40 or more hrs/week)');
     const [salary, setSalary] = useState<string>("");
     const [skills, setSkills] = useState<SkillSelect[]>([]);
-    const [skillsShow, setSkillsShow] = useState<SkillShow[]>([]);
     const [quantity, setQuantity] = useState<number>(0);
     const [experienceSelect, setExperienceSelect] = useState<ExperienceOnly>();
     const [experience, setExperience] = useState<string>('');

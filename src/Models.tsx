@@ -1,4 +1,5 @@
 import { CreatorEntity, SkillSelect } from "./entity";
+import { Employee } from "./model";
 
 export interface Specialty {
     id: number;
@@ -171,8 +172,81 @@ export interface PostResponse {
     hrPhone: string,
     hrEmail: string,
     enterpriseId: number,
-    skills: SkillSelect[],
+    skillLevels: PostSkill[],
     createAt: string,
     creator: CreatorEntity,
     specialtyExperience: SpecialtyExperiencePost
 }
+
+export interface PostSkill {
+    skillLevelId: number;
+    skillName: string;
+    level: number;
+}
+
+export interface InterviewCheckResponse {
+    id: number;
+    type: string;
+    title: string;
+    linkMeeting: string;
+    date: string;
+    slot: string;
+    status: string;
+    result: string;
+    professor: Employee
+    candidateCourse: CandidateCourse
+}
+
+export interface InterviewTestResponse {
+    id: number;
+    type: string;
+    title: string;
+    linkMeeting: string;
+    date: string;
+    slot: string;
+    status: string;
+    result: string;
+    professor: Employee
+    candidateCourse: CandidateCourse
+}
+
+export interface CandidateCourse {
+    id: number;
+    candidate: Candidate
+    course: Course
+    certificate: string;
+    status: string;
+    startAt: string;
+}
+
+export interface CandidateSkillDetail {
+    id: number;
+    name: string;
+    skills: CandidateSkillLevel[]
+}
+
+export interface CandidateSkillLevel {
+    id: number;
+    name: string;
+    image: string;
+    levels: CandidateLevel[];
+    status: string;
+}
+
+export interface CandidateLevel {
+    level: number;
+    status: string;
+}
+
+export interface CandidateUpdateSkillLevel {
+    skillId: number;
+    level: number;
+}
+
+// export interface ApplyResponse {
+//     id: number;
+//     date: string;
+//     status: string;
+//     recruitmentRequest: 
+// }
+
