@@ -42,25 +42,34 @@
     justify-content: space-between;
 }
 
+#ProfessorReport .col-left-header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    justify-items: center;
+    margin-right: 24px;
+    margin-bottom: 10%;
+}
+
 #ProfessorReport ul {
     list-style-type: none;
 }
 
 #ProfessorReport li {
-    margin-top: 24px;
+    margin-top: 28px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     justify-items: center;
-    padding-right: 3rem;
+    padding-right: 1.5rem;
 }
 
 #ProfessorReport .level-selected {
-    background-color: var(--primary-color);
     padding: 0 24px;
     border-radius: 25px;
-    color: var(--white-color);
+    color: var(--primary-color);
     font-weight: 700;
+    border: 1px solid var(--primary-color);
 }
 
 #ProfessorReport li span {

@@ -6,14 +6,12 @@ import { useEffect, useState } from "react";
 import { Dropdown, Form, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import axios from "../../../../api/axios";
-import { InterviewResponse } from "../../../../entity";
 import MessageBox from "../../../modules/pagecomponents/Popup/MessageBox/MessageBox";
 import "./ProfessorInterview.css";
-import { CandidateSpecialty, SpecialtyEntity } from "../../../../model";
+import { CandidateSpecialty } from "../../../../model";
 import { updateInterviewCancel, updateInterviewDone } from "../../../../redux/apiRequest";
-import { InterviewCheckResponse } from "../../../../Models";
-import ProfessorReport from "./ProfessorReport";
 import { useNavigate } from "react-router-dom";
+import { EvaluationResponse } from "../../../../Models";
 
 
 const interviewType = [
@@ -28,10 +26,10 @@ const ProfessorInterview = () => {
   const navigate = useNavigate();
 
   const [type, setType] = useState<string>(interviewType[0])
-  const [interviewChecksPending, setInterviewChecksPending] = useState<InterviewCheckResponse[]>([]);
-  const [interviewChecksDone, setInterviewChecksDone] = useState<InterviewResponse[]>([]);
-  const [interviewTestsPending, setInterviewTestsPending] = useState<InterviewResponse[]>([]);
-  const [interviewTestsDone, setInterviewTestsDone] = useState<InterviewResponse[]>([]);
+  const [interviewChecksPending, setInterviewChecksPending] = useState<EvaluationResponse[]>([]);
+  const [interviewChecksDone, setInterviewChecksDone] = useState<EvaluationResponse[]>([]);
+  const [interviewTestsPending, setInterviewTestsPending] = useState<EvaluationResponse[]>([]);
+  const [interviewTestsDone, setInterviewTestsDone] = useState<EvaluationResponse[]>([]);
   const [showInterviewReport, setShowInterviewReport] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
@@ -50,37 +48,30 @@ const ProfessorInterview = () => {
     }
   }
   const handleCloseInterviewReport = () => setShowInterviewReport(false);
-  const handleShowInterviewReport = (interviewTest: InterviewResponse) => {
+  const handleShowInterviewReport = (interviewTest: EvaluationResponse) => {
     navigate("/evaluation", { state: { interviewTest: interviewTest } })
-    // setShowInterviewReport(true) 
   };
 
 
 
   useEffect(() => {
-    fetchTestInterview();
-    fetchCheckInterview();
+    fetchData();
   }, [candidate, type])
 
-  async function fetchTestInterview() {
-    const res = await axios.get(`/getEvaluationSessionByProfessor?professorId=${user?.id}`);
-    const data = await res?.data.data;
-    setInterviewTestsPending(data.filter((e: InterviewResponse) => e.status === "PENDING" && e.type === "TEST"));
-    setInterviewTestsDone(data.filter((e: InterviewResponse) => e.status === "DONE" && e.type === "TEST"));
-  }
-
-  async function fetchCheckInterview() {
+  async function fetchData() {
     const response = await axios.get(`/getEvaluationSessionByProfessor?professorId=${user?.id}`);
     const dataRes = await response?.data.data;
-    setInterviewChecksPending(dataRes.filter((e: InterviewCheckResponse) => e.status === "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
-    setInterviewChecksDone(dataRes.filter((e: InterviewCheckResponse) => e.status !== "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
+    setInterviewChecksPending(dataRes.filter((e: EvaluationResponse) => e.status === "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
+    setInterviewChecksDone(dataRes.filter((e: EvaluationResponse) => e.status !== "DONE" && e.type === "CHECK_CANDIDATE_COURSE"));
+    setInterviewTestsPending(dataRes.filter((e: EvaluationResponse) => e.status === "PENDING" && e.type === "TEST"));
+    setInterviewTestsDone(dataRes.filter((e: EvaluationResponse) => e.status === "DONE" && e.type === "TEST"));
   }
 
 
   const handlePassCourse = async (evaluationSessionId: number) => {
     await axios.put(`/updatePassEvaluationSession?evaluationSessionId=${evaluationSessionId}`).then(async function (res) {
       if (res.data.status == "SUCCESS") {
-        fetchCheckInterview();
+        fetchData();
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
       }
@@ -90,7 +81,7 @@ const ProfessorInterview = () => {
   const handleFailCourse = async (evaluationSessionId: number) => {
     await axios.put(`/updateNotPassEvaluationSession?evaluationSessionId=${evaluationSessionId}`).then(async function (res) {
       if (res.data.status == "SUCCESS") {
-        fetchCheckInterview();
+        fetchData();
         setMessage("Evaluate successfuly!");
         setMessageStatus("green");
       }
@@ -171,12 +162,12 @@ const ProfessorInterview = () => {
   const tableRenderCheckDone = () => {
     const rows = interviewChecksDone?.length > 0 ? interviewChecksDone?.map((item) => ({
       id: item.id,
-      candidateId: item.candidateId,
+      candidateId: item.candidateResponse.id,
       link: item.linkMeeting,
-      title: item.purpose,
+      title: item.title,
       date: item.date,
       slot: item.slot,
-      courseId: item.tempId,
+      courseId: item.candidateCourse.id,
       status: item.status
     })) : [];
 
@@ -217,17 +208,19 @@ const ProfessorInterview = () => {
     const rows = interviewTestsPending?.length > 0 ? interviewTestsPending?.map((item) => ({
       item: item,
       id: item.id,
-      candidateId: item.candidateId,
+      title: item.title,
+      candidateName: item.candidateResponse.name,
+      specialtyName: item.specialty.name,
       link: item.linkMeeting,
-      title: item.purpose,
       date: item.date,
-      slot: item.slot,
-      specialtyId: item.tempId
+      slot: item.slot
     })) : [];
 
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
+      { field: "candidateName", headerName: "Candidate", flex: 1.2 },
+      { field: "specialtyName", headerName: "Specialty", flex: 1.2 },
       {
         field: 'link',
         headerName: 'Link',
@@ -264,13 +257,14 @@ const ProfessorInterview = () => {
 
   const tableRenderTestDone = () => {
     const rows = interviewTestsDone?.length > 0 ? interviewTestsDone?.map((item) => ({
+      item: item,
       id: item.id,
-      candidateId: item.candidateId,
+      title: item.title,
+      candidateName: item.candidateResponse.name,
+      specialtyName: item.specialty.name,
       link: item.linkMeeting,
-      title: item.purpose,
       date: item.date,
-      slot: item.slot,
-      specialtyId: item.tempId
+      slot: item.slot
     })) : [];
 
     const columns: GridColDef[] = [
@@ -329,7 +323,7 @@ const ProfessorInterview = () => {
       updateInterviewDone(interviewId);
       handleCloseInterviewReport();
     }
-    fetchTestInterview();
+    fetchData();
   }
 
   return (

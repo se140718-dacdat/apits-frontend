@@ -8,7 +8,7 @@ import axios from "../../../api/axios";
 import { InterviewResponse } from "../../../entity";
 import "./CandidateInterview.css";
 import { useParams } from "react-router-dom";
-import { InterviewCheckResponse } from "../../../Models";
+import { EvaluationResponse } from "../../../Models";
 
 const interviewType = [
     "CHECK",
@@ -22,7 +22,7 @@ const CandidateInterview = () => {
 
 
     const [type, setType] = useState<string>(interviewType[0])
-    const [interviewChecks, setInterviewChecks] = useState<InterviewCheckResponse[]>([]);
+    const [interviewChecks, setInterviewChecks] = useState<EvaluationResponse[]>([]);
     const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
     const [interviewHires, setInterviewHires] = useState<InterviewResponse[]>([]);
 

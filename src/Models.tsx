@@ -1,7 +1,7 @@
-import { CreatorEntity, SkillSelect } from "./entity";
+import { CreatorEntity } from "./entity";
 import { Employee } from "./model";
 
-export interface Specialty {
+export interface SpecialtyOnly {
     id: number;
     name: string;
     status: string;
@@ -184,7 +184,7 @@ export interface PostSkill {
     level: number;
 }
 
-export interface InterviewCheckResponse {
+export interface EvaluationResponse {
     id: number;
     type: string;
     title: string;
@@ -193,21 +193,10 @@ export interface InterviewCheckResponse {
     slot: string;
     status: string;
     result: string;
-    professor: Employee
-    candidateCourse: CandidateCourse
-}
-
-export interface InterviewTestResponse {
-    id: number;
-    type: string;
-    title: string;
-    linkMeeting: string;
-    date: string;
-    slot: string;
-    status: string;
-    result: string;
-    professor: Employee
-    candidateCourse: CandidateCourse
+    professor: Employee;
+    candidateCourse: CandidateCourse;
+    specialty: SpecialtyOnly;
+    candidateResponse: Candidate;
 }
 
 export interface CandidateCourse {

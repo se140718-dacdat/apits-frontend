@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import "./ProfessorReport.css";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../../../../api/axios';
 import { CandidateSkillDetail, CandidateUpdateSkillLevel } from '../../../../Models';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Button, Modal } from 'react-bootstrap';
 
 const ProfessorReport = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+
 
     const [specialty, setSpecialty] = useState<CandidateSkillDetail>();
     const [skills, setSkills] = useState<CandidateUpdateSkillLevel[]>([]);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
 
     useEffect(() => {
         fetchData();
+        console.log(specialty)
     }, [])
 
     useEffect(() => {
@@ -21,9 +29,21 @@ const ProfessorReport = () => {
     }, [skills])
 
     async function fetchData() {
-        const res = await axios.get(`/specialization/getDetailSpecializationWithoutExperience?specialtyId=${2}`);
+        const res = await axios.get(`/specialization/getDetailSpecializationWithoutExperience?specialtyId=${location.state.interviewTest.specialty.id}`);
         const data = await res?.data.data;
         setSpecialty(data);
+    }
+
+    const handleEvaluate = async () => {
+        const request = {
+            candidateId: location.state.interviewTest.candidateResponse.id,
+            skillLevels: skills
+        }
+        await axios.put("/candidate-skillLevel/setListSkillLevelCandidateByDONE", request).then(async function (res) {
+            if (res.data.status == "SUCCESS") {
+                navigate("/professor-interview")
+            }
+        })
     }
 
 
@@ -51,16 +71,19 @@ const ProfessorReport = () => {
         <div id='ProfessorReport'>
             <div className="header">
                 <h2>Evaluation Report</h2>
-                <span className='specialty'>Frontend Developer</span>
+                <span className='specialty'>{specialty?.name}</span>
             </div>
             <div className="evaluation-container">
                 <div className="col-left">
-                    <h4>List of skills evaluated</h4>
+                    <div className='col-left-header'>
+                        <h4>List of skills evaluated</h4>
+                        <button className='btn' onClick={handleShow}>Report</button>
+                    </div>
                     <ul>
                         {
                             skills.map((skill) => {
                                 const tmp = specialty?.skills.find((e) => e.id === skill.skillId)
-                                if(skill.level !== 0) {
+                                if (skill.level !== 0) {
                                     return (
                                         <li key={tmp?.id}>
                                             <div>
@@ -70,7 +93,7 @@ const ProfessorReport = () => {
                                             <div className='level-selected'>Level {skill.level}</div>
                                         </li>
                                     )
-                                }                                
+                                }
                             })
                         }
                     </ul>
@@ -107,9 +130,22 @@ const ProfessorReport = () => {
                             )
                         })
                     }
-
                 </div>
             </div>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Evaluation Session</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to evaluate it?</Modal.Body>
+                <Modal.Footer>
+                    <Button className='button-close' onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button onClick={handleEvaluate}>
+                        Evaluate
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

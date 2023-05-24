@@ -33,6 +33,10 @@ const ViewAssign = () => {
         fetchData();
     }, [])
 
+    useEffect(() => {
+        fetchData();
+    }, [select])
+
     async function fetchData() {
         const response = await axios.get(`/apply/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
         setCandidates(response.data.data);
