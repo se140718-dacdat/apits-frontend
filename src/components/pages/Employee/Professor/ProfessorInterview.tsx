@@ -99,20 +99,21 @@ const ProfessorInterview = () => {
     console.log(interviewChecksPending)
     const rows = interviewChecksPending?.length > 0 ? interviewChecksPending?.map((item) => ({
       id: item.id,
-      candidate: item.candidateCourse.candidate,
-      candidateName: item.candidateCourse.candidate.name,
+      candidate: item.candidateResponse,
+      candidateName: item.candidateResponse.name,
       link: item.linkMeeting,
       title: item.title,
       date: item.date,
       slot: item.slot,
       course: item.candidateCourse.course,
-      candidateCourse: item.candidateCourse
+      candidateCourse: item.candidateCourse.course.name
     })) : [];
 
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "candidateName", headerName: "ID", flex: 1.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
+      { field: "candidateCourse", headerName: "Course", flex: 0.8 },
       {
         field: 'link',
         headerName: 'Link',

@@ -195,8 +195,8 @@ export interface EvaluationResponse {
     result: string;
     professor: Employee;
     candidateCourse: CandidateCourse;
-    specialty: SpecialtyOnly;
     candidateResponse: Candidate;
+    specialty: SpecialtyOnly;
 }
 
 export interface CandidateCourse {

@@ -88,7 +88,7 @@ const App: FC = () => {
         <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
         <Route path='/enterprise-contract' element={<EnterpriseContract />}></Route>;
         <Route path='/candidate-view-assign' element={<CandidateViewAssign />}></Route>;
-        <Route path='/professor-interview' element={<ProfessorInterview />}></Route>;
+        <Route path='/professor-evaluation' element={<ProfessorInterview />}></Route>;
         <Route path='/candidate-interview' element={<CandidateInterview />}></Route>;
         <Route path='/enterprise-interview' element={<EnterpriseInterview />}></Route>;
         <Route path='/evaluation' element={<ProfessorReport />}></Route>;
