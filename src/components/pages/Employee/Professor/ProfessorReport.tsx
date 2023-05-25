@@ -37,6 +37,7 @@ const ProfessorReport = () => {
     const handleEvaluate = async () => {
         const request = {
             candidateId: location.state.interviewTest.candidateResponse.id,
+            specialtyId: location.state.interviewTest.specialty.id,
             skillLevels: skills
         }
         await axios.put("/candidate-skillLevel/setListSkillLevelCandidateByDONE", request).then(async function (res) {

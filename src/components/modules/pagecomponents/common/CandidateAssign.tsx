@@ -71,12 +71,12 @@ const CandidateAssign = () => {
     }
   ];
 
-  const rows = candidates.map((candidate) => ({
+  const rows = candidates !== null ? candidates?.map((candidate) => ({
     id: candidate.id.toString(),
     name: candidate.name,
     gender: candidate.gender,
     address: candidate.address,
-  }));
+  })) : [];
 
   return (
     <div style={{ height: 400, width: "100%" }}>
