@@ -41,7 +41,11 @@ const ProfessorReport = () => {
         }
         await axios.put("/candidate-skillLevel/setListSkillLevelCandidateByDONE", request).then(async function (res) {
             if (res.data.status == "SUCCESS") {
-                navigate("/professor-evaluation")
+                await axios.put(`/updatePassEvaluationSession?evaluationSessionId=${location.state.interviewTest.id}`).then(async function (res) {
+                    if (res.data.status == "SUCCESS") {
+                        navigate("/professor-evaluation")
+                    }
+                })
             }
         })
     }

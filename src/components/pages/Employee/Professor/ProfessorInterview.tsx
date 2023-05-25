@@ -56,13 +56,14 @@ const ProfessorInterview = () => {
 
   useEffect(() => {
     fetchData();
+    console.log(interviewChecksPending)
   }, [candidate, type])
 
   async function fetchData() {
     const response = await axios.get(`/getEvaluationSessionByProfessor?professorId=${user?.id}`);
     const dataRes = await response?.data.data;
     setInterviewChecksPending(dataRes.filter((e: EvaluationResponse) => e.status === "PENDING" && e.type === "CHECK_CANDIDATE_COURSE"));
-    setInterviewChecksDone(dataRes.filter((e: EvaluationResponse) => e.status !== "DONE" && e.type === "CHECK_CANDIDATE_COURSE"));
+    setInterviewChecksDone(dataRes.filter((e: EvaluationResponse) => e.status === "DONE" && e.type === "CHECK_CANDIDATE_COURSE"));
     setInterviewTestsPending(dataRes.filter((e: EvaluationResponse) => e.status === "PENDING" && e.type === "TEST"));
     setInterviewTestsDone(dataRes.filter((e: EvaluationResponse) => e.status === "DONE" && e.type === "TEST"));
   }
@@ -96,7 +97,6 @@ const ProfessorInterview = () => {
   }
 
   const tableRenderCheck = () => {
-    console.log(interviewChecksPending)
     const rows = interviewChecksPending?.length > 0 ? interviewChecksPending?.map((item) => ({
       id: item.id,
       candidate: item.candidateResponse,
@@ -163,26 +163,20 @@ const ProfessorInterview = () => {
   const tableRenderCheckDone = () => {
     const rows = interviewChecksDone?.length > 0 ? interviewChecksDone?.map((item) => ({
       id: item.id,
-      candidateId: item.candidateResponse.id,
-      link: item.linkMeeting,
+      candidate: item.candidateResponse.name,
+      course: item.candidateCourse.course.name,
       title: item.title,
       date: item.date,
       slot: item.slot,
-      courseId: item.candidateCourse.id,
-      status: item.status
+      status: item.status,
+      result: item.result
     })) : [];
 
     const columns: GridColDef[] = [
       { field: "id", headerName: "ID", flex: 0.2 },
       { field: "title", headerName: "Title", flex: 1.2 },
-      {
-        field: 'link',
-        headerName: 'Link',
-        flex: 1.2,
-        renderCell: (params) => (
-          <a href={params.row.link}>{params.row.link}</a>
-        )
-      },
+      { field: "candidate", headerName: "Candidate", flex: 0.8 },
+      { field: "course", headerName: "Course", flex: 0.8 },
       { field: "date", headerName: "Date", flex: 0.8 },
       { field: "slot", headerName: "Slot", flex: 0.8 },
       {
@@ -191,7 +185,7 @@ const ProfessorInterview = () => {
         flex: 0.5,
         width: 170,
         renderCell: (params) => (
-          (params.row.status == "DONE")
+          (params.row.result == "PASSED")
             ? <strong style={{ color: "green" }}>PASS</strong>
             : <strong style={{ color: "red" }}>FAIL</strong>
         ),

@@ -77,7 +77,11 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   }
 
   const getSlot = async (id: number) => {
-    await axios.get(`/getListSlotByProfessorInDate?professorId=${id}&date=${moment(date?.toString()).format('YYYY-MM-DD')}`).then((res) => {
+    const request = {
+      professorId: id,
+      date: moment(date?.toString()).format('YYYY-MM-DD')
+    }
+    await axios.put("/getByProfessorAndDate", request).then((res) => {
       setSlotExist(res.data.data);
     })
   }
