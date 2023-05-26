@@ -58,3 +58,53 @@
     flex-wrap: wrap;
     justify-content: flex-start;
 }
+
+#CandidateDetail .item {
+    width: 100%;
+    display: flex;
+    margin: 8px 0;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#CandidateDetail .item-name {
+    width: 70%;
+    margin-left: 12px;
+    text-transform: capitalize;
+}
+
+#CandidateDetail .item-icon {
+    width: 32px;
+    height: 32px;
+    color: #5DC26A;
+}
+
+#CandidateDetail .item-level,
+#CandidateDetail .icon-check {
+    margin-left: auto;
+    order: 2;
+}
+
+#CandidateDetail .item-level {
+    position: absolute;
+    right: 0px;
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
+    margin-right: 24px;
+}
+
+#CandidateDetail .item-level:hover {
+    text-decoration: none !important;
+}
+
+
+#CandidateDetail .item-level:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

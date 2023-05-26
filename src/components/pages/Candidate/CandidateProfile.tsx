@@ -11,12 +11,12 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 import { formatDateMonthYear, getCVName } from '../../../convert';
-import { CandidateSkill, PersonalExperience } from '../../../model';
+import { PersonalExperience } from '../../../model';
 import "./CandidateProfile.css";
 import moment from 'moment';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import { openNewTab } from '../../../handle';
-import { CandidateCurrentSpecialty } from '../../../Models';
+import { CandidateCurrentSpecialty, CandidateSkillLevel } from '../../../Models';
 
 
 export const CandidateProfile: FC = () => {
@@ -28,8 +28,7 @@ export const CandidateProfile: FC = () => {
     const [showExperience, setShowExperience] = useState(false);
     const [showCertificate, setShowCertificate] = useState(false);
     const [specialties, setSpecialties] = useState<CandidateCurrentSpecialty[]>([]);
-    const [specialty, setSpecialty] = useState<CandidateCurrentSpecialty>();
-    const [skills, setSkills] = useState<CandidateSkill[]>([]);
+    const [skills, setSkills] = useState<CandidateSkillLevel[]>([]);
     const [from, setFrom] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [to, setTo] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
     const [issuedTime, setIssuedTime] = React.useState<Dayjs | null>(dayjs(now.toLocaleDateString()));
@@ -49,21 +48,19 @@ export const CandidateProfile: FC = () => {
         fetchData();
     }, [])
 
-    // useEffect(() => {
-    //     getSkills();
-    // }, [specialty])
-
     async function fetchData() {
         await axios.get(`/candidate-level/getListCurrentExpCandidate?candidateId=${user?.id}`).then(async (res) => {
             const data = await res?.data.data;
             setSpecialties(data);
-            console.log(data)
-            setSpecialty(data[0]);
         });
         await axios.get(`/candidate/getAllPersonalExperience?candidateId=${user?.id}`).then(async (res) => {
             const data = await res?.data.data;
             console.log(data)
             setExperiences(data);
+        })
+        await axios.get(`/candidate-skillLevel/getListSkillLevelDONEByCandidate?candidateId=${user?.id}`).then(async (res) => {
+            const data = await res?.data.data;
+            setSkills(data);
         })
     }
 
@@ -71,17 +68,8 @@ export const CandidateProfile: FC = () => {
         openNewTab(url);
     };
 
-    // async function getSkills() {
-    //     const response = await axios.get(`/candidate-skill-level/getListSkillWithCurrentLevelByCandidateId?candidateId=${user?.id}&specialtyId=${specialty?.specialtyId}`);
-    //     setSkills(response.data.data);
-    // }
-
     const handleCloseExperience = () => setShowExperience(false);
     const handleShowExperience = () => setShowExperience(true);
-
-    const handleSelect = (e: CandidateCurrentSpecialty) => {
-        setSpecialty(e);
-    }
 
     const handleAddExperience = async () => {
         const request = {
@@ -187,39 +175,41 @@ export const CandidateProfile: FC = () => {
                 <div className="right">
                     <div className="profile-input">
                         <div className="profile-header flex-space-between">
-                            <Dropdown>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    <span className="category-name">{specialty?.name}   <strong>{specialty?.experience}</strong></span>
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    {
-                                        specialties.map((specialty, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <Dropdown.Item onClick={() => { handleSelect(specialty) }}>{specialty.name}   <strong style={{ color: "var(--primary-color)" }}>{specialty?.experience}</strong></Dropdown.Item>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            <div className="profile-header-name">{specialty?.status}</div>
+                            <div className="profile-header-name">Specialties</div>
                         </div>
                         <div className="profile-body verification">
-                            {/* {
+                            {
+                                specialties?.map((specialty) => {
+                                    return (
+                                        <div className="item" key={specialty.id}>
+                                            <strong className='item-name' style={{fontSize: "1  rem"}}>{specialty.name}</strong>
+                                            <span className='item-level'>{specialty.experience}</span>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+
+                    <div className="profile-input">
+                        <div className="profile-header flex-space-between">
+                            <div className="profile-header-name">Skills</div>
+                        </div>
+                        <div className="profile-body verification">
+                            {
                                 skills?.map((skill) => {
                                     return (
                                         <div className="item" key={skill.id}>
                                             <img src={skill.image} alt="" className='item-icon' />
                                             <strong className='item-name'>{skill.name}</strong>
-                                            <span className='item-level'>{skill.level.name}</span>
+                                            <span className='item-level'>Level {skill.levels[skill.levels.length - 1].level}</span>
                                         </div>
                                     )
                                 })
-                            } */}
+                            }
                         </div>
                     </div>
+
                     <div className="profile-input">
                         <div className="profile-header">
                             <div className="profile-header-name">Description</div>

@@ -12,8 +12,7 @@ import { EvaluationResponse } from "../../../Models";
 
 const interviewType = [
     "CHECK",
-    "TEST",
-    "HIRE"
+    "TEST"
 ]
 
 const CandidateInterview = () => {
@@ -29,7 +28,6 @@ const CandidateInterview = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(id)
     }, [])
 
     async function fetchData() {

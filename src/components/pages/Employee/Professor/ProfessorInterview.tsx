@@ -37,6 +37,7 @@ const ProfessorInterview = () => {
   const [checkedCourses, setCheckedCourses] = useState<string[]>([]);
   const [reportStatus, setReportStatus] = useState<boolean>(true);
   const [interviewId, setInterviewId] = useState<number>();
+  const [evaluationTest, setEvaluationTest] = useState<EvaluationResponse>();
 
 
   const handleCheckboxChange = (event: any) => {
@@ -48,7 +49,9 @@ const ProfessorInterview = () => {
     }
   }
   const handleCloseInterviewReport = () => setShowInterviewReport(false);
-  const handleShowInterviewReport = (interviewTest: EvaluationResponse) => {
+  const handleShowInterviewReport = () => setShowInterviewReport(true);
+
+  const handleReportTest = (interviewTest: EvaluationResponse) => {
     navigate("/evaluation", { state: { interviewTest: interviewTest } })
   };
 
@@ -235,7 +238,7 @@ const ProfessorInterview = () => {
           <Button variant="contained" color="warning" onClick={() => {
             getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
             setInterviewId(params.row.id)
-            handleShowInterviewReport(params.row.item);
+            handleReportTest(params.row.item);
           }}>
             Report
           </Button>
@@ -283,7 +286,8 @@ const ProfessorInterview = () => {
         renderCell: (params) => (
           <Button variant="contained" color="warning" onClick={() => {
             getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
-            // handleShowInterviewReport();
+            setEvaluationTest(params.row.item);
+            handleShowInterviewReport();
           }}>
             Detail
           </Button>
@@ -366,12 +370,12 @@ const ProfessorInterview = () => {
       </div>
       <Modal id="InterviewCreateModal" show={showInterviewReport} onHide={handleCloseInterviewReport}>
         <Modal.Header closeButton>
-          <Modal.Title>Interview Report</Modal.Title>
+          <Modal.Title>Evaluation Detail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="candidate-container">
             <strong>Candidate:</strong>
-            <h3>{candidate?.name}</h3>
+            <h3>{evaluationTest?.candidateResponse.name}</h3>
           </div>
           <h4>{candidate?.specialty.name}</h4>
           <div>
@@ -417,7 +421,7 @@ const ProfessorInterview = () => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn" onClick={() => { handleReport() }}>Report</button>
+          <button className="btn" onClick={() => { handleCloseInterviewReport() }}>Close</button>
         </Modal.Footer>
       </Modal>
     </div>

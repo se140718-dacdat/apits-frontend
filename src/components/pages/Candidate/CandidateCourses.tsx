@@ -226,7 +226,7 @@ const CandidateCourse = () => {
             case "INTERVIEW":
                 return (
                     <Button variant="primary" onClick={() => {
-                        navigate("/candidate-interview");
+                        navigate("/candidate-evaluating");
                         handleCloseCourse();
                     }}>
                         View Interview

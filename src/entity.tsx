@@ -171,6 +171,7 @@ export interface CandidateAssignRow {
     enterpriseName: string;
     deadline: string;
     recruitmentId: number;
+    expired: number;
 }
 
 

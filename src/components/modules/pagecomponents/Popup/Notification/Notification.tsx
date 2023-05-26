@@ -86,19 +86,19 @@ const Notification = () => {
                 <Popover id={`popover-positioned-bottom`} className='notification-popup-cover' style={{ minWidth: "250px" }}>
                     <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
                     <Popover.Body className='notification-body'>
-                        {/* {
-                            notifications?.map((notification) => {
-                                const arr = notification.content.split("\n", notification.content.length)
+                        {
+                            notifications !== undefined && notifications?.map((notification) => {
+                                const arr = notification?.content?.split("\n", notification.content.length)
                                 return (
                                     <div className={`notification-popup-item ${notification.read ? "opacity-5" : ""}`} key={notification.id} onClick={() => { handleClick(notification) }}>
                                         <strong>{notification.title}</strong>
                                         <br></br>
                                         {
-                                            (arr.length < 1)
+                                            (arr !== undefined &&  arr?.length < 1)
                                                 ?
                                                 (<div><span>You don't have any notifications</span></div>)
                                                 :
-                                                arr.map((str, index) => {
+                                                arr?.map((str, index) => {
                                                     return (
                                                         <div key={index}>
                                                             <span>{str}</span>
@@ -110,7 +110,7 @@ const Notification = () => {
                                     </div>
                                 )
                             })
-                        } */}
+                        }
                     </Popover.Body>
                 </Popover>
             }

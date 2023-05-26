@@ -10,6 +10,8 @@ import "./ViewAssign.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 
 const AssignStatus = [
     "Confirmed",
@@ -19,9 +21,14 @@ const AssignStatus = [
 ]
 
 const ViewAssign = () => {
+    const user = useSelector((state: any) => state.user.user.user);
     const { id } = useParams();
+
     const [open, setOpen] = useState(false);
     const [select, setSelect] = useState<string>(AssignStatus[0]);
+    const [message, setMessage] = useState<string>('');
+    const [messageStatus, setMessageStatus] = useState('');
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -38,7 +45,16 @@ const ViewAssign = () => {
     }, [select])
 
     async function fetchData() {
-        const response = await axios.get(`/apply/getListCandidateConfirmByRRId?recruitment_request_id=${id}`);
+        let url = ""
+        switch (select) {
+            case "Confirmed":
+                url = "getListCandidateConfirmByRRId"
+                break;
+            default:
+                url = "getListCandidateEVALUATINGByRRId"
+                break;
+        }
+        const response = await axios.get(`/apply/${url}?recruitment_request_id=${id}`);
         setCandidates(response.data.data);
     }
 
@@ -57,74 +73,177 @@ const ViewAssign = () => {
     };
 
     const handleApprove = async (assignId: number) => {
-        await axios.put(`/apply/approvedByEnterprise?id=${assignId}`).then((res) => {
+        await axios.put(`/apply/approvedByEnterprise?id=${assignId}&enterpriseId=${user?.id}`).then((res) => {
             if (res.data.status === "SUCCESS") {
+                setMessage("Approve candidate successfully!")
+                setMessageStatus("green")
                 fetchData();
             }
         })
     }
 
-    const handleReject = (assignId: number, candidateId: number) => {
-        rejectCandidate(assignId, candidateId)
-        fetchData();
+    const handleReject = async (assignId: number) => {
+        await axios.put(`/apply/rejectedByEnterprise?id=${assignId}&enterpriseId=${user?.id}`).then((res) => {
+            if (res.data.status === "SUCCESS") {
+                setMessage("Reject candidate successfully!")
+                setMessageStatus("green")
+                fetchData();
+            }
+        })
     }
 
-    const columns: GridColDef[] = [
-        { field: "id", headerName: "ID", flex: 0.2 },
-        { field: "name", headerName: "Name", flex: 0.8 },
-        { field: "gender", headerName: "Gender", flex: 0.5 },
-        { field: "address", headerName: "Address", flex: 1.2 },
-        {
-            field: 'reject',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-                <Button variant="contained" color="error" onClick={() => { handleReject(params.row.assignId, params.row.id) }}>
-                    Reject
-                </Button>
-            ),
-        },
-        {
-            field: 'approve',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-                <Button variant="contained" color="success" onClick={() => { handleApprove(params.row.assignId) }}>
-                    Approve
-                </Button>
-            ),
-        }
-        ,
-        {
-            field: 'detail',
-            headerName: '',
-            flex: 0.5,
-            width: 170,
-            renderCell: (params) => (
-                <Button variant="contained" color="primary" onClick={() => {
-                    setCandidate(params.row.candidate);
-                    handleOpen();
-                }
-                }>
-                    Detail
-                </Button>
-            ),
-        },
-    ];
+    const handleWinApply = async (assignId: number) => {
+        await axios.put(`/apply/winApply?id=${assignId}`).then((res) => {
+            if (res.data.status === "SUCCESS") {
+                setMessage("Evaluate successfully!")
+                setMessageStatus("green")
+                fetchData();
+            }
+        })
+    }
 
-    const rows = candidates?.length > 0 ? candidates?.map((candidate) => ({
-        id: candidate.candidateResponse.id,
-        name: candidate.candidateResponse.name,
-        gender: candidate.candidateResponse.gender,
-        address: candidate.candidateResponse.address,
-        assignId: candidate.assignId,
-        candidate: candidate
-    })) : [];
+    const tableRender = () => {
+        switch (select) {
+            case "Evaluating":
+                const columnsEvaluating: GridColDef[] = [
+                    { field: "id", headerName: "ID", flex: 0.2 },
+                    { field: "name", headerName: "Name", flex: 0.8 },
+                    { field: "gender", headerName: "Gender", flex: 0.5 },
+                    { field: "address", headerName: "Address", flex: 1.2 },
+                    {
+                        field: 'fail',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="error" onClick={() => { handleReject(params.row.assignId) }}>
+                                Fail
+                            </Button>
+                        ),
+                    },
+                    {
+                        field: 'pass',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="success" onClick={() => { handleWinApply(params.row.assignId) }}>
+                                Pass
+                            </Button>
+                        ),
+                    }
+                    ,
+                    {
+                        field: 'detail',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="primary" onClick={() => {
+                                setCandidate(params.row.candidate);
+                                handleOpen();
+                            }
+                            }>
+                                Detail
+                            </Button>
+                        ),
+                    },
+                ];
+
+                const rowsEvaluating = candidates?.length > 0 ? candidates?.map((candidate) => ({
+                    id: candidate.candidateResponse.id,
+                    name: candidate.candidateResponse.name,
+                    gender: candidate.candidateResponse.gender,
+                    address: candidate.candidateResponse.address,
+                    assignId: candidate.assignId,
+                    candidate: candidate
+                })) : [];
+
+                return (
+                    <div style={{ height: 400, width: "100%" }}>
+                        <DataGrid rows={rowsEvaluating}
+                            columns={columnsEvaluating}
+                            autoPageSize
+                            pagination
+                            checkboxSelection />
+                    </div>
+                )
+
+            default:
+                const columns: GridColDef[] = [
+                    { field: "id", headerName: "ID", flex: 0.2 },
+                    { field: "name", headerName: "Name", flex: 0.8 },
+                    { field: "gender", headerName: "Gender", flex: 0.5 },
+                    { field: "address", headerName: "Address", flex: 1.2 },
+                    {
+                        field: 'reject',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="error" onClick={() => { handleReject(params.row.assignId) }}>
+                                Reject
+                            </Button>
+                        ),
+                    },
+                    {
+                        field: 'approve',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="success" onClick={() => { handleApprove(params.row.assignId) }}>
+                                Approve
+                            </Button>
+                        ),
+                    }
+                    ,
+                    {
+                        field: 'detail',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="primary" onClick={() => {
+                                setCandidate(params.row.candidate);
+                                handleOpen();
+                            }
+                            }>
+                                Detail
+                            </Button>
+                        ),
+                    },
+                ];
+
+                const rows = candidates?.length > 0 ? candidates?.map((candidate) => ({
+                    id: candidate.candidateResponse.id,
+                    name: candidate.candidateResponse.name,
+                    gender: candidate.candidateResponse.gender,
+                    address: candidate.candidateResponse.address,
+                    assignId: candidate.assignId,
+                    candidate: candidate
+                })) : [];
+
+                return (
+                    <div style={{ height: 400, width: "100%" }}>
+                        <DataGrid rows={rows}
+                            columns={columns}
+                            autoPageSize
+                            pagination
+                            checkboxSelection />
+                    </div>
+                )
+        }
+    }
 
     return (
         <div>
+            {
+                message != '' ?
+                    <MessageBox status={messageStatus} message={message} setMessage={setMessage} title='inasd'></MessageBox>
+                    :
+                    null
+            }
             <div className="filter">
                 <div className="filter-form-input">
                     <div className="filter-input-icon">
@@ -152,13 +271,7 @@ const ViewAssign = () => {
                 </Dropdown>
                 <button className='btn-search ml-8'>Search</button>
             </div>
-            <div style={{ height: 400, width: "100%" }}>
-                <DataGrid rows={rows}
-                    columns={columns}
-                    autoPageSize
-                    pagination
-                    checkboxSelection />
-            </div>
+            {tableRender()}
             <Modal
                 open={open}
                 onClose={handleClose}

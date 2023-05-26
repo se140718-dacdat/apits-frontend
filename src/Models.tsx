@@ -222,6 +222,20 @@ export interface CandidateSkillLevel {
     status: string;
 }
 
+export interface CandidateSkillDetailOneLevelOnly {
+    id: number;
+    name: string;
+    skills: CandidateSkillOneLevelOnly[]
+}
+
+export interface CandidateSkillOneLevelOnly {
+    id: number;
+    name: string;
+    image: string;
+    level: number;
+    status: string;
+}
+
 export interface CandidateLevel {
     level: number;
     status: string;

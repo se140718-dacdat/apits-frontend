@@ -52,7 +52,8 @@ const CandidateViewAssign = () => {
     enterpriseName: assign?.recruitmentRequest.creator.name,
     deadline: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)} days left to apply` : "Expired",
     recruitmentId: assign.recruitmentRequest.id,
-    status: assign.status
+    status: assign.status,
+    expired: getDaysLeft(assign?.recruitmentRequest?.createAt, assign?.recruitmentRequest?.expiryDate)
   })) : [];
 
   const columns: GridColDef[] = [
@@ -82,7 +83,7 @@ const CandidateViewAssign = () => {
       flex: 0.8,
       width: 170,
       renderCell: (params) => (
-        (params.row.status !== "CONFIRM") ?
+        (params.row.status !== "CONFIRMED") ?
           <Button variant="contained" color="success" onClick={() => { handleConfirmAssign(params.row.id) }}>
             Confirm
           </Button>
@@ -104,7 +105,7 @@ const CandidateViewAssign = () => {
       <h2>List job for you</h2>
       <div style={{ height: 500, width: '100%' }}>
         <DataGrid
-          rows={rows}
+          rows={rows.filter((e) => e.expired > 0)}
           columns={columns}
           autoPageSize
           pagination
