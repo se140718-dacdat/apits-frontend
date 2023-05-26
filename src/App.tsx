@@ -83,7 +83,7 @@ const App: FC = () => {
         <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
         <Route path='/candidate-courses' element={<CandidateCourse />}></Route>;
-        <Route path='/evaluation' element={<InterviewList />}></Route>;
+        <Route path='/manager-evaluation' element={<InterviewList />}></Route>;
         <Route path='/contract' element={<HRContract />}></Route>;
         <Route path='/candidate-contract' element={<CandidateContract />}></Route>;
         <Route path='/enterprise-contract' element={<EnterpriseContract />}></Route>;

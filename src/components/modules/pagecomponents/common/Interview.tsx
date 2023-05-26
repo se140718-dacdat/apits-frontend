@@ -337,17 +337,22 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   }
 
   const handleCreateInterview = () => {
-    switch (type) {
-      case "CHECK":
-        handleCreateCheckInterview();
-        break;
-      case "TEST":
-        handleCreateTestInterview();
-        break;
-      default:
-        setMessage("Error")
-        setMessageStatus("red")
-        break;
+    if (professor) {
+      switch (type) {
+        case "CHECK":
+          handleCreateCheckInterview();
+          break;
+        case "TEST":
+          handleCreateTestInterview();
+          break;
+        default:
+          setMessage("Error")
+          setMessageStatus("red")
+          break;
+      }
+    } else {
+      setMessage("Error")
+      setMessageStatus("red")
     }
   }
 
