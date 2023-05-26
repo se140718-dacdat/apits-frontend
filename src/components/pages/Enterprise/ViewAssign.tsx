@@ -50,6 +50,9 @@ const ViewAssign = () => {
             case "Confirmed":
                 url = "getListCandidateConfirmByRRId"
                 break;
+            case "Approve":
+                url = "getListCandidateWINByRRId"
+                break;
             default:
                 url = "getListCandidateEVALUATINGByRRId"
                 break;
@@ -163,6 +166,59 @@ const ViewAssign = () => {
                     <div style={{ height: 400, width: "100%" }}>
                         <DataGrid rows={rowsEvaluating}
                             columns={columnsEvaluating}
+                            autoPageSize
+                            pagination
+                            checkboxSelection />
+                    </div>
+                )
+            case "Approve":
+                const columnsApprove: GridColDef[] = [
+                    { field: "id", headerName: "ID", flex: 0.2 },
+                    { field: "name", headerName: "Name", flex: 0.8 },
+                    { field: "gender", headerName: "Gender", flex: 0.5 },
+                    { field: "address", headerName: "Address", flex: 1.2 },
+                    {
+                        field: 'contract',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="info">
+                                Contract
+                            </Button>
+                        ),
+                    }
+                    ,
+                    {
+                        field: 'detail',
+                        headerName: '',
+                        flex: 0.5,
+                        width: 170,
+                        renderCell: (params) => (
+                            <Button variant="contained" color="primary" onClick={() => {
+                                setCandidate(params.row.candidate);
+                                handleOpen();
+                            }
+                            }>
+                                Detail
+                            </Button>
+                        ),
+                    },
+                ];
+
+                const rowsApprove = candidates?.length > 0 ? candidates?.map((candidate) => ({
+                    id: candidate.candidateResponse.id,
+                    name: candidate.candidateResponse.name,
+                    gender: candidate.candidateResponse.gender,
+                    address: candidate.candidateResponse.address,
+                    assignId: candidate.assignId,
+                    candidate: candidate
+                })) : [];
+
+                return (
+                    <div style={{ height: 400, width: "100%" }}>
+                        <DataGrid rows={rowsApprove}
+                            columns={columnsApprove}
                             autoPageSize
                             pagination
                             checkboxSelection />
