@@ -12,6 +12,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
+import { openNewTab } from '../../../handle';
 
 const AssignStatus = [
     "Confirmed",
@@ -60,6 +61,10 @@ const ViewAssign = () => {
         const response = await axios.get(`/apply/${url}?recruitment_request_id=${id}`);
         setCandidates(response.data.data);
     }
+
+    const handleLinkClick = (id: number) => {
+        openNewTab(`/candidate-detail/${id}`);
+      };
 
 
     const style = {
@@ -144,7 +149,7 @@ const ViewAssign = () => {
                         renderCell: (params) => (
                             <Button variant="contained" color="primary" onClick={() => {
                                 setCandidate(params.row.candidate);
-                                handleOpen();
+                                handleLinkClick(params.row.candidate.id)
                             }
                             }>
                                 Detail
@@ -154,12 +159,12 @@ const ViewAssign = () => {
                 ];
 
                 const rowsEvaluating = candidates?.length > 0 ? candidates?.map((candidate) => ({
-                    id: candidate.candidateResponse.id,
+                    id: candidate.assignId,
                     name: candidate.candidateResponse.name,
                     gender: candidate.candidateResponse.gender,
                     address: candidate.candidateResponse.address,
                     assignId: candidate.assignId,
-                    candidate: candidate
+                    candidate: candidate.candidateResponse
                 })) : [];
 
                 return (
@@ -197,7 +202,7 @@ const ViewAssign = () => {
                         renderCell: (params) => (
                             <Button variant="contained" color="primary" onClick={() => {
                                 setCandidate(params.row.candidate);
-                                handleOpen();
+                                handleLinkClick(params.row.candidate.id)
                             }
                             }>
                                 Detail
@@ -207,12 +212,12 @@ const ViewAssign = () => {
                 ];
 
                 const rowsApprove = candidates?.length > 0 ? candidates?.map((candidate) => ({
-                    id: candidate.candidateResponse.id,
+                    id: candidate.assignId,
                     name: candidate.candidateResponse.name,
                     gender: candidate.candidateResponse.gender,
                     address: candidate.candidateResponse.address,
                     assignId: candidate.assignId,
-                    candidate: candidate
+                    candidate: candidate.candidateResponse
                 })) : [];
 
                 return (
@@ -262,7 +267,7 @@ const ViewAssign = () => {
                         renderCell: (params) => (
                             <Button variant="contained" color="primary" onClick={() => {
                                 setCandidate(params.row.candidate);
-                                handleOpen();
+                                handleLinkClick(params.row.candidate.id)
                             }
                             }>
                                 Detail
@@ -272,12 +277,12 @@ const ViewAssign = () => {
                 ];
 
                 const rows = candidates?.length > 0 ? candidates?.map((candidate) => ({
-                    id: candidate.candidateResponse.id,
+                    id: candidate.assignId,
                     name: candidate.candidateResponse.name,
                     gender: candidate.candidateResponse.gender,
                     address: candidate.candidateResponse.address,
                     assignId: candidate.assignId,
-                    candidate: candidate
+                    candidate: candidate.candidateResponse
                 })) : [];
 
                 return (

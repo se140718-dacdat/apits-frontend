@@ -82,7 +82,12 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
       date: moment(date?.toString()).format('YYYY-MM-DD')
     }
     await axios.put("/getByProfessorAndDate", request).then((res) => {
-      setSlotExist(res.data.data);
+      if (res.data.data !== null) {
+        setSlotExist(res.data.data);
+      }
+      else {
+        setSlotExist([])
+      }
     })
   }
 
@@ -451,7 +456,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                 <select className="form-select select-duration" onChange={e => setSlot(e.target.value)}>
                   {
                     slots?.map((slot) =>
-                      (slotExist.includes(slot))
+                      (slotExist !== null && slotExist?.includes(slot))
                         ?
                         <option disabled value={slot}>{slot}</option>
                         :

@@ -36,9 +36,10 @@ const ProfessorReport = () => {
 
     const handleEvaluate = async () => {
         const request = {
+            evaluationSessionId: location.state.interviewTest.id,
             candidateId: location.state.interviewTest.candidateResponse.id,
             specialtyId: location.state.interviewTest.specialty.id,
-            skillLevels: skills
+            skillLevels: skills.filter((e) => e.level !== 0)
         }
         await axios.put("/candidate-skillLevel/setListSkillLevelCandidateByDONE", request).then(async function (res) {
             if (res.data.status == "SUCCESS") {
