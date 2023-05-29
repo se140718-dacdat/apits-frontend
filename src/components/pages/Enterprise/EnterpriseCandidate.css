@@ -1,0 +1,7 @@
+#EnterpriseCandidate {
+    padding: 2% 10% 5%;
+}
+
+#EnterpriseCandidate h2 {
+    color: var(--primary-color);
+}

@@ -1,4 +1,4 @@
-import { CreatorEntity } from "./entity";
+import { CreatorEntity, EmployeeEntity } from "./entity";
 import { Employee } from "./model";
 
 export interface SpecialtyOnly {
@@ -246,10 +246,37 @@ export interface CandidateUpdateSkillLevel {
     level: number;
 }
 
-// export interface ApplyResponse {
-//     id: number;
-//     date: string;
-//     status: string;
-//     recruitmentRequest: 
-// }
+export interface ApplyResponse {
+    applyId: number;
+    createAt: string;
+    recruitmentRequest: PostResponse;
+    candidate: Candidate;
+    status: string;
+    payment: boolean;
+}
+
+export interface EvaluatingResult {
+    evaluationSessionId: number;
+    candidate: Candidate;
+    listSkillLevels: SkillLevelReport[]
+}
+
+export interface SkillLevelReport {
+    skillId: number,
+    skillName: string,
+    image: string,
+    levelName: number,
+    status: string
+}
+
+export interface ApplyEntity {
+    id: number;
+    createAt: string;
+    status: string;
+    recruitmentRequest: PostResponse;
+    assigner: EmployeeEntity;
+    candidate: Candidate
+}
+
+
 

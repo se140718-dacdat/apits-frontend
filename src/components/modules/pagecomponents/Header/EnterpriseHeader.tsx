@@ -44,8 +44,9 @@ const EnterpriseHeader: FC<Props> = (props) => {
                             <Nav className="me-auto">
                                 <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                                 <Nav.Link className='navlink hover-primary' href="/enterprise-recruitment">Post</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/enterprise-interview">Interview</Nav.Link>
-                                <Nav.Link className='navlink hover-primary' href="/enterprise-contract">Contract</Nav.Link>
+                                {/* <Nav.Link className='navlink hover-primary' href="/enterprise-interview">Interview</Nav.Link> */}
+                                {/* <Nav.Link className='navlink hover-primary' href="/enterprise-contract">Contract</Nav.Link> */}
+                                <Nav.Link className='navlink hover-primary' href="/enterprise-candidate">Candidate</Nav.Link>
                             </Nav>
                             <Nav className='nav-right'>
                             <button className="navlink btn-add-post" onClick={()=>{navigate("/create-post")}}>

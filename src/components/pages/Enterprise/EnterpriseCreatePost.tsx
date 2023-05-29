@@ -294,7 +294,7 @@ const EnterpriseCreatePost = () => {
                                     {
                                         skills.map((skill: SkillSelect, key: number) =>
                                             <button key={key} className="btn-item item-minus" onClick={() => handleRemoveSkill(skill)}>
-                                                <span>{skill.skillName} level {skill.levelName}</span>
+                                                <span>{skill.skillName} Level {skill.levelName}</span>
                                                 <FontAwesomeIcon icon={faClose} />
                                             </button>
                                         )
@@ -329,7 +329,7 @@ const EnterpriseCreatePost = () => {
                                                             {
                                                                 skill.levels.map((level, index) => {
                                                                     return (
-                                                                        <Dropdown.Item onClick={() => handleSelectSkill(skill, level)} key={index}>{level.level}</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => handleSelectSkill(skill, level)} key={index}>Level {level.level}</Dropdown.Item>
                                                                     )
                                                                 })
                                                             }

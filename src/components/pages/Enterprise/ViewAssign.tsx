@@ -64,7 +64,7 @@ const ViewAssign = () => {
 
     const handleLinkClick = (id: number) => {
         openNewTab(`/candidate-detail/${id}`);
-      };
+    };
 
 
     const style = {
@@ -217,7 +217,7 @@ const ViewAssign = () => {
                     gender: candidate.candidateResponse.gender,
                     address: candidate.candidateResponse.address,
                     assignId: candidate.assignId,
-                    candidate: candidate.candidateResponse
+                    candidate: candidate.candidateResponse,
                 })) : [];
 
                 return (

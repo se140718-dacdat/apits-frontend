@@ -9,3 +9,47 @@
 .report-course * {
     margin-right: 18px;
 }
+
+#InterviewCreateModal .item {
+    display: flex;
+    margin: 24px 24px;
+    align-items: center;
+}
+
+#InterviewCreateModal .item-name {
+    margin-left: 12px;
+    text-transform: capitalize;
+}
+
+#InterviewCreateModal .item-icon {
+    width: 32px;
+    height: 32px;
+    color: #5DC26A;
+}
+
+#InterviewCreateModal .item-level,
+#InterviewCreateModal .icon-check {
+    margin-left: auto;
+    order: 2;
+}
+
+#InterviewCreateModal .item-level {
+    padding: 0 8px;
+    border-radius: 20px;
+    border: 1px solid #DEDEDE;
+    font-size: .8125rem;
+    line-height: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #75787d;
+}
+
+#InterviewCreateModal .item-level:hover {
+    text-decoration: none !important;
+}
+
+
+#InterviewCreateModal .item-level:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

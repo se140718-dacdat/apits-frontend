@@ -47,9 +47,10 @@ const EmployeeHeader: FC<Props> = (props) => {
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/employee-recruitment">Post</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/apply-management">Assign</Nav.Link>
+                        {/* <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link> */}
                         <Nav.Link className='navlink hover-primary' href="/enterprises">Enterprise</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/contract">Contract</Nav.Link>
+                        {/* <Nav.Link className='navlink hover-primary' href="/contract">Contract</Nav.Link> */}
                     </Nav>
                 )
             case "PROFESSOR":

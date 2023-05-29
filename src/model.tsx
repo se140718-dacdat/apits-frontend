@@ -27,7 +27,8 @@ export enum Status {
     Studying = "#2196f3",
     Processing = "#ffc107",
     Expired = "#f44336",
-    Done = "#4caf50"
+    Done = "#4caf50",
+    Primary = "var(--primary-color)"
 }
 
 export interface Login {

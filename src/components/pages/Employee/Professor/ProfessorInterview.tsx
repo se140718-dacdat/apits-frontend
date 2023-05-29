@@ -11,7 +11,7 @@ import "./ProfessorInterview.css";
 import { CandidateSpecialty } from "../../../../model";
 import { updateInterviewCancel, updateInterviewDone } from "../../../../redux/apiRequest";
 import { useNavigate } from "react-router-dom";
-import { EvaluationResponse } from "../../../../Models";
+import { EvaluatingResult, EvaluationResponse } from "../../../../Models";
 
 
 const interviewType = [
@@ -38,6 +38,7 @@ const ProfessorInterview = () => {
   const [reportStatus, setReportStatus] = useState<boolean>(true);
   const [interviewId, setInterviewId] = useState<number>();
   const [evaluationTest, setEvaluationTest] = useState<EvaluationResponse>();
+  const [report, setReport] = useState<EvaluatingResult>();
 
 
   const handleCheckboxChange = (event: any) => {
@@ -59,7 +60,6 @@ const ProfessorInterview = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(interviewChecksPending)
   }, [candidate, type])
 
   async function fetchData() {
@@ -69,6 +69,16 @@ const ProfessorInterview = () => {
     setInterviewChecksDone(dataRes.filter((e: EvaluationResponse) => e.status === "DONE" && e.type === "CHECK_CANDIDATE_COURSE"));
     setInterviewTestsPending(dataRes.filter((e: EvaluationResponse) => e.status === "PENDING" && e.type === "TEST"));
     setInterviewTestsDone(dataRes.filter((e: EvaluationResponse) => e.status === "DONE" && e.type === "TEST"));
+  }
+
+  async function getReport(id: number) {
+    await axios.get(`/candidate-skillLevel/getListCandidateSkillLevelByEvaluation?evaluationSessionId=${id}`).then(async (res) => {
+      if (res.data.status === "SUCCESS") {
+        setReport(await res.data.data);
+        handleShowInterviewReport();
+        console.log(report )
+      }
+    })
   }
 
 
@@ -285,9 +295,7 @@ const ProfessorInterview = () => {
         width: 170,
         renderCell: (params) => (
           <Button variant="contained" color="warning" onClick={() => {
-            getSpecialtyDetail(params.row.candidateId, params.row.specialtyId);
-            setEvaluationTest(params.row.item);
-            handleShowInterviewReport();
+            getReport(params.row.id)
           }}>
             Detail
           </Button>
@@ -300,29 +308,6 @@ const ProfessorInterview = () => {
         autoPageSize
         pagination />
     )
-  }
-
-  const handleReport = () => {
-    setReportStatus(true);
-    checkedCourses.map((courseId) => {
-      axios.put(`/status-candidate-course/updateStatusDoneByProfessor?candidateId=${candidate?.id}&coursesId=${courseId}`).then(function (res) {
-        if (res.data.message == "SUCCESS") {
-          setReportStatus(true);
-        } else {
-          setReportStatus(false)
-        }
-      })
-    })
-    if (reportStatus) {
-      setMessage("Report successfuly!");
-      setMessageStatus("green");
-      if (candidate !== undefined) {
-        getSpecialtyDetail(candidate?.id, candidate?.specialty.id);
-      }
-      updateInterviewDone(interviewId);
-      handleCloseInterviewReport();
-    }
-    fetchData();
   }
 
   return (
@@ -375,50 +360,19 @@ const ProfessorInterview = () => {
         <Modal.Body>
           <div className="candidate-container">
             <strong>Candidate:</strong>
-            <h3>{evaluationTest?.candidateResponse.name}</h3>
+            <h3>{report?.candidate.name}</h3>
           </div>
-          <h4>{candidate?.specialty.name}</h4>
-          <div>
-            {candidate?.specialty.skills.map((skill) => {
+          {
+            report?.listSkillLevels.map((skill) => {
               return (
-                <div>
-                  <span>{skill.name}</span>
-                  <Form>
-                    <div key={`${skill.id}`} className="mb-3">
-                      {
-                        skill.levels.map((level) =>
-                          level.courses.map((course) => {
-                            return (
-                              course.status !== "DONE"
-                                ?
-                                <Form.Check
-                                  className="report-course"
-                                  style={{ display: "flex", alignItems: "center" }}
-                                  id={`${course.id}`}
-                                  label={course.name}
-                                  checked={checkedCourses.includes(`${course.id}`)}
-                                  onChange={handleCheckboxChange}
-                                />
-                                :
-                                <Form.Check
-                                  className="report-course"
-                                  style={{ display: "flex", alignItems: "center" }}
-                                  disabled
-                                  id={`${course.id}`}
-                                  label={course.name}
-                                  checked={checkedCourses.includes(`${course.id}`)}
-                                  onChange={handleCheckboxChange}
-                                />
-                            )
-                          }))
-                      }
-                    </div>
-
-                  </Form>
+                <div className="item" key={skill.skillId}>
+                  <img className="item-icon" src={skill.image} alt="" />
+                  <strong className="item-name">{skill.skillName}</strong>
+                  <span className="item-level">Level {skill.levelName}</span>
                 </div>
               )
-            })}
-          </div>
+            })
+          }
         </Modal.Body>
         <Modal.Footer>
           <button className="btn" onClick={() => { handleCloseInterviewReport() }}>Close</button>
