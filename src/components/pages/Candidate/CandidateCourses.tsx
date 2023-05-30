@@ -64,6 +64,7 @@ const CandidateCourse = () => {
         await axios.get(`/specialization/getDetailCandidateSpecialization?candidateId=${user?.id}&specialtyId=${specialtySelect?.id}`).then(async (res) => {
             const data = await res.data.data;
             setCurrentExp(data?.experiences.find((e: Experience) => e.name === specialtySelect?.experience));
+            console.log(data?.experiences.find((e: Experience) => e.name === specialtySelect?.experience))
         });
     }
 

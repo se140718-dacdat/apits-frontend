@@ -128,7 +128,7 @@ const EnterpriseInterview = () => {
           :
           null
       }
-      <h2>Interviews</h2>
+      <h2>Evaluation</h2>
       <div className="filter">
         <div className="filter-form-input">
           <div className="filter-input-icon">

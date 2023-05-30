@@ -33,25 +33,25 @@ const CandidateInterview = () => {
     async function fetchData() {
         const response = await axios.get(`/getEvaluationSessionByCandidate?candidateId=${user?.id}`);
         const dataRes = await response?.data.data;
-        setInterviewChecks(dataRes);
-        const res = await axios.get(`/getInterviewOfCandidateTypeTest?candidateId=${user?.id}`);
-        const data = await res?.data.data;
-        setInterviewTests(data);
-        const response1 = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
-        const dataRes1 = await response1?.data.data;
-        setInterviewHires(dataRes1);
+        setInterviewChecks(dataRes.filter((e: EvaluationResponse) => e.type === "CHECK_CANDIDATE_COURSE"));
+        // const res = await axios.get(`/getInterviewOfCandidateTypeTest?candidateId=${user?.id}`);
+        // const data = await res?.data.data;
+        // setInterviewTests(data);
+        // const response1 = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
+        // const dataRes1 = await response1?.data.data;
+        // setInterviewHires(dataRes1);
     }
 
     const tableRenderCheck = () => {
         console.log(interviewChecks)
         const rows = interviewChecks?.length > 0 ? interviewChecks?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
-            candidate: item.candidateCourse.candidate,
+            candidate: item.candidateResponse,
             link: item.linkMeeting,
             title: item.title,
             date: item.date,
             slot: item.slot,
-            courseId: item.candidateCourse.course
+            courseId: item.candidateCourse.course.id
         })) : [];
 
         const columns: GridColDef[] = [
@@ -144,7 +144,7 @@ const CandidateInterview = () => {
 
     return (
         <div id='CandidateInterview'>
-            <h2>Interviews</h2>
+            <h2>Evaluation</h2>
             <div className="filter">
                 <div className="filter-form-input">
                     <div className="filter-input-icon">
