@@ -16,7 +16,8 @@ const AssignStatus = [
     "Confirmed",
     "Evaluating",
     "Approve",
-    "Reject"
+    "Reject",
+    "Done"
 ]
 
 const EnterpriseCandidate = () => {
@@ -50,6 +51,9 @@ const EnterpriseCandidate = () => {
                     case AssignStatus[4]:
                         setCandidates(res.data.data.filter((e: ApplyResponse) => e.status === "REJECTED"))
                         break;
+                    case AssignStatus[5]:
+                        setCandidates(res.data.data.filter((e: ApplyResponse) => e.status === "DONE"))
+                        break;
                     default:
                         setCandidates(res.data.data);
                         break;
@@ -81,6 +85,8 @@ const EnterpriseCandidate = () => {
                         return <span style={{ color: `${Status.Processing}`, fontWeight: 700 }}>{params.row.status}</span>
                     case "WIN":
                         return <span style={{ color: `${Status.Done}`, fontWeight: 700 }}>{params.row.status}</span>
+                    case "DONE":
+                        return <span style={{ color: `${Status.Primary}`, fontWeight: 700 }}>{params.row.status}</span>
                     case "REJECTED":
                     case "FAILURE":
                     case "CANCELED":
