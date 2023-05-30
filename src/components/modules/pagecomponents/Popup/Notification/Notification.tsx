@@ -86,7 +86,7 @@ const Notification = () => {
                 <Popover id={`popover-positioned-bottom`} className='notification-popup-cover' style={{ minWidth: "250px" }}>
                     <Popover.Header as="h3">{`Notifications`} <a className='see-all' href='/notification'>See all</a></Popover.Header>
                     <Popover.Body className='notification-body'>
-                        {/* {
+                        {
                             notifications !== undefined && notifications?.map((notification) => {
                                 const arr = notification?.content?.split("\n", notification.content.length)
                                 return (
@@ -110,7 +110,7 @@ const Notification = () => {
                                     </div>
                                 )
                             })
-                        } */}
+                        }
                     </Popover.Body>
                 </Popover>
             }

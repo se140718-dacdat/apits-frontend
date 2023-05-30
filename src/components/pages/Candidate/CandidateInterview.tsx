@@ -22,7 +22,7 @@ const CandidateInterview = () => {
 
     const [type, setType] = useState<string>(interviewType[0])
     const [interviewChecks, setInterviewChecks] = useState<EvaluationResponse[]>([]);
-    const [interviewTests, setInterviewTests] = useState<InterviewResponse[]>([]);
+    const [interviewTests, setInterviewTests] = useState<EvaluationResponse[]>([]);
     const [interviewHires, setInterviewHires] = useState<InterviewResponse[]>([]);
 
 
@@ -33,13 +33,9 @@ const CandidateInterview = () => {
     async function fetchData() {
         const response = await axios.get(`/getEvaluationSessionByCandidate?candidateId=${user?.id}`);
         const dataRes = await response?.data.data;
+        console.log(dataRes.filter((e: EvaluationResponse) => e.type === "TEST"))
         setInterviewChecks(dataRes.filter((e: EvaluationResponse) => e.type === "CHECK_CANDIDATE_COURSE"));
-        // const res = await axios.get(`/getInterviewOfCandidateTypeTest?candidateId=${user?.id}`);
-        // const data = await res?.data.data;
-        // setInterviewTests(data);
-        // const response1 = await axios.get(`/getInterviewOfCandidateTypeHire?candidateId=${user?.id}`);
-        // const dataRes1 = await response1?.data.data;
-        // setInterviewHires(dataRes1);
+        setInterviewTests(dataRes.filter((e: EvaluationResponse) => e.type === "TEST"));
     }
 
     const tableRenderCheck = () => {
@@ -79,17 +75,19 @@ const CandidateInterview = () => {
     const tableRenderTest = () => {
         const rows = interviewTests?.length > 0 ? interviewTests?.filter((e) => e.status === "PENDING").map((item) => ({
             id: item.id,
-            candidateId: item.candidateId,
+            candidateId: item.candidateResponse.id,
             link: item.linkMeeting,
-            title: item.purpose,
+            title: item.title,
             date: item.date,
             slot: item.slot,
-            specialtyId: item.tempId
+            specialtyId: item.specialty.id,
+            specialty: item.specialty.name
         })) : [];
 
         const columns: GridColDef[] = [
             { field: "id", headerName: "ID", flex: 0.2 },
             { field: "title", headerName: "Title", flex: 1.2 },
+            { field: "specialty", headerName: "Specialty", flex: 1 },
             {
                 field: 'link',
                 headerName: 'Link',
