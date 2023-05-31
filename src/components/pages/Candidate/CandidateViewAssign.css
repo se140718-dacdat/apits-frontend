@@ -46,31 +46,34 @@
 }
 
 #CandidateViewAssign .col1 {
+    padding-right: 16px;
     width: 5%;
 }
 
 #CandidateViewAssign .col2 {
-    width: 20%;
+    padding-right: 16px;
+    width: 25%;
+    word-wrap: break-word;
 }
 
 #CandidateViewAssign .col3 {
-    width: 20%;
+    padding-right: 16px;
+    width: 25%;
 }
 
 #CandidateViewAssign .col4 {
+    padding-right: 16px;
     width: 20%;
 }
 
 #CandidateViewAssign .col5 {
-    width: 10%;
+    padding-right: 16px;
+    width: 15%;
 }
 
 #CandidateViewAssign .col6 {
-    width: 10%;
-}
-
-#CandidateViewAssign .col7 {
-    width: 5%;
+    padding-right: 16px;
+    width: 15%;
 }
 
 #CandidateViewAssign .primary-color {

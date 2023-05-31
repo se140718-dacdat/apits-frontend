@@ -92,7 +92,6 @@ const CandidateViewAssign = () => {
                   <th className='col4'>Position</th>
                   <th className='col5'>Salary</th>
                   <th className='col6'>Deadline</th>
-                  <th className='col7'></th>
                 </tr>
               </thead>
               <tbody>
@@ -104,12 +103,9 @@ const CandidateViewAssign = () => {
                     <td className='col4'>{assignTracking.apply.recruitmentRequest.specialtyExperience.experience.name} {assignTracking.apply.recruitmentRequest.specialtyExperience.specialty.name}</td>
                     <td className='col5'>{currencyMaskString(assignTracking.apply.recruitmentRequest.salaryDetail)}đ</td>
                     <td className='col6'>{getDaysLeft(assignTracking.apply.recruitmentRequest?.createAt, assignTracking.apply.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assignTracking.apply.recruitmentRequest?.createAt, assignTracking.apply.recruitmentRequest?.expiryDate)} days left to apply` : "Expired"}</td>
-                    <td className='col7'>
-                      <div style={{ color: `${Status.Done}`, fontWeight: "700" }}>Confirmed</div>
-                    </td>
                   </tr>
                   <tr>
-                    <td className='tracking-container' colSpan={7}>
+                    <td className='tracking-container' colSpan={6}>
                       <div className='tracking'>
                         <ProgressBar className='progress' variant="success" now={Progress.DONE} />
                         <div className='tracking-detail'>
@@ -173,7 +169,6 @@ const CandidateViewAssign = () => {
                     <th className='col4'>Position</th>
                     <th className='col5'>Salary</th>
                     <th className='col6'>Deadline</th>
-                    <th className='col7'></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -205,15 +200,15 @@ const CandidateViewAssign = () => {
                             <td className='col4'>{assign.apply.recruitmentRequest.specialtyExperience.experience.name} {assign.apply.recruitmentRequest.specialtyExperience.specialty.name}</td>
                             <td className='col5'>{currencyMaskString(assign.apply.recruitmentRequest.salaryDetail)}đ</td>
                             <td className='col6'>{getDaysLeft(assign?.apply.recruitmentRequest?.createAt, assign?.apply.recruitmentRequest?.expiryDate) > 0 ? `${getDaysLeft(assign?.apply.recruitmentRequest?.createAt, assign?.apply.recruitmentRequest?.expiryDate)} days left to apply` : "Expired"}</td>
-                            <td className='col7'>
-                              {
-                                (assign.apply.status === "PENDING") ?
+                            {
+                              (assign.apply.status === "PENDING") ?
+                                <td className='col7'>
                                   <Button variant="contained" color="success" onClick={() => { handleConfirmAssign(assign.apply.id) }}>
                                     Confirm
                                   </Button>
-                                  : <div style={{ color: `${Status.Done}`, fontWeight: "700" }}>Confirmed</div>
-                              }
-                            </td>
+                                </td>
+                                : null
+                            }
                           </tr>
                           <tr>
                             <td className='tracking-container' colSpan={7}>
