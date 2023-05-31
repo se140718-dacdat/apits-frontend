@@ -1,5 +1,5 @@
-import { CreatorEntity, EmployeeEntity } from "./entity";
-import { Employee } from "./model";
+import { AssignResponse, CreatorEntity, EmployeeEntity } from "./entity";
+import { Employee, Tracking } from "./model";
 
 export interface SpecialtyOnly {
     id: number;
@@ -276,6 +276,11 @@ export interface ApplyEntity {
     recruitmentRequest: PostResponse;
     assigner: EmployeeEntity;
     candidate: Candidate
+}
+
+export interface ApplyTracking {
+    apply: AssignResponse;
+    tracking: Tracking[];
 }
 
 

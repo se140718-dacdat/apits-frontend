@@ -1,5 +1,6 @@
 import { List } from "reselect/es/types";
 import { CourseEntity, SkillEntity, SpecialtyEntity } from "./model";
+import { PostResponse as PostModal } from "./Models";
 
 interface EnterpriseEntity {
     id: number;
@@ -159,7 +160,7 @@ export interface AssignResponse {
     id: number;
     date: string;
     status: string;
-    recruitmentRequest: PostAssign;
+    recruitmentRequest: PostModal;
     assigner: EmployeeEntity
 }
 

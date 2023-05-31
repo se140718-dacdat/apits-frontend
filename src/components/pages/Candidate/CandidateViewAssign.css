@@ -5,3 +5,74 @@
 #CandidateViewAssign h2 {
     color: var(--primary-color);
 }
+
+#CandidateViewAssign .table-job {
+    margin: 2% 3%;
+}
+
+
+#CandidateViewAssign .progress {
+    margin: 0 10%;
+}
+
+.progress-bar {
+    background-color: var(--primary-color) !important;
+}
+
+
+#CandidateViewAssign .tracking {
+    height: 100px;
+    margin: 2% 1% 4%;
+}
+
+#CandidateViewAssign .tracking-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+#CandidateViewAssign .tracking-item {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+}
+
+#CandidateViewAssign .tracking-item-name {
+    color: #ccc;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#CandidateViewAssign .col1 {
+    width: 5%;
+}
+
+#CandidateViewAssign .col2 {
+    width: 20%;
+}
+
+#CandidateViewAssign .col3 {
+    width: 20%;
+}
+
+#CandidateViewAssign .col4 {
+    width: 20%;
+}
+
+#CandidateViewAssign .col5 {
+    width: 10%;
+}
+
+#CandidateViewAssign .col6 {
+    width: 10%;
+}
+
+#CandidateViewAssign .col7 {
+    width: 5%;
+}
+
+#CandidateViewAssign .primary-color {
+    color: var(--primary-color) !important;
+}

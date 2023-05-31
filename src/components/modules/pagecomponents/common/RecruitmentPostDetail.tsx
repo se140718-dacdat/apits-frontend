@@ -22,8 +22,6 @@ const RecruitmentPostDetail = () => {
     const user = useSelector((state: any) => state.user.user.user);
     const [open, setOpen] = useState(false);
     const [post, setPost] = useState<PostResponse>();
-    const [intern, setIntern] = useState<string>("");
-    const [specialty, setSpecialty] = useState<string>("");
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

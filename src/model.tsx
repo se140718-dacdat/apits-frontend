@@ -31,6 +31,14 @@ export enum Status {
     Primary = "var(--primary-color)"
 }
 
+export enum Progress {
+    PENDING = 0,
+    CONFIRMED = 25,
+    EVALUATING = 50,
+    WIN = 75,
+    DONE = 100,
+}
+
 export interface Login {
     email: string;
     password: string;
@@ -315,4 +323,9 @@ export interface PersonalCertificate {
     name: string;
     link: string;
     date: Date;
+}
+
+export interface Tracking {
+    status: string;
+    date: string;
 }
