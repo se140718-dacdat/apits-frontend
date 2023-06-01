@@ -13,6 +13,7 @@ import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import MessageBox from '../../modules/pagecomponents/Popup/MessageBox/MessageBox';
 import { openNewTab } from '../../../handle';
+import Contract from '../../modules/pagecomponents/common/Contract';
 
 const AssignStatus = [
     "Confirmed",
@@ -33,9 +34,9 @@ const ViewAssign = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-
     const [candidates, setCandidates] = useState<ConfirmedEntity[]>([]);
     const [candidate, setCandidate] = useState<ConfirmedEntity>();
+    const [apply, setApply] = useState<ConfirmedEntity>();
 
     useEffect(() => {
         fetchData();
@@ -188,7 +189,10 @@ const ViewAssign = () => {
                         flex: 0.5,
                         width: 170,
                         renderCell: (params) => (
-                            <Button variant="contained" color="info">
+                            <Button variant="contained" color="info" onClick={()=> {
+                                setApply(params.row.item);
+                                handleOpen()
+                            }}>
                                 Contract
                             </Button>
                         ),
@@ -339,9 +343,9 @@ const ViewAssign = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='candidate-detail-modal'>
+                <Box sx={style} className='candidate-detail-modal scroll'>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <CandidateDetail candidate={candidate?.candidateResponse} />
+                        <Contract apply={apply?.assignId}/>
                     </Typography>
                 </Box>
             </Modal>
