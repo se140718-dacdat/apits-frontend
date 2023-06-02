@@ -362,6 +362,15 @@ export const getAllPost = async () => {
 
 //Assign
 
+export const getApply = async (params) => {
+    try {
+        const res = await axios.get(`/apply/getById/{id}?id=${params}`)
+        return res.data.data
+    } catch (error) {
+        return error
+    }
+}
+
 export const assignCandidates = async (params) => {
     try {
         const res = await axios.post("/apply/create", params)

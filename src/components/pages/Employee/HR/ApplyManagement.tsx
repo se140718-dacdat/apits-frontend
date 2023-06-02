@@ -53,7 +53,7 @@ const ApplyManagement = () => {
 
 
     const fetchData = async () => {
-        await axios.get("https://apits-be.azurewebsites.net/apply/getAll").then((res) => {
+        await axios.get("/apply/getAll").then((res) => {
             if (res.data.status === "SUCCESS") {
                 switch (select) {
                     case AssignStatus[1]:

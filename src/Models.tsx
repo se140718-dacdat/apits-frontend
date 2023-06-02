@@ -80,7 +80,7 @@ export interface Candidate {
     gender: string;
     createAt: Date;
     dob: Date;
-    email: Date;
+    email: string;
     address: string;
     payment: string;
     description: string;

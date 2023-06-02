@@ -353,6 +353,6 @@ a {
     opacity: 0.5;
 }
 
-.scroll {
-    overflow: scroll;
+.scroll-y {
+    overflow-y: scroll;
 }

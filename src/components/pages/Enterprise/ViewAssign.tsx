@@ -36,7 +36,7 @@ const ViewAssign = () => {
 
     const [candidates, setCandidates] = useState<ConfirmedEntity[]>([]);
     const [candidate, setCandidate] = useState<ConfirmedEntity>();
-    const [apply, setApply] = useState<ConfirmedEntity>();
+    const [applyId, setApplyId] = useState<number>(0);
 
     useEffect(() => {
         fetchData();
@@ -190,7 +190,7 @@ const ViewAssign = () => {
                         width: 170,
                         renderCell: (params) => (
                             <Button variant="contained" color="info" onClick={()=> {
-                                setApply(params.row.item);
+                                setApplyId(params.row.id);
                                 handleOpen()
                             }}>
                                 Contract
@@ -343,9 +343,9 @@ const ViewAssign = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='candidate-detail-modal scroll'>
+                <Box sx={style} className='candidate-detail-modal scroll-y'>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <Contract apply={apply?.assignId}/>
+                        <Contract applyId={applyId}/>
                     </Typography>
                 </Box>
             </Modal>
