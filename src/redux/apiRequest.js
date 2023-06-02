@@ -493,3 +493,14 @@ export const getAllContract = async () => {
         return error
     }
 }
+
+// Statistic
+
+export const getCandidateStatistic = async () => {
+    try {
+        const res = await axios.get("/statistic/statisticCandidatesBySpecialty");
+        return res.data.data;
+    } catch (error) {
+        return error
+    }
+}

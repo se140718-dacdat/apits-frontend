@@ -39,7 +39,7 @@ const EmployeeHeader: FC<Props> = (props) => {
                     <Nav className="me-auto">
                         <Nav.Link className='navlink hover-primary' href="/">About Us</Nav.Link>
                         <Nav.Link className='navlink hover-primary' href="/manager-evaluation">Evaluation</Nav.Link>
-                        <Nav.Link className='navlink hover-primary' href="/candidates">Candidate</Nav.Link>
+                        <Nav.Link className='navlink hover-primary' href="/statistics">Statistics</Nav.Link>
                     </Nav>
                 )
             case "HR":

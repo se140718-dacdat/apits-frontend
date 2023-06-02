@@ -283,5 +283,23 @@ export interface ApplyTracking {
     tracking: Tracking[];
 }
 
+export interface StatisticCandidate {
+    totalCandidate: number;
+    totalSpecialty: number;
+    listSpecialty: StatisticSpecialty[];
+}
+
+export interface StatisticSpecialty {
+    candidateCountBySpecialty: number;
+    totalExperience: number;
+    specialtyName: string;
+    listExperience: StatisticExperience[]
+} 
+
+export interface StatisticExperience {
+    totalCandidates: number;
+    experienceName: string;
+}
+
 
 

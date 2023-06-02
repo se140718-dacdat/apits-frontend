@@ -26,7 +26,6 @@ import CandidateViewAssign from './components/pages/Candidate/CandidateViewAssig
 import EmployeeProfile from './components/pages/Employee/EmployeeProfile';
 import Enterprises from './components/pages/Employee/HR/Enterprises';
 import HRContract from './components/pages/Employee/HR/HRContract';
-import Candidates from './components/pages/Employee/Manager/Candidates';
 import InterviewList from './components/pages/Employee/Manager/InterviewList';
 import Specialty from './components/pages/Employee/Manager/Specialty';
 import ProfessorInterview from './components/pages/Employee/Professor/ProfessorInterview';
@@ -39,6 +38,7 @@ import ViewCandidateDetail from './components/modules/pagecomponents/common/View
 import ProfessorReport from './components/pages/Employee/Professor/ProfessorReport';
 import EnterpriseHistory from './components/pages/Enterprise/EnterpriseCandidate';
 import ApplyManagement from './components/pages/Employee/HR/ApplyManagement';
+import Statistics from './components/pages/Employee/Manager/Statistics';
 
 const App: FC = () => {
   const user = useSelector((state: any) => state.auth.login.currentUser);
@@ -80,7 +80,6 @@ const App: FC = () => {
         <Route path='/update-candidate' element={<CandidateRegister />}></Route>;
         <Route path='/register-enterprise' element={<EnterpriseRegister />}></Route>;
         <Route path='/create-post' element={<EnterpriseCreatePost />}></Route>;
-        <Route path='/candidates' element={<Candidates />}></Route>;
         <Route path='/enterprises' element={<Enterprises />}></Route>;
         <Route path='/post-detail/:id' element={<RecruitmentPostDetail />}></Route>;
         <Route path='/specialty' element={<Specialty />}></Route>;
@@ -96,6 +95,7 @@ const App: FC = () => {
         <Route path='/enterprise-candidate' element={<EnterpriseHistory />}></Route>;
         <Route path='/apply-management' element={<ApplyManagement />}></Route>;
         <Route path='/evaluation' element={<ProfessorReport />}></Route>;
+        <Route path='/statistics' element={<Statistics />}></Route>;
         <Route path='/' element={<LandingPage />}></Route>;
       </Routes>
       <Footer />

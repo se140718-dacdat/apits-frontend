@@ -91,7 +91,7 @@ const Notification = () => {
                                 const arr = notification?.content?.split("\n", notification.content.length)
                                 return (
                                     <div className={`notification-popup-item ${notification.read ? "opacity-5" : ""}`} key={notification.id} onClick={() => { handleClick(notification) }}>
-                                        <strong>{notification.title}</strong>
+                                        <strong>{notification.subject}</strong>
                                         <br></br>
                                         {
                                             (arr !== undefined &&  arr?.length < 1)

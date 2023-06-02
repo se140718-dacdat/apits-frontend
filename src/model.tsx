@@ -199,7 +199,7 @@ export interface Interview {
 
 export interface NotificationEntity {
     id: number;
-    title: string;
+    subject: string;
     content: string;
     tempId: number;
     notificationType: string;
