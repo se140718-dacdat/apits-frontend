@@ -36,7 +36,7 @@ const Notification = () => {
                 break;
             default:
                 api = "Employee?employeeId=";
-                setRole("professor");
+                setRole("employee");
                 break;
         }
         await axios.get(`/notification/getAllNotificationBy${api}${user?.id}`).then((res) => {
@@ -57,16 +57,36 @@ const Notification = () => {
         }
         switch (notification.notificationType) {
             case "EVALUATION_SESSION":
-                navigate(`/${role}-interview?id=${notification?.evaluationSessionId}`);
+                switch (role) {
+                    case "candidate":
+                        navigate("/candidate-evaluation");
+                        break;
+                    case "employee":
+                        navigate("/professor-evaluation");
+                        break;
+                    default:
+                        navigate("/");
+                        break;
+                }
                 break;
             case "RECRUITMENT_REQUEST":
                 navigate(`/post-detail/${notification?.recruitmentRequestId}`);
                 break;
-            case "ASSIGN": 
-                if (role === "candidate") {
-                    // navigate(`/candidate-view-assign?id=${notification.tempId}`)
-                } else if (role === "enterprise") {
-                    navigate(`/profile`)
+            case "ASSIGN":
+                console.log(role)
+                switch (role) {
+                    case "candidate":
+                        navigate(`/candidate-view-assign`)
+                        break;
+                    case "employee":
+                        navigate(`/apply-management`)
+                        break;
+                    case "enterprise":
+                        navigate("/enterprise-candidate")
+                        break;
+                    default:
+                        navigate(`/`)
+                        break;
                 }
                 break;
             default:
@@ -91,7 +111,7 @@ const Notification = () => {
                                         <strong>{notification.subject}</strong>
                                         <br></br>
                                         {
-                                            (arr !== undefined &&  arr?.length < 1)
+                                            (arr !== undefined && arr?.length < 1)
                                                 ?
                                                 (<div><span>You don't have any notifications</span></div>)
                                                 :
