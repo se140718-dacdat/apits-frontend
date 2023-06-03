@@ -73,7 +73,6 @@ const Notification = () => {
                 navigate(`/post-detail/${notification?.recruitmentRequestId}`);
                 break;
             case "ASSIGN":
-                console.log(role)
                 switch (role) {
                     case "candidate":
                         navigate(`/candidate-view-assign`)
@@ -82,7 +81,7 @@ const Notification = () => {
                         navigate(`/apply-management`)
                         break;
                     case "enterprise":
-                        navigate("/enterprise-candidate")
+                        navigate(`/post-detail/${notification?.recruitmentRequestId}`)
                         break;
                     default:
                         navigate(`/`)
