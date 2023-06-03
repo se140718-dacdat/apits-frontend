@@ -96,39 +96,6 @@ const ViewCandidateDetail = () => {
                             <div className="profile-header-name">Experiences</div>
                         </div>
                         <div className="profile-body">
-                            <div className="profile-body-description">
-                                <h6>FPT Software Intern  //  Jan 2022 - April 2022</h6>
-                                <ul>
-                                    <li>Collaborated with cross-functional teams to complete projects related to medical</li>
-                                    <li>Participated in team meetings and contributed to group brainstorming sessions</li>
-                                    <li>Completed feature and fix bug for application functional</li>
-                                </ul>
-                            </div>
-                            <div className="profile-body-description">
-                                <h6>FPT Software Intern  //  Jan 2022 - April 2022</h6>
-                                <ul>
-                                    <li>Collaborated with cross-functional teams to complete projects related to medical</li>
-                                    <li>Participated in team meetings and contributed to group brainstorming sessions</li>
-                                    <li>Completed feature and fix bug for application functional</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="profile-input">
-                        <div className="profile-header">
-                            <div className="profile-header-name">Certification</div>
-                        </div>
-                        <div className="profile-body">
-                            <div className="profile-body-description">
-                                <h6>March 28, 2020</h6>
-                                <div className='certificate-link'>Basic of Web Developement & Coding (Coursera)
-                                </div>
-                            </div>
-                            <div className="profile-body-description">
-                                <h6>March 11, 2023</h6>
-                                <div className='certificate-link'>Building mordern java application (Coursera)
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

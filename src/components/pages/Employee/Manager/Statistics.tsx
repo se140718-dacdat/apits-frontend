@@ -80,7 +80,6 @@ const Statistics = () => {
             aria-label="wrapped label tabs example"
           >
             <Tab value="candidates" label="Candidates" />
-            <Tab value="2" label="Enterprises" />
           </Tabs>
         </Box>
         {
