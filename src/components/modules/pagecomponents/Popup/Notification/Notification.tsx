@@ -56,18 +56,15 @@ const Notification = () => {
             })
         }
         switch (notification.notificationType) {
-            case "INTERVIEW":
-                navigate(`/${role}-interview?id=${notification.tempId}`);
+            case "EVALUATION_SESSION":
+                navigate(`/${role}-interview?id=${notification?.evaluationSessionId}`);
                 break;
-            case "CONTRACT_LABOR":
-                navigate(`/contract`);
-                break;
-            case "CONTRACT_AGREEMENT":
-                navigate(`/contract`);
+            case "RECRUITMENT_REQUEST":
+                navigate(`/post-detail/${notification?.recruitmentRequestId}`);
                 break;
             case "ASSIGN": 
                 if (role === "candidate") {
-                    navigate(`/candidate-view-assign?id=${notification.tempId}`)
+                    // navigate(`/candidate-view-assign?id=${notification.tempId}`)
                 } else if (role === "enterprise") {
                     navigate(`/profile`)
                 }

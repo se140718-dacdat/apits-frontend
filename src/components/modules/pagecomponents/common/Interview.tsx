@@ -38,24 +38,23 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const [link, setLink] = useState<string>('');
   const [slot, setSlot] = useState<string>(slots[0]);
   const [isPopupInterviewer, setIsPopupInterviewer] = useState(false);
-  const [employees, setEmployees] = useState<Professor[]>([]);
-  const [professor, setProfessor] = useState<Professor>();
   const [message, setMessage] = useState<string>('');
   const [messageStatus, setMessageStatus] = useState('');
-  const [testId, setTestId] = useState<number>();
   const [interviewCheck, setInterviewCheck] = useState<InterviewResponse[]>([]);
   const [interviewTest, setInterviewTest] = useState<InterviewResponse[]>([]);
-  const [interviews, setInterviews] = useState<InterviewResponse[]>([]);
   const [interview, setInterview] = useState<InterviewResponse>();
   const [slotExist, setSlotExist] = useState<string[]>([]);
   const [evaluateTest, setEvaluateTest] = useState<Waiting>();
   const [courseProcessing, setCourseProcessing] = useState<CourseProcessing>();
+  const [professors, setProfessors] = useState<Professor[]>([]);
+  const [professor, setProfessor] = useState<Professor>();
+
 
 
 
 
   const handleCloseInterviewCreate = () => setShowInterviewCreate(false);
-  const handleShowInterviewCreate = () => { setShowInterviewCreate(true) };
+  const handleShowInterviewCreate = () => { setShowInterviewCreate(true); };
 
   const handleCloseInterviewEdit = () => setShowInterviewEdit(false);
   const handleShowInterviewEdit = () => { setShowInterviewEdit(true) };
@@ -70,10 +69,6 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
   const fetchData = async () => {
     setNewUsers(await getAllNewCandidateUnCheck());
     setCandidates(await getCandidateCourseProcessing());
-    setEmployees(await getAllEmployees());
-    // setInterviews(await getAllInterview());
-    // setInterviewCheck(interviews.filter((e) => e.type === "CHECK"));
-    // setInterviewTest(interviews.filter((e) => e.type === "TEST"));
   }
 
   const getSlot = async (id: number) => {
@@ -89,6 +84,18 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
         setSlotExist([])
       }
     })
+  }
+
+  const getProfessor = async (id: number) => {
+    if (type === "TEST" && evaluateTest !== undefined) {
+      await axios.get(`/professor-specialty/getListProfessorBySpecialty?specialtyId=${id}`).then((res) => {
+        setProfessors(res.data.data);
+      })
+    } else {
+      await axios.get(`/professor-skill/getListProfesorByCourseId?courseId=${id}`).then((res) => {
+        setProfessors(res.data.data);
+      })
+    }
   }
 
 
@@ -122,6 +129,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             candidateName: item.candidate.name,
             phone: item.candidate.phone,
             courseName: item.course.name,
+            courseId: item.course.id
           })) : [];
 
           const columnsTest: GridColDef[] = [
@@ -136,7 +144,8 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               width: 170,
               renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
-                  setCourseProcessing(params.row.item)
+                  setCourseProcessing(params.row.item);
+                  getProfessor(params.row.courseId);
                   handleShowInterviewCreate()
                 }}>
                   Create
@@ -157,6 +166,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
             candidateName: item.candidate.name,
             phone: item.candidate.phone,
             specialtyName: item.specialty.name,
+            specialtyId: item.specialty.id,
           })) : [];
 
           const columns: GridColDef[] = [
@@ -172,6 +182,7 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
               renderCell: (params) => (
                 <Button variant="contained" color="primary" onClick={() => {
                   setEvaluateTest(params.row.item);
+                  getProfessor(params.row.specialtyId);
                   handleShowInterviewCreate()
                 }}>
                   Create
@@ -503,14 +514,14 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                       <input type="text" className="input-search input input-border" placeholder="Enter professor name" />
                       <div className="search-name">
                         {
-                          employees?.map((employee, key) =>
-                            <div className="search-name-interviewer" key={key}
+                          professors?.map((professor) =>
+                            <div className="search-name-interviewer" key={professor.id}
                               onClick={() => {
-                                setProfessor(employee);
-                                getSlot(employee.id);
+                                setProfessor(professor);
+                                getSlot(professor.id);
                                 setIsPopupInterviewer(false);
                               }}>
-                              <span>{employee.name}</span>
+                              <span>{professor.name}</span>
                               <FontAwesomeIcon icon={faArrowRight} className="search-icon" />
                             </div>
                           )
@@ -603,14 +614,14 @@ const InterviewTable: React.FC<Props> = ({ type, status }) => {
                       <input type="text" className="input-search input input-border" placeholder="Enter professor name" />
                       <div className="search-name">
                         {
-                          employees?.map((employee, key) =>
-                            <div className="search-name-interviewer" key={key}
+                          professors?.map((professor) =>
+                            <div className="search-name-interviewer" key={professor.id}
                               onClick={() => {
-                                setProfessor(employee);
-                                getSlot(employee.id);
+                                setProfessor(professor);
+                                getSlot(professor.id);
                                 setIsPopupInterviewer(false);
                               }}>
-                              <span>{employee.name}</span>
+                              <span>{professor.name}</span>
                               <FontAwesomeIcon icon={faArrowRight} className="search-icon" />
                             </div>
                           )

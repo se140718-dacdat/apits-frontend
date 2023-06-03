@@ -126,7 +126,6 @@ const EnterpriseCreatePost = () => {
                 specialtyId: specialtySelect !== undefined ? specialtySelect?.id : 0,
                 experienceId: experienceSelect !== undefined ? experienceSelect?.id : 0,
             }
-            console.log(newPost)
             createPost(newPost, navigate);
         } else {
             setMessage("Create post error")

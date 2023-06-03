@@ -198,13 +198,18 @@ export interface Interview {
 }
 
 export interface NotificationEntity {
-    id: number;
-    subject: string;
-    content: string;
-    tempId: number;
-    notificationType: string;
-    createTime: string;
-    read: boolean;
+    id: number,
+    subject: string,
+    content: string,
+    createTime: string,
+    email: string,
+    notificationType: string,
+    candidate: null,
+    applyId: number,
+    evaluationSessionId: number,
+    recruitmentRequestId: number,
+    enterpriseId: number,
+    read: boolean
 }
 
 export interface CourseEntity {

@@ -451,16 +451,8 @@ export interface CandidateCourseProcessing {
 }
 
 export interface Professor {
-    address: string;
-    dob: string;
-    employeeCode: string;
     id: number;
-    image: string;
-    jobLevel: string;
     name: string;
-    phone: string;
-    position: Position
-    status: string
 }
 
 
